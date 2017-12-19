@@ -1,0 +1,111 @@
+.header{
+  background-color: #fff;
+  line-height: 60px;
+  height: 60px;
+}
+.ant-layout-header{
+  padding: 0 20px;
+}
+.logo{
+  margin-top: 10px;
+  margin-right: 20px;
+}
+.header_title{
+  font-size: 16px;
+}
+.logo,header_title{
+  float: left;
+}
+
+.navlink{
+  display: block;
+  width: 100%;
+  height: 80px;
+  padding: 10px
+}
+.img{
+  width: 22px;
+  height: 30px;
+  margin: 0 auto
+}
+
+.nav_title{
+  text-align: center;
+  color: #fff;
+  font-weight: normal
+}
+.selected{
+  background-color: #16a08a
+}
+.home{
+  background: url('../assets/imgs/home.png')no-repeat center center;
+  background-size: contain
+}
+.selected .home{
+  background: url('../assets/imgs/home_select.png')no-repeat center center;
+  background-size: contain
+}
+.video{
+  background: url('../assets/imgs/video.png')no-repeat center center;
+  background-size: contain
+}
+.selected .video{
+  background: url('../assets/imgs/video_select.png')no-repeat center center;
+  background-size: contain
+}
+.infrared{
+  background: url('../assets/imgs/infrared.png')no-repeat center center;
+  background-size: contain
+}
+.selected .infrared{
+  background: url('../assets/imgs/infrared_select.png')no-repeat center center;
+  background-size: contain
+}
+.warm{
+  background: url('../assets/imgs/warm.png')no-repeat center center;
+  background-size: contain
+}
+.selected .warm{
+  background: url('../assets/imgs/warm_select.png')no-repeat center center;
+  background-size: contain
+}
+.people{
+  background: url('../assets/imgs/people.png')no-repeat center center;
+  background-size: contain
+}
+.selected .people{
+  background: url('../assets/imgs/people_select.png')no-repeat center center;
+  background-size: contain
+}
+.car{
+  background: url('../assets/imgs/car.png')no-repeat center center;
+  background-size: contain
+}
+.selected .car{
+  background: url('../assets/imgs/car_select.png')no-repeat center center;
+  background-size: contain
+}
+.broadcast{
+  background: url('../assets/imgs/broadcast.png')no-repeat center center;
+  background-size: contain
+}
+.selected .broadcast{
+  background: url('../assets/imgs/broadcast_select.png')no-repeat center center;
+  background-size: contain
+}
+.watch{
+  background: url('../assets/imgs/watch.png')no-repeat center center;
+  background-size: contain
+}
+.selected .watch{
+  background: url('../assets/imgs/watch_select.png')no-repeat center center;
+  background-size: contain
+}
+.setting{
+  background: url('../assets/imgs/setting.png')no-repeat center center;
+  background-size: contain
+}
+.selected .setting{
+  background: url('../assets/imgs/setting_select.png')no-repeat center center;
+  background-size: contain
+}

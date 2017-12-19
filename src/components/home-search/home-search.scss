@@ -1,0 +1,20 @@
+.home-search{
+  background-color: #fff;
+  position: absolute;
+  left: 300px;
+  z-index: 9;
+  .ant-select-selection{
+    border: none
+  }
+ .ant-input{
+   border-color: transparent
+ }
+ .search{
+   display: inline-block;
+   width: 32px;
+   height: 100%;
+   background-color: #17b89f;
+   text-align: center;
+   line-height: 34px;
+ }
+}

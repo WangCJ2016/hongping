@@ -1,0 +1,38 @@
+.login-page{
+  width:100%;
+  height: 100%;
+  background: url('../../assets/imgs/login_bg.png') no-repeat;
+  background-size: cover;
+  position: relative;
+  .login-form{
+    width: 660px;
+    height: 500px;
+    padding: 50px;
+    background: url('../../assets/imgs/login_from_bg.png') no-repeat;
+    background-size: 660px 500px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%)
+  }
+  .title{
+    text-align: center;
+    font-size: 30px;
+    color: #17b89f;
+    font-weight: 200
+  }
+  .login-form-forgot {
+    float: right;
+  }
+  .login-form-button {
+    width: 100%;
+    margin-top: 50px
+  }
+  .ant-input{
+    height: 45px;
+  }
+  .ant-input-prefix i{
+    font-size: 16px!important;
+  }
+  
+}

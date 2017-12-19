@@ -1,0 +1,33 @@
+.list{
+  width: 100%;
+  display: table;
+  .item{
+    display: table-row;
+    line-height: 40px;
+    padding:0 10px;
+    text-align: center;
+    >span{
+      display: table-cell
+    }
+  }
+  .danger{
+    background-color: #fee4e4;
+    color: #f00;
+    button{
+      border-color:#f00;
+      span{
+        color:#f00;
+      }
+    }
+  }
+  .warm{
+    background-color: #fff7df;
+    color: #ffab24;
+    button{
+      border-color:#ffab24;
+      span{
+        color:#ffab24;
+      }
+    }
+  }
+}
