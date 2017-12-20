@@ -1,8 +1,10 @@
 .home-search{
-  background-color: #fff;
   position: absolute;
   left: 300px;
   z-index: 9;
+  .home-search-btn{
+    background-color: #fff;
+  }
   .ant-select-selection{
     border: none
   }
@@ -16,5 +18,10 @@
    background-color: #17b89f;
    text-align: center;
    line-height: 34px;
+ }
+ .home-search-result{
+   margin-top: 10px;
+   width: 100%;
+   background-color: #fff;
  }
 }

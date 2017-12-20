@@ -1,0 +1,43 @@
+.home-search-person{
+  padding:0 10px 10px;
+  position: relative;
+  .title{
+    margin-left: 4px;
+    border-left: 2px solid #17b89f;
+    line-height: 15px;
+    text-indent: 8px;
+  }
+  .trail{
+    padding-left: 10px;
+    border-left: 1px solid #ccc;
+    position: relative;
+    margin-left: 5px;
+    p{
+      margin: 0;
+    }
+    &:last-of-type{
+      border: none;
+      margin-bottom: 10px;
+    }
+    &::before{
+      content: '';
+      display: block;
+      background-color: #fff;
+      width:10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+      position: absolute;
+      left: -5px;
+      top: 0px;
+    }
+    .ant-pagination{
+      text-align: center
+    }
+  }
+  .close{
+    position: absolute;
+    top: 15px;
+    right: 5px;
+  }
+}

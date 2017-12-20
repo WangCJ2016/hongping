@@ -8,12 +8,29 @@
     width: 100%;
   }
   .anticon{
-    margin-top: 7px
+    margin: 7px 5px 0
   }
+  
+  &.broadcast{
+    width: 370px;
+    .title{
+      margin-bottom: 0;
+    }
+    .broadcast-content{
+      height: 170px;
+    }
+    .hanhua_btn{
+      width: 90px;
+      margin: 0 auto;
+      background-color: #17b89f;
+      border-radius: 50%;
+    }
+    .hanhua-content{
+     // border-left: 1px solid #f8f8f8;
+      padding-left: 5px;
+    }
+    
+  }
+  
 }
-.float-left{
-  float: left
-}
-.float-right{
-  float: right
-}
+

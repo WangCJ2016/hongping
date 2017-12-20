@@ -1,0 +1,42 @@
+.home-warm-modal{
+  width: 656px!important;
+  .ant-modal-body{
+    padding: 0
+  }
+  .second-content{
+    padding: 5px;
+    .tr{
+      display: table-row;
+      >span{
+        display: table-cell;
+        vertical-align: middle
+      }
+    }
+  }
+  .title{
+    border-left: 2px solid #17b89f;
+    line-height: 15px;
+    text-indent: 5px;
+  }
+}
+
+.home-warm-content{
+  display: table;
+  border-collapse: collapse;
+  width:100%;
+  p{
+    margin-bottom: 10px;
+  }
+  .first-content{
+    display: table-row;
+    .left,.right{
+      display: table-cell;
+      padding: 5px
+    }
+    .left{
+      border-right: 1px solid #e8e8e8;
+      width: 45%;
+    }
+  }
+  
+}

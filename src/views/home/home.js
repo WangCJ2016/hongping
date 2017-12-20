@@ -1,13 +1,15 @@
 import React from 'react'
-import { Button,Popover } from 'antd'
+import { Button,Popover, Input } from 'antd'
 import HomeTable from '../../components/home-table/home-table'
-import { HomePerson, HomeCamera } from '../../components/home-popover/home-popover'
+import { HomePerson, HomeCamera, HomeBroadcast } from '../../components/home-popover/home-popover'
 import  HomeSearch  from '../../components/home-search/home-search'
+import HomeWarmModal from '../../components/home-warm/home-warm'
 import './home.scss'
 
 class Home extends React.Component {
   state = {
     visible: false,
+    modalvisible: true
   }
   hide() {
     this.setState({
@@ -16,6 +18,20 @@ class Home extends React.Component {
   }
   handleVisibleChange(visible) {
     this.setState({ visible });
+  }
+  
+  // modal
+  handleModalOk(e) {
+    console.log(e);
+    this.setState({
+      modalvisible: false,
+    });
+  }
+  handleCancel = (e) => {
+    console.log(e);
+    this.setState({
+      modalvisible: false,
+    });
   }
   render() {
     return (
@@ -31,9 +47,17 @@ class Home extends React.Component {
           onVisibleChange={this.handleVisibleChange.bind(this)}>
           <Button>摄像头</Button>
         </Popover>
+        <Popover content={<HomeBroadcast />} trigger="click"  >
+         <Button>广播</Button>
+       </Popover>
         <div className='HomeTable'>
           <HomeTable />
         </div>
+        
+        <HomeWarmModal 
+        visible={this.state.modalvisible}
+        handleOk={this.handleModalOk.bind(this)}
+        handleCancel={this.handleCancel.bind(this)} />
       </div>
     )
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import Frame from './layout/frame';
 import routes from './route'
 import { BrowserRouter, Route, Link, Redirect, Switch} from 'react-router-dom'
