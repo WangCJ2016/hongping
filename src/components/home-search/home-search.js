@@ -9,8 +9,8 @@ const Option = Select.Option;
 
 class HomeSearch extends React.Component {
  state={
-  peopleResult: false,
-  bordcastResult: true,
+  peopleResult: true,
+  bordcastResult: false,
   cameraResult: false
  }
  handleChange(value) {

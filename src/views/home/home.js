@@ -7,10 +7,14 @@ import HomeWarmModal from '../../components/home-warm/home-warm'
 import './home.scss'
 
 class Home extends React.Component {
-  state = {
-    visible: false,
-    modalvisible: true
+  constructor() {
+    super()
+    this.state = {
+      visible: false,
+      modalvisible: false
+    }
   }
+  
   hide() {
     this.setState({
       visible: false,
@@ -27,7 +31,7 @@ class Home extends React.Component {
       modalvisible: false,
     });
   }
-  handleCancel = (e) => {
+  handleCancel(e) {
     console.log(e);
     this.setState({
       modalvisible: false,
@@ -53,7 +57,7 @@ class Home extends React.Component {
         <div className='HomeTable'>
           <HomeTable />
         </div>
-        
+        <Button onClick={()=>this.setState({modalvisible:true})}>警报处理</Button>
         <HomeWarmModal 
         visible={this.state.modalvisible}
         handleOk={this.handleModalOk.bind(this)}

@@ -15,5 +15,32 @@ body {
 }
 .anticon{
   vertical-align: middle!important;
-  
+}
+textarea{
+  width: 100%;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+// modal
+.ant-modal-header{
+  padding: 10px 24px!important
+}
+.ant-modal-close-x{
+  width: 40px!important;
+  height: 40px!important;
+  line-height: 40px!important;
+}
+.ant-form.ant-form-inline{
+  .ant-row.ant-form-item{
+    width: 100%;
+    .ant-form-item-label{
+      width:20%;
+    }
+    .ant-form-item-control-wrapper{
+      width:75%;
+    }
+  }
+}
+.ant-modal-footer{
+  padding: 4px 16px!important
 }
