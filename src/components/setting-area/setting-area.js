@@ -18,8 +18,9 @@ class SettingArea1 extends React.Component {
     this.props.areaList()
   }
   onExpand(expanded, record) {
-    alert(1)
-    this.props.juniorArea({parentId:record.id})
+    if(record.children.length===0) {
+      this.props.juniorArea({parentId:record.id})
+    }
   }
   createSubmit() {
     const name = this.props.form.getFieldValue('createName')

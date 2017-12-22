@@ -1,4 +1,5 @@
 import { request, config} from '../config'
+import { addTree } from '../utils'
 const token = localStorage.getItem('token')
 
 const AREALIST_SUCCESS = 'AREALIST_SUCCESS'
@@ -15,17 +16,9 @@ export function area(state=initalState, action) {
       return {...state, areas: action.payload}
     }
     case JUNIRAREA_SUCCESS: {
-     const areas =  state.areas
-      .map(area =>{
-        if(action.payload.length>0&&area.id===action.payload[0].parentId) {
-          area.children  =  action.payload.map((child,index) => ({
-                                key: area.key+'-'+index,
-                                ...child
-                              }))
-         
-        }
-        return area
-      })
+
+      const areas11 = addTree(state.areas,action.payload[0].parentId, action.payload)
+      const areas = [...areas11]
       return {...state, areas: areas}
     }
     case CREATEAREA_SUCCESS: {
@@ -47,16 +40,18 @@ function areaListSuccess(areas) {
 }
 export function areaList(info) {
   return dispatch=>{
-      request.get(config.api.base + config.api.areaLists,{token:token, ...info})
+      request.get(config.api.base + config.api.areaLists,{token:token,pageNo:1,pageSize:1000, ...info})
       .then(res=>{
         console.log(res)
         if(res.success) {
+
           const level1 = res.result.filter(area => area.level===1).map((area,index) => ({
             key:index,
             name: area.name,
             id: area.id,
             level: area.level,
             children:[]}))
+          
           dispatch(areaListSuccess(level1))
         }
       })
@@ -75,7 +70,7 @@ export function juniorArea(info) {
       request.get(config.api.base + config.api.juniorArea,{token:token, ...info})
       .then(res=>{
         console.log(res)
-        if(res.success) {
+        if(res.success&&res.dataObject.length>0) {
           const areas = res.dataObject.map(area => ({
             id: area.id,
             name: area.name,
@@ -161,7 +156,7 @@ function createArea_reducer(state,data) {
     console.log(keyArr)
     let areas = state.areas
     for(let i=0;i<keyArr.length;i++) {
-      if(i==keyArr.length-1) {
+      if(i===keyArr.length-1) {
         areas = areas[i]
       }else{
         areas = areas[i].children
