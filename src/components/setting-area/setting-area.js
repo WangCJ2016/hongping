@@ -1,9 +1,35 @@
 import React from 'react'
-import { Table, Icon } from 'antd';
+import { Table, Icon, Button, Modal, Form, Input } from 'antd';
+import { connect } from 'react-redux'
+import { areaList, juniorArea, createArea } from '../../redux/area.redux'
+const FormItem = Form.Item;
 
-class SettingArea extends React.Component {
-  state = {  }
+@connect(
+  state => state.area,
+  {areaList, juniorArea, createArea}
+)
+class SettingArea1 extends React.Component {
+  state = {
+    createVisible:false,
+    createInfo: {},
+    createParentKey: {}
+  }
+  componentDidMount() {
+    this.props.areaList()
+  }
+  onExpand(expanded, record) {
+    alert(1)
+    this.props.juniorArea({parentId:record.id})
+  }
+  createSubmit() {
+    const name = this.props.form.getFieldValue('createName')
+    console.log(this.state)
+    this.props.createArea({...this.state.createInfo,name: encodeURI(name)},this.state.createParentKey)
+    this.setState({createVisible:false})
+  }
+
   render() {
+    console.log(this.props)
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -24,45 +50,56 @@ class SettingArea extends React.Component {
         title: 'action',
         dataIndex: 'action',
         width: '40%',
-        render:()=> (
+        render:(text,record)=> (
           <span className='action'>
             <a href="#"><Icon type='edit'/>编辑</a>
             <a href="#"><Icon type='delete'/>删除</a>
-            <a href="#"><Icon type="plus-circle-o" />添加下级</a>
+            <a href="#" onClick={()=>this.setState({
+              createVisible:true,
+              createInfo:{level:record.level+1,parentId:record.id},
+              createParentKey: record.key+''
+            })}><Icon type="plus-circle-o" />添加下级</a>
           </span>
         )
-      }]; 
-      const data = [{
-        key: 1,
-        name: 'xxx区域',
-        children: [{
-          key: 11,
-          name: '洞室',
-          children: [{
-            key: 111,
-            name: '洞室1',
-          }],
-        }, {
-          key: 12,
-          name: '水库',
-          children: [{
-            key: 121,
-            name: '水库1',
-          }],
-        }], 
-          
-      }];   
+    }]; 
+      const data = this.props.areas
+      const { getFieldDecorator } = this.props.form;
     return (
       <div className='setting-area'>
-      <Table 
-       columns={columns}
-       rowSelection={rowSelection}
-       showHeader={false}
-       pagination={false}
-       dataSource={data} />
+      <div className='clearfix'>
+        <Button type='primary' className='float-right' onClick={()=>this.setState({createVisible:true,createInfo:{level:1}})}>新增区域</Button>
+      </div>
+      {data.length>0? 
+        <Table 
+        columns={columns}
+        rowSelection={rowSelection}
+        showHeader={false}
+        pagination={false}
+        dataSource={data} 
+        onExpand={this.onExpand.bind(this)}
+        />:null}
+        <Modal title="新建区域" 
+          visible={this.state.createVisible}
+          style={{ top: 200 }}
+          width='50%'
+          okText='确定'
+          cancelText='取消'
+          onOk={this.createSubmit.bind(this)}
+          onCancel={()=>this.setState({createVisible:false})}
+          ><Form>
+          <FormItem>
+            {getFieldDecorator('createName', {
+              
+            })(
+              <Input  placeholder='请填写区域名称'/>
+            )}
+          </FormItem>
+          </Form>
+        
+      </Modal>
       </div>
     )
   }
 }
-
+const SettingArea = Form.create()(SettingArea1);
 export default SettingArea

@@ -1,36 +1,83 @@
 import React from 'react'
-import { Icon, Modal, Input, Tabs, Tree, Popconfirm } from 'antd'
+import { Icon, Modal, Input, Tabs, Tree, Popconfirm, Form } from 'antd'
+import classnames from 'classnames'
+import { connect } from 'react-redux'
+import { role_queryAreas, rolesList, modifyRole, createRole } from '../../redux/role.redux'
 const TabPane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
+const FormItem = Form.Item;
 
-class SettingUserRole extends React.Component {
+@connect(
+  state=>state.role,
+  {role_queryAreas, rolesList, modifyRole, createRole}
+)
+class SettingUserRole1 extends React.Component {
   state = { 
     createRoleVisible: false,
-    roleSetVisible: false
+    roleSetVisible: false,
+    roleEditVisible: false,
+    selectRoleIndex: 0
    }
-  createRoleSubmit() {}
-  render() {
-    return (
-      <div className="setting-user-role float-left">
-          <div className="title role">角色<div className='abosulte' onClick={()=>this.setState({createRoleVisible:true})}><Icon type='plus'/></div></div>
-          <div className="role">
-            超级管理员
-            <div className='abosulte'>
-              <Icon type='edit' />
-              <Icon type='setting' onClick={()=>this.setState({roleSetVisible: true})}/>
-              <Popconfirm title="确定删除？"  okText="确定" cancelText="取消">
+  componentDidMount() {
+    this.props.rolesList()
+  }
+  editRole(index) {
+    this.setState({
+      roleEditVisible: true,
+      selectRoleIndex: index
+    })
+  }
+  delete() {
+    const roles = this.props.roles
+    this.props.modifyRole({id: roles[this.state.selectRoleIndex].id, isDelete: 1})
+  }
+  setRole(index) {
+    this.setState({
+      roleSetVisible: true,
+      selectRoleIndex: index
+    })
+  }
+  roleRender() {
+    const roles = this.props.roles
+    return roles.map((role, index)=> {
+      const style = classnames({
+        role: true,
+        role_selected: this.state.selectRoleIndex === index
+      })
+      return (
+        <div className={style} key={role.id} onClick={()=>this.setState({selectRoleIndex:index})}>
+            {role.name}
+            <div className='abosulte' >
+              <Icon type='edit' onClick={this.editRole.bind(this,index)}/>
+              <Icon type='setting' onClick={this.setRole.bind(this,index)}/>
+              <Popconfirm onConfirm={this.delete.bind(this)} title="确定删除？"  okText="确定" cancelText="取消">
                <Icon type='delete'/>
               </Popconfirm>
             </div>
           </div>
-          <div className="role">
-            普通成员
-            <div className='abosulte'>
-              <Icon type='edit'/>
-              <Icon type='setting'/>
-              <Icon type='delete'/>
-            </div>
-          </div>
+      )
+    })
+  }
+  // 修改角色名字
+  editRoleSubmit() {
+    const roles = this.props.roles
+    const roleName = this.props.form.getFieldValue('roleName')
+    this.props.modifyRole({id: roles[this.state.selectRoleIndex].id, roleName: encodeURI(roleName)})
+    this.setState({roleEditVisible: false})
+  }
+ // 新增信息
+  createRoleSubmit() {
+    const roleName = this.props.form.getFieldValue('createName')
+    this.props.createRole({roleName: encodeURI(roleName)})
+    this.setState({createRoleVisible: false})
+  }
+  render() {
+    
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <div className="setting-user-role float-left">
+          <div className="title role">角色<div className='abosulte' onClick={()=>this.setState({createRoleVisible:true})}><Icon type='plus'/></div></div>
+          {this.props.roles.length>0?this.roleRender():null}
           {/* 新建角色modal */} 
           <Modal title="新建角色" 
             visible={this.state.createRoleVisible}
@@ -41,8 +88,37 @@ class SettingUserRole extends React.Component {
             wrapClassName='createRoleModal'
             onOk={this.createRoleSubmit.bind(this)}
             onCancel={()=>this.setState({createRoleVisible:false})}
+            ><Form>
+            <FormItem>
+              {getFieldDecorator('createName', {
+                initialValue:this.props.roles[this.state.selectRoleIndex]?this.props.roles[this.state.selectRoleIndex].name:''
+              })(
+                <div><span className='title'>角色</span><Input className='input' placeholder='请填写角色名称'/></div>
+              )}
+            </FormItem>
+            </Form>
+            
+          </Modal>
+          <Modal title="修改名称" 
+            visible={this.state.roleEditVisible}
+            style={{ top: 200 }}
+            width='50%'
+            okText='保存'
+            cancelText='取消'
+            onOk={this.editRoleSubmit.bind(this)}
+            onCancel={()=>this.setState({roleEditVisible:false})}
             >
-            <span className='title'>角色</span><Input className='input' />
+            <Form>
+              <FormItem>
+                {getFieldDecorator('roleName', {
+                  initialValue:this.props.roles[this.state.selectRoleIndex]?this.props.roles[this.state.selectRoleIndex].name:''
+                })(
+                  <Input  
+                  /> 
+                )}
+              </FormItem>
+            </Form>
+            
           </Modal>
           {/* 角色设置modal */} 
           <Modal title="超级管理员设置" 
@@ -99,11 +175,12 @@ class SettingUserRole extends React.Component {
                   </TreeNode>
               </Tree>
               </TabPane>
-          </Tabs>
+           </Tabs>
           </Modal>
         </div>
     )
   }
 }
+const SettingUserRole = Form.create()(SettingUserRole1);
 
 export default SettingUserRole

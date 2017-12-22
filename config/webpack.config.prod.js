@@ -56,7 +56,7 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
-  entry: [require.resolve('./polyfills'), paths.appIndexJs],
+  entry: ["babel-polyfill",require.resolve('./polyfills'), paths.appIndexJs],
   output: {
     // The build folder.
     path: paths.appBuild,
@@ -156,11 +156,6 @@ module.exports = {
               ],
               compact: true,
             },
-          },
-          {
-            test: /\.(js|jsx|mjs)$/,
-            include: paths.appSrc,
-            loader: require.resolve('es3ify-loader')
           },
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.

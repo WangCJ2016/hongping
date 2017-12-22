@@ -5,7 +5,7 @@ const TabPane = Tabs.TabPane
 const Option = Select.Option;
 
 class HomeWarmModal extends React.Component {
-  state = {  }
+  
   broadcast(record) {
     console.log(record)
   }

@@ -69,7 +69,7 @@ export function getInfo(token){
           token: res.dataObject.account.token,
         }
         const resources = res.dataObject.resources
-        localStorage.setItem('token', res.dataObject.account.token)
+       // localStorage.setItem('token', res.dataObject.account.token)
         dispatch(authSuccess({account:account,resources:resources}))
       }else {
         dispatch(errorMSG(res.msg))
