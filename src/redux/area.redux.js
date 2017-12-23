@@ -1,13 +1,17 @@
 import { request, config} from '../config'
-import { addTree } from '../utils'
 const token = localStorage.getItem('token')
 
+const ALLAREAS = 'ALLAREAS'
 const AREALIST_SUCCESS = 'AREALIST_SUCCESS'
 const JUNIRAREA_SUCCESS = 'JUNIRAREA_SUCCESS'
 const CREATEAREA_SUCCESS = 'CREATEAREA_SUCCESS'
+const DELETE_SUCCESS = 'DELETE_SUCCESS'
+const MODIFY_SUCCESS = 'MODIFY_SUCCESS'
+
 
 const initalState = {
-  areas: []
+  areas: [],
+  arealist: []
 }
 
 export function area(state=initalState, action) {
@@ -15,16 +19,24 @@ export function area(state=initalState, action) {
     case AREALIST_SUCCESS: {
       return {...state, areas: action.payload}
     }
+    case ALLAREAS: {
+      return {...state, arealist: action.payload}
+    }
     case JUNIRAREA_SUCCESS: {
-
-      const areas11 = addTree(state.areas,action.payload[0].parentId, action.payload)
-      const areas = [...areas11]
-      return {...state, areas: areas}
+      const _stateAreas = JSON.parse(JSON.stringify(state.areas))  // 对象深拷贝
+      const areas11 = addTree(_stateAreas,action.payload[0].parentId, action.payload)
+      return {...state, areas: areas11}
     }
     case CREATEAREA_SUCCESS: {
       const data = action.payload
-      const areas =  createArea_reducer(state, data)
-      return {...state,areas:areas.areas}
+      const _stateAreas = JSON.parse(JSON.stringify(state.areas))  // 对象深拷贝
+      const _areas =  addTree(_stateAreas, data[0].parentId, data)
+      return {...state,areas:_areas}
+    }
+    case DELETE_SUCCESS: {
+      const _stateAreas = JSON.parse(JSON.stringify(state.areas))  // 对象深拷贝
+      const _areas =  delTree(_stateAreas, action.payload.id,action.payload.parentId)
+      return {...state,areas:_areas}
     }
     default:
       return state
@@ -38,20 +50,33 @@ function areaListSuccess(areas) {
     payload: areas
   }
 }
+function allAreas(areas) {
+  return {
+    type: ALLAREAS,
+    payload: areas
+  }
+}
 export function areaList(info) {
   return dispatch=>{
       request.get(config.api.base + config.api.areaLists,{token:token,pageNo:1,pageSize:1000, ...info})
       .then(res=>{
         console.log(res)
         if(res.success) {
-
+          const arealist = res.result.map((area,index) => ({
+            name: area.name,
+            id: area.id,
+            parentId: area.parentId,
+            level: area.level,
+            children:[]
+          }))
           const level1 = res.result.filter(area => area.level===1).map((area,index) => ({
             key:index,
             name: area.name,
             id: area.id,
+            parentId: '',
             level: area.level,
             children:[]}))
-          
+          dispatch(allAreas(arealist))
           dispatch(areaListSuccess(level1))
         }
       })
@@ -90,7 +115,7 @@ function createAreaSuccess(data) {
     payload: data
   }
 }
-export function createArea(info, key) {
+export function createArea(info) {
   return (dispatch,getState)=>{
       const user = getState().user
       request.get(config.api.base + config.api.createAreas,
@@ -103,28 +128,39 @@ export function createArea(info, key) {
         console.log(res)
         if(res.success) {
           const data = {
+            key: res.dataObject.id,
             id: res.dataObject.id,
             level: res.dataObject.level,
             name: res.dataObject.name,
-            parentId: res.dataObject.parentId
+            parentId: res.dataObject.parentId,
+            children: []
           }
-          dispatch(createAreaSuccess({area:data,key:key}))
+          dispatch(createAreaSuccess([data]))
         }
       })
   }
 }
 // 修改区域
+function delete_success(data) {
+  return{
+    type: DELETE_SUCCESS,
+    payload: data
+  }
+}
 export function modifyArea(info) {
   return (dispatch,getState)=>{
       const user = getState().user
       request.get(config.api.base + config.api.modifyArea,
         {
-          token:token, 
+          token:user.account.token, 
           accountId: user.account.id,
           ...info
         })
       .then(res=>{
         console.log(res)
+        if(res.success&&info.isDelete===1){
+          dispatch(delete_success({id: info.id, parentId:info.parentId}))
+        }
       })
   }
 }
@@ -147,27 +183,51 @@ export function areaInfo(info) {
 
 
 // reducerfn
-function createArea_reducer(state,data) {
-  if(data.area.level===1) {
-    const area = {...data.area,key:state.areas.length,children:[]}
-    return [...state.areas,area,]
-  }else {
-    const keyArr = data.key.split('-')
-    console.log(keyArr)
-    let areas = state.areas
-    for(let i=0;i<keyArr.length;i++) {
-      if(i===keyArr.length-1) {
-        areas = areas[i]
-      }else{
-        areas = areas[i].children
+ function addTree(data, id, children) {
+   if(id) {
+    for (let i=0; i<data.length; i++) {
+      if(data[i].id === id){
+          const chidd = children.map((child,index) => ({
+              key: data[i].key+'-'+index,
+              ...child
+          }))
+          data[i].children = [...data[i].children,...chidd]
+          return data
+      }else if (data[i].children.length>0) {
+          addTree(data[i].children, id,children )
       }
     }
-    const area_ = Object.assign([],areas.children)
-    console.log(area_)
-    areas.children = [...area_,{...data.area,key: data.key+'-'+areas.length}]
-    console.log(state)
-    return state
+   }else{
+     data = [...data,...children]
+   }
+  return data
+}
+
+function delTree(data, id, parentId) {
+  if(parentId !== ''){
+    for (let i=0; i<data.length; i++) {
+      if(data[i].id === parentId){
+        let _index
+        data[i].children.forEach((child,index)=>{
+          if(child.id === id) {
+            _index = index
+          }
+        })
+        console.log(_index)
+        data[i].children.splice(_index,1)
+        return data
+      }else if (data[i].children.length>0) {
+        delTree(data[i].children, id,parentId )
+      }
   }
-  
-  
+}else{
+  let _index
+  data.forEach((level1,index) => {
+    if(level1.id === id) {
+      _index=index
+    }
+  })
+  data.splice(_index,1)
+}
+return data
 }

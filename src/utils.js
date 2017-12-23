@@ -23,7 +23,6 @@ export function toTree(data, parent_id) {
 }
 
 export function addTree(data, id, children) {
-    console.log(data, id, children)
     for (let i=0; i<data.length; i++) {
         if(data[i].id == id){
             const chidd = children.map((child,index) => ({
@@ -31,11 +30,10 @@ export function addTree(data, id, children) {
                 ...child
             }))
             data[i].children = [... data[i].children,...chidd]
-           
+            return data
         }else if (data[i].children.length>0) {
             addTree(data[i].children, id,children )
         }
     }
-    return data
 }
 

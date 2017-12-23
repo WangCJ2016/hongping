@@ -1,44 +1,55 @@
 import React from 'react'
-import { Icon, Modal, Input, Tabs, Tree, Popconfirm, Form } from 'antd'
+import { Icon, Modal, Input, Tabs, Tree, Popconfirm, Form, Table } from 'antd'
 import classnames from 'classnames'
 import { connect } from 'react-redux'
-import { role_queryAreas, rolesList, modifyRole, createRole } from '../../redux/role.redux'
+import { role_queryAreas, rolesList, modifyRole, createRole, role_roleInfo } from '../../redux/role.redux'
+import {areaList, juniorArea} from '../../redux/area.redux'
 const TabPane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
 const FormItem = Form.Item;
 
 @connect(
-  state=>state.role,
-  {role_queryAreas, rolesList, modifyRole, createRole}
+  state=>({role:state.role,area:state.area}),
+  {role_queryAreas, rolesList, modifyRole, createRole, role_roleInfo,areaList, juniorArea}
 )
 class SettingUserRole1 extends React.Component {
   state = { 
     createRoleVisible: false,
     roleSetVisible: false,
     roleEditVisible: false,
-    selectRoleIndex: 0
+    selectRoleIndex: 0,
+    areaAuthority: [],
+    roleInfo:{}
    }
   componentDidMount() {
     this.props.rolesList()
+    if(this.props.area.areas.length===0) {
+      this.props.areaList()
+    }
   }
+  // 打开编辑modal
   editRole(index) {
     this.setState({
       roleEditVisible: true,
       selectRoleIndex: index
     })
   }
+  // 删除角色
   delete() {
-    const roles = this.props.roles
+    const roles = this.props.role.roles
     this.props.modifyRole({id: roles[this.state.selectRoleIndex].id, isDelete: 1})
   }
-  setRole(index) {
-    this.setState({
-      roleSetVisible: true,
-      selectRoleIndex: index
-    })
+  // 打开设置modal
+  setRole(index,id) {
+    this.props.role_roleInfo({id:id})
+      this.setState({
+        roleSetVisible: true,
+        selectRoleIndex: index
+      })
   }
+  // 角色渲染
   roleRender() {
-    const roles = this.props.roles
+    const roles = this.props.role.roles
     return roles.map((role, index)=> {
       const style = classnames({
         role: true,
@@ -49,7 +60,7 @@ class SettingUserRole1 extends React.Component {
             {role.name}
             <div className='abosulte' >
               <Icon type='edit' onClick={this.editRole.bind(this,index)}/>
-              <Icon type='setting' onClick={this.setRole.bind(this,index)}/>
+              <Icon type='setting' onClick={this.setRole.bind(this,index,role.id)}/>
               <Popconfirm onConfirm={this.delete.bind(this)} title="确定删除？"  okText="确定" cancelText="取消">
                <Icon type='delete'/>
               </Popconfirm>
@@ -60,7 +71,7 @@ class SettingUserRole1 extends React.Component {
   }
   // 修改角色名字
   editRoleSubmit() {
-    const roles = this.props.roles
+    const roles = this.props.role.roles
     const roleName = this.props.form.getFieldValue('roleName')
     this.props.modifyRole({id: roles[this.state.selectRoleIndex].id, roleName: encodeURI(roleName)})
     this.setState({roleEditVisible: false})
@@ -71,13 +82,64 @@ class SettingUserRole1 extends React.Component {
     this.props.createRole({roleName: encodeURI(roleName)})
     this.setState({createRoleVisible: false})
   }
+  // 渲染区域树
+  areaTreeRender() {
+    const areas = this.props.area.areas
+    const arealist = this.props.area.arealist
+   return areas.map((level1,index) => {
+      return (
+        <TreeNode title={level1.name} key={level1.id}>
+          {toTree(level1.id,arealist)}
+        </TreeNode>
+      )
+    })
+    function toTree(id, array) {
+      const childArr = childrenArr(id, array)
+      if(childArr.length > 0) {
+        return childArr.map((child,index) => (
+          <TreeNode key={child.id} title={child.name} >
+            {toTree(child.id, array)}
+          </TreeNode>
+        ))
+      }
+    }
+    function childrenArr(id, array) {
+      var newArry = []
+      for (var i in array) {
+          if (array[i].parentId === id)
+              newArry.push(array[i]);
+      }
+      return newArry;
+    }
+  }
+  // 区域权限设置
+  onAreaCheck(checkedKeys,e){
+    console.log(checkedKeys,e)
+    this.setState({
+      areaAuthority: checkedKeys
+    })
+  }
+  setAuthoritySubmit(){
+    if(this.state.areaAuthority.length>0) {
+      this.props.modifyRole({areaIds:this.state.areaAuthority.join(','),id: this.props.role.roles[this.state.selectRoleIndex].id})
+    }
+    this.setState({
+      roleSetVisible: false,
+      areaAuthority: []
+    })
+  }
+  Cancel() {
+    console.log(1)
+    this.setState({roleSetVisible:false})
+  }
   render() {
-    
+    const areas = this.props.area.areas
     const { getFieldDecorator } = this.props.form;
+    console.log(this.props)
     return (
       <div className="setting-user-role float-left">
           <div className="title role">角色<div className='abosulte' onClick={()=>this.setState({createRoleVisible:true})}><Icon type='plus'/></div></div>
-          {this.props.roles.length>0?this.roleRender():null}
+          {this.props.role.roles.length>0?this.roleRender():null}
           {/* 新建角色modal */} 
           <Modal title="新建角色" 
             visible={this.state.createRoleVisible}
@@ -91,7 +153,7 @@ class SettingUserRole1 extends React.Component {
             ><Form>
             <FormItem>
               {getFieldDecorator('createName', {
-                initialValue:this.props.roles[this.state.selectRoleIndex]?this.props.roles[this.state.selectRoleIndex].name:''
+                initialValue:this.props.role.roles[this.state.selectRoleIndex]?this.props.role.roles[this.state.selectRoleIndex].name:''
               })(
                 <div><span className='title'>角色</span><Input className='input' placeholder='请填写角色名称'/></div>
               )}
@@ -111,7 +173,7 @@ class SettingUserRole1 extends React.Component {
             <Form>
               <FormItem>
                 {getFieldDecorator('roleName', {
-                  initialValue:this.props.roles[this.state.selectRoleIndex]?this.props.roles[this.state.selectRoleIndex].name:''
+                  initialValue:this.props.role.roles[this.state.selectRoleIndex]?this.props.role.roles[this.state.selectRoleIndex].name:''
                 })(
                   <Input  
                   /> 
@@ -121,33 +183,26 @@ class SettingUserRole1 extends React.Component {
             
           </Modal>
           {/* 角色设置modal */} 
-          <Modal title="超级管理员设置" 
+          <Modal title={this.props.role.roleInfo.name+'权限设置'} 
             visible={this.state.roleSetVisible}
             style={{ top: 200 }}
             width='50%'
             okText='保存'
             cancelText='取消'
             wrapClassName='roleSetModal'
-            onOk={this.createRoleSubmit.bind(this)}
-            onCancel={()=>this.setState({roleSetVisible:false})}
+            onOk={this.setAuthoritySubmit.bind(this)}
+            onCancel={this.Cancel.bind(this)}
             >
             <Tabs tabPosition='left' defaultActiveKey="1" >
               <TabPane tab="区域" key="1">
-                <Tree
-                  checkable
-                  onSelect={this.onSelect}
-                  onCheck={this.onCheck}
-                >
-                  <TreeNode title="xx区域" key="0-0">
-                    <TreeNode title="洞室" key="0-0-0" >
-                      <TreeNode title="洞室1" key="0-0-0-0"  />
-                      <TreeNode title="洞室2" key="0-0-0-1" />
-                    </TreeNode>
-                    <TreeNode title="水库" key="0-0-1">
-                      <TreeNode title={<span style={{ color: '#08c' }}>水库1</span>} key="0-0-1-0" />
-                    </TreeNode>
-                  </TreeNode>
-                </Tree>
+              <Tree
+               
+                checkable
+                
+                onCheck={this.onAreaCheck.bind(this)}
+              >
+              {areas.length>0?this.areaTreeRender():null}
+              </Tree>
               </TabPane>
               <TabPane tab="功能" key="2">
               <Tree
@@ -155,11 +210,11 @@ class SettingUserRole1 extends React.Component {
                   onSelect={this.onSelect}
                   onCheck={this.onCheck}
                 >
-                  <TreeNode title="首页" key="0-0">
-                    <TreeNode title="警报接受" key="0-1"  />
-                    <TreeNode title="搜索人员、定位、轨迹" key="0-2" />
-                    <TreeNode title="搜索摄像头、定位" key="0-3" />
-                    <TreeNode title="搜索广播" key="0-4" />
+                  <TreeNode title="首页" key="fsfdsf">
+                    <TreeNode title="警报接受" key='daads'  />
+                    <TreeNode title="搜索人员、定位、轨迹" key="dffa" />
+                    <TreeNode title="搜索摄像头、定位" key="fsaff" />
+                    <TreeNode title="搜索广播" key="0a" />
                   </TreeNode>
                   <TreeNode title="报警(统计分析&综合查询)" key="1-0"  />
                   <TreeNode title="人员(统计分析&综合查询)" key="2-0"  />

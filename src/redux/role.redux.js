@@ -2,19 +2,27 @@ import { request, config} from '../config'
 
 const token = localStorage.getItem('token')
 const initialState = {
-  roles: []
+  roles: [],
+  roleInfo: {}
 }
 
-const  QUERYAREAS = 'QUERYAREAS'
 const GETROLES = 'GETROLES'
 const UPDATEROLE = 'UPDATEROLE'
 const DELETE = 'DELETE'
 const  CREATE_SUCCESS = 'CREATE_SUCCESS'
+const ROLEINFO_SUCCESS = 'ROLEINFO_SUCCESS'
 
 export  function role(state=initialState,action) {
   switch (action.type) {
     case GETROLES: {
       return {...state,roles: action.payload}
+    }
+    case CREATE_SUCCESS: {
+      const roles = [...state.roles,action.payload]
+      return {...state,roles: roles}
+    }
+    case ROLEINFO_SUCCESS: {
+      return {...state,roleInfo: action.payload}
     }
     case UPDATEROLE: {
       const roles =  state.roles.map(role => {
@@ -62,6 +70,12 @@ export function rolesList() {
 }
 
 // 创建角色
+function createSuccess(role) {
+  return {
+    type: CREATE_SUCCESS,
+    payload: role
+  }
+}
 export function createRole(info) {
   return (dispatch,getState)=>{
     const user = getState().user
@@ -73,6 +87,13 @@ export function createRole(info) {
       })
     .then(res=>{
       console.log(res)
+      if(res.success) {
+        const role = {
+          name: res.dataObject.roleName,
+          id: res.dataObject.id
+        }
+        dispatch(createSuccess(role))
+      }
     })
  }
 }
@@ -96,7 +117,7 @@ export function modifyRole(info) {
         token:user.account.token,
         accountId: user.account.id,
         ...info
-    })
+       })
       .then(res=>{
         console.log(res)
         if(res.success) {
@@ -111,12 +132,29 @@ export function modifyRole(info) {
       })
   }
 }
-
-export function role_queryAreas() {
-  return dispatch=>{
-      request.get(config.api.base + config.api.queryAreas,{token:token})
+// 角色信xi
+function roleInfoSuccess(info) {
+  return {
+    type: ROLEINFO_SUCCESS,
+    payload: info
+  }
+}
+export function role_roleInfo(info) {
+  return (dispatch,getState)=>{
+      const user = getState().user
+      request.get(config.api.base + config.api.roleInfo,{
+        token:user.account.token,
+        ...info
+      })
       .then(res=>{
         console.log(res)
+        if(res.success) {
+          const info = {
+            name: res.dataObject.roleName,
+            roleAreaId: res.dataObject.roleAreas?res.dataObject.roleAreas.map(area => (area.areaId)):[]
+          }
+          dispatch(roleInfoSuccess(info))
+        }
       })
   }
 }

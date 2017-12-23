@@ -25,6 +25,7 @@ export const config = {
     modifyRole: '/role_modifyRole', // 修改角色名称
     createRole: '/role_createRole', // 创建角色
     queryAreas: '/role_queryAreas', //(获取区域)
+    roleInfo: '/ role_getRoleInfo' // 角色详情
     
   }
 }
@@ -45,3 +46,5 @@ export const request = {
       .then(res=>res.json())
   }
 }
+
+
