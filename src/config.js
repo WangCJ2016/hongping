@@ -21,12 +21,25 @@ export const config = {
     areaInfo: '/area_getAreasInfo', //  区域详情
 
     getInfo: '/do_getAccountInfo',  // (获取角色)
-    rolesList:'/role_queryRolePage', // 角色菜单
+    rolesList:'/role_queryRolePage', // 角色列表
+    authorityList: '/role_queryResources', // 权限菜单
     modifyRole: '/role_modifyRole', // 修改角色名称
     createRole: '/role_createRole', // 创建角色
     queryAreas: '/role_queryAreas', //(获取区域)
-    roleInfo: '/ role_getRoleInfo' // 角色详情
-    
+    roleInfo: '/ role_getRoleInfo', // 角色详情
+    peopleList: '/role_queryAccountPage', // 人员列表 
+    createAccount: '/account_createAccount', // 新建人员
+    modifyAccount: '/account_modifyAccount', // 修改删除账号
+
+    serverlist: '/server_querySysServersPage', // 服务器列表
+    modifyServer: '/server_modifySysServers', // 修改／删除服务器
+    createServer: '/server_createSysServers ', // 添加服务器
+
+    remoteHosts: '/rhost_querySysRemoteHostsPage', // 视频主机
+    SysServerslist: '/rhost_querySysServers', // 流媒体服务器
+    createRemoteHost: '/rhost_createSysRemoteHosts', // 添加主机
+    modifyRemoteHost:'/rhost_modifySysRemoteHosts', //修改／删除主机
+    remoteChannels: '/rhost_querySysRemoteChannels', // 视频通道
   }
 }
 //get/post请求

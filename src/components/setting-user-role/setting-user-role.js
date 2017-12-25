@@ -1,8 +1,14 @@
 import React from 'react'
-import { Icon, Modal, Input, Tabs, Tree, Popconfirm, Form, Table } from 'antd'
+import { Icon, Modal, Input, Tabs, Tree, Popconfirm, Form } from 'antd'
 import classnames from 'classnames'
 import { connect } from 'react-redux'
-import { role_queryAreas, rolesList, modifyRole, createRole, role_roleInfo } from '../../redux/role.redux'
+import { role_queryAreas, 
+         rolesList, 
+         modifyRole,
+         createRole,
+         role_roleInfo,
+         authorityList,
+         accountList } from '../../redux/role.redux'
 import {areaList, juniorArea} from '../../redux/area.redux'
 const TabPane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
@@ -10,14 +16,21 @@ const FormItem = Form.Item;
 
 @connect(
   state=>({role:state.role,area:state.area}),
-  {role_queryAreas, rolesList, modifyRole, createRole, role_roleInfo,areaList, juniorArea}
+  {role_queryAreas, 
+   rolesList, 
+   modifyRole, 
+   createRole, 
+   role_roleInfo,areaList, 
+   juniorArea, 
+   authorityList,
+   accountList}
 )
 class SettingUserRole1 extends React.Component {
   state = { 
     createRoleVisible: false,
     roleSetVisible: false,
     roleEditVisible: false,
-    selectRoleIndex: 0,
+    selectRoleIndex: -1,
     areaAuthority: [],
     roleInfo:{}
    }
@@ -26,6 +39,12 @@ class SettingUserRole1 extends React.Component {
     if(this.props.area.areas.length===0) {
       this.props.areaList()
     }
+  }
+  changeRole(index,id) {
+    this.setState({selectRoleIndex:index},function() {
+      this.props.accountList({roleId: id})
+      this.props.role_roleInfo({id:id})
+    })
   }
   // 打开编辑modal
   editRole(index) {
@@ -41,7 +60,7 @@ class SettingUserRole1 extends React.Component {
   }
   // 打开设置modal
   setRole(index,id) {
-    this.props.role_roleInfo({id:id})
+    this.props.authorityList()
       this.setState({
         roleSetVisible: true,
         selectRoleIndex: index
@@ -56,7 +75,7 @@ class SettingUserRole1 extends React.Component {
         role_selected: this.state.selectRoleIndex === index
       })
       return (
-        <div className={style} key={role.id} onClick={()=>this.setState({selectRoleIndex:index})}>
+        <div className={style} key={role.id} onClick={this.changeRole.bind(this,index,role.id)}>
             {role.name}
             <div className='abosulte' >
               <Icon type='edit' onClick={this.editRole.bind(this,index)}/>
@@ -129,7 +148,6 @@ class SettingUserRole1 extends React.Component {
     })
   }
   Cancel() {
-    console.log(1)
     this.setState({roleSetVisible:false})
   }
   render() {

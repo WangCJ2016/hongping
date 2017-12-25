@@ -1,68 +1,37 @@
 import React from 'react'
-import { Button, Table } from 'antd'
+import {  Table, Icon } from 'antd'
+import { connect } from 'react-redux'
+
+@connect(
+  state => state.remoteHost
+)
 class SettingVideoChannelDetail extends React.Component {
   state = {  }
   render() {
-    const columns = [{
-              title: '序号',
-              dataIndex: 'index',
-              key: 'index',
-            }, {
+    const columns = [ {
               title: '通道名称',
               dataIndex: 'name',
+              width: '80%',
               key: 'name',
             }, {
-              title: '备注',
-              dataIndex: 'remark',
+              title: '操作',
+              dataIndex: 'action',
               key: 'remark',
+              render: (record) => (
+                <a><Icon type='edit' />编辑</a>
+              )
             }];
-        const rowSelection = {
-              onChange: (selectedRowKeys, selectedRows) => {
-                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-              },
-              onSelect: (record, selected, selectedRows) => {
-                console.log(record, selected, selectedRows);
-              },
-              onSelectAll: (selected, selectedRows, changeRows) => {
-                console.log(selected, selectedRows, changeRows);
-              },
-              getCheckboxProps: record => ({
-                disabled: record.name === 'Disabled User',    // Column configuration not to be checked
-              }),
-            };
-      const data = [{
-        key:1,
-        name: 'John Brown',
-        index: 32,
-        remark: 'New York No. 1 Lake Park',
-      }, {
-        key:2,
-        name: 'John Brown',
-        index: 32,
-        remark: 'New York No. 1 Lake Park',
-      }, {
-        key:3,
-        name: 'John Brown',
-        index: 32,
-        remark: 'New York No. 1 Lake Park',
-      }];
+      
+      const channelsList = this.props.channelsList
     return (
       <div className="setting-user-role float-right" style={{width:'65%'}}>
         <div className="title role">NVR主机(AAA主机</div>
-        <div className='btn-group'>
-          <Button type="primary">修改</Button>
-          <Button type="primary">刷新</Button>
-          <Button type="primary">启用</Button>
-          <Button type="primary">禁用</Button>
-          <Button type="primary">显示图像</Button>
-        </div>
-        <Table 
-        rowSelection={rowSelection}  
-        columns={columns} 
-        dataSource={data} 
-        size="middle"
-        pagination={false}/>
-      
+        {channelsList? <Table 
+          columns={columns} 
+          dataSource={channelsList} 
+          size="middle"
+          showHeader={false}
+          pagination={false}/>:null}
     </div>
     )
   }

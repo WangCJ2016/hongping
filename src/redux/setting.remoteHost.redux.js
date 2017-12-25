@@ -1,0 +1,239 @@
+import { request, config} from '../config'
+
+const token = localStorage.getItem('token')
+const initialState = {
+  remoteHosts: [],
+  sysServers: [],
+  channelsList: []
+}
+
+const HOSTLIST_SUCCESS = 'HOSTLIST_SUCCESS'
+const SYSSERVERS_SUCCESS = 'SYSSERVERS_SUCCESS'
+const CREATE_SUCCESS = 'CREATE_SUCCESS'
+const MODIFY_SUCCESS ='MODIFY_SUCCESS'
+const DELHOST_SUCCESS = 'DELHOST_SUCCESS'
+const CHANNELS_SUCCESS = 'CHANNELS_SUCCESS'
+
+export function remoteHost(state=initialState,action) {
+  switch(action.type) {
+    case HOSTLIST_SUCCESS: {
+      return {...state,remoteHosts:action.payload}
+    }
+    case SYSSERVERS_SUCCESS: {
+      return {...state,sysServers:action.payload}
+    }
+    case CREATE_SUCCESS: {
+      const remoteHosts=[...state.remoteHosts,action.payload]
+      return {...state,remoteHosts:remoteHosts} 
+    }
+    case MODIFY_SUCCESS: {
+      const remoteHosts = state.remoteHosts.map(host => {
+        if(host.id === action.payload.id) {
+          return action.payload
+        }
+        return host
+      })
+      return {...state,remoteHosts:remoteHosts} 
+    }
+    case DELHOST_SUCCESS: {
+      const remoteHosts = state.remoteHosts.filter(host => host.id!==action.payload)
+      return {...state,remoteHosts:remoteHosts} 
+    }
+    case CHANNELS_SUCCESS: {
+      return {...state,channelsList:action.payload} 
+    }
+    default:
+      return state
+  }
+}
+
+// 主机list
+function hostListsSuccess(list) {
+  return {
+    type: HOSTLIST_SUCCESS,
+    payload: list
+  }
+}
+export function hostLists() {
+  return dispatch => {
+    request.get(config.api.base + config.api.remoteHosts, {
+      token: token,
+      pageNo:1,
+      pageSize:1000
+    })
+      .then(res => {
+        if(res.success) {
+          const list = res.result.map(host => ({
+            id: host.id,
+            name: host.name,
+            channels: host.channels,
+            connectMode: host.connectMode,
+            model: host.model,
+            port:host.port,
+            productor:host.productor,
+            psw:host.psw,
+            remark:host.remark,
+            type: host.type,
+            url: host.url,
+            username: host.username,
+            mediaServer1Id:host.mediaServer1Id,
+            mediaServer2Id:host.mediaServer2Id,
+            mediaServer3Id:host.mediaServer3Id
+          }))
+          if(list.length>0) {
+            channels({remoteHostId: list[0].id})(dispatch)
+          }
+          dispatch(hostListsSuccess(list))
+          
+        }
+      })
+  }
+}
+
+// 流媒体服务器
+function sysServersSuccess(list) {
+  return {
+    type: SYSSERVERS_SUCCESS,
+    payload: list
+  }
+}
+export function sysServerslist() {
+  return dispatch => {
+    request.get(config.api.base + config.api.SysServerslist, {
+      token: token
+    })
+      .then(res => {
+        console.log(res)
+        if(res.success) {
+          const list = res.dataObject.map(server => ({
+            id: server.id,
+            name: server.name
+          }))
+          dispatch(sysServersSuccess(list))
+        }
+      })
+  }
+}
+
+// 添加主机
+function createSuccess(host) {
+  return {
+    type: CREATE_SUCCESS,
+    payload: host
+  }
+}
+export function createHost(info) {
+  return (dispatch,getState) => {
+    const user=getState().user
+    request.get(config.api.base + config.api.createRemoteHost, {
+      token: token,
+      accountId: user.account.id,
+      ...info
+    })
+      .then(res => {
+        console.log(res)
+        if(res.success) {
+          const host = res.dataObject
+          const list = {
+            id: host.id,
+            name: host.name,
+            channels: host.channels,
+            connectMode: host.connectMode,
+            model: host.model,
+            port:host.port,
+            productor:host.productor,
+            psw:host.psw,
+            remark:host.remark,
+            type: host.type,
+            url: host.url,
+            username: host.username,
+            mediaServer1Id:host.mediaServer1Id,
+            mediaServer2Id:host.mediaServer2Id,
+            mediaServer3Id:host.mediaServer3Id
+          }
+          dispatch(createSuccess(list))
+        }
+      })
+  }
+}
+// 修改／删除主机
+function modifySuccess(host) {
+  return {
+    type:MODIFY_SUCCESS,
+    payload: host
+  }
+}
+function delHost(id) {
+  return {
+    type:DELHOST_SUCCESS,
+    payload: id
+  }
+}
+export function modifyHost(info) {
+  return (dispatch,getState) => {
+    const user=getState().user
+    request.get(config.api.base + config.api.modifyRemoteHost, {
+      token: token,
+      accountId: user.account.id,
+      ...info
+    })
+      .then(res => {
+        console.log(res)
+        if(res.success) {
+          if(info.isDelete) {
+            dispatch(delHost(res.dataObject.id))
+          }else{
+            const host = res.dataObject
+            const list = {
+              id: host.id,
+              name: host.name,
+              channels: host.channels,
+              connectMode: host.connectMode,
+              model: host.model,
+              port:host.port,
+              productor:host.productor,
+              psw:host.psw,
+              remark:host.remark,
+              type: host.type,
+              url: host.url,
+              username: host.username,
+              mediaServer1Id:host.mediaServer1Id,
+              mediaServer2Id:host.mediaServer2Id,
+              mediaServer3Id:host.mediaServer3Id
+            }
+            dispatch(modifySuccess(list))
+          }
+         
+        }
+      })
+  }
+}
+
+// 视频通道
+function channelsSuccess(channels) {
+  return {
+     type: CHANNELS_SUCCESS,
+     payload: channels
+  }
+}
+export function channels(info) {
+  return dispatch => {
+    request.get(config.api.base + config.api.remoteChannels, {
+      token: token,
+     ...info
+    })
+      .then(res => {
+        console.log(res)
+        if(res.success) {
+          const list = res.dataObject.map(channel => ({
+           name: channel.name,
+           id: channel.id,
+           index: channel.index,
+           type: channel.type,
+           remark: channel.remark
+          }))
+          dispatch(channelsSuccess(list))
+        }
+      })
+  }
+}

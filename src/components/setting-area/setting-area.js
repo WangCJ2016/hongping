@@ -58,11 +58,11 @@ class SettingArea1 extends React.Component {
         width: '40%',
         render:(text,record)=> (
           <span className='action'>
-            <a href="#"><Icon type='edit'/>编辑</a>
+            <a ><Icon type='edit'/>编辑</a>
             <Popconfirm onConfirm={this.delete.bind(this,record)} title="确定删除？"  okText="确定" cancelText="取消">
-              <a href="#"><Icon type='delete'/>删除</a>
+              <a ><Icon type='delete'/>删除</a>
             </Popconfirm>
-            <a href="#" onClick={()=>this.setState({
+            <a  onClick={()=>this.setState({
               createVisible:true,
               createInfo:{level:record.level+1,parentId:record.id}
             })}><Icon type="plus-circle-o" />添加下级</a>
