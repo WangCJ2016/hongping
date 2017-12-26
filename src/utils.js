@@ -37,3 +37,25 @@ export function addTree(data, id, children) {
     }
 }
 
+export function toTypeStr(types) {
+    switch (types) {
+        case '视频':
+         return 1
+        case '红外':
+         return 2
+        case '道闸':
+        return 3
+        case '广播':
+        return 4
+        case '门禁':
+        return 5
+        case '人员':
+        return 6
+        case '消防':
+        return 7
+        case '对讲':
+        return 8
+         default:
+         return 1
+    }
+}

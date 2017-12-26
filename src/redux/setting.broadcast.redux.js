@@ -2,50 +2,50 @@ import { request, config} from '../config'
 
 const token = localStorage.getItem('token')
 const initialState = {
-  remoteHosts: [],
+  broadcastHosts: [],
   selectHost: null,
   sysServers: [],
   channelsList: []
 }
-const SETSELECTHOST = '[remote] SETSELECTHOST'
-const HOSTLIST_SUCCESS = '[remote] HOSTLIST_SUCCESS'
-const SYSSERVERS_SUCCESS = '[remote] SYSSERVERS_SUCCESS'
-const CREATE_SUCCESS = '[remote] CREATE_SUCCESS'
-const MODIFY_SUCCESS ='[remote] MODIFY_SUCCESS'
-const DELHOST_SUCCESS = '[remote] DELHOST_SUCCESS'
+const SETSELECTHOST = '[broadcast] SETSELECTHOST'
+const HOSTLIST_SUCCESS = '[broadcast] HOSTLIST_SUCCESS'
+const SYSSERVERS_SUCCESS = '[broadcast] SYSSERVERS_SUCCESS'
+const CREATE_SUCCESS = '[broadcast] CREATE_SUCCESS'
+const MODIFY_SUCCESS ='[broadcast] MODIFY_SUCCESS'
+const DELHOST_SUCCESS = '[broadcast] DELHOST_SUCCESS'
 
-const CHANNELS_SUCCESS = '[remote] CHANNELS_SUCCESS'
-const CHANNELSADD_SUCCESS = '[remote] CHANNELSADD_SUCCESS'
-const MODIFYCHANNEL_SUCCESS ='[remote] MODIFYCHANNEL_SUCCESS'
-const DELCHANNEL_SUCCESS = '[remote] DELCHANNEL_SUCCESS'
+const CHANNELS_SUCCESS = '[broadcast] CHANNELS_SUCCESS'
+const CHANNELSADD_SUCCESS = '[broadcast] CHANNELSADD_SUCCESS'
+const MODIFYCHANNEL_SUCCESS ='[broadcast] MODIFYCHANNEL_SUCCESS'
+const DELCHANNEL_SUCCESS = '[broadcast] DELCHANNEL_SUCCESS'
 
-export function remoteHost(state=initialState,action) {
+export function broadcastHost(state=initialState,action) {
   switch(action.type) {
     case SETSELECTHOST: {
       return {...state,selectHost:action.payload}
     }
     case HOSTLIST_SUCCESS: {
-      return {...state,remoteHosts:action.payload,selectHost:action.payload[0]}
+      return {...state,broadcastHosts:action.payload,selectHost:action.payload[0]}
     }
     case SYSSERVERS_SUCCESS: {
       return {...state,sysServers:action.payload}
     }
     case CREATE_SUCCESS: {
-      const remoteHosts=[...state.remoteHosts,action.payload]
-      return {...state,remoteHosts:remoteHosts} 
+      const broadcastHosts=[...state.broadcastHosts,action.payload]
+      return {...state,broadcastHosts:broadcastHosts} 
     }
     case MODIFY_SUCCESS: {
-      const remoteHosts = state.remoteHosts.map(host => {
+      const broadcastHosts = state.broadcastHosts.map(host => {
         if(host.id === action.payload.id) {
           return action.payload
         }
         return host
       })
-      return {...state,remoteHosts:remoteHosts} 
+      return {...state,broadcastHosts:broadcastHosts} 
     }
     case DELHOST_SUCCESS: {
-      const remoteHosts = state.remoteHosts.filter(host => host.id!==action.payload)
-      return {...state,remoteHosts:remoteHosts} 
+      const broadcastHosts = state.broadcastHosts.filter(host => host.id!==action.payload)
+      return {...state,broadcastHosts:broadcastHosts} 
     }
     // 通道
     case CHANNELS_SUCCESS: {
@@ -91,7 +91,7 @@ function hostListsSuccess(list) {
 }
 export function hostLists() {
   return dispatch => {
-    request.get(config.api.base + config.api.remoteHosts, {
+    request.get(config.api.base + config.api.BroadcastHosts, {
       token: token,
       pageNo:1,
       pageSize:1000
@@ -101,50 +101,18 @@ export function hostLists() {
           const list = res.result.map(host => ({
             id: host.id,
             name: host.name,
-            channels: host.channels,
-            connectMode: host.connectMode,
-            model: host.model,
-            port:host.port,
+            ip: host.ip,
+            port: host.port,
             productor:host.productor,
+            username:host.username,
             psw:host.psw,
-            remark:host.remark,
-            type: host.type,
-            url: host.url,
-            username: host.username,
-            mediaServer1Id:host.mediaServer1Id,
-            mediaServer2Id:host.mediaServer2Id,
-            mediaServer3Id:host.mediaServer3Id
+            remark: host.remark,
           }))
           if(list.length>0) {
-            channels({remoteHostId: list[0].id})(dispatch)
+            channels({hostId: list[0].id})(dispatch)
           }
           dispatch(hostListsSuccess(list))
           
-        }
-      })
-  }
-}
-
-// 流媒体服务器
-function sysServersSuccess(list) {
-  return {
-    type: SYSSERVERS_SUCCESS,
-    payload: list
-  }
-}
-export function sysServerslist() {
-  return dispatch => {
-    request.get(config.api.base + config.api.SysServerslist, {
-      token: token
-    })
-      .then(res => {
-        console.log(res)
-        if(res.success) {
-          const list = res.dataObject.map(server => ({
-            id: server.id,
-            name: server.name
-          }))
-          dispatch(sysServersSuccess(list))
         }
       })
   }
@@ -160,7 +128,7 @@ function createSuccess(host) {
 export function createHost(info) {
   return (dispatch,getState) => {
     const user=getState().user
-    request.get(config.api.base + config.api.createRemoteHost, {
+    request.get(config.api.base + config.api.createBroadcastHost, {
       token: token,
       accountId: user.account.id,
       ...info
@@ -172,19 +140,12 @@ export function createHost(info) {
           const list = {
             id: host.id,
             name: host.name,
-            channels: host.channels,
-            connectMode: host.connectMode,
-            model: host.model,
-            port:host.port,
+            ip: host.ip,
+            port: host.port,
             productor:host.productor,
+            username:host.username,
             psw:host.psw,
-            remark:host.remark,
-            type: host.type,
-            url: host.url,
-            username: host.username,
-            mediaServer1Id:host.mediaServer1Id,
-            mediaServer2Id:host.mediaServer2Id,
-            mediaServer3Id:host.mediaServer3Id
+            remark: host.remark,
           }
           dispatch(createSuccess(list))
         }
@@ -207,7 +168,7 @@ function delHost(id) {
 export function modifyHost(info) {
   return (dispatch,getState) => {
     const user=getState().user
-    request.get(config.api.base + config.api.modifyRemoteHost, {
+    request.get(config.api.base + config.api.modifyBroadcastHost, {
       token: token,
       accountId: user.account.id,
       ...info
@@ -222,19 +183,12 @@ export function modifyHost(info) {
             const list = {
               id: host.id,
               name: host.name,
-              channels: host.channels,
-              connectMode: host.connectMode,
-              model: host.model,
-              port:host.port,
+              ip: host.ip,
+              port: host.port,
               productor:host.productor,
+              username:host.username,
               psw:host.psw,
-              remark:host.remark,
-              type: host.type,
-              url: host.url,
-              username: host.username,
-              mediaServer1Id:host.mediaServer1Id,
-              mediaServer2Id:host.mediaServer2Id,
-              mediaServer3Id:host.mediaServer3Id
+              remark: host.remark,
             }
             dispatch(modifySuccess(list))
           }
@@ -253,7 +207,7 @@ function channelsSuccess(channels) {
 }
 export function channels(info) {
   return dispatch => {
-    request.get(config.api.base + config.api.remoteChannels, {
+    request.get(config.api.base + config.api.BroadcastChannels, {
       token: token,
      ...info
     })
@@ -284,7 +238,7 @@ function createChannelSuccess(host) {
 export function createChannel(info) {
   return (dispatch,getState) => {
     const user=getState().user
-    request.get(config.api.base + config.api.remoteChannelsAdd, {
+    request.get(config.api.base + config.api.BroadcastChannelsAdd, {
       token: token,
       accountId: user.account.id,
       ...info
@@ -324,7 +278,7 @@ function delChannel(id) {
 export function modifyChannel(info) {
   return (dispatch,getState) => {
     const user=getState().user
-    request.get(config.api.base + config.api.modifyRemoteChannel, {
+    request.get(config.api.base + config.api.modifyBroadcastChannel, {
       token: token,
       accountId: user.account.id,
       ...info

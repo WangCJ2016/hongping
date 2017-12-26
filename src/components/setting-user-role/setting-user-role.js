@@ -133,7 +133,6 @@ class SettingUserRole1 extends React.Component {
   }
   // 区域权限设置
   onAreaCheck(checkedKeys,e){
-    console.log(checkedKeys,e)
     this.setState({
       areaAuthority: checkedKeys
     })
@@ -153,7 +152,6 @@ class SettingUserRole1 extends React.Component {
   render() {
     const areas = this.props.area.areas
     const { getFieldDecorator } = this.props.form;
-    console.log(this.props)
     return (
       <div className="setting-user-role float-left">
           <div className="title role">角色<div className='abosulte' onClick={()=>this.setState({createRoleVisible:true})}><Icon type='plus'/></div></div>

@@ -1,15 +1,15 @@
 import React from 'react'
 import { Icon, Table, Popconfirm, Modal, Form, Input, Select } from 'antd'
 import { connect } from 'react-redux'
-import { createChannel,modifyChannel } from '../../redux/setting.remoteHost.redux'
+import { createChannel,modifyChannel } from '../../redux/setting.broadcast.redux'
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 @connect(
-  state => state.remoteHost,
+  state => state.broadcastHost,
   {createChannel,modifyChannel}
 )
-class SettingVideoChannelDetail1 extends React.Component {
+class SettingVideoBroadcastChannelDetail1 extends React.Component {
   state = { 
     createVisible:false,
     editVisible: false,
@@ -20,7 +20,7 @@ class SettingVideoChannelDetail1 extends React.Component {
       if(!err) {
         values.name = encodeURI(values.name)
         values.remark = encodeURI(values.remark)
-        this.props.createChannel({...values,remoteHostId:this.props.selectHost.id})
+        this.props.createChannel({...values,hostId:this.props.selectHost.id})
         this.setState({
           createVisible: false
         })
@@ -37,7 +37,7 @@ class SettingVideoChannelDetail1 extends React.Component {
           type: values.edittype,
           icon: values.editicon,
           remark: encodeURI(values.editremark),
-          remoteHostId:this.props.selectHost.id
+          hostId:this.props.selectHost.id
         }
         this.props.modifyChannel(info)
         this.setState({
@@ -198,5 +198,5 @@ class SettingVideoChannelDetail1 extends React.Component {
     )
   }
 }
-const SettingVideoChannelDetail = Form.create()(SettingVideoChannelDetail1);
-export default SettingVideoChannelDetail
+const SettingVideoBroadcastChannelDetail = Form.create()(SettingVideoBroadcastChannelDetail1);
+export default SettingVideoBroadcastChannelDetail

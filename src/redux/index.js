@@ -4,5 +4,8 @@ import { role } from './role.redux'
 import { area } from './area.redux'
 import { settingServer } from './setting-server.redux'
 import {remoteHost } from './setting.remoteHost.redux'
+import { commHost } from './setting.commHost.redux'
+import { broadcastHost } from './setting.broadcast.redux'
+import { devices } from './setting.device.redux'
 
-export default combineReducers({user, role, area, settingServer, remoteHost})
+export default combineReducers({user, role, area, settingServer, remoteHost, commHost,broadcastHost,devices})

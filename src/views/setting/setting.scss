@@ -73,7 +73,22 @@
         margin: 0 10px;
       }
   }
+  .abosulte1{
+    position: absolute;
+    right: 0;
+    top:0;
+    >i{
+      font-size: 15px;
+      padding:15px 10px 10px 10px;
+    }
+  }
   .setting-video-device{
+    .ant-collapse-item.ant-collapse-item-active{
+      position: relative
+    }
+    .ant-table-small{
+      border:none
+    }
     .icon_start{
       position: absolute;
       left: 20px;
@@ -87,3 +102,10 @@
     }
   }
 }
+.areaTodeviceModal{
+  .ant-tree >li{
+    width: 50%;
+    float: left
+  }
+}
+

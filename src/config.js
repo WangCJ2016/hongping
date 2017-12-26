@@ -40,6 +40,29 @@ export const config = {
     createRemoteHost: '/rhost_createSysRemoteHosts', // 添加主机
     modifyRemoteHost:'/rhost_modifySysRemoteHosts', //修改／删除主机
     remoteChannels: '/rhost_querySysRemoteChannels', // 视频通道
+    remoteChannelsAdd: '/rhost_createSysRemoteChannels', // 添加通道
+    modifyRemoteChannel: '/rhost_modifySysRemoteChannel', // 修改通道
+
+    commHosts: '/chost_querySysCommHostsPage', // 通信主机列表
+    createCommHost: '/chost_createSysCommHosts', // 添加主机
+    modifyCommHost: '/chost_modifySysCommHosts', //修改／删除主机
+    commDevice: '/chost_querySysCommDevices', // 设备列表
+    createCommDevice: '/chost_createSysCommDevice', //添加设备 
+    modifyCommDevice: '/chost_modifySysCommDevice', // 修改设备
+    CommProperties: '/chost_querySysCommProperties', // 属性列表
+    propertyAdd: '/chost_createSysCommProperty', // 添加属性
+    modifyProperty: '/chost_modifySysCommProperty', // 修改属性
+
+    BroadcastHosts: '/bhost_querySysBroadcastHostsPage ', // 视频主机
+    createBroadcastHost: '/bhost_createSysBroadcastHosts', // 添加主机
+    modifyBroadcastHost:'/bhost_modifySysBroadcastHosts', //修改／删除主机
+    BroadcastChannels: '/bhost_querySysBroadcastChannels', // 视频通道
+    BroadcastChannelsAdd: '/bhost_createSysBroadcastChannels', // 添加通道
+    modifyBroadcastChannel: '/bhost_modifySysBroadcastChannels ', // 修改通道
+
+    areaDevices: '/device_queryAreaDevices', // (获取区域已绑定设备
+    allDevices: '/device_queryAllDevices', //获取设备
+    createDeviceArea: '/device_createSysDeviceArea', //区域设备绑定
   }
 }
 //get/post请求
