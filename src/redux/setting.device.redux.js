@@ -2,6 +2,7 @@ import { request, config} from '../config'
 const token = localStorage.getItem('token')
 
 const initalState = {
+  areaToDevices: [],
   remoteDevices: [],
   commDevices: [],
   broadcastDevices: []
@@ -13,6 +14,9 @@ export function devices(state=initalState,action) {
   switch (action.type) {
     case ALLDEVICES: {
       return {...state,[action.payload.type+'Devices']:action.payload.data}
+    }
+    case AREADEVICES: {
+      return {...state,areaToDevices:action.payload}
     }
     default:
       return state
@@ -59,11 +63,11 @@ export function areaDevices(info) {
     .then(res=>{
       console.log(res)
       if(res.success) {
-        // const data = res.dataObject.map(device => ({
-        //   name: role.roleName,
-        //   id: role.id
-        // }))
-        // dispatch(areaDeviceSuccess(data))
+        const data = res.dataObject.map(device => ({
+        //  name: role.roleName,
+          id: device.devId
+        }))
+        dispatch(areaDeviceSuccess(data))
       }
     })
 }

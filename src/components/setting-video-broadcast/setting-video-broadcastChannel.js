@@ -10,7 +10,7 @@ const Option = Select.Option;
   {createChannel,modifyChannel}
 )
 class SettingVideoBroadcastChannelDetail1 extends React.Component {
-  state = { 
+  state = {
     createVisible:false,
     editVisible: false,
     selectChannel: null
@@ -85,13 +85,13 @@ class SettingVideoBroadcastChannelDetail1 extends React.Component {
     return (
       <div className="setting-user-role float-right" style={{width:'65%'}}>
         <div className="title role">通道<div className='abosulte' onClick={()=>this.setState({createVisible:true})}><Icon type='plus'/></div></div>
-        {channelsList? <Table 
-          columns={columns} 
-          dataSource={channelsList} 
+        {channelsList? <Table
+          columns={columns}
+          dataSource={channelsList}
           size="middle"
           showHeader={false}
           pagination={false}/>:null}
-          <Modal title="添加通道" 
+          <Modal title="添加通道"
             visible={this.state.createVisible}
             style={{ top: 200 }}
             width='50%'
@@ -103,17 +103,17 @@ class SettingVideoBroadcastChannelDetail1 extends React.Component {
             <Form layout='inline'>
               <FormItem label="通道名称">
                 {getFieldDecorator('name',{
-                  rules: [{ required: true,message: '请填写通道名称'}], 
+                  rules: [{ required: true,message: '请填写通道名称'}],
                 })(<Input type="text" />)}
               </FormItem>
               <FormItem label="序号">
                 {getFieldDecorator('index',{
-                  rules: [{ required: true,message: '请填写地址编号'}], 
+                  rules: [{ required: true,message: '请填写地址编号'}],
                 })(<Input type="text" />)}
               </FormItem>
               <FormItem label="通道类型">
                 {getFieldDecorator('type',{
-                  rules: [{ required: true,message: '请填写类型'}], 
+                  rules: [{ required: true,message: '请填写类型'}],
                   initialValue: '1'
                 })(
                   <Select>
@@ -125,12 +125,11 @@ class SettingVideoBroadcastChannelDetail1 extends React.Component {
               </FormItem>
               <FormItem label="图标">
                 {getFieldDecorator('icon',{
-                  rules: [{ required: true,message: '请填写图标'}], 
+                  rules: [{ required: true,message: '请填写图标'}],
                   initialValue: 'IPC'
                 })(
                   <Select>
-                    <Option value='IPC'><img src={require('../../assets/imgs/IPC.png')} alt=""/></Option>
-                    <Option value='NVR'><img src={require('../../assets/imgs/NVR.png')} alt=""/></Option>
+
                   </Select>
                 )}
               </FormItem>
@@ -142,7 +141,7 @@ class SettingVideoBroadcastChannelDetail1 extends React.Component {
             </Form>
           </Modal>
 
-          <Modal title="编辑通道" 
+          <Modal title="编辑通道"
             visible={this.state.editVisible}
             style={{ top: 200 }}
             width='50%'
@@ -154,19 +153,19 @@ class SettingVideoBroadcastChannelDetail1 extends React.Component {
             <Form layout='inline'>
               <FormItem label="通道名称">
                 {getFieldDecorator('editname',{
-                  rules: [{ required: true,message: '请填写通道名称'}], 
+                  rules: [{ required: true,message: '请填写通道名称'}],
                   initialValue:selectChannel?selectChannel.name:''
                 })(<Input type="text" />)}
               </FormItem>
               <FormItem label="序号">
                 {getFieldDecorator('editindex',{
-                  rules: [{ required: true,message: '请填写地址编号'}], 
+                  rules: [{ required: true,message: '请填写地址编号'}],
                   initialValue:selectChannel?selectChannel.index:''
                 })(<Input type="text" />)}
               </FormItem>
               <FormItem label="通道类型">
                 {getFieldDecorator('edittype',{
-                  rules: [{ required: true,message: '请填写类型'}], 
+                  rules: [{ required: true,message: '请填写类型'}],
                   initialValue:selectChannel?selectChannel.type:''
                 })(
                   <Select>
@@ -178,12 +177,11 @@ class SettingVideoBroadcastChannelDetail1 extends React.Component {
               </FormItem>
               <FormItem label="图标">
                 {getFieldDecorator('editicon',{
-                  rules: [{ required: true,message: '请填写图标'}], 
+                  rules: [{ required: true,message: '请填写图标'}],
                   initialValue:selectChannel?selectChannel.icon:''
                 })(
                   <Select>
-                    <Option value='IPC'><img src={require('../../assets/imgs/IPC.png')} alt=""/></Option>
-                    <Option value='NVR'><img src={require('../../assets/imgs/NVR.png')} alt=""/></Option>
+                  
                   </Select>
                 )}
               </FormItem>

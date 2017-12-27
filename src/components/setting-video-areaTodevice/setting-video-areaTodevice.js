@@ -15,7 +15,7 @@ const TabPane = Tabs.TabPane;
   }
 )
 class SettingVideoAreatoDevice extends React.Component {
-  state = { 
+  state = {
     addVisible: false,
     remoteArr: [],
     commArr:[],
@@ -62,13 +62,23 @@ class SettingVideoAreatoDevice extends React.Component {
   // remote树渲染
   remoteRender() {
     const devices = this.props.deivces.remoteDevices
-    return devices.map(host => (
-      <TreeNode title={host.name} key={host.id}  disableCheckbox={true}>
-       {host.remoteChannels.map(channel => (
-        <TreeNode title={channel.name} key={channel.id+'-'+toTypeStr(channel.typeStr)} />
-       ))}
-      </TreeNode>
-    ))
+    return (
+      <Tree
+        checkable
+      //  checkStrictly={true}
+        defaultCheckedKeys={['b7cd9064a5756a0fbc578ef50e16889t']}
+
+        defaultExpandAll={true}
+        onCheck={this.remoteOncheck.bind(this)} >
+         {devices.map(host => (
+          <TreeNode title={host.name} key={host.id}  disableCheckbox={true}>
+           {host.remoteChannels.map(channel => (
+            <TreeNode title={channel.name} key={channel.id+'-'+toTypeStr(channel.typeStr)} />
+           ))}
+          </TreeNode>
+        ))}
+      </Tree>
+    )
   }
   // comm树渲染
   commRender() {
@@ -130,11 +140,13 @@ class SettingVideoAreatoDevice extends React.Component {
 
   render() {
     const areas = this.props.area.areas
+    const defaultSelectKeys = this.props.deivces.areaToDevices.length>0? this.props.deivces.areaToDevices.map(devices=>devices.id):[]
+    console.log(defaultSelectKeys)
     return (
       <div>
         <div className="setting-user-role float-left">
             <div className="title role">区域</div>
-            <Tree 
+            <Tree
               defaultExpandAll= {true}
               onCheck={this.onAreaCheck.bind(this)}
               onSelect={this.select.bind(this)}
@@ -146,7 +158,7 @@ class SettingVideoAreatoDevice extends React.Component {
             <div className="title role">设备
             <div className='abosulte' onClick={()=>this.setState({addVisible:true})}><Icon type='plus'/></div></div>
         </div>
-        <Modal title="区域设备绑定" 
+        <Modal title="区域设备绑定"
           visible={this.state.addVisible}
           style={{ top: 200 }}
           width='50%'
@@ -155,36 +167,32 @@ class SettingVideoAreatoDevice extends React.Component {
           wrapClassName='areaTodeviceModal'
           onOk={this.addSubmit.bind(this)}
           onCancel={()=>this.setState({addVisible:false})}>
+          {this.state.addVisible?
           <Tabs defaultActiveKey="remote" onTabClick={this.tabClick.bind(this)}>
             <TabPane tab="视频、红外、道闸设备" key="remote" >
-              <Tree 
-              checkable
-              checkStrictly={true}
-              // checkedKeys={['b7cd9064a5756a0fbc578ef50e16889t']}
-              defaultExpandAll={true}
-              onCheck={this.remoteOncheck.bind(this)} >
+
               {this.props.deivces.remoteDevices?this.remoteRender():null}
-              </Tree>
+
             </TabPane>
             <TabPane tab="门禁、消防设备" key="comm">
-            <Tree 
+            <Tree
               checkable
-              checkStrictly={true} 
+              checkStrictly={true}
               defaultExpandAll={true}
               onCheck={this.commOncheck.bind(this)}>
             {this.props.deivces.commDevices?this.commRender():null}
             </Tree>
             </TabPane>
             <TabPane tab="广播设备" key="broadcast">
-            <Tree 
+            <Tree
               checkable
-              checkStrictly={true} 
+              checkStrictly={true}
               defaultExpandAll={true}
               onCheck={this.broadcastOncheck.bind(this)} >
             {this.props.deivces.broadcastDevices?this.broadcastRender():null}
             </Tree>
             </TabPane>
-          </Tabs>
+          </Tabs>:null}
         </Modal>
       </div>
     )

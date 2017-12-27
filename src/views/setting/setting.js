@@ -12,7 +12,7 @@ class Setting extends React.Component {
   render() {
     return (
         <div className='setting-page'>
-          <Tabs defaultActiveKey="3">
+          <Tabs defaultActiveKey="5">
             <TabPane tab="区域管理" key="1">
               <SettingArea />
             </TabPane>
