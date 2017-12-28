@@ -13,8 +13,8 @@ import AuthRoute from './components/authroute/authroute'
 import reducers from './redux'
 
 
-//const reduxDeltools = window.devToolsExtension()
-const store = createStore(reducers, compose(applyMiddleware(thunk)))
+const reduxDeltools = window.devToolsExtension()
+const store = createStore(reducers, compose(applyMiddleware(thunk),reduxDeltools))
 
 ReactDOM.render(
   <Provider store={store}>

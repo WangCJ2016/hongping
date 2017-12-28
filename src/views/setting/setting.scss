@@ -68,6 +68,7 @@
   }
 }
 .setting-video{
+  .ant-table-wrapper td{text-align: center}
   .video-action{
       a{
         margin: 0 10px;
@@ -107,5 +108,59 @@
     width: 50%;
     float: left
   }
+}
+
+// 上传地图
+.setting-map{
+  height: 800px;
+  position: relative;
+  .ant-tag{
+    border:none;
+    background-color: transparent;
+  }
+  .ant-collapse{
+    background-color: transparent;
+    border:none;
+    .ant-collapse-content{
+      background-color: transparent;
+      border:none
+    }
+   .ant-collapse-item{
+     border: none;
+   }
+  }
+  .spin-pos{
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+  }
+  .map-area{
+    width: 200px;
+    position: absolute;
+    left: 15px;
+  }
+  .device-area{
+    width: 200px;
+    position: absolute;
+    right: 15px;
+  }
+  .fileinput-button {
+    background-color: #17b89f;
+    color: #fff;
+    padding: 6px 10px 5px;
+    border-radius: 5px;
+    margin-left: 10px;
+    position: relative;
+    input{
+    position:absolute;
+    right: 0px;
+    top:0px;
+    left: 0px;
+    bottom: 0px;
+    opacity: 0;
+   }
+  }
+  
 }
 

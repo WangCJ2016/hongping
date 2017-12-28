@@ -1,17 +1,25 @@
 import { request, config} from '../config'
+import {areaDevices,querySysInstallPlaces} from './setting.device.redux'
 const token = localStorage.getItem('token')
 
-const ALLAREAS = 'ALLAREAS'
-const AREALIST_SUCCESS = 'AREALIST_SUCCESS'
-const JUNIRAREA_SUCCESS = 'JUNIRAREA_SUCCESS'
-const CREATEAREA_SUCCESS = 'CREATEAREA_SUCCESS'
-const DELETE_SUCCESS = 'DELETE_SUCCESS'
-const MODIFY_SUCCESS = 'MODIFY_SUCCESS'
-
+const ALLAREAS = '[area] ALLAREAS'
+const AREALIST_SUCCESS = '[area] AREALIST_SUCCESS'
+const JUNIRAREA_SUCCESS = '[area] JUNIRAREA_SUCCESS'
+const CREATEAREA_SUCCESS = '[area] CREATEAREA_SUCCESS'
+const DELETE_SUCCESS = '[area] DELETE_SUCCESS'
+//const UPLOADIMG = '[area] UPLOADIMG'
+const AREAINFO = '[area] AREAINFO'
+const LOADCHANGE = '[area] LOADCHANGE'
+const UPLOAD = '[area] UPLOAD'
+const SELECTID = '[area] SELECTID'
 
 const initalState = {
   areas: [],
-  arealist: []
+  arealist: [],
+  areaInfo: [],
+  load:false,
+  upload:false,
+  selectAreaId: ''
 }
 
 export function area(state=initalState, action) {
@@ -37,6 +45,18 @@ export function area(state=initalState, action) {
       const _stateAreas = JSON.parse(JSON.stringify(state.areas))  // 对象深拷贝
       const _areas =  delTree(_stateAreas, action.payload.id,action.payload.parentId)
       return {...state,areas:_areas}
+    }
+    case AREAINFO:{
+      return {...state,areaInfo:{...state.areaInfo,...action.payload}}
+    }
+    case LOADCHANGE: {
+      return {...state,load:!state.load}
+    }
+    case UPLOAD: {
+      return {...state,upload:!state.upload}
+    }
+    case SELECTID:{
+      return {...state,selectAreaId:action.payload}
     }
     default:
       return state
@@ -82,7 +102,43 @@ export function areaList(info) {
       })
   }
 }
-
+// selecAreaId
+export function selectAreaIdSuccess(id) {
+  return {
+    type:SELECTID,
+    payload: id
+  }
+}
+export function areaList1(info) {
+  
+  return (dispatch,getState)=>{
+      request.get(config.api.base + config.api.areaLists,{token:token,pageNo:1,pageSize:1000, ...info})
+      .then(res=>{ 
+        if(res.success) {
+          const arealist = res.result.map((area,index) => ({
+            name: area.name,
+            id: area.id,
+            parentId: area.parentId,
+            level: area.level,
+            children:[]
+          }))
+          const level1 = res.result.filter(area => area.level===1).map((area,index) => ({
+            key:index,
+            name: area.name,
+            id: area.id,
+            parentId: '',
+            level: area.level,
+            children:[]}))
+           areaDevices({areaId: level1[0].id})(dispatch)
+           areaInfo({id:level1[0].id})(dispatch,getState)
+           querySysInstallPlaces({areaId:level1[0].id})(dispatch,getState)
+           dispatch(selectAreaIdSuccess(level1[0].id))
+            dispatch(allAreas(arealist))
+            dispatch(areaListSuccess(level1))
+        }
+      })
+  }
+}
 //获取下级区域
 function juniorAreaSuccess(data) {
   return {
@@ -165,21 +221,73 @@ export function modifyArea(info) {
   }
 }
 
-// 区域详情
+// 获取区域图片
+function areaInfoSuccess(info) {
+  return {
+    type:AREAINFO,
+    payload: info
+  }
+}
+function load() {
+  return {
+    type: LOADCHANGE,
+    payload: ''
+  }
+}
 export function areaInfo(info) {
   return (dispatch,getState)=>{
       const user = getState().user
-      request.get(config.api.base + config.api.areaInfo,
+      dispatch(load())
+      request.get(config.api.base + config.api.picByarea,
         {
           token:user.account.token, 
           ...info
         })
       .then(res=>{
         console.log(res)
+        dispatch(load())
+        if(res.success) {
+          const info={
+            picture: res.dataObject.picture?res.dataObject.picture:''
+          }         
+          dispatch(areaInfoSuccess(info))
+        }
       })
   }
 }
-
+// 上传区域图片
+function upload() {
+  return {
+    type: UPLOAD,
+    payload: ''
+  }
+}
+export function uploadImg(info) {
+  return (dispatch,getState)=>{
+    dispatch(upload())
+    const user = getState().user
+    let formData = new FormData()
+    formData.append('token', token);
+    formData.append('accountId', user.account.id);
+    formData.append('id', info.id);
+    formData.append('picture', info.picture);
+    fetch('http://47.100.123.83/hp/manage/area_uploadAreaImg',{
+      method: 'POST',
+      mode: 'cors',
+      body : formData  
+    })
+    .then(res=>res.json())
+    .then(res=>{
+      console.log(res)
+      dispatch(upload())
+      if(res.success){
+        dispatch(areaInfoSuccess({picture:info.picture}))
+      }else{
+        dispatch(areaInfoSuccess({picture:''}))
+      }
+    })
+ }
+}
 
 
 // reducerfn

@@ -1,14 +1,21 @@
 import { request, config} from '../config'
+import { message } from 'antd'
 const token = localStorage.getItem('token')
 
 const initalState = {
   areaToDevices: [],
   remoteDevices: [],
   commDevices: [],
-  broadcastDevices: []
+  broadcastDevices: [],
+  mapToDevices: [],
+  load: false
 }
 const AREADEVICES = '[device] AREADEVICE'
 const ALLDEVICES = '[device] ALLDEVICES'
+const MAPTODEVICES = '[device] AREATODEVICES'
+const DELMAPDEVICE = '[device] DELMAPDEVICE'
+const ADDMAPDEVICE = '[device] ADDMAPDEVICE'
+const CHANGEMAPDEVICE = '[device] CHANGEMAPDEVICE'
 
 export function devices(state=initalState,action) {
   switch (action.type) {
@@ -17,6 +24,27 @@ export function devices(state=initalState,action) {
     }
     case AREADEVICES: {
       return {...state,areaToDevices:action.payload}
+    }
+    case MAPTODEVICES: {
+      return {...state,mapToDevices:action.payload}
+    }
+    case DELMAPDEVICE: {
+      const mapToDevices = state.mapToDevices.filter(device => device.meId!==action.payload.meId)
+      const areaToDevices = [...state.areaToDevices,action.payload]
+      return {...state,mapToDevices:mapToDevices,areaToDevices:areaToDevices}
+    }
+    case ADDMAPDEVICE: {
+      const areaToDevices = state.areaToDevices.filter(device => device.id!==action.payload.id)
+      return {...state,mapToDevices:[...state.mapToDevices,action.payload],areaToDevices:areaToDevices}
+    }
+    case CHANGEMAPDEVICE: {
+      const mapToDevices = state.mapToDevices.map(device => {
+        if(device.id === action.payload.id) {
+          return action.payload
+        }
+        return device
+      })
+      return {...state,mapToDevices:mapToDevices}
     }
     default:
       return state
@@ -64,8 +92,12 @@ export function areaDevices(info) {
       console.log(res)
       if(res.success) {
         const data = res.dataObject.map(device => ({
-        //  name: role.roleName,
-          id: device.devId
+          name: device.devName?device.devName:'',
+          devIcon: device.devIcon?device.devIcon:'',
+          id: device.devId,
+          type: device.type,
+          meId: device.id,
+          key:device.id
         }))
         dispatch(areaDeviceSuccess(data))
       }
@@ -91,12 +123,95 @@ export function addDevices(info) {
     .then(res=>{
       console.log(res)
       if(res.success) {
-        // const data = res.dataObject.map(device => ({
-        //   name: role.roleName,
-        //   id: role.id
-        // }))
-        // dispatch(areaDeviceSuccess(data))
+        message.success('保存成功！')
       }
     })
 }
+}
+
+// 添加地图设备绑
+
+export function createSysInstallPlace(info) {
+  return (dispatch,getState)=>{
+    const user = getState().user
+    request.get(config.api.base + config.api.createSysInstallPlace,{
+      token:token,
+      accountId: user.account.id,
+      ...info
+    })
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        message.success('保存成功！')
+      }
+    })
+}
+}
+// 获取地图已绑定设备
+function querySysInstallPlacesSuccess(data) {
+  return {
+    type: MAPTODEVICES,
+    payload: data
+  }
+}
+export function querySysInstallPlaces(info) {
+  return (dispatch)=>{
+    request.get(config.api.base + config.api.querySysInstallPlaces,{
+      token:token,
+      ...info
+    })
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        const data = res.dataObject.map(device => ({
+          id: device.devId,
+          meId: device.id,
+          name: device.devName,
+          devIcon: device.devIcon?device.devIcon:'',
+          type: device.type,
+          x:device.x,
+          y:device.y
+        }))
+        dispatch(querySysInstallPlacesSuccess(data))
+      }
+    })
+}
+}
+
+// 删除设备
+export function delMapDevice(del) {
+  return (dispatch,getState) => {
+     const user = getState().user
+    request.get(config.api.base + config.api.delInstatllPlace,{
+      token:token,
+      accountId: user.account.id,
+      type: 'delete',
+      ids: del.id
+    })
+    .then(res => {
+      dispatch({
+        type: DELMAPDEVICE,
+        payload: del
+      })
+     
+    })
+  }
+}
+// add地图设备
+export function addMapDevice(device) {
+  return dispatch => {
+    dispatch({
+      type: ADDMAPDEVICE,
+      payload: device
+    })
+  }
+}
+// change地图设备
+export function changeMapDevice(device) {
+  return dispatch => {
+    dispatch({
+      type: CHANGEMAPDEVICE,
+      payload: device
+    })
+  }
 }
