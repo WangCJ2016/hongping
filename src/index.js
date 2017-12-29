@@ -13,17 +13,17 @@ import AuthRoute from './components/authroute/authroute'
 import reducers from './redux'
 
 
-const reduxDeltools = window.devToolsExtension()
-const store = createStore(reducers, compose(applyMiddleware(thunk),reduxDeltools))
+//const reduxDeltools = window.devToolsExtension()
+const store = createStore(reducers, compose(applyMiddleware(thunk)))
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
     <div style={{width:'100%',height:'100%'}}>
-    <AuthRoute></AuthRoute>
+      <AuthRoute />
       <Switch>
-        <Route exact path='/login' component={Login}></Route>
-        <Route  component={Frame}></Route>
+        <Route  path='/login' component={Login}></Route>
+        <Route   component={Frame}></Route>
       </Switch>
     </div>
     </BrowserRouter>

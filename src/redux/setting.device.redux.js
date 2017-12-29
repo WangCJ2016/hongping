@@ -4,6 +4,7 @@ const token = localStorage.getItem('token')
 
 const initalState = {
   areaToDevices: [],
+  areaToDevices1: [],
   remoteDevices: [],
   commDevices: [],
   broadcastDevices: [],
@@ -11,6 +12,7 @@ const initalState = {
   load: false
 }
 const AREADEVICES = '[device] AREADEVICE'
+const AREADEVICES1 = '[device] AREADEVICE1'
 const ALLDEVICES = '[device] ALLDEVICES'
 const MAPTODEVICES = '[device] AREATODEVICES'
 const DELMAPDEVICE = '[device] DELMAPDEVICE'
@@ -24,6 +26,9 @@ export function devices(state=initalState,action) {
     }
     case AREADEVICES: {
       return {...state,areaToDevices:action.payload}
+    }
+    case AREADEVICES1: {
+      return {...state,areaToDevices1:action.payload}
     }
     case MAPTODEVICES: {
       return {...state,mapToDevices:action.payload}
@@ -104,14 +109,40 @@ export function areaDevices(info) {
     })
 }
 }
-
-// 添加设备
-function areaDeviceSuccess(devices) {
+// 获取区域已绑定设备
+function areaDeviceSuccess1(devices) {
   return {
-    type: AREADEVICES,
+    type: AREADEVICES1,
     payload: devices
   }
 }
+export function areaDevices1(info) {
+  return dispatch=>{
+    request.get(config.api.base + config.api.areaDevices1,{
+      token:token,
+      ...info,
+      pageNo: 1,
+      pageSize: 100,
+  })
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        const data = res.dataObject.map(device => ({
+          name: device.devName?device.devName:'',
+          devIcon: device.devIcon?device.devIcon:'',
+          id: device.devId,
+          type: device.type,
+          meId: device.id,
+          key:device.id
+        }))
+        dispatch(areaDeviceSuccess1(data))
+      }
+    })
+}
+}
+
+// 添加设备
+
 export function addDevices(info) {
   return (dispatch,getState)=>{
     const user = getState().user
@@ -123,6 +154,7 @@ export function addDevices(info) {
     .then(res=>{
       console.log(res)
       if(res.success) {
+        areaDevices({areaId:info.areaId})(dispatch)
         message.success('保存成功！')
       }
     })

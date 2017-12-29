@@ -60,7 +60,7 @@ class SettingUserRole1 extends React.Component {
   }
   // 打开设置modal
   setRole(index,id) {
-    this.props.authorityList()
+      this.props.authorityList()
       this.setState({
         roleSetVisible: true,
         selectRoleIndex: index
@@ -102,16 +102,26 @@ class SettingUserRole1 extends React.Component {
     this.setState({createRoleVisible: false})
   }
   // 渲染区域树
-  areaTreeRender() {
+  areaTreeRender(defaultKeys) {
     const areas = this.props.area.areas
     const arealist = this.props.area.arealist
-   return areas.map((level1,index) => {
-      return (
-        <TreeNode title={level1.name} key={level1.id}>
-          {toTree(level1.id,arealist)}
-        </TreeNode>
-      )
-    })
+   return (
+            <Tree
+                checkable
+                defaultCheckedKeys={defaultKeys}
+                defaultExpandAll={true}
+                onCheck={this.onAreaCheck.bind(this)}
+              >
+              { areas.map((level1,index) => {
+                return (
+                  <TreeNode title={level1.name} key={level1.id}>
+                    {toTree(level1.id,arealist)}
+                  </TreeNode>
+                )
+              })}
+            </Tree>
+         )
+  
     function toTree(id, array) {
       const childArr = childrenArr(id, array)
       if(childArr.length > 0) {
@@ -152,6 +162,8 @@ class SettingUserRole1 extends React.Component {
   render() {
     const areas = this.props.area.areas
     const { getFieldDecorator } = this.props.form;
+    const defaultKeys =  this.props.role.roleInfo.roleAreaId?this.props.role.roleInfo.roleAreaId:[]
+    console.log(this.props.role)
     return (
       <div className="setting-user-role float-left">
           <div className="title role">角色<div className='abosulte' onClick={()=>this.setState({createRoleVisible:true})}><Icon type='plus'/></div></div>
@@ -211,14 +223,7 @@ class SettingUserRole1 extends React.Component {
             >
             <Tabs tabPosition='left' defaultActiveKey="1" >
               <TabPane tab="区域" key="1">
-              <Tree
-               
-                checkable
-                
-                onCheck={this.onAreaCheck.bind(this)}
-              >
-              {areas.length>0?this.areaTreeRender():null}
-              </Tree>
+              {areas.length>0?this.areaTreeRender(defaultKeys):null}
               </TabPane>
               <TabPane tab="功能" key="2">
               <Tree

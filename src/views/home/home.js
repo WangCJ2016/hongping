@@ -57,6 +57,7 @@ class Home extends React.Component {
         <div className='HomeTable'>
           <HomeTable />
         </div>
+        <Button onClick={()=>this.props.history.push('/login')}>tiaozhuan</Button>
         <Button onClick={()=>this.setState({modalvisible:true})}>警报处理</Button>
         <HomeWarmModal 
         visible={this.state.modalvisible}

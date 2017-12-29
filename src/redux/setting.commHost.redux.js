@@ -245,7 +245,7 @@ export function deviceLists(info) {
             id: host.id,
             name: host.name,
             areaCode: host.areaCode,
-            key: host.id
+            key: host.id,
           }))
           dispatch(deviceListsSuccess(list))
   
@@ -277,7 +277,8 @@ export function createDevice(info) {
             id: host.id,
             name: host.name,
             areaCode: host.areaCode,
-            key: host.id
+            key: host.id,
+            icon: host.icon
           }
           dispatch(createDeviceSuccess(list))
         }
@@ -356,7 +357,8 @@ export function propertyLists(info) {
             name: host.name,
             addressCode: host.addressCode,
             type:host.type,
-            key: host.id
+            key: host.id,
+            icon: host.icon
           }))
           dispatch(propertyListsSuccess(list))
         }
@@ -388,7 +390,8 @@ export function createProperty(info) {
             name: host.name,
             addressCode: host.addressCode,
             type:host.type,
-            key: host.id
+            key: host.id,
+            icon: host.icon
           }
           dispatch(createPropertySuccess(list))
         }
@@ -429,7 +432,8 @@ export function modifyProperty(info) {
               name: host.name,
               addressCode: host.addressCode,
               type:host.type,
-              key: host.id
+              key: host.id,
+              icon: host.icon
             }
             dispatch(modifyPropertySuccess(list))
           }

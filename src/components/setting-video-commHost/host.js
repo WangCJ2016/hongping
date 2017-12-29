@@ -149,7 +149,7 @@ class Hosts1 extends React.Component {
               </FormItem>
               <FormItem label="COM序号">
                 {getFieldDecorator('comIndex',{
-                  rules: [{ required: true,message: '请填写COM序号'  }],
+                  rules: [{ required: true,message: '请填写COM序号',maxLength:5  }],
                 })(<Input type="text" />)}
               </FormItem>
               <FormItem label="设备类型">

@@ -22,7 +22,7 @@ class Property1 extends React.Component {
     })
   }
   createSubmit() {
-    this.props.form.validateFields(['name','addressCode','type'],(err, values)=>{
+    this.props.form.validateFields(['name','addressCode','type','icon'],(err, values)=>{
       if(!err) {
         this.props.createProperty({...values,devHostId:this.props.selectDevice.id,name:encodeURI(values.name)})
         this.setState({
@@ -32,14 +32,15 @@ class Property1 extends React.Component {
     })
   }
   editSubmit() {
-    this.props.form.validateFields(['editname','editaddressCode','edittype'],(err, values)=>{
+    this.props.form.validateFields(['editname','editaddressCode','edittype','editicon'],(err, values)=>{
       if(!err) {
         this.props.modifyProperty({
           devHostId:this.props.selectDevice.id,
           id:this.state.selectProperty.id,
           name:encodeURI(values.editname),
           addressCode: values.editaddressCode,
-          type:values.edittype
+          type:values.edittype,
+          icon:values.editicon
         })
         this.setState({
           editVisible: false
@@ -49,10 +50,20 @@ class Property1 extends React.Component {
   }
   render() {
     const columns = [{
+      title: 'icon',
+      dataIndex: 'icon',
+      key: 'icon',
+      width: '30%',
+      render: (text, record)=>{
+        console.log(record)
+       return record.icon?
+        <img src={require(`../../assets/imgs/${record.icon}.png`)} alt=""/>:null
+      }
+    },{
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        width: '70%',
+        width: '40%',
       },{
         title: 'Action',
         key: 'action',
@@ -71,6 +82,7 @@ class Property1 extends React.Component {
   const { getFieldDecorator } = this.props.form;
   const commPorperty = this.props.coomProperties
   const selectProperty = this.state.selectProperty
+  console.log(selectProperty)
     return (
         <div className="setting-user-role setting-video-device  float-right">
           <div className="title role">通信属性<div className='abosulte' onClick={()=>this.setState({createVisible:true})}><Icon type='plus'/></div></div>
@@ -100,6 +112,17 @@ class Property1 extends React.Component {
                   rules: [{ required: true,message: '请填写地址编号'}], 
                 })(<Input type="text" />)}
               </FormItem>
+              <FormItem label="图标">
+              {getFieldDecorator('icon',{
+                rules: [{ required: true,message: '请填写图标'}],
+                initialValue: 'ipc'
+              })(
+                <Select>
+                  <Option value='ipc'><img src={require('../../assets/imgs/ipc.png')} alt=""/></Option>
+                  <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
+                </Select>
+              )}
+            </FormItem>
               <FormItem label="类型">
                 {getFieldDecorator('type',{
                   rules: [{ required: true,message: '请填写类型'}], 
@@ -139,6 +162,17 @@ class Property1 extends React.Component {
                     initialValue: selectProperty?selectProperty.addressCode:''
                   })(<Input type="text" />)}
                 </FormItem>
+                <FormItem label="图标">
+                {getFieldDecorator('editicon',{
+                  rules: [{ required: true,message: '请填写图标'}],
+                  initialValue: selectProperty?selectProperty.icon:''
+                })(
+                  <Select>
+                    <Option value='ipc'><img src={require('../../assets/imgs/ipc.png')} alt=""/></Option>
+                    <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
+                  </Select>
+                )}
+              </FormItem>
                 <FormItem label="类型">
                   {getFieldDecorator('edittype',{
                     rules: [{ required: true,message: '请填写类型'}], 

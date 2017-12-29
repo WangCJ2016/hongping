@@ -12,14 +12,14 @@ class Setting extends React.Component {
   render() {
     return (
         <div className='setting-page'>
-          <Tabs defaultActiveKey="3">
+          <Tabs defaultActiveKey="5">
             <TabPane tab="区域管理" key="1">
               <SettingArea />
             </TabPane>
             <TabPane tab="用户&角色" key="2">
               <SettingUser />
             </TabPane>
-            <TabPane tab="视频配置" key="3">
+            <TabPane tab="设备配置" key="3">
              <SettingVideo />
             </TabPane>
             <TabPane tab="其他子系统配置" key="4">Content of Tab Pane 2</TabPane>

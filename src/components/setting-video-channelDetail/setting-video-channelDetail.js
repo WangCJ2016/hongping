@@ -56,7 +56,7 @@ class SettingVideoChannelDetail1 extends React.Component {
               width: '20%',
               key: 'icon',
               render: (text,record) => (
-                <img src={require(`../../assets/imgs/${record.icon}.png`)} alt=""/>
+                record.icon?<img src={require(`../../assets/imgs/${record.icon}.png`)} alt=""/>:null
               )
             },{
               title: '通道名称',
@@ -129,7 +129,8 @@ class SettingVideoChannelDetail1 extends React.Component {
                   initialValue: 'ipc'
                 })(
                   <Select>
-                
+                  <Option value='ipc'><img src={require('../../assets/imgs/ipc.png')} alt=""/></Option>
+                  <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
                    </Select>
                 )}
               </FormItem>
@@ -181,7 +182,8 @@ class SettingVideoChannelDetail1 extends React.Component {
                   initialValue:selectChannel?selectChannel.icon:''
                 })(
                   <Select>
-
+                  <Option value='ipc'><img src={require('../../assets/imgs/ipc.png')} alt=""/></Option>
+                  <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
                   </Select>
                 )}
               </FormItem>

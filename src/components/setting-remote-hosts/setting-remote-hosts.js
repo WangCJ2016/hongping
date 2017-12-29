@@ -19,7 +19,6 @@ class SettingRemoteHosts1 extends React.Component {
    }
    componentDidMount() {
      this.props.hostLists()
-     this.props.sysServerslist()
    }
    hostRender() {
      const hosts = this.props.remoteHosts
@@ -106,7 +105,7 @@ class SettingRemoteHosts1 extends React.Component {
     return (
       <div>
         <div className="setting-user-role setting-video-device  float-left">
-           <div className="title role">视频主机<div className='abosulte' onClick={()=>this.setState({createVisible:true})}><Icon type='plus'/></div></div>
+           <div className="title role">视频主机<div className='abosulte' onClick={()=>{this.setState({createVisible:true});this.props.sysServerslist()}}><Icon type='plus'/></div></div>
             {this.props.remoteHosts?this.hostRender():null}
             {/* 添加设备 */}
             <Modal title="添加视频主机" 
@@ -189,18 +188,18 @@ class SettingRemoteHosts1 extends React.Component {
                     rules: [{ required: true,message: '请填写通道数量'  }],
                   })(<Input type="number" />)}
                 </FormItem>
-                <FormItem label="流媒体服务器1">
+                <FormItem label="服务器1">
                   {getFieldDecorator('mediaServer1Id',{
                     rules: [{ required: true,message: '请填写流媒体服务器1'  }],
                   })(
                     this.sysServersRender()
                   )}
                 </FormItem>
-                <FormItem label="流媒体服务器2">
+                <FormItem label="服务器2">
                   {getFieldDecorator('mediaServer2Id',{
                   })(this.sysServersRender())}
                 </FormItem>
-                <FormItem label="流媒体服务器3">
+                <FormItem label="服务器3">
                   {getFieldDecorator('mediaServer3Id',{
                   })(this.sysServersRender())}
                 </FormItem>
@@ -298,7 +297,7 @@ class SettingRemoteHosts1 extends React.Component {
                     initialValue: selectHost?selectHost.channels:'',
                   })(<Input type="number" />)}
                 </FormItem>
-                <FormItem label="流媒体服务器1">
+                <FormItem label="服务器1">
                   {getFieldDecorator('editmediaServer1Id',{
                     rules: [{ required: true,message: '请填写流媒体服务器1'  }],
                     initialValue: selectHost?selectHost.mediaServer1Id:'',
@@ -306,12 +305,12 @@ class SettingRemoteHosts1 extends React.Component {
                     this.sysServersRender()
                   )}
                 </FormItem>
-                <FormItem label="流媒体服务器2">
+                <FormItem label="服务器2">
                   {getFieldDecorator('editmediaServer2Id',{
                     initialValue: selectHost?selectHost.mediaServer2Id:'',
                   })(this.sysServersRender())}
                 </FormItem>
-                <FormItem label="流媒体服务器3">
+                <FormItem label="服务器3">
                   {getFieldDecorator('editmediaServer3Id',{
                     initialValue: selectHost?selectHost.mediaServer3Id:'',
                   })(this.sysServersRender())}

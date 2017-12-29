@@ -1,9 +1,9 @@
 import React from 'react'
-import { Icon, Modal, Input, Tabs, Tree, Table, Form } from 'antd'
+import { Icon, Modal, Tabs, Tree, Table } from 'antd'
 import { connect } from 'react-redux'
 import {areaList} from '../../redux/area.redux'
 import { toTypeStr } from '../../utils'
-import { areaDevices,allDevices,addDevices } from '../../redux/setting.device.redux'
+import { areaDevices1,allDevices,addDevices } from '../../redux/setting.device.redux'
 const TreeNode = Tree.TreeNode;
 const TabPane = Tabs.TabPane;
 
@@ -11,24 +11,18 @@ const TabPane = Tabs.TabPane;
 @connect(
   state=>({deivces:state.devices,area:state.area}),
   {
-   areaList,areaDevices,allDevices,addDevices
+   areaList,areaDevices1,allDevices,addDevices
   }
 )
 class SettingVideoAreatoDevice extends React.Component {
+  remoteArr=[]
+  commArr=[]
+  broadcastArr=[]
   state = {
     addVisible: false,
-    remoteArr: [],
-    commArr:[],
-    broadcastArr:[],
     selectArea: ''
    }
-  // 渲染区域树
-  componentDidMount() {
-    this.props.areaList()
-    this.props.allDevices({type: 'remote'})
-    this.props.allDevices({type: 'comm'})
-    this.props.allDevices({type: 'broadcast'})
-  }
+ 
   // 区域树render
   areaTreeRender() {
     const areas = this.props.area.areas
@@ -61,20 +55,30 @@ class SettingVideoAreatoDevice extends React.Component {
   }
   // remote树渲染
   remoteRender(defaultSelectKeys) {
-    console.log(defaultSelectKeys)
     const devices = this.props.deivces.remoteDevices
+    let keys = []
+    devices.forEach(host=>{
+      host.remoteChannels.forEach(channel => {
+          if(defaultSelectKeys.indexOf(channel.id+'-'+toTypeStr(channel.typeStr))>-1) {
+            this.remoteArr=[...this.remoteArr,channel.id+'-'+toTypeStr(channel.typeStr)]
+            keys.push(channel.id+'-'+toTypeStr(channel.typeStr))
+          }      
+      })
+    })
+    
     return (
       <Tree
         checkable
         checkStrictly={true}
-        defaultCheckedKeys={defaultSelectKeys}
+        defaultCheckedKeys={keys}
         defaultExpandAll={true}
         onCheck={this.remoteOncheck.bind(this)} >
          {devices.map(host => (
           <TreeNode title={host.name} key={host.id}  disableCheckbox={true}>
-           {host.remoteChannels.map(channel => (
+           {host.remoteChannels.map(channel => {
+            return (
             <TreeNode title={channel.name} key={channel.id+'-'+toTypeStr(channel.typeStr)} />
-           ))}
+           )})}
           </TreeNode>
         ))}
       </Tree>
@@ -83,10 +87,22 @@ class SettingVideoAreatoDevice extends React.Component {
   // comm树渲染
   commRender(defaultSelectKeys) {
     const devices = this.props.deivces.commDevices
+    let keys = []
+    devices.forEach(host=>{
+      host.devices.forEach(device => {
+        device.properties.forEach(property=>{
+          if(defaultSelectKeys.indexOf(property.id+'-'+toTypeStr(property.typeStr))>-1) {
+            this.commArr=[...this.commArr,property.id+'-'+toTypeStr(property.typeStr)]
+            keys.push(property.id+'-'+toTypeStr(property.typeStr))
+          }
+        })
+      })
+    })
+    console.log(keys,this.commArr)
     return (
       <Tree
       checkable
-      defaultCheckedKeys={defaultSelectKeys}
+      defaultCheckedKeys={keys}
       checkStrictly={true}
       defaultExpandAll={true}
       onCheck={this.commOncheck.bind(this)}>
@@ -94,9 +110,10 @@ class SettingVideoAreatoDevice extends React.Component {
         <TreeNode title={host.name} key={host.id} disabled>
          {host.devices.map(device => (
           <TreeNode title={device.name} key={device.id} disabled>
-          {device.properties.map(property => (
+          {device.properties.map(property => {
+           return (
             <TreeNode title={property.name} key={property.id+'-'+toTypeStr(property.typeStr)} />
-           ))}
+           )})}
           </TreeNode>
          ))}
         </TreeNode>
@@ -105,22 +122,32 @@ class SettingVideoAreatoDevice extends React.Component {
     )
    
   }
-  // remote树渲染
+  // broadcastRender树渲染
   broadcastRender(defaultSelectKeys) {
     const devices = this.props.deivces.broadcastDevices
-    console.log(devices)
+    let keys = []
+    devices.forEach(host=>{
+      host.channels.forEach(channel => {
+          if(defaultSelectKeys.indexOf(channel.id+'-'+toTypeStr(channel.typeStr))>-1) {
+            this.broadcastArr=[...this.broadcastArr,channel.id+'-'+toTypeStr(channel.typeStr)]
+            keys.push(channel.id+'-'+toTypeStr(channel.typeStr))
+          }      
+      })
+    })
+    console.log(this.broadcastArr)
     return (
       <Tree
       checkable
-      defaultCheckedKeys={defaultSelectKeys}
+      defaultCheckedKeys={keys}
       checkStrictly={true}
       defaultExpandAll={true}
-      onCheck={this.commOncheck.bind(this)}>
+      onCheck={this.broadcastOncheck.bind(this)}>
       { devices.map(host => (
         <TreeNode title={host.name} key={host.id} disabled>
-         {host.channels.map(channel => (
+         {host.channels.map(channel => {
+          return (
           <TreeNode title={channel.name} key={channel.id+'-'+toTypeStr(channel.typeStr)} />
-         ))}
+         )})}
         </TreeNode>
       ))}
       </Tree>
@@ -129,8 +156,7 @@ class SettingVideoAreatoDevice extends React.Component {
   }
   onAreaCheck() {}
   select(key,e) {
-    console.log(key,e)
-    this.props.areaDevices({areaId: key[0]})
+    this.props.areaDevices1({areaId: key[0]})
     this.setState({selectArea:key[0] })
   }
   onChange(e) {
@@ -143,27 +169,54 @@ class SettingVideoAreatoDevice extends React.Component {
   }
   remoteOncheck(keys,e) {
     console.log(keys)
-    this.setState({remoteArr:keys.checked})
+    this.remoteArr = keys.checked
   }
   commOncheck(keys,e) {
-    this.setState({commArr:keys.checked})
+    this.commArr = keys.checked
   }
   broadcastOncheck(keys,e) {
-    this.setState({broadcastArr:keys.checked})
+    console.log(keys)
+    this.broadcastArr = keys.checked
   }
   addSubmit() {
-    const arr = [...this.state.remoteArr,...this.state.commArr,...this.state.broadcastArr]
-    const devIds = arr.map(item => item.split('-')[0]).join(',')
-    const types = arr.map(item => item.split('-')[1]).join(',')
-    console.log(devIds,types)
-    //this.props.addDevices({areaId:this.state.selectArea,devIds:devIds,types:types})
+      const areaToDevices = this.props.deivces.areaToDevices1.length>0? this.props.deivces.areaToDevices1.map(devices=>devices.id+'-'+devices.type):[]
+      const arr = [...this.remoteArr,...this.commArr,...this.broadcastArr]
+      let plusArray = []
+      let minusArray = []
+      arr.forEach(deviceid => {
+        if(areaToDevices.indexOf(deviceid)===-1) {
+          plusArray.push(deviceid)
+        }
+      })
+      areaToDevices.forEach(devid => {
+        if(arr.indexOf(devid)===-1) {
+          minusArray.push(devid)
+        }
+      })
+      const plusDevIds = plusArray.map(id => id.split('-')[0]+':'+id.split('-')[1]).join(',')
+      const minusDevIds = minusArray.map(id => id.split('-')[0]).join(',')
+      const info = {
+        areaId:this.state.selectArea,
+        plusDevIds:plusDevIds,
+        minusDevIds:minusDevIds
+      }
+     
+      this.props.addDevices(info)
+    
     this.setState({addVisible:false})
   }
 
   render() {
     const areas = this.props.area.areas
-    const defaultSelectKeys = this.props.deivces.areaToDevices.length>0? this.props.deivces.areaToDevices.map(devices=>devices.id+'-'+devices.type):[]
+    const defaultSelectKeys = this.props.deivces.areaToDevices1.length>0? this.props.deivces.areaToDevices1.map(devices=>devices.id+'-'+devices.type):[]
     const columns=[{
+      title: 'icon',
+      dataIndex: 'devIcon',
+      key: 'icon',
+      render: (text,record)=>(
+        record.devIcon?<img src={require(`../../assets/imgs/${record.devIcon}.png`)} alt=""/>:null
+      )
+    },{
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
@@ -182,9 +235,9 @@ class SettingVideoAreatoDevice extends React.Component {
         </div>
         <div className="setting-user-role float-right" style={{width: '60%'}}>
             <div className="title role">设备
-            <div className='abosulte' onClick={()=>this.setState({addVisible:true})}><Icon type='plus'/></div></div>
-            {this.props.deivces.areaToDevices.length>0?
-              <Table columns={columns} dataSource={this.props.deivces.areaToDevices} pagination={false} showHeader={false}/>:null}
+            <div className='abosulte' onClick={()=>{this.setState({addVisible:true});this.remoteArr=[];this.commArr=[];this.broadcastArr=[]}}><Icon type='plus'/></div></div>
+            {this.props.deivces.areaToDevices1.length>0?
+              <Table columns={columns} dataSource={this.props.deivces.areaToDevices1} pagination={false} showHeader={false}/>:null}
         </div>
         <Modal title="区域设备绑定"
           visible={this.state.addVisible}

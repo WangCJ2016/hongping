@@ -11,6 +11,8 @@ const FormItem = Form.Item;
 class SettingArea1 extends React.Component {
   state = {
     createVisible:false,
+    editVisible: false,
+    selectArea: null,
     createInfo: {},
   }
   componentDidMount() {
@@ -29,9 +31,15 @@ class SettingArea1 extends React.Component {
     this.props.createArea({...this.state.createInfo,name: encodeURI(name)})
     this.setState({createVisible:false})
   }
+  // 编辑
+  editSubmit() {
+    console.log(this.state.selectArea)
+    const name = this.props.form.getFieldValue('editName')
+    this.props.modifyArea({...this.state.selectArea,name: encodeURI(name)})
+    this.setState({editVisible:false})
+  }
   // 删除
   delete(area) {
-    console.log(area)
     this.props.modifyArea({id:area.id,isDelete:1,parentId:area.parentId})
   }
   render() {
@@ -58,7 +66,7 @@ class SettingArea1 extends React.Component {
         width: '40%',
         render:(text,record)=> (
           <span className='action'>
-            <a ><Icon type='edit'/>编辑</a>
+            <a onClick={()=>this.setState({editVisible: true,selectArea:record})}><Icon type='edit'/>编辑</a>
             <Popconfirm onConfirm={this.delete.bind(this,record)} title="确定删除？"  okText="确定" cancelText="取消">
               <a ><Icon type='delete'/>删除</a>
             </Popconfirm>
@@ -87,6 +95,25 @@ class SettingArea1 extends React.Component {
         onExpand={this.onExpand.bind(this)}
         
         />:null}
+        <Modal title="编辑区域" 
+          visible={this.state.editVisible}
+          style={{ top: 200 }}
+          width='50%'
+          okText='确定'
+          cancelText='取消'
+          onOk={this.editSubmit.bind(this)}
+          onCancel={()=>this.setState({editVisible:false})}
+          >
+          <Form>
+          <FormItem>
+            {getFieldDecorator('editName', {
+              initialValue: this.state.selectArea?this.state.selectArea.name:''
+            })(
+              <Input  placeholder='请填写区域名称'/>
+            )}
+          </FormItem>
+          </Form>
+        </Modal>
         <Modal title="新建区域" 
           visible={this.state.createVisible}
           style={{ top: 200 }}
@@ -104,8 +131,7 @@ class SettingArea1 extends React.Component {
             )}
           </FormItem>
           </Form>
-        
-      </Modal>
+        </Modal>
       </div>
     )
   }

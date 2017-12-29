@@ -15,7 +15,6 @@ export function HomePerson() {
 }
 
 export function HomeCamera(props) {
-  console.log(props)
   return (
     <div className="home-popover">
       <p className='title'>

@@ -62,9 +62,10 @@ export const config = {
     BroadcastChannelsAdd: '/bhost_createSysBroadcastChannels', // 添加通道
     modifyBroadcastChannel: '/bhost_modifySysBroadcastChannels ', // 修改通道
     
+    areaDevices1:'/device_queryAreaDevices', // 获取区域已绑定设备
     areaDevices: '/install_queryAreaDevices', // (获取区域已绑定设备
     allDevices: '/device_queryAllDevices', //获取设备
-    createDeviceArea: '/device_createSysDeviceArea', //区域设备绑定
+    createDeviceArea: '/device_modifySysDeviceArea', //区域设备绑定
     createSysInstallPlace: '/install_createSysInstallPlace ', // 添加地图设备绑
     querySysInstallPlaces: '/install_querySysInstallPlaces' , // 获取地图已绑定设备
     delInstatllPlace: '/install_modifySysInstallPlace', // 删除地图已绑定设备

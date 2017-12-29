@@ -58,20 +58,25 @@ class SettingMap extends React.Component {
       return newArry;
     }
   }
+
+  // 设备渲染
   deviceRender() {
     const devices = this.props.deivces.areaToDevices
     return devices.map(device => (
       <div key={device.id} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
-        <Tag  >{device.name}</Tag>
+        <Tag>{device.devIcon?<img src={require(`../../assets/imgs/${device.devIcon}.png`)} alt=""/>:null}{device.name}</Tag>
       </div>
     ))
   }
   // 地图设备渲染
   mapDeviceRender() {
     const devices = this.props.deivces.mapToDevices
+
     return devices.map((device,index) => (
       <div key={device.id+index} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
-        <Tag onClose={this.delDevice.bind(this,device)} closable >{device.name}</Tag>
+        <Tag onClose={this.delDevice.bind(this,device)} closable >
+        {device.devIcon?<img src={require(`../../assets/imgs/${device.devIcon}.png`)} alt=""/>:null}
+        {device.name}</Tag>
       </div>
     ))
   }
@@ -99,7 +104,10 @@ class SettingMap extends React.Component {
       const x = ev.clientX - imgData.left
       const y = ev.clientY - imgData.top
       const data=ev.dataTransfer.getData("Text");
-      console.log(this.state.ifOnImg)
+      console.log(data)
+      if(!data){
+        return
+      }
       if(this.state.ifOnImg) {
         this.props.changeMapDevice({
           meId:data.split('-')[4],
@@ -128,7 +136,7 @@ class SettingMap extends React.Component {
  select(key,e) {
     if(key[0]) {
       this.props.areaDevices({areaId: key[0]})
-      this.props.area.selectAreaIdSuccess(key[0])
+      this.props.selectAreaIdSuccess(key[0])
       this.props.areaInfo({id:key[0]})
       this.props.querySysInstallPlaces({areaId: key[0]})
     }

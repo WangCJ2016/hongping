@@ -1,6 +1,7 @@
 import React from 'react'
-import { Layout } from 'antd';
-import { Route, Switch,NavLink} from 'react-router-dom'
+import { Layout,Popconfirm } from 'antd';
+import { Route, Switch,NavLink, Prompt} from 'react-router-dom'
+
 import { connect } from 'react-redux'
 import Home from '../views/home/home'
 import Video from '../views/video/video'
@@ -13,6 +14,7 @@ const { Header, Content, Sider } = Layout;
 @connect(
   state=>state.user
 )
+
 class Frame extends React.Component {
   navRender() {
     const navArray = [
@@ -33,15 +35,21 @@ class Frame extends React.Component {
       </NavLink>
     ))
   }
+  confirm() {
+    localStorage.removeItem('token')
+    window.location.replace("/login")
+  
+  }
   render() {
-    console.log(this.props.account)
     return (
       
       <Layout>
       <Header className="header">
         <img className='logo' src={require('../assets/imgs/logo.png')} alt=""/>
         <span className='header_title'>五系统一中心平台</span>
-        <span className='float-right logout'><img  src={require('../assets/imgs/logout.png')} alt=""/></span>
+        <Popconfirm title="确认退出?" onConfirm={this.confirm.bind(this)}  okText="确定" cancelText="取消">
+          <span className='float-right logout'><img  src={require('../assets/imgs/logout.png')} alt=""/></span>
+        </Popconfirm>
         <span className='float-right' style={{color:'#17b89f'}}>{this.props.account?this.props.account.name:''}</span>
       </Header>
       <Layout>

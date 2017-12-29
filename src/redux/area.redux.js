@@ -1,5 +1,6 @@
 import { request, config} from '../config'
 import {areaDevices,querySysInstallPlaces} from './setting.device.redux'
+import { message } from 'antd'
 const token = localStorage.getItem('token')
 
 const ALLAREAS = '[area] ALLAREAS'
@@ -7,7 +8,7 @@ const AREALIST_SUCCESS = '[area] AREALIST_SUCCESS'
 const JUNIRAREA_SUCCESS = '[area] JUNIRAREA_SUCCESS'
 const CREATEAREA_SUCCESS = '[area] CREATEAREA_SUCCESS'
 const DELETE_SUCCESS = '[area] DELETE_SUCCESS'
-//const UPLOADIMG = '[area] UPLOADIMG'
+const MODIFYAREA_SUCCESS = '[area] MODIFYAREA_SUCCESS'
 const AREAINFO = '[area] AREAINFO'
 const LOADCHANGE = '[area] LOADCHANGE'
 const UPLOAD = '[area] UPLOAD'
@@ -25,6 +26,7 @@ const initalState = {
 export function area(state=initalState, action) {
   switch (action.type) {
     case AREALIST_SUCCESS: {
+      console.log(action.payload)
       return {...state, areas: action.payload}
     }
     case ALLAREAS: {
@@ -44,6 +46,12 @@ export function area(state=initalState, action) {
     case DELETE_SUCCESS: {
       const _stateAreas = JSON.parse(JSON.stringify(state.areas))  // 对象深拷贝
       const _areas =  delTree(_stateAreas, action.payload.id,action.payload.parentId)
+      return {...state,areas:_areas}
+    }
+    case MODIFYAREA_SUCCESS: {
+      const _stateAreas = JSON.parse(JSON.stringify(state.areas))  // 对象深拷贝
+      const _areas =  modifyTree(_stateAreas, action.payload.id,action.payload.parentId,action.payload)
+
       return {...state,areas:_areas}
     }
     case AREAINFO:{
@@ -89,7 +97,7 @@ export function areaList(info) {
             level: area.level,
             children:[]
           }))
-          const level1 = res.result.filter(area => area.level===1).map((area,index) => ({
+          const level1 = res.result.filter(area => area.level===0).map((area,index) => ({
             key:index,
             name: area.name,
             id: area.id,
@@ -122,7 +130,7 @@ export function areaList1(info) {
             level: area.level,
             children:[]
           }))
-          const level1 = res.result.filter(area => area.level===1).map((area,index) => ({
+          const level1 = res.result.filter(area => area.level===0).map((area,index) => ({
             key:index,
             name: area.name,
             id: area.id,
@@ -203,6 +211,12 @@ function delete_success(data) {
     payload: data
   }
 }
+function modifyAreaSuccess(info) {
+  return{
+    type: MODIFYAREA_SUCCESS,
+    payload: info
+  }
+}
 export function modifyArea(info) {
   return (dispatch,getState)=>{
       const user = getState().user
@@ -216,6 +230,12 @@ export function modifyArea(info) {
         console.log(res)
         if(res.success&&info.isDelete===1){
           dispatch(delete_success({id: info.id, parentId:info.parentId}))
+        }
+        if(res.success&&info.isDelete!==1){
+          dispatch(modifyAreaSuccess({id: res.dataObject.id, name:res.dataObject.name,parentId:res.dataObject.parentId}))
+        }
+        if(!res.success){
+          message.error(res.msg)
         }
       })
   }
@@ -239,8 +259,7 @@ export function areaInfo(info) {
       const user = getState().user
       dispatch(load())
       request.get(config.api.base + config.api.picByarea,
-        {
-          token:user.account.token, 
+                  {token:user.account.token, 
           ...info
         })
       .then(res=>{
@@ -321,7 +340,6 @@ function delTree(data, id, parentId) {
             _index = index
           }
         })
-        console.log(_index)
         data[i].children.splice(_index,1)
         return data
       }else if (data[i].children.length>0) {
@@ -336,6 +354,31 @@ function delTree(data, id, parentId) {
     }
   })
   data.splice(_index,1)
+}
+return data
+}
+
+function modifyTree(data, id, parentId, obj) {
+  if(parentId !== ''){
+    for (let i=0; i<data.length; i++) {
+      if(data[i].id === parentId){
+        data[i].children.forEach((child,index)=>{
+          if(child.id === id) {
+            data[i].children[index]={...data[i].children[index],...obj}
+          }
+        })
+        return data
+      }else if (data[i].children.length>0) {
+        modifyTree(data[i].children, id,parentId,obj )
+      }
+  }
+}else{
+  data.forEach((level1,index) => {
+    if(level1.id === id) {
+      data[index]={...data[index],...obj}
+    }
+  })
+  
 }
 return data
 }

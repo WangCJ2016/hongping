@@ -126,10 +126,11 @@ class SettingVideoBroadcastChannelDetail1 extends React.Component {
               <FormItem label="图标">
                 {getFieldDecorator('icon',{
                   rules: [{ required: true,message: '请填写图标'}],
-                  initialValue: 'IPC'
+                  initialValue: 'ipc'
                 })(
                   <Select>
-
+                    <Option value='ipc'><img src={require('../../assets/imgs/ipc.png')} alt=""/></Option>
+                    <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
                   </Select>
                 )}
               </FormItem>
