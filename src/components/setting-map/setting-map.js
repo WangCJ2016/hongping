@@ -3,6 +3,7 @@ import { Tree, Collapse, message,Button,Tag,Spin } from 'antd';
 import { connect } from 'react-redux'
 import {areaList1, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
 import { areaDevices,allDevices,addDevices,createSysInstallPlace,querySysInstallPlaces,delMapDevice,addMapDevice,changeMapDevice } from '../../redux/setting.device.redux'
+import AreaTree from '../areaTree/areaTree'
 const TreeNode = Tree.TreeNode;
 const Panel = Collapse.Panel
 
@@ -26,7 +27,6 @@ class SettingMap extends React.Component {
    return (
     <Tree
       defaultSelectedKeys={[areas[0].id]}
-      onCheck={this.onAreaCheck.bind(this)}
       onSelect={this.select.bind(this)}
       >
       { areas.map((level1,index) => {
@@ -132,7 +132,7 @@ class SettingMap extends React.Component {
       }
     }
   }
- onAreaCheck(){}
+
  select(key,e) {
     if(key[0]) {
       this.props.areaDevices({areaId: key[0]})
@@ -167,7 +167,6 @@ submit() {
   this.props.createSysInstallPlace({areaId:this.props.area.selectAreaId,devIds:devIds,types:types,x:x,y:y})
 }
   render() {
-    console.log(this.props)
     const areas = this.props.area.areas
     const areaInfo = this.props.area.areaInfo
     return (
@@ -180,13 +179,14 @@ submit() {
            
             <Button type='primary' className='float-right' onClick={this.submit.bind(this)}>保存</Button>
           </div>
-          <div className='map-area'>
+          {/* <div className='map-area'>
             <Collapse defaultActiveKey={['1']}>
               <Panel header="区域" key="1">
                 {areas.length>0?this.areaTreeRender():null}  
             </Panel>
            </Collapse>
-        </div>
+        </div> */}
+       <AreaTree select={this.select.bind(this)}/>
        <div className="device-area">
           <Collapse defaultActiveKey={['1']}>
             <Panel header="设备" key="1">
