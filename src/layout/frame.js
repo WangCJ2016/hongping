@@ -57,7 +57,7 @@ class Frame extends React.Component {
          {this.navRender()}
         </Sider>
         <Layout>
-          <Content style={{ background: '#fff', margin: 0, minHeight: 900 }}>
+          <Content style={{ background: '#fff', marginLeft: '80px'}}>
               <Switch>
                 <Route exact path='/home' component={Home}></Route>
                 <Route exact path='/video' component={Video}></Route>

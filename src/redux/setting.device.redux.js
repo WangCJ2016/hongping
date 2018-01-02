@@ -9,7 +9,8 @@ const initalState = {
   commDevices: [],
   broadcastDevices: [],
   mapToDevices: [],
-  load: false
+  load: false,
+  searchDevice: null
 }
 const AREADEVICES = '[device] AREADEVICE'
 const AREADEVICES1 = '[device] AREADEVICE1'
@@ -18,6 +19,7 @@ const MAPTODEVICES = '[device] AREATODEVICES'
 const DELMAPDEVICE = '[device] DELMAPDEVICE'
 const ADDMAPDEVICE = '[device] ADDMAPDEVICE'
 const CHANGEMAPDEVICE = '[device] CHANGEMAPDEVICE'
+const DEVICESEARCH = '[device] DEVICESEARCH'
 
 export function devices(state=initalState,action) {
   switch (action.type) {
@@ -50,6 +52,10 @@ export function devices(state=initalState,action) {
         return device
       })
       return {...state,mapToDevices:mapToDevices}
+    }
+    // search
+    case DEVICESEARCH: {
+      return {...state,searchDevice:action.payload}
     }
     default:
       return state
@@ -247,3 +253,43 @@ export function changeMapDevice(device) {
     })
   }
 }
+
+// 首页搜索设备
+ export function searchDeviceSuccess(device) {
+  return {
+    type: DEVICESEARCH,
+    payload: device
+  }
+}
+export function searchChannel(info) {
+  return (dispatch) => {
+     
+    request.get(config.api.base + config.api.searchChannel,{
+      token:token,
+      ...info
+    })
+    .then(res => {
+     console.log(res)
+     if(res.success) {
+       dispatch(searchDeviceSuccess(res))
+     }
+    })
+  }
+}
+
+export function searchBroadcast(info) {
+  return (dispatch) => {
+     
+    request.get(config.api.base + config.api.searchBroadcast,{
+      token:token,
+      ...info
+    })
+    .then(res => {
+     console.log(res)
+     if(res.success) {
+       dispatch(searchDeviceSuccess(res))
+     }
+    })
+  }
+}
+

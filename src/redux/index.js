@@ -7,5 +7,6 @@ import {remoteHost } from './setting.remoteHost.redux'
 import { commHost } from './setting.commHost.redux'
 import { broadcastHost } from './setting.broadcast.redux'
 import { devices } from './setting.device.redux'
+import { alarm } from './alarm.redux'
 
-export default combineReducers({user, role, area, settingServer, remoteHost, commHost,broadcastHost,devices})
+export default combineReducers({user, role, area, settingServer, remoteHost, commHost,broadcastHost,devices,alarm})

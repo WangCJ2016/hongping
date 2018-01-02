@@ -69,6 +69,12 @@ export const config = {
     createSysInstallPlace: '/install_createSysInstallPlace ', // 添加地图设备绑
     querySysInstallPlaces: '/install_querySysInstallPlaces' , // 获取地图已绑定设备
     delInstatllPlace: '/install_modifySysInstallPlace', // 删除地图已绑定设备
+    // 首页
+    alertmPages: '/home_queryAlarmsPage', // 报警列表
+    getAlarmInfo: '/home_getAlarmInfo', // 报警详情
+    modifyAlarm: '/home_modifyAlarm', // 报警处理
+    searchChannel: '/rhost_querySysRemoteChannelsPage', //搜索摄像头
+    searchBroadcast: '/bhost_querySysBroadcastChannelsPage', //搜索广播
   }
 }
 //get/post请求

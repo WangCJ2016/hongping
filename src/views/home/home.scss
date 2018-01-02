@@ -1,11 +1,63 @@
 .home-page{
   position: relative;
   width: 100%;
-  height: 900px;
+  .map-area{
+    position: static!important;
+    float: left;
+  }
+  .home-warm-panel{
+    position: absolute;
+    right: 15px;
+    .ant-collapse-header{
+      padding: 9px 0 9px 40px;
+      background-color: #fff; 
+    }
+    .ant-collapse .ant-collapse-content{
+      background-color: rgba($color: #000000, $alpha: .2);
+    }
+    .panel-title{
+      background-color: #fff;
+      height: 40px;
+      padding: 10px;
+      >div{
+        margin-left: 15px;
+        img{
+          margin-right: 10px;
+        }
+      }
+    }
+    .panel-content{
+      background-color: rgba($color: #000000, $alpha: .2);
+      padding: 20px;
+      .warm-lights{
+        img{
+          animation:light-spalsh 2s infinite;
+        }
+        img+img{
+          margin-left: 35px;
+        }
+      }
+      p{
+        color: #fff;
+        margin: 10px;
+      }
+    }
+  }
 }
 .HomeTable{
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
+}
+@keyframes light-spalsh{
+  0%{
+    opacity: 0
+  }
+  50%{
+    opacity: 1
+  }
+  100%{
+    opacity: 0
+  }
 }

@@ -59,3 +59,36 @@ export function toTypeStr(types) {
          return 1
     }
 }
+export function alarmDegree(degree) {
+    switch (degree) {
+        case 0:{
+            return {class:'warm',degree:'正常'}
+        }
+        case 1:{
+            return {class:'',degree:'非紧急'}
+        }
+        case 2:{
+            return {class:'danger',degree:'紧急'}
+        }
+        default:
+            return {class:'',degree:''}
+    }
+}
+export function alarmType(type) {
+    switch (type) {
+        case 1:{
+            return '消防报警'
+        }
+        case 2:{
+            return '红外报警'
+        }
+        case 3:{
+            return '移动侦测报警'
+        }
+        case 4:{
+            return '紧急呼叫'
+        }
+        default:
+            return ''
+    }
+}

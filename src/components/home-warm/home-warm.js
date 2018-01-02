@@ -84,26 +84,26 @@ class HomeWarmModal extends React.Component {
             </div>
           </div>
          
-        </div>
-        <div className="second-content">
-         <p className="title">处理意见</p>
-         <textarea type="textarea"  rows="2" style={{width:'100%',border:'1px solid #e8e8e8'}}></textarea>
-         <div style={{display:'table',width:'100%',marginTop:'10px'}}>
-          <div className='tr'>
-            <span>处理人:admin</span>
-            <span>状态:
-              <Select defaultValue="lucy" style={{ width: 90 }} >
-                <Option value="jack">未处理</Option>
-                <Option value="lucy">处理</Option>
-              </Select>
-            </span>
-            <span>处理时间:2015-09-7</span>
-            <Button type="primary">处理</Button>
           </div>
-         </div>
-        </div>
-        <Pagination style={{textAlign:'center', paddingBottom:'10px'}} simple defaultCurrent={2} total={50} />
-    </Modal>
+          <div className="second-content">
+          <p className="title">处理意见</p>
+          <textarea type="textarea"  rows="2" style={{width:'100%',border:'1px solid #e8e8e8'}}></textarea>
+          <div style={{display:'table',width:'100%',marginTop:'10px'}}>
+            <div className='tr'>
+              <span>处理人:admin</span>
+              <span>状态:
+                <Select defaultValue="lucy" style={{ width: 90 }} >
+                  <Option value="jack">未处理</Option>
+                  <Option value="lucy">处理</Option>
+                </Select>
+              </span>
+              <span>处理时间:2015-09-7</span>
+              <Button type="primary">处理</Button>
+            </div>
+          </div>
+          </div>
+          <Pagination style={{textAlign:'center', paddingBottom:'10px'}} simple defaultCurrent={2} total={50} />
+      </Modal>
     )
   }
 }
