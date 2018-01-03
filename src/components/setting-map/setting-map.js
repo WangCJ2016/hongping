@@ -64,7 +64,10 @@ class SettingMap extends React.Component {
     const devices = this.props.deivces.areaToDevices
     return devices.map(device => (
       <div key={device.id} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
-        <Tag>{device.devIcon?<img src={require(`../../assets/imgs/${device.devIcon}.png`)} alt=""/>:null}{device.name}</Tag>
+        <Tag>
+        {device.type===1||device.type===2?<img src={require('../../assets/imgs/cem_icon.png')} alt=""/>:null}
+        {device.type===4?<img src={require('../../assets/imgs/br_icon.png')} alt=""/>:null}
+        {device.name}</Tag>
       </div>
     ))
   }
@@ -75,7 +78,8 @@ class SettingMap extends React.Component {
     return devices.map((device,index) => (
       <div key={device.id+index} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
         <Tag onClose={this.delDevice.bind(this,device)} closable >
-        {device.devIcon?<img src={require(`../../assets/imgs/${device.devIcon}.png`)} alt=""/>:null}
+        {device.type===1||device.type===2?<img src={require('../../assets/imgs/cem_icon.png')} alt=""/>:null}
+        {device.type===4?<img src={require('../../assets/imgs/br_icon.png')} alt=""/>:null}
         {device.name}</Tag>
       </div>
     ))
@@ -167,7 +171,6 @@ submit() {
   this.props.createSysInstallPlace({areaId:this.props.area.selectAreaId,devIds:devIds,types:types,x:x,y:y})
 }
   render() {
-    const areas = this.props.area.areas
     const areaInfo = this.props.area.areaInfo
     return (
        <div className='setting-map'>

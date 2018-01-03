@@ -29,7 +29,7 @@ class HomeSearchCamera extends React.Component {
     console.log(this.props)
     return (
       <div className="home-search-camera">
-        {this.props.searchDevice?this.deivceRender():null}
+        {this.props.searchDevice&&this.props.searchDevice.result?this.deivceRender():null}
         {this.props.searchDevice&&this.props.searchDevice.result.length>10?
           <Pagination simple defaultCurrent={1}  total={this.props.searchDevice.records} onChange={this.onChange.bind(this)}/>:null}
       </div>

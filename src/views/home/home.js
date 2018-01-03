@@ -48,19 +48,38 @@ class Home extends React.Component {
   }
   mapDeviceRender() {
     const devices = this.props.deivces.mapToDevices
-    console.log(devices)
-    return devices.map((device,index) => (
-      <div key={device.id+index} style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} >
-        <Tag >
-        {device.devIcon?<img src={require(`../../assets/imgs/${device.devIcon}.png`)} alt=""/>:null}
-        {device.name}</Tag>
-      </div>
-    ))
+    return devices.map((device,index) => {
+      if(device.type === 1 || device.type === 2) {
+        return  <Popover 
+                  key={device.id+index}
+                  content={HomeCamera(device)}
+                  trigger="click"
+                    >
+                  <div  style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} >
+                    <Tag >
+                    {device.devIcon?<img src={require('../../assets/imgs/cem_icon.png')} alt=""/>:null}
+                    {device.name}</Tag>
+                  </div> 
+                </Popover>
+       
+      }
+      if(device.type === 4) {
+       return <Popover content={<HomeBroadcast device={device} />} trigger="click" key={device.id+index} >
+                <div key={device.id+index} style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} >
+                  <Tag >
+                  {device.devIcon?<img src={require('../../assets/imgs/br_icon.png')} alt=""/>:null}
+                  {device.name}</Tag>
+                </div> 
+              </Popover>
+      }
+    })
   }
  
   render() {
     const areaInfo = this.props.area.areaInfo
-
+    const a = [1,2,3,4]
+    console.log(React.Children.only(<h1>1</h1>))
+    
     return (
       <div className='home-page setting-map'>
          <HomeSearch />

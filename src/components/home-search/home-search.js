@@ -30,7 +30,7 @@ class HomeSearch extends React.Component {
         [value+'Result']:true
       })
     })
-    this.props.searchDeviceSuccess([])
+    this.props.searchDeviceSuccess(null)
   }
   searchContent(e) {
     this.setState({search: e.target.value})

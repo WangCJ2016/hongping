@@ -7,14 +7,22 @@ const initialState = {
 }
 
 const ALARMPAGE_SUCCESS = '[alarm] ALARMPAGE_SUCCESS'
-//const ALARMINFO_SUCCESS = '[alarm] ALARMINFO_SUCCESS'
+const ALARMMODIFY_SUCCESS = '[alarm] ALARMMODIFY_SUCCESS'
 
 export function alarm(state=initialState,action) {
   switch (action.type) {
     case ALARMPAGE_SUCCESS: {
       return {...state,alarmlist: action.payload}
     }
-    
+    case ALARMMODIFY_SUCCESS: {
+     const alarmlist = state.alarmlist.map(alarm => {
+        if(alarm.id === action.payload.id) {
+          return action.payload
+        }
+        return alarm
+       })
+       return {...state,alarmlist: alarmlist}
+    }
     default:
       return state
   }
@@ -40,7 +48,13 @@ export function alarmPages(info) {
     })
   }
 }
-
+// 处理警报
+function modifyAlarmSuccess(info) {
+  return {
+    type: ALARMMODIFY_SUCCESS,
+    payload: info
+  }
+}
 export function modifyAlarm(info) {
   return (dispatch,getState) => {
     const user = getState().user
@@ -49,6 +63,10 @@ export function modifyAlarm(info) {
       accountId:user.account.id,
       ...info
     })
-   
+   .then(res=>{
+     if(res.success) {
+       dispatch(modifyAlarmSuccess(res.dataObject))
+     }
+   })
   }
 }

@@ -55,3 +55,23 @@ textarea{
 .ant-modal-footer{
   padding: 4px 16px!important
 }
+
+// file
+.fileinput-button {
+  background-color: #17b89f;
+  color: #fff;
+  padding: 6px 10px 5px;
+  border-radius: 5px;
+  margin-left: 10px;
+  position: relative;
+  cursor: pointer;
+  input{
+  position:absolute;
+  right: 0px;
+  top:0px;
+  left: 0px;
+  bottom: 0px;
+  opacity: 0;
+  
+ }
+}

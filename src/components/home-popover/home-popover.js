@@ -18,8 +18,7 @@ export function HomeCamera(props) {
   return (
     <div className="home-popover">
       <p className='title'>
-        <Icon type="camera" className='float-left'  style={{ fontSize: 13 }} />洞室-1001
-        <Icon className='float-right' type="close" style={{ fontSize: 13 }} onClick={props} />
+        <Icon type="camera" className='float-left'  style={{ fontSize: 13 }} />{props.name}
       </p>
       <ButtonGroup className='clearfix'>
         <Button className='float-left' type="primary">
@@ -56,7 +55,7 @@ export class HomeBroadcast extends React.Component {
     return (
       <div className="home-popover broadcast">
       <p className='title'>
-        <Icon type="sound" className='float-left' style={{ fontSize: 13 }} />洞室1东 100011
+        <Icon type="sound" className='float-left' style={{ fontSize: 13 }} />{this.props.device.name}
         <Icon className='float-right' type="close" style={{ fontSize: 13 }} />  
       </p>
       <div className='broadcast-content'>
@@ -64,15 +63,19 @@ export class HomeBroadcast extends React.Component {
         <TabPane tab="喊话" key="1">
           <div className="hanhua-content" style={{width:'240px'}}>
           <p>喊话：00:10:01</p>
-          <p>广播位置:洞室1枪机</p>
+          <p>广播位置:f</p>
           <div className='hanhua_btn'>
           <img src={require('../../assets/imgs/broadcast_btn.png')} alt=""/>
           </div>
         </div>
         </TabPane>
         <TabPane tab="播报语音文件" key="2">
-          <Input type='file' onChange={this.onChange.bind(this)} defaultValue='播报语音文件'/>
-          <audio src={this.state.src} autoplay="autoplay" controls='controls' loop='loop'></audio>
+        <span className="float-right fileinput-button">
+          <span>播报语音文件</span>
+          <Input type="file" onChange={this.onChange.bind(this)}  />
+        </span>
+      
+          <audio src={this.state.src} autoPlay="autoPlay" controls='controls' loop='loop'></audio>
         </TabPane>
       </Tabs>
        
