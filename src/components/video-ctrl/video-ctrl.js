@@ -5,6 +5,7 @@ import {areaList1, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/are
 import VideoCtrlYuntai from './video-ctrl-yuntai'
 import VideoCtrlYuzhizu from './video-ctrl-yuzhizu'
 import VideoCtrlParam from './video-ctrl-params'
+import VideoCtrlBtn from './video-ctrl-btns'
 const TabPane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
 
@@ -56,33 +57,27 @@ class VideoCtrl extends React.Component {
       }
       return newArry;
     }
-}
+ 
+  }
+  setScreen(index) {
+    console.log(this.play)
+    this.play.XzVideo_SetRealPlayScreen(index);  
+  }
   render() {
     const areas = this.props.area.areas
     return (
       <div className='video-ctrl clearfix'>
        <div className='float-left' style={{width:'70%'}}>
-        <div className="video-widget">
-        </div>
-        <div className="controls clearfix">
-          <div className='float-left'>
-              <Tooltip title="声音">
-                <img src={require('../../assets/imgs/video-v.png')} alt=""/>
-              </Tooltip>
-              <Tooltip title="录像">
-                <img src={require('../../assets/imgs/video-record.png')} alt=""/>
-              </Tooltip>
-              <Tooltip title="抓图">
-                <img src={require('../../assets/imgs/capture_off.png')} alt=""/>
-              </Tooltip>
-              <Tooltip title="全屏">
-                <img src={require('../../assets/imgs/video_full.png')} alt=""/>
-              </Tooltip>
-              <div className="controls-btn"><Icon type="poweroff" />关闭通道</div>
-              <div className="controls-btn"><Icon type="plus" />添加预置位</div>
-              <Switch checkedChildren={'开闸'} unCheckedChildren={'关闸'} />
-          </div>
-        </div>
+              <object   id="play"
+              ref={(screen)=>this.play=screen}
+              classid="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
+              codebase="./XzVideoWebClient.cab#version=1.0.0.1"
+              width={800}
+              height={600}
+              align='center' 
+              >
+              </object>
+          <VideoCtrlBtn setScreen={this.setScreen.bind(this)} />
        </div>
       <div className="ctrl-right float-right">
         <Tabs defaultActiveKey="2" type="card">
