@@ -149,7 +149,7 @@ class VideoCtrl extends React.Component {
             <VideoCtrlYuzhizu />
           </TabPane>
         </Tabs>
-        <Tabs defaultActiveKey="2" type="card">
+        <Tabs defaultActiveKey="1" type="card">
           <TabPane tab="云台" key="1">
             <VideoCtrlYuntai />
           </TabPane>

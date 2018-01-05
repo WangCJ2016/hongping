@@ -2,6 +2,9 @@ import React from 'react'
 import {Tabs,Tree } from 'antd'
 import { connect} from 'react-redux'
 import VideoCtrlBtns from './video-ctrlbtn'
+import VideoTableList from './video-tablelist'
+import VideoDeviceBack from './video-device-back'
+import VideoSearch from './video-search'
 import {areaList1, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
 import {changeBackVideoIf} from '../../redux/video.redux'
 
@@ -29,7 +32,13 @@ class VideoPlayBack extends React.Component {
                 align='center' 
                 >
               </object>
-              <VideoCtrlBtns propsVideo={this.props.video}/>
+              <VideoCtrlBtns 
+                propsVideo={this.props.video}/>
+              <VideoTableList />
+          </div>
+          <div className="float-right">
+            <VideoDeviceBack />
+            <VideoSearch />
           </div>
         </div>
     )
