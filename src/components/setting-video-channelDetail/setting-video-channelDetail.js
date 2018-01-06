@@ -16,7 +16,7 @@ class SettingVideoChannelDetail1 extends React.Component {
     selectChannel: null
    }
   createSubmit() {
-    this.props.form.validateFields(['name','index','type','icon','remark'],(err, values)=>{
+    this.props.form.validateFields(['name','index','type','remark'],(err, values)=>{
       if(!err) {
         values.name = encodeURI(values.name)
         values.remark = encodeURI(values.remark)
@@ -28,7 +28,7 @@ class SettingVideoChannelDetail1 extends React.Component {
     })
   }
   editSubmit() {
-    this.props.form.validateFields(['editname','editindex','edittype','editicon','editremark'],(err, values)=>{
+    this.props.form.validateFields(['editname','editindex','edittype','editremark'],(err, values)=>{
       if(!err) {
         const info={
           id: this.state.selectChannel.id,
@@ -123,7 +123,7 @@ class SettingVideoChannelDetail1 extends React.Component {
                   </Select>
                 )}
               </FormItem>
-              <FormItem label="图标">
+              {/* <FormItem label="图标">
                 {getFieldDecorator('icon',{
                   rules: [{ required: true,message: '请填写图标'}],
                   initialValue: 'ipc'
@@ -133,7 +133,7 @@ class SettingVideoChannelDetail1 extends React.Component {
                   <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
                    </Select>
                 )}
-              </FormItem>
+              </FormItem> */}
               <FormItem label="备注">
                 {getFieldDecorator('remark',{
                   initialValue: ''
@@ -176,7 +176,7 @@ class SettingVideoChannelDetail1 extends React.Component {
                   </Select>
                 )}
               </FormItem>
-              <FormItem label="图标">
+              {/* <FormItem label="图标">
                 {getFieldDecorator('editicon',{
                   rules: [{ required: true,message: '请填写图标'}],
                   initialValue:selectChannel?selectChannel.icon:''
@@ -186,7 +186,7 @@ class SettingVideoChannelDetail1 extends React.Component {
                   <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
                   </Select>
                 )}
-              </FormItem>
+              </FormItem> */}
               <FormItem label="备注">
                 {getFieldDecorator('editremark',{
                   initialValue:selectChannel?selectChannel.remark:''

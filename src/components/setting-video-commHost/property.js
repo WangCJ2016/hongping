@@ -22,7 +22,7 @@ class Property1 extends React.Component {
     })
   }
   createSubmit() {
-    this.props.form.validateFields(['name','addressCode','type','icon'],(err, values)=>{
+    this.props.form.validateFields(['name','addressCode','type'],(err, values)=>{
       if(!err) {
         this.props.createProperty({...values,devHostId:this.props.selectDevice.id,name:encodeURI(values.name)})
         this.setState({
@@ -32,7 +32,7 @@ class Property1 extends React.Component {
     })
   }
   editSubmit() {
-    this.props.form.validateFields(['editname','editaddressCode','edittype','editicon'],(err, values)=>{
+    this.props.form.validateFields(['editname','editaddressCode','edittype'],(err, values)=>{
       if(!err) {
         this.props.modifyProperty({
           devHostId:this.props.selectDevice.id,
@@ -113,7 +113,7 @@ class Property1 extends React.Component {
                 })(<Input type="text" />)}
               </FormItem>
               <FormItem label="图标">
-              {getFieldDecorator('icon',{
+              {/* {getFieldDecorator('icon',{
                 rules: [{ required: true,message: '请填写图标'}],
                 initialValue: 'ipc'
               })(
@@ -121,7 +121,7 @@ class Property1 extends React.Component {
                   <Option value='ipc'><img src={require('../../assets/imgs/ipc.png')} alt=""/></Option>
                   <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
                 </Select>
-              )}
+              )} */}
             </FormItem>
               <FormItem label="类型">
                 {getFieldDecorator('type',{
@@ -163,7 +163,7 @@ class Property1 extends React.Component {
                   })(<Input type="text" />)}
                 </FormItem>
                 <FormItem label="图标">
-                {getFieldDecorator('editicon',{
+                {/* {getFieldDecorator('editicon',{
                   rules: [{ required: true,message: '请填写图标'}],
                   initialValue: selectProperty?selectProperty.icon:''
                 })(
@@ -171,7 +171,7 @@ class Property1 extends React.Component {
                     <Option value='ipc'><img src={require('../../assets/imgs/ipc.png')} alt=""/></Option>
                     <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
                   </Select>
-                )}
+                )} */}
               </FormItem>
                 <FormItem label="类型">
                   {getFieldDecorator('edittype',{

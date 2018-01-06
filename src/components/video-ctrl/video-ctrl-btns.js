@@ -1,5 +1,6 @@
 import React from 'react'
-import {Tooltip,Switch,Icon} from 'antd'
+import {Tooltip,Switch,Icon,Select} from 'antd'
+const Option = Select.Option
 
 class VideoCtrlBtn extends React.Component {
   state = {  
@@ -29,16 +30,15 @@ class VideoCtrlBtn extends React.Component {
     }
   }
   render() {
-    console.log(this.props)
     return (
       <div className="controls clearfix">
           <div className='float-left'>
               {this.props.videoProps.hasSoundIf? 
                 <Tooltip title="关闭声音">
-                  <img src={require('../../assets/imgs/video-v-on.png')} alt=""/>
+                  <img src={require('../../assets/imgs/video-v-on.png')} onClick={this.props.soundCtrl} alt=""/>
                 </Tooltip>:
                 <Tooltip title="开启声音">
-                  <img src={require('../../assets/imgs/video-v.png')} alt=""/>
+                  <img src={require('../../assets/imgs/video-v.png')} onClick={this.props.soundCtrl} alt=""/>
                 </Tooltip>
                }
               {this.props.videoProps.saveVideoIf? 
@@ -56,6 +56,9 @@ class VideoCtrlBtn extends React.Component {
               </Tooltip>
               <div className="controls-btn"><Icon type="poweroff" />关闭通道</div>
               <div className="controls-btn"><Icon type="plus" />添加预置位</div>
+              <Select className="controls-btn" defaultValue='1' placeholder='调用预置位'>
+                  <Option value='1'>预置位1</Option>
+              </Select>
               <Switch checkedChildren={'开闸'} unCheckedChildren={'关闸'} onChange={this.switchChange.bind(this)}/>
           </div>
           <div className="float-right">
