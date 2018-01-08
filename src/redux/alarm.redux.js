@@ -41,7 +41,6 @@ export function alarmPages(info) {
       ...info
     })
     .then(res => {
-      console.log(res)
       if(res.success) {
         dispatch(alarmPagesSuccess(res.result))
       }

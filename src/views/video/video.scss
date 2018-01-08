@@ -1,6 +1,10 @@
 .view-page{
+  .ant-tabs-tabpane.ant-tabs-tabpane-active{
+    overflow-x: scroll
+  }
   padding: 20px;
   .video-ctrl{
+    min-width: 1440px;
     .video-widget{
       width: 100%;
       height: 868px;
@@ -74,43 +78,37 @@
       }
       .btn{
         position: absolute;
-        padding: 15px;
+        padding: 12px;
+        border-radius: 50%;
         i{
           color: #fff;
           font-size: 20px;
         }
+        &:active{
+          background-color: #16a08a;
+        }
       }
       .count-ctrl{
         text-align: center;
-        >div{
-          margin-top: 10px;
-        }
-        .title{
+        .jujiao-btn{
           display: inline-block;
-          width: 60px;
-        }
-        .count{
-          display: inline-block;
-          width:220px;
+          margin-top: 20px;
+          margin-left: 15px;
+          cursor: pointer;
+          width: 110px;
           line-height: 40px;
           border: 1px solid #e8e8e8;
-          border-radius: 3px;
-          .float-left{
-            border-right: 1px solid #e8e8e8;
-          }
-          .float-right{
-            border-left: 1px solid #e8e8e8;
-          }
-          >span{
-            margin-top:1px;
-            font-size: 20px;
-            color: #333;
-            padding:0 10px;
+          border-radius: 2px;
+          i{
+            vertical-align: middle;
+            font-size: 18px;
+            color: #ccc;
           }
         }
       }
     }
     .yuzhiwei {
+      height: 230px;
       .add-group{
         width: 90%;
         margin: 0 auto;
@@ -121,8 +119,18 @@
       i{margin-right: 10px;font-size: 16px}
      
     }
+    .ctrlParam{
+      padding: 20px;
+      .paramSlide{
+        margin-top: 20px;
+      }
+    }
+    .areaTree{
+      height: 230px;
+    }
   }
   .video-play-back{
+    min-width: 1440px;
     .ctrl-bnts{
       .btn{
         width: 40px;
@@ -217,4 +225,8 @@
 .transfer{
   text-align: center;
   margin-top: 10px;
+}
+
+#play{
+  width:100%!important;
 }

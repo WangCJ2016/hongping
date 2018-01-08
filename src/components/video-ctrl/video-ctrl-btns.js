@@ -10,7 +10,7 @@ class VideoCtrlBtn1 extends React.Component {
     visible:false
   }
   screenRender() {
-    const arr = [4,6,8,9,13,16]
+    const arr = [1,4,6,8,9,13,16]
     return arr.map((num,index) => {
       return <span onClick={this.setScreen.bind(this,num)} key={num}>
         {num===this.state.activeIndex?<img src={require(`../../assets/imgs/${num}_on.png`)} alt=""/>:

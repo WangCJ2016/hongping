@@ -5,15 +5,17 @@ const intialState = {
   hasSoundIf:true,
   backVideoIf:false,
   vv:1,
-  jjv:1,
-  jdv:1,
-  gqv:1
+  bright: 5,
+  contrast:5,
+  saturation:5,
+  hue:5
 }
 
 const CHANGESAVEVIDEO = '[video] CHANGESAVEVIDEO'
 const CHANGESOUND = '[video] CHANGESOUND'
 const CHANGEBACKVIDEO = '[video] CHANGEBACKVIDEO'
 const PLAYCTRLCHANGE = '[video] PLAYCTRLCHANGE'
+const VIDEOPARAMCHANGE= '[video] VIDEOPARAMCHANGE'
 
 export function video(state=intialState,action) {
   switch (action.type) {
@@ -27,6 +29,9 @@ export function video(state=intialState,action) {
       return {...state,backVideoIf:!state.backVideoIf}
     }
     case PLAYCTRLCHANGE:　{
+      return {...state,...action.payload}
+    }
+    case VIDEOPARAMCHANGE:{
       return {...state,...action.payload}
     }
     default:
@@ -55,10 +60,17 @@ export function changeBackVideoIf() {
   }
 } 
 
-// 转速改变
+// 云台改变
 export function playCtrlChange(v) {
   return {
     type: PLAYCTRLCHANGE,
     payload: v
+  }
+}
+// 参数改变
+export function paramsChange(obj) {
+  return {
+    type: VIDEOPARAMCHANGE,
+    payload: obj
   }
 }

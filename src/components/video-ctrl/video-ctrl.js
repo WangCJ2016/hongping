@@ -1,65 +1,43 @@
 import React from 'react'
-import { Tabs, Tree, message } from 'antd'
+import { Tabs, message } from 'antd'
 import { connect } from 'react-redux'
-import {areaList1, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
-import {changeSaveVideoIf, changeSoundIf, playCtrlChange} from '../../redux/video.redux'
+import {changeSaveVideoIf, changeSoundIf, playCtrlChange, paramsChange} from '../../redux/video.redux'
+import VideoCtrlTree from './video-ctrl-tree'
 import VideoCtrlYuntai from './video-ctrl-yuntai'
 import VideoCtrlYuzhizu from './video-ctrl-yuzhizu'
 import VideoCtrlParam from './video-ctrl-params'
 import VideoCtrlBtn from './video-ctrl-btns'
 const TabPane = Tabs.TabPane;
-const TreeNode = Tree.TreeNode;
+
 
 @connect(
-    state=>({deivces:state.devices,area:state.area,video: state.video}),
+    state=>({video: state.video}),
     {
-        areaList1, uploadImg,areaInfo,selectAreaIdSuccess,changeSaveVideoIf,changeSoundIf,playCtrlChange
+        changeSaveVideoIf,changeSoundIf,playCtrlChange,paramsChange
      }
 )
 class VideoCtrl extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state={}
+    this.setScreen = this.setScreen.bind(this)
+    this.soundCtrl = this.soundCtrl.bind(this)
+    this.saveRealData = this.saveRealData.bind(this)
+    this.realCapPicture = this.realCapPicture.bind(this)
+    this.stopPlay = this.stopPlay.bind(this)
+    this.remoteCtrl = this.remoteCtrl.bind(this)
+    this.fullscreen = this.fullscreen.bind(this)
+    this.setVideoEffect = this.setVideoEffect.bind(this)
+    this.yutaiUp = this.yutaiUp.bind(this)
+    this.yutaiDown = this.yutaiDown.bind(this)
+    this.yutaiLeft = this.yutaiLeft.bind(this)
+    this.yutaiRight = this.yutaiRight.bind(this)
+    this.jiaojuPlusCtrl = this.jiaojuPlusCtrl.bind(this)
+    this.jiaojuMinusCtrl = this.jiaojuMinusCtrl.bind(this)
+  }
   state = {  }
   componentDidMount() {
-    this.props.areaList1()
    // this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
-  }
-  select() {}
-  areaTreeRender() {
-    const areas = this.props.area.areas
-    const arealist = this.props.area.arealist
-   return (
-    <Tree
-      onSelect={this.select.bind(this)}
-      defaultExpandAll={true}
-      >
-      { areas.map((level1,index) => {
-        return (
-          <TreeNode title={level1.name} key={level1.id}>
-            {toTree(level1.id,arealist)}
-          </TreeNode>
-        )
-      })}
-    </Tree>
-   )
-  
-    function toTree(id, array) {
-      const childArr = childrenArr(id, array)
-      if(childArr.length > 0) {
-        return childArr.map((child,index) => (
-          <TreeNode key={child.id} title={child.name} >
-            {toTree(child.id, array)}
-          </TreeNode>
-        ))
-      }
-    }
-    function childrenArr(id, array) {
-      var newArry = []
-      for (var i in array) {
-          if (array[i].parentId === id)
-              newArry.push(array[i]);
-      }
-      return newArry;
-    }
- 
   }
   // 选择屏幕
   setScreen(index) {
@@ -123,10 +101,10 @@ class VideoCtrl extends React.Component {
      if(a&&num===1) {
       message.info('已开启道闸')
       return
-    }else{
-      message.error('开启道闸失败，请重试')
-      return
-    }
+      }else{
+        message.error('开启道闸失败，请重试')
+        return
+      }
   }
   // 全屏
   fullscreen() {
@@ -139,26 +117,43 @@ class VideoCtrl extends React.Component {
   }
 
   // 设置参数
-  setVideoEffect(){
-    const a = this.play.XzVideo_GetVideoEffect(0)
-    alert(a)
+  setVideoEffect(obj){
+    const params = Object.values(obj)
+    this.play.XzVideo_SetVideoEffect(0,params[0],params[1],params[2],params[3])
   }
 // 云台
-  yutaiUp(){
-    this.play.XzVideo_RealPlayControl(21,true,this.props.video.vv,5,0)
+  yutaiUp(state){
+    state?this.play.XzVideo_RealPlayControl(21,true,this.props.video.vv,5,0):
+    this.play.XzVideo_RealPlayControl(21,false,this.props.video.vv,5,0)
   }
-  yutaiDown(){
-    this.play.XzVideo_RealPlayControl(22,true,this.props.video.j,5,0)
+  yutaiDown(state){
+    state?this.play.XzVideo_RealPlayControl(22,true,this.props.video.vv,5,0):
+    this.play.XzVideo_RealPlayControl(22,false,this.props.video.vv,5,0)
   }
-  yutaiUp(){
-    this.play.XzVideo_RealPlayControl(21,true,this.props.video.vv,5,0)
+  yutaiLeft(state){
+    state?this.play.XzVideo_RealPlayControl(23,true,this.props.video.vv,5,0):
+    this.play.XzVideo_RealPlayControl(23,false,this.props.video.vv,5,0)
   }
-  yutaiUp(){
-    this.play.XzVideo_RealPlayControl(21,true,this.props.video.vv,5,0)
+  yutaiRight(state){
+   // this.play.XzVideo_RealPlayControl(24,true,this.props.video.vv,5,0)
+  }
+  // 焦距
+  jiaojuPlusCtrl(state) {
+    state?this.play.XzVideo_RealPlayControl(11,true,this.props.video.vv,5,0):
+    this.play.XzVideo_RealPlayControl(11,false,this.props.video.vv,5,0)
+  }
+  jiaojuMinusCtrl(state) {
+    state?this.play.XzVideo_RealPlayControl(12,true,this.props.video.vv,5,0):
+    this.play.XzVideo_RealPlayControl(12,false,this.props.video.vv,5,0)
   }
   render() {
-    console.log(this.props)
-    const areas = this.props.area.areas
+
+    this.videoParams = {
+      bright: this.props.video.bright,
+      contrast: this.props.video.contrast,
+      saturation: this.props.video.saturation,
+      hue: this.props.video.hue
+    }
     return (
       <div className='video-ctrl clearfix'>
        <div className='float-left' style={{width:'70%'}}>
@@ -173,21 +168,24 @@ class VideoCtrl extends React.Component {
               </object>
           <VideoCtrlBtn
             style={{marginTop:'30px'}} 
-            fullscreen={this.fullscreen.bind(this)}
-            remoteCtrl={this.remoteCtrl.bind(this)}
-            soundCtrl={this.soundCtrl.bind(this)}
-            realCapPicture={this.realCapPicture.bind(this)}
-            saveRealData={this.saveRealData.bind(this)}
-            stopPlay={this.stopPlay.bind(this)}
-            setScreen={this.setScreen.bind(this)} 
-            videoProps={this.props.video}/>
+            fullscreen={this.fullscreen}
+            remoteCtrl={this.remoteCtrl}
+            soundCtrl={this.soundCtrl}
+            realCapPicture={this.realCapPicture}
+            saveRealData={this.saveRealData}
+            stopPlay={this.stopPlay}
+            setScreen={this.setScreen} 
+            videoProps={this.props.video}
+            jiaojuPlusCtrl={this.jiaojuPlusCtrl}
+            jiaojuMinusCtrl={this.jiaojuMinusCtrl}/>
        </div>
       <div className="ctrl-right float-right">
         <Tabs defaultActiveKey="2" type="card">
           <TabPane tab="设备" key="1">
-           {areas.length>0?this.areaTreeRender():null}  
+      
+           <VideoCtrlTree />
           </TabPane>
-          <TabPane tab="预置位" key="2">
+          <TabPane tab="预览组" key="2">
             <VideoCtrlYuzhizu />
           </TabPane>
         </Tabs>
@@ -195,10 +193,17 @@ class VideoCtrl extends React.Component {
           <TabPane tab="云台" key="1">
             <VideoCtrlYuntai  
               playCtrlChange={this.props.playCtrlChange}
-              yutaiUp={this.yutaiUp.bind(this)}/>
+              yutaiUp={this.yutaiUp}
+              yutaiDown={this.yutaiDown}
+              yutaiLeft={this.yutaiLeft}
+              yutaiRight={this.yutaiRight}/>
           </TabPane>
           <TabPane tab="参数" key="2">
-            <VideoCtrlParam setVideoEffect={this.setVideoEffect.bind(this)} />
+            <VideoCtrlParam 
+            setVideoEffect={this.setVideoEffect}
+            paramsChange={this.props.paramsChange}
+            videoParams={this.videoParams}
+             />
           </TabPane>
         </Tabs>
       </div>

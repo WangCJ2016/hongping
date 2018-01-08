@@ -77,9 +77,6 @@ class Home extends React.Component {
  
   render() {
     const areaInfo = this.props.area.areaInfo
-    const a = [1,2,3,4]
-    console.log(React.Children.only(<h1>1</h1>))
-    
     return (
       <div className='home-page setting-map'>
          <HomeSearch />

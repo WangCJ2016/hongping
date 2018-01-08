@@ -18,7 +18,13 @@ const TreeNode = Tree.TreeNode;
    }
 )
 class VideoPlayBack extends React.Component {
-  state = {  }
+  constructor() {
+    super()
+    this.state = {}
+  }
+  playCtrl(i) {
+    this.play.XzVideo_RecordPlayControl(i,0)
+  }
   render() {
     return (
         <div className='video-play-back'>
@@ -33,7 +39,7 @@ class VideoPlayBack extends React.Component {
                 >
               </object>
               <VideoCtrlBtns 
-                propsVideo={this.props.video}/>
+                playCtrl={this.props.playCtrl}/>
               <VideoTableList />
           </div>
           <div className="float-right">

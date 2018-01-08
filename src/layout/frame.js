@@ -1,6 +1,6 @@
 import React from 'react'
-import { Layout,Popconfirm } from 'antd';
-import { Route, Switch,NavLink, Prompt} from 'react-router-dom'
+import { Layout,Popconfirm,Icon } from 'antd';
+import { Route, Switch,NavLink} from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import Home from '../views/home/home'
@@ -16,12 +16,30 @@ const { Header, Content, Sider } = Layout;
 )
 
 class Frame extends React.Component {
+  state = {
+    collapsed:false
+  }
   navRender() {
+    const navArray = [
+      {class: 'home',title: '区域',link:''},
+      {class: 'people',title: '人员',link:''},
+      {class: 'broadcast',title: '广播',link:''},
+      {class: 'warm',title: '告警',link:''},
+      {class: 'video',title: '视频',link:''},
+      {class: 'car',title: '门禁',link:''},
+  ]
+   return navArray.map(item=>(
+      <NavLink className='navlink' key={item.title} to={item.link}  activeClassName="selectedSub">
+        <div className={'imgSub '+item.class}></div>
+        <p className='nav_title'>{item.title}</p>
+      </NavLink>
+    ))
+  }
+  topNavRender() {
     const navArray = [
       {class: 'home',title: '首页',link:'/home'},
       {class: 'video',title: '视频',link:'/video'},
       {class: 'infrared',title: '红外',link:'/infrared'},
-      {class: 'warm',title: '警告',link:'/warm'},
       {class: 'people',title: '人员',link:'/people'},
       {class: 'car',title: '车辆',link:'/car'},
       {class: 'broadcast',title: '广播',link:'/broadcast'},
@@ -29,9 +47,9 @@ class Frame extends React.Component {
       {class: 'setting',title: '设置',link:'/setting'}
   ]
    return navArray.map(item=>(
-      <NavLink className='navlink' key={item.title} to={item.link}  activeClassName="selected">
-        <div className={'img '+item.class}></div>
-        <p className='nav_title'>{item.title}</p>
+      <NavLink className='navtoplink' key={item.title} to={item.link}  activeClassName="selected">
+        
+        <span className='navtop_title'>{item.title}</span>
       </NavLink>
     ))
   }
@@ -47,17 +65,35 @@ class Frame extends React.Component {
       <Header className="header">
         <img className='logo' src={require('../assets/imgs/logo.png')} alt=""/>
         <span className='header_title'>五系统一中心平台</span>
+        
         <Popconfirm title="确认退出?" onConfirm={this.confirm.bind(this)}  okText="确定" cancelText="取消">
           <span className='float-right logout'><img  src={require('../assets/imgs/logout.png')} alt=""/></span>
         </Popconfirm>
-        <span className='float-right' style={{color:'#17b89f'}}>{this.props.account?this.props.account.name:''}</span>
+        <span className='float-right user-name'>{this.props.account?this.props.account.name:''}</span>
+        <div className='float-right top-nav-link'>
+            {this.topNavRender()}
+        </div>
       </Header>
       <Layout>
-        <Sider width={80} style={{ background: '#17b89f' }}>
-         {this.navRender()}
-        </Sider>
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={true}
+        collapsedWidth={60}
+      >
+      <div className="logo" />
+      <Icon
+        className="trigger"
+        type={this.state.collapsed ? 'menu-fold' : 'menu-unfold'}
+        onClick={()=>this.setState({
+          collapsed: !this.state.collapsed,
+        })}
+      />
+      {this.navRender()}
+      <div className="submeun" style={{width:this.state.collapsed?'300px':'0'}}></div>
+    </Sider>
         <Layout>
-          <Content style={{ background: '#fff', marginLeft: '80px'}}>
+          <Content style={{ background: '#fff', marginLeft: '60px'}}>
               <Switch>
                 <Route exact path='/home' component={Home}></Route>
                 <Route exact path='/video' component={Video}></Route>

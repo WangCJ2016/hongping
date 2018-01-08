@@ -1,89 +1,59 @@
 import React from 'react'
-import {Icon,Select} from 'antd'
-const Option = Select.Option
+import {Slider} from 'antd'
 
-class VideoCtrlParam extends React.Component {
-  state = {  }
-  
+
+class VideoCtrlParam extends React.PureComponent {
+  constructor() {
+    super()
+    this.state = {}
+    this.brightChange=this.brightChange.bind(this)
+    this.constrastChange = this.constrastChange.bind(this)
+    this.saturationChange = this.saturationChange.bind(this)
+    this.hueChange = this.hueChange.bind(this)
+  }
+  brightChange(e) {
+    this.props.setVideoEffect({...this.props.videoParams,bright:e})
+  }
+  constrastChange(e) {
+    this.props.setVideoEffect({...this.props.videoParams,contrast:e})
+  }
+  saturationChange(e) {
+    this.props.setVideoEffect({...this.props.videoParams,saturation:e})
+  }
+  hueChange(e) {
+    this.props.setVideoEffect({...this.props.videoParams,hue:e})
+  }
   render() {
     return (
-      <div className='yuntai'>
+      <div className='ctrlParam'>
         <div className="count-ctrl">
-        <button onClick={this.props.setVideoEffect}>dfsf</button>
-          <div>
-          <span className='title'>亮度：</span>
-            <Select defaultValue='1' style={{ width: 120 }}>
-              <Option value='1'>1</Option>
-              <Option value='2'>2</Option>
-              <Option value='3'>3</Option>
-              <Option value='4'>4</Option>
-              <Option value='5'>5</Option>
-              <Option value='6'>6</Option>
-              <Option value='7'>7</Option>
-              <Option value='8'>8</Option>
-              <Option value='9'>9</Option>
-              <Option value='10'>10</Option>
-            </Select>
+          <div className='paramSlide'>
+           <img src={require('../../assets/imgs/light_icon.png')} alt='' /><Slider 
+            style={{display:'inline-block','width':'80%','verticalAlign':'middle'}}
+            min={1} max={10} defaultValue={5} 
+            onChange={this.brightChange}
+            />
           </div>
-          <div>
-          <span className='title'>对比度：</span>
-            <Select defaultValue='1' style={{ width: 120 }}>
-              <Option value='1'>1</Option>
-              <Option value='2'>2</Option>
-              <Option value='3'>3</Option>
-              <Option value='4'>4</Option>
-              <Option value='5'>5</Option>
-              <Option value='6'>6</Option>
-              <Option value='7'>7</Option>
-              <Option value='8'>8</Option>
-              <Option value='9'>9</Option>
-              <Option value='10'>10</Option>
-            </Select>
+          <div className='paramSlide'>
+          <img src={require('../../assets/imgs/constrast.png')} alt='' /><Slider 
+            style={{display:'inline-block','width':'80%','verticalAlign':'middle'}}
+            min={1} max={10} defaultValue={5} 
+            onChange={this.constrastChange}
+            /> 
           </div>
-          <div>
-          <span className='title'>色度：</span>
-            <Select defaultValue='1' style={{ width: 120 }}>
-              <Option value='1'>1</Option>
-              <Option value='2'>2</Option>
-              <Option value='3'>3</Option>
-              <Option value='4'>4</Option>
-              <Option value='5'>5</Option>
-              <Option value='6'>6</Option>
-              <Option value='7'>7</Option>
-              <Option value='8'>8</Option>
-              <Option value='9'>9</Option>
-              <Option value='10'>10</Option>
-            </Select>
+          <div className='paramSlide'>
+            <img src={require('../../assets/imgs/saturation.png')} alt='' /><Slider 
+              style={{display:'inline-block','width':'80%','verticalAlign':'middle'}}
+              min={1} max={10} defaultValue={5} 
+              onChange={this.saturationChange}
+              />
           </div>
-          <div>
-          <span className='title'>饱和度：</span>
-            <Select defaultValue='1' style={{ width: 120 }}>
-              <Option value='1'>1</Option>
-              <Option value='2'>2</Option>
-              <Option value='3'>3</Option>
-              <Option value='4'>4</Option>
-              <Option value='5'>5</Option>
-              <Option value='6'>6</Option>
-              <Option value='7'>7</Option>
-              <Option value='8'>8</Option>
-              <Option value='9'>9</Option>
-              <Option value='10'>10</Option>
-            </Select>
-          </div>
-          <div>
-          <span className='title'>音量：</span>
-            <Select defaultValue='1' style={{ width: 120 }}>
-              <Option value='1'>1</Option>
-              <Option value='2'>2</Option>
-              <Option value='3'>3</Option>
-              <Option value='4'>4</Option>
-              <Option value='5'>5</Option>
-              <Option value='6'>6</Option>
-              <Option value='7'>7</Option>
-              <Option value='8'>8</Option>
-              <Option value='9'>9</Option>
-              <Option value='10'>10</Option>
-          </Select>
+          <div className='paramSlide'>
+          <img src={require('../../assets/imgs/hue.png')} alt='' /><Slider 
+            style={{display:'inline-block','width':'80%','verticalAlign':'middle'}}
+            min={1} max={10} defaultValue={5} 
+            onChange={this.hueChange}
+            />
           </div>
         </div>
       </div>
