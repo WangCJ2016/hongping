@@ -12,8 +12,29 @@
       margin-top: 30px;
       img{
         margin-right: 10px;
+        cursor: pointer;
+      }
+      .downlist{
+        position: absolute;
+        bottom: 40px;
+        padding: 0;
+        margin: 0;
+        max-height: 120px;
+        z-index: 0;
+        overflow-y: scroll;
+        cursor: pointer;
+        &::-webkit-scrollbar {display:none}
+       >li{
+        width: 120px;
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+        background-color: #8a8a8a;
+        list-style-type: none
+       }
       }
       .controls-btn{
+        cursor: pointer;
         display: inline-block;
         width: 120px;
         line-height: 40px;

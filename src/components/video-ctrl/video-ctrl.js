@@ -20,7 +20,7 @@ class VideoCtrl extends React.Component {
   state = {  }
   componentDidMount() {
     this.props.areaList1()
-    this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
+    //this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
   }
   select() {}
   areaTreeRender() {
@@ -105,6 +105,10 @@ class VideoCtrl extends React.Component {
       message.error('抓图失败，请重试')
     }
   }
+  // 关闭通道
+  stopPlay() {
+    this.play.XzVideo_PreSet(0)
+  }
   // 道闸控制
   remoteCtrl(num) {
     const a=this.play.XzVideo_RemoteControl_Barriergate(num,1,9,0)
@@ -126,7 +130,12 @@ class VideoCtrl extends React.Component {
   }
   // 全屏
   fullscreen() {
-     this.play.XzVideo_FullScreen(1)
+     const a = this.play.XzVideo_FullScreen(0)
+     if(a) {
+       message.success('关闭成功')
+     }else{
+       message.error('关闭失败')
+     }
   }
   render() {
     const areas = this.props.area.areas
@@ -149,6 +158,7 @@ class VideoCtrl extends React.Component {
             soundCtrl={this.soundCtrl.bind(this)}
             realCapPicture={this.realCapPicture.bind(this)}
             saveRealData={this.saveRealData.bind(this)}
+            stopPlay={this.stopPlay.bind(this)}
             setScreen={this.setScreen.bind(this)} 
             videoProps={this.props.video}/>
        </div>
