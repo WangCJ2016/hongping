@@ -1,11 +1,13 @@
 import React from 'react'
-import {Tooltip,Switch,Icon,Select} from 'antd'
+import {Tooltip,Switch,Icon,Select,Modal,Form,Input} from 'antd'
 const Option = Select.Option
+const FormItem = Form.Item
 
-class VideoCtrlBtn extends React.Component {
+class VideoCtrlBtn1 extends React.Component {
   state = {  
     activeIndex: -1,
-    yuzhiweiVisible: false
+    yuzhiweiVisible: false,
+    visible:false
   }
   screenRender() {
     const arr = [4,6,8,9,13,16]
@@ -30,7 +32,11 @@ class VideoCtrlBtn extends React.Component {
       this.props.remoteCtrl(0)
     }
   }
+  submit(){
+
+  }
   render() {
+    const { getFieldDecorator } = this.props.form
     return (
       <div className="controls clearfix">
           <div className='float-left'>
@@ -56,7 +62,7 @@ class VideoCtrlBtn extends React.Component {
                 <img src={require('../../assets/imgs/video_full.png')} onClick={this.props.fullscreen} alt=""/>
               </Tooltip>
               <div className="controls-btn"><Icon type="poweroff" onClick={this.props.stopPlay}/>关闭通道</div>
-              <div className="controls-btn"><Icon type="plus" />添加预置位</div>
+              <div  onClick={()=>this.setState({visible:true})} className="controls-btn"><Icon type="plus" />添加预置位</div>
               <div style={{position:'relative',display:'inline-block'}}>
                 <div className="controls-btn" onClick={()=>this.setState({yuzhiweiVisible:!this.state.yuzhiweiVisible})}>调用预置位 {this.state.yuzhiweiVisible?<Icon type='down'/>:<Icon type='up'/>}
                 </div>
@@ -77,9 +83,28 @@ class VideoCtrlBtn extends React.Component {
           <div className="float-right">
               {this.screenRender()}
           </div>
+          <Modal title="设置预置位"
+              visible={this.state.visible}
+              style={{ top: 200 }}
+              okText='保存'
+              cancelText='取消'
+              onOk={this.submit.bind(this)}
+              onCancel={()=>this.setState({visible:false})}
+              >
+              <Form layout='inline'>
+                <FormItem label="预置位名称">
+                  {getFieldDecorator('name',{
+                    rules: [{ required: true,message: '请输入预置位名称'}],
+                    // initialValue:selectChannel?selectChannel.name:''
+                  })(<Input type="text" />)}
+                </FormItem>
+              </Form>
+          </Modal>
         </div>
     )
   }
 }
 
+
+const VideoCtrlBtn = Form.create()(VideoCtrlBtn1);
 export default VideoCtrlBtn

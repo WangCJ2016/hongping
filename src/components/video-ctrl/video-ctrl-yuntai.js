@@ -1,8 +1,21 @@
 import React from 'react'
-import {Icon} from 'antd'
+import {Icon,Select} from 'antd'
+const Option = Select.Option 
 
 class VideoCtrlYuntai extends React.Component {
   state = {  }
+  vvSelect(e){
+    this.props.playCtrlChange({vv:e})
+  }
+  jjvSelect(e) {
+    this.props.playCtrlChange({jjv:e})
+  }
+  jdvSelect(e) {
+    this.props.playCtrlChange({jdv:e})
+  }
+  gqvSelect(e) {
+    this.props.playCtrlChange({gqv:e})
+  }
   render() {
     return (
       <div className='yuntai'>
@@ -24,35 +37,63 @@ class VideoCtrlYuntai extends React.Component {
         <div className="count-ctrl">
           <div>
             转速：
-            <span className="count clearfix">
-              <span className='float-left'><Icon type="minus" /></span>
-              <span>0</span>
-              <span className='float-right' ><Icon type="plus" /></span>
-            </span>
+            <Select defaultValue={1} onSelect={this.vvSelect.bind(this)} style={{ width: 120 }}>
+              <Option value={1}>1</Option>
+              <Option value={2}>2</Option>
+              <Option value={3}>3</Option>
+              <Option value={4}>4</Option>
+              <Option value={5}>5</Option>
+              <Option value={6}>6</Option>
+              <Option value={7}>7</Option>
+              <Option value={8}>8</Option>
+              <Option value={9}>9</Option>
+              <Option value={10}>10</Option>
+            </Select>
           </div>
           <div>
             焦距：
-            <span className="count clearfix">
-              <span className='float-left'><Icon type="minus" /></span>
-              <span>0</span>
-              <span className='float-right' ><Icon type="plus" /></span>
-            </span>
+            <Select defaultValue={1} onSelect={this.jjvSelect.bind(this)} style={{ width: 120 }}>
+              <Option value={1}>1</Option>
+              <Option value={2}>2</Option>
+              <Option value={3}>3</Option>
+              <Option value={4}>4</Option>
+              <Option value={5}>5</Option>
+              <Option value={6}>6</Option>
+              <Option value={7}>7</Option>
+              <Option value={8}>8</Option>
+              <Option value={9}>9</Option>
+              <Option value={10}>10</Option>
+            </Select>
           </div>
           <div>
             焦点：
-            <span className="count clearfix">
-              <span className='float-left'><Icon type="minus" /></span>
-              <span>0</span>
-              <span className='float-right' ><Icon type="plus" /></span>
-            </span>
+            <Select defaultValue={1} onSelect={this.jdvSelect.bind(this)} style={{ width: 120 }}>
+              <Option value={1}>1</Option>
+              <Option value={2}>2</Option>
+              <Option value={3}>3</Option>
+              <Option value={4}>4</Option>
+              <Option value={5}>5</Option>
+              <Option value={6}>6</Option>
+              <Option value={7}>7</Option>
+              <Option value={8}>8</Option>
+              <Option value={9}>9</Option>
+              <Option value={10}>10</Option>
+            </Select>
           </div>
           <div>
             光圈：
-            <span className="count clearfix">
-              <span className='float-left'><Icon type="minus" /></span>
-              <span>0</span>
-              <span className='float-right' ><Icon type="plus" /></span>
-            </span>
+            <Select defaultValue={1} onSelect={this.gqvSelect.bind(this)} style={{ width: 120 }}>
+              <Option value={1}>1</Option>
+              <Option value={2}>2</Option>
+              <Option value={3}>3</Option>
+              <Option value={4}>4</Option>
+              <Option value={5}>5</Option>
+              <Option value={6}>6</Option>
+              <Option value={7}>7</Option>
+              <Option value={8}>8</Option>
+              <Option value={9}>9</Option>
+              <Option value={10}>10</Option>
+            </Select>
           </div>
         </div>
       </div>

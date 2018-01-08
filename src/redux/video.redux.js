@@ -3,12 +3,17 @@ import { request, config} from '../config'
 const intialState = {
   saveVideoIf:false,
   hasSoundIf:true,
-  backVideoIf:false
+  backVideoIf:false,
+  vv:1,
+  jjv:1,
+  jdv:1,
+  gqv:1
 }
 
 const CHANGESAVEVIDEO = '[video] CHANGESAVEVIDEO'
 const CHANGESOUND = '[video] CHANGESOUND'
 const CHANGEBACKVIDEO = '[video] CHANGEBACKVIDEO'
+const PLAYCTRLCHANGE = '[video] PLAYCTRLCHANGE'
 
 export function video(state=intialState,action) {
   switch (action.type) {
@@ -20,6 +25,9 @@ export function video(state=intialState,action) {
     }
     case CHANGEBACKVIDEO: {
       return {...state,backVideoIf:!state.backVideoIf}
+    }
+    case PLAYCTRLCHANGE:　{
+      return {...state,...action.payload}
     }
     default:
       return state
@@ -46,3 +54,11 @@ export function changeBackVideoIf() {
     type:CHANGEBACKVIDEO
   }
 } 
+
+// 转速改变
+export function playCtrlChange(v) {
+  return {
+    type: PLAYCTRLCHANGE,
+    payload: v
+  }
+}

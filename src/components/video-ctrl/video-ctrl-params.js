@@ -4,10 +4,12 @@ const Option = Select.Option
 
 class VideoCtrlParam extends React.Component {
   state = {  }
+  
   render() {
     return (
       <div className='yuntai'>
         <div className="count-ctrl">
+        <button onClick={this.props.setVideoEffect}>dfsf</button>
           <div>
           <span className='title'>亮度：</span>
             <Select defaultValue='1' style={{ width: 120 }}>

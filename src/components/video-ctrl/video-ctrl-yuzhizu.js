@@ -84,26 +84,9 @@ class VideoCtrlYuzhizu1 extends React.Component {
                 // onSelectChange={this.handleSelectChange}
                 // onScroll={this.handleScroll}
                 render={item => item.title} />
-            </Form>
+             </Form>
               </Modal>
-            {/*设置预置位*/}
-            <Modal title="设置预置位"
-              visible={this.state.visible}
-              style={{ top: 200 }}
-              okText='保存'
-              cancelText='取消'
-              onOk={this.submit.bind(this)}
-              onCancel={()=>this.setState({visible:false})}
-              >
-              <Form layout='inline'>
-                <FormItem label="预置位名称">
-                  {getFieldDecorator('name',{
-                    rules: [{ required: true,message: '请输入预置位名称'}],
-                    // initialValue:selectChannel?selectChannel.name:''
-                  })(<Input type="text" />)}
-                </FormItem>
-              </Form>
-          </Modal>
+      
         </div>
     )
   }

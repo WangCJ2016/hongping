@@ -2,7 +2,7 @@ import React from 'react'
 import { Tabs, Tree, message } from 'antd'
 import { connect } from 'react-redux'
 import {areaList1, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
-import {changeSaveVideoIf, changeSoundIf} from '../../redux/video.redux'
+import {changeSaveVideoIf, changeSoundIf, playCtrlChange} from '../../redux/video.redux'
 import VideoCtrlYuntai from './video-ctrl-yuntai'
 import VideoCtrlYuzhizu from './video-ctrl-yuzhizu'
 import VideoCtrlParam from './video-ctrl-params'
@@ -13,14 +13,14 @@ const TreeNode = Tree.TreeNode;
 @connect(
     state=>({deivces:state.devices,area:state.area,video: state.video}),
     {
-        areaList1, uploadImg,areaInfo,selectAreaIdSuccess,changeSaveVideoIf,changeSoundIf
+        areaList1, uploadImg,areaInfo,selectAreaIdSuccess,changeSaveVideoIf,changeSoundIf,playCtrlChange
      }
 )
 class VideoCtrl extends React.Component {
   state = {  }
   componentDidMount() {
     this.props.areaList1()
-    //this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
+   // this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
   }
   select() {}
   areaTreeRender() {
@@ -137,7 +137,27 @@ class VideoCtrl extends React.Component {
        message.error('关闭失败')
      }
   }
+
+  // 设置参数
+  setVideoEffect(){
+    const a = this.play.XzVideo_GetVideoEffect(0)
+    alert(a)
+  }
+// 云台
+  yutaiUp(){
+    this.play.XzVideo_RealPlayControl(21,true,this.props.video.vv,5,0)
+  }
+  yutaiDown(){
+    this.play.XzVideo_RealPlayControl(22,true,this.props.video.j,5,0)
+  }
+  yutaiUp(){
+    this.play.XzVideo_RealPlayControl(21,true,this.props.video.vv,5,0)
+  }
+  yutaiUp(){
+    this.play.XzVideo_RealPlayControl(21,true,this.props.video.vv,5,0)
+  }
   render() {
+    console.log(this.props)
     const areas = this.props.area.areas
     return (
       <div className='video-ctrl clearfix'>
@@ -173,10 +193,12 @@ class VideoCtrl extends React.Component {
         </Tabs>
         <Tabs defaultActiveKey="1" type="card">
           <TabPane tab="云台" key="1">
-            <VideoCtrlYuntai />
+            <VideoCtrlYuntai  
+              playCtrlChange={this.props.playCtrlChange}
+              yutaiUp={this.yutaiUp.bind(this)}/>
           </TabPane>
           <TabPane tab="参数" key="2">
-            <VideoCtrlParam />
+            <VideoCtrlParam setVideoEffect={this.setVideoEffect.bind(this)} />
           </TabPane>
         </Tabs>
       </div>
