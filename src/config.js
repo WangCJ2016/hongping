@@ -75,6 +75,12 @@ export const config = {
     modifyAlarm: '/home_modifyAlarm', // 报警处理
     searchChannel: '/rhost_querySysRemoteChannelsPage', //搜索摄像头
     searchBroadcast: '/bhost_querySysBroadcastChannelsPage', //搜索广播
+    carPages: '/home_queryCarsPage', // 车辆信息
+    // 视频
+    videoAreaDevices: '/home_queryAreaDevices', //视频／红外通道
+    remotePresets: '/rhost_querySysRemotePresets', // 预置位列表
+    modifyRemotePresets: '/rhost_modifySysRemotePreset', // 删除／修改预置位
+    createRemotePreset: '/rhost_createSysRemotePreset', // 添加预置位
   }
 }
 //get/post请求

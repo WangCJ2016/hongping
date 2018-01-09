@@ -182,14 +182,13 @@ submit() {
            
             <Button type='primary' className='float-right' onClick={this.submit.bind(this)}>保存</Button>
           </div>
-          {/* <div className='map-area'>
-            <Collapse defaultActiveKey={['1']}>
+          <div className='map-area'>
+          <Collapse defaultActiveKey={['1']}>
               <Panel header="区域" key="1">
-                {areas.length>0?this.areaTreeRender():null}  
-            </Panel>
-           </Collapse>
-        </div> */}
-       <AreaTree select={this.select.bind(this)}/>
+                <AreaTree select={this.select.bind(this)} />
+              </Panel>
+          </Collapse>
+         </div>
        <div className="device-area">
           <Collapse defaultActiveKey={['1']}>
             <Panel header="设备" key="1">

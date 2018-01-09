@@ -1,6 +1,5 @@
 import React from 'react'
-import {Tooltip,Switch,Icon,Select,Modal,Form,Input} from 'antd'
-const Option = Select.Option
+import {Tooltip,Switch,Icon,Modal,Form,Input,Popconfirm} from 'antd'
 const FormItem = Form.Item
 
 class VideoCtrlBtn1 extends React.Component {
@@ -19,7 +18,6 @@ class VideoCtrlBtn1 extends React.Component {
     })
   }
   setScreen(index) {
-    console.log(index)
     this.setState({
       activeIndex:index
     })
@@ -33,9 +31,28 @@ class VideoCtrlBtn1 extends React.Component {
     }
   }
   submit(){
-
+    this.props.form.validateFields((errors, values)=>{
+      if(!errors) {
+        this.props.createRemotePresets({
+          presetName: encodeURI(values.name),
+          channelId:this.props.presets.channelId,
+          presetId: this.props.presets.presets.length + 1
+        })
+      }
+    })
+  }
+  presetsRender() {
+    const presets = this.props.presets.presets
+    return presets.map(preset=> (
+      <li key={preset.id}>{preset.presetName}
+        <Popconfirm title="确认删除?" onConfirm={()=>this.props.delPreset({id:preset.id,isDelete:1,presetId:preset.presetId,channelId:preset.channelId})} okText="确定" cancelText="取消">
+        <Icon type='delete'/>
+        </Popconfirm>
+      </li>
+    ))
   }
   render() {
+    console.log(this.props.presets)
     const { getFieldDecorator } = this.props.form
     return (
       <div className="controls clearfix">
@@ -69,11 +86,7 @@ class VideoCtrlBtn1 extends React.Component {
                 {
                   this.state.yuzhiweiVisible?
                   <ul className='downlist'>
-                    <li>预置位1<Icon type='delete'/></li>
-                    <li>预置位2<Icon type='delete'/></li>
-                    <li>预置位3<Icon type='delete'/></li>
-                    <li>预置位4<Icon type='delete'/></li>
-                    <li>预置位5<Icon type='delete'/></li>
+                    {this.presetsRender()}
                   </ul>:null
                 }
                 

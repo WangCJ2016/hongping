@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tabs, message } from 'antd'
 import { connect } from 'react-redux'
-import {changeSaveVideoIf, changeSoundIf, playCtrlChange, paramsChange} from '../../redux/video.redux'
+import {changeSaveVideoIf, changeSoundIf, playCtrlChange, paramsChange,modifyRemotePresets,createRemotePresets} from '../../redux/video.redux'
 import VideoCtrlTree from './video-ctrl-tree'
 import VideoCtrlYuntai from './video-ctrl-yuntai'
 import VideoCtrlYuzhizu from './video-ctrl-yuzhizu'
@@ -13,7 +13,7 @@ const TabPane = Tabs.TabPane;
 @connect(
     state=>({video: state.video}),
     {
-        changeSaveVideoIf,changeSoundIf,playCtrlChange,paramsChange
+        changeSaveVideoIf,changeSoundIf,playCtrlChange,paramsChange,modifyRemotePresets,createRemotePresets
      }
 )
 class VideoCtrl extends React.Component {
@@ -147,7 +147,6 @@ class VideoCtrl extends React.Component {
     this.play.XzVideo_RealPlayControl(12,false,this.props.video.vv,5,0)
   }
   render() {
-
     this.videoParams = {
       bright: this.props.video.bright,
       contrast: this.props.video.contrast,
@@ -177,7 +176,10 @@ class VideoCtrl extends React.Component {
             setScreen={this.setScreen} 
             videoProps={this.props.video}
             jiaojuPlusCtrl={this.jiaojuPlusCtrl}
-            jiaojuMinusCtrl={this.jiaojuMinusCtrl}/>
+            jiaojuMinusCtrl={this.jiaojuMinusCtrl}
+            presets={this.props.video.presets}
+            delPreset={this.props.modifyRemotePresets}
+            createRemotePresets={this.props.createRemotePresets} />
        </div>
       <div className="ctrl-right float-right">
         <Tabs defaultActiveKey="2" type="card">

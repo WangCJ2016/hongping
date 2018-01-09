@@ -1,8 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Collapse} from 'antd'
 import {areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import AreaTree from '../../components/areaTree/areaTree'
+const Panel = Collapse.Panel
 
 @connect(
   state=>({deivces:state.devices,area:state.area}),
@@ -20,7 +22,14 @@ class HomeWarmPanel extends React.Component {
   render() {
     return (
       <div className='home-warm-panel'>
-        <AreaTree select={this.select.bind(this)} />
+      <div className='map-area'>
+        <Collapse defaultActiveKey={['1']}>
+            <Panel header="区域" key="1">
+              <AreaTree select={this.select.bind(this)} />
+            </Panel>
+        </Collapse>
+       </div>
+        
         <div className='float-right'>
           <div className='panel-title clearfix'>
             <div className='float-left'><img src={require('../../assets/imgs/broadcast1.png')} alt=""/>广播</div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Tabs,Tree } from 'antd'
+
 import { connect} from 'react-redux'
 import VideoCtrlBtns from './video-ctrlbtn'
 import VideoTableList from './video-tablelist'
@@ -8,8 +8,6 @@ import VideoSearch from './video-search'
 import {areaList1, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
 import {changeBackVideoIf} from '../../redux/video.redux'
 
-const TabPane = Tabs.TabPane;
-const TreeNode = Tree.TreeNode;
 
 @connect(
   state=>({deivces:state.devices,area:state.area,video: state.video}),

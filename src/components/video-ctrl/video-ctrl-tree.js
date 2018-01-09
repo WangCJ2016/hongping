@@ -1,63 +1,53 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {areaList1} from '../../redux/area.redux'
-import {Tree} from 'antd'
-const TreeNode = Tree.TreeNode;
+import {videoAreaDevices,remotePresets} from '../../redux/video.redux'
+import AreaTree from '../areaTree/areaTree'
+import classname from 'classnames'
 
 @connect(
-  state=>({deivces:state.devices,area:state.area}),
+  state=>({video:state.video,}),
   {
-      areaList1
+    videoAreaDevices,remotePresets
    }
 )
 class VideoCtrlTree extends React.Component {
-  componentDidMount() {
-    this.props.areaList1()
+  constructor() {
+    super()
+    this.state={
+      activeId: -1
+    }
+    this.deviceSelect = this.deviceSelect.bind(this)
   }
-  select() {}
-  areaTreeRender() {
-    const areas = this.props.area.areas
-    const arealist = this.props.area.arealist
-   return (
-    <Tree
-      onSelect={this.select.bind(this)}
-      defaultExpandAll={true}
-      >
-      { areas.map((level1,index) => {
-        return (
-          <TreeNode title={level1.name} key={level1.id}>
-            {toTree(level1.id,arealist)}
-          </TreeNode>
-        )
-      })}
-    </Tree>
-   )
-  
-    function toTree(id, array) {
-      const childArr = childrenArr(id, array)
-      if(childArr.length > 0) {
-        return childArr.map((child,index) => (
-          <TreeNode key={child.id} title={child.name} >
-            {toTree(child.id, array)}
-          </TreeNode>
-        ))
-      }
-    }
-    function childrenArr(id, array) {
-      var newArry = []
-      for (var i in array) {
-          if (array[i].parentId === id)
-              newArry.push(array[i]);
-      }
-      return newArry;
-    }
- 
+  deviceSelect(device) {
+    console.log(device)
+    this.setState({
+      activeId: device.id
+    })
+    this.props.remotePresets({channelId: device.id})
+  }
+  channelRender() {
+    const channels = this.props.video.areaDevices
+    return channels.map((channel) => {
+      const style = classname({
+        device: true,
+        active: channel.id === this.state.activeId
+      })
+     return <div key={channel.id} className={style} 
+     onClick={()=>this.deviceSelect(channel)}>{channel.name}</div>
+    })
   }
   render() {
-    const areas = this.props.area.areas
     return (
-      <div className='areaTree'>
-        {areas.length>0?this.areaTreeRender():null}  
+      <div className='video-areaTree'>
+        
+          <div className="float-left">
+            <div className="title">区域</div>
+            <AreaTree defaultExpandAll={true} select={this.props.videoAreaDevices} />
+          </div>
+          <div className="float-right device">
+              <div className="title">设备列表</div>
+              {this.channelRender()}
+          </div>
       </div>
     )
   }

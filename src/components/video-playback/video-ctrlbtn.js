@@ -14,7 +14,7 @@ class VideoCtrlBtns extends React.Component {
             <span className='v-back btn' onClick={()=>this.props.playCtrl(6)}>
             </span>
           </Tooltip>
-          {this.props.propsVideo.backVideoIf?
+          {true?
             <Tooltip title='停止'>
               <span className='v-stop btn' onClick={()=>this.props.playCtrl(3)}>
               </span>

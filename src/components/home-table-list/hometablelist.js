@@ -1,8 +1,8 @@
 import React from 'react'
-import { Checkbox,Modal, Tabs, Table, Icon, Input, Select, Button, Pagination } from 'antd';
+import { Checkbox,Modal, Tabs, Table, Icon, Button, Pagination } from 'antd';
 import className from 'classnames'
 import {connect} from 'react-redux'
-import { alarmPages,modifyAlarm } from '../../redux/alarm.redux'
+import { alarmPages,modifyAlarm,getAlarmInfo } from '../../redux/alarm.redux'
 import './home-table-list.scss'
 import { alarmDegree, alarmType } from '../../utils'
 const TabPane = Tabs.TabPane
@@ -10,12 +10,11 @@ const TabPane = Tabs.TabPane
 
 @connect(
   state => ({alarm:state.alarm,user:state.user}),
-  {alarmPages,modifyAlarm}
+  {alarmPages,modifyAlarm,getAlarmInfo}
 )
 class HomeTableList extends React.Component {
   state={
     visible: false,
-    alarmInfo: null,
     suggest:''
   }
   componentDidMount() {
@@ -43,17 +42,15 @@ class HomeTableList extends React.Component {
   alarmClick(alarm) {
     this.setState({
       visible: true,
-      alarmInfo:alarm
     })
-    //this.props.getAlarmInfo({id:id})
+    this.props.getAlarmInfo({id:alarm.id})
   }
   handleChange(e){
-    console.log(e.target.value)
     this.setState({suggest:e.target.value})
   }
   render() {
-    const alarmInfo = this.state.alarmInfo
     console.log(this.props)
+    const alarmInfo = this.props.alarm.alarmInfo
     const columns = [{
       title: '名称',
       dataIndex: 'name',
@@ -82,16 +79,7 @@ class HomeTableList extends React.Component {
         disabled: record.name === 'Disabled User',    // Column configuration not to be checked
       }),
     };
-    const data = [{
-      key: '1',
-        name: '主地图-广播'
-      }, {
-        key: '2',
-        name: '主地图-广播'
-      }, {
-        key: '3',
-        name: '主地图-广播',
-    }, ];
+    const dataChannels = alarmInfo.channels
     return (
       <div className="list">
        <div className="item">
@@ -122,7 +110,7 @@ class HomeTableList extends React.Component {
                   <Table 
                   rowSelection={rowSelection}
                   columns={columns} 
-                  dataSource={data}
+                  dataSource={dataChannels}
                   pagination={false}
                   size='small' />
                 </TabPane>
