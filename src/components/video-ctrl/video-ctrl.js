@@ -37,7 +37,7 @@ class VideoCtrl extends React.Component {
   }
   state = {  }
   componentDidMount() {
-   // this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
+    //this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
   }
   
   // 选择屏幕
@@ -124,19 +124,16 @@ class VideoCtrl extends React.Component {
   }
 // 云台
   yutaiUp(state){
-    state?this.play.XzVideo_RealPlayControl(21,true,this.props.video.vv,5,0):
-    this.play.XzVideo_RealPlayControl(21,false,this.props.video.vv,5,0)
+   this.play.XzVideo_RealPlayControl(21,!state,this.props.video.vv,5,0)
   }
   yutaiDown(state){
-    state?this.play.XzVideo_RealPlayControl(22,true,this.props.video.vv,5,0):
-    this.play.XzVideo_RealPlayControl(22,false,this.props.video.vv,5,0)
+    this.play.XzVideo_RealPlayControl(22,!state,this.props.video.vv,5,0)
   }
   yutaiLeft(state){
-    state?this.play.XzVideo_RealPlayControl(23,true,this.props.video.vv,5,0):
-    this.play.XzVideo_RealPlayControl(23,false,this.props.video.vv,5,0)
+    this.play.XzVideo_RealPlayControl(23,!state,this.props.video.vv,5,0)
   }
   yutaiRight(state){
-   // this.play.XzVideo_RealPlayControl(24,true,this.props.video.vv,5,0)
+    this.play.XzVideo_RealPlayControl(24,!state,this.props.video.vv,5,0)
   }
   // 焦距
   jiaojuPlusCtrl(state) {
@@ -156,6 +153,7 @@ class VideoCtrl extends React.Component {
     }
     return (
       <div className='video-ctrl clearfix'>
+
        <div className='float-left' style={{width:'70%'}}>
               <object   id="play"
               ref={(screen)=>this.play=screen}
@@ -185,10 +183,10 @@ class VideoCtrl extends React.Component {
       <div className="ctrl-right float-right">
         <Tabs defaultActiveKey="2" type="card">
           <TabPane tab="设备" key="1">
-      
-           <VideoCtrlTree  />
+           <VideoCtrlTree play={this.play} />
           </TabPane>
           <TabPane tab="预览组" key="2">
+         
             <VideoCtrlYuzhizu play={this.play} />
           </TabPane>
         </Tabs>

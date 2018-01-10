@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {videoAreaDevices,remotePresets} from '../../redux/video.redux'
+import {videoAreaDevices,remotePresets,getDevInfo} from '../../redux/video.redux'
 import AreaTree from '../areaTree/areaTree'
 import classname from 'classnames'
 
 @connect(
   state=>({video:state.video,}),
   {
-    videoAreaDevices,remotePresets
+    videoAreaDevices,remotePresets,getDevInfo
    }
 )
 class VideoCtrlTree extends React.Component {
@@ -19,10 +19,12 @@ class VideoCtrlTree extends React.Component {
     this.deviceSelect = this.deviceSelect.bind(this)
   }
   deviceSelect(device) {
+    console.log(device)
     this.setState({
       activeId: device.id
     })
     this.props.remotePresets({channelId: device.id})
+    this.props.getDevInfo(device.id,this.props.play)
   }
   channelRender() {
     const channels = this.props.video.areaDevices

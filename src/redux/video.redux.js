@@ -293,11 +293,12 @@ export function getDevInfo(devId,play) {
       type:1
     })
     .then(res => {
-     console.log(res)
+     console.log(user)
      if(res.success) {
        const model = res.dataObject.host.model === 1?'HikHC-14':'DHNET-03'
-      this.play.XzVideo_RealPlay(1,user.account.name,"",0,"",0,1,res.dataObject.host.url,res.dataObject.host.url,res.dataObject.host.username,res.dataObject.host.psw,model,res.dataObject.index,0);
-     }
+     // play.XzVideo_RealPlay(1,"admin","192.168.11.9",6000,1,res.dataObject.host.url,res.dataObject.host.port,res.dataObject.host.username,res.dataObject.host.psw,model,1,0);
+      play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,res.dataObject.host.url,res.dataObject.host.port,res.dataObject.host.username,res.dataObject.host.psw,model,res.dataObject.index,0);
+    }
     })
   }
 }
