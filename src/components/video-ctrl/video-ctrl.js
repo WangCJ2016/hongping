@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tabs, message } from 'antd'
 import { connect } from 'react-redux'
-import {changeSaveVideoIf, changeSoundIf, playCtrlChange, paramsChange,modifyRemotePresets,createRemotePresets} from '../../redux/video.redux'
+import {changeSaveVideoIf, changeSoundIf, playCtrlChange, paramsChange,modifyRemotePresets,createRemotePresets,getDevInfo} from '../../redux/video.redux'
 import VideoCtrlTree from './video-ctrl-tree'
 import VideoCtrlYuntai from './video-ctrl-yuntai'
 import VideoCtrlYuzhizu from './video-ctrl-yuzhizu'
@@ -39,6 +39,7 @@ class VideoCtrl extends React.Component {
   componentDidMount() {
    // this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
   }
+  
   // 选择屏幕
   setScreen(index) {
     this.play.XzVideo_SetRealPlayScreen(index);  
@@ -185,10 +186,10 @@ class VideoCtrl extends React.Component {
         <Tabs defaultActiveKey="2" type="card">
           <TabPane tab="设备" key="1">
       
-           <VideoCtrlTree />
+           <VideoCtrlTree  />
           </TabPane>
           <TabPane tab="预览组" key="2">
-            <VideoCtrlYuzhizu />
+            <VideoCtrlYuzhizu play={this.play} />
           </TabPane>
         </Tabs>
         <Tabs defaultActiveKey="1" type="card">

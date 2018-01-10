@@ -13,7 +13,8 @@ const intialState = {
   presets: {
     channelId: '',
     presets: []
-  }
+  },
+  previewGroup: []
 }
 
 const CHANGESAVEVIDEO = '[video] CHANGESAVEVIDEO'
@@ -25,6 +26,8 @@ const VIDEOAREADEVICE = '[video] VIDEOAREADEVICE'
 const REMOTEPRESETS = '[video] REMOTEPRESETS'
 const MODIFYPRESET = '[video] MODIFYPRESET'
 const CREATEPRESTS = '[video] CREATEPRESTS'
+const CREATEPREVIEWGROUP = '[video] CREATEPREVIEWGROUP'
+const PREVIEWGROUPLIST = '[video] PREVIEWGROUPLIST'
 
 export function video(state=intialState,action) {
   switch (action.type) {
@@ -58,6 +61,14 @@ export function video(state=intialState,action) {
       const presets = [...state.presets.presets,action.payload]
       const allpresets = {...state.presets,presets:presets}
       return {...state,presets:allpresets}
+    }
+    // 预览组
+    case PREVIEWGROUPLIST: {
+      return {...state,previewGroup:action.payload}
+    }
+    case CREATEPREVIEWGROUP: {
+      const previewGroup = [...state.previewGroup,action.payload]
+      return {...state,previewGroup:previewGroup}
     }
     default:
       return state
@@ -198,5 +209,95 @@ export function modifyRemotePresets(info) {
        }
      }
    })
+  }
+}
+// 预览列表
+function remotePreviewGroupListSuccess(data) {
+  return {
+    type: PREVIEWGROUPLIST,
+    payload: data
+  }
+}
+export function remotePreviewGroupList(info) {
+  return (dispatch)=>{ 
+    request.get(config.api.base + config.api.remotePreviewGroupList,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     console.log(res)
+     if(res.success) {
+       if(res.dataObject) {
+        dispatch(remotePreviewGroupListSuccess(res.dataObject))
+       }
+     }
+   })
+  }
+}
+// 添加预览组
+
+export function createPreviewGroup(info) {
+  return (dispatch)=>{
+    request.get(config.api.base + config.api.createPreviewGroup,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     console.log(res)
+     if(res.success) {
+      remotePreviewGroupList({devType:1})(dispatch)
+     }
+   })
+  }
+}
+
+// 修改／删除预览组
+export function modifyPreviewGroup(info) {
+  return (dispatch)=>{
+    request.get(config.api.base + config.api.modifyPreviewGroup,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     if(res.success) {
+       //console.log(remotePreviewGroupList)
+      remotePreviewGroupList({devType:1})(dispatch)
+     }
+   })
+  }
+}
+
+export function modifySysRemotePreview(info) {
+  return (dispatch,getState)=>{
+    const user = getState().user
+    request.get(config.api.base + config.api.modifySysRemotePreview,{
+      token: token,
+      accountId: user.account.id,
+      ...info
+    })
+   .then(res=>{
+     console.log(res)
+     if(res.success){
+      remotePreviewGroupList({devType:1})(dispatch)
+     }
+   })
+  }
+}
+// 根据DevID获取设备信息  视频播放信息
+export function getDevInfo(devId,play) {
+  return (dispatch,getState) => {
+    const user = getState().user
+    request.get(config.api.base + config.api.getDevInfo,{
+      token:token,
+      devId: devId,
+      type:1
+    })
+    .then(res => {
+     console.log(res)
+     if(res.success) {
+       const model = res.dataObject.host.model === 1?'HikHC-14':'DHNET-03'
+      this.play.XzVideo_RealPlay(1,user.account.name,"",0,"",0,1,res.dataObject.host.url,res.dataObject.host.url,res.dataObject.host.username,res.dataObject.host.psw,model,res.dataObject.index,0);
+     }
+    })
   }
 }

@@ -12,17 +12,20 @@ const TreeNode = Tree.TreeNode;
      }
 )
 export default class AreaTree extends React.Component {
+    firstRenderIf=false 
     componentDidMount(){
         this.props.areaList1()
     }
     select(e) {
-      console.log(e)
       this.props.select({areaId:e[0],type:1})
     }
     areaTreeRender() {
         const areas = this.props.area.areas
         const arealist = this.props.area.arealist
-        this.props.select({areaId:areas[0].id,type:1})
+        if(!this.firstRenderIf) {
+          this.props.select({areaId:areas[0].id,type:1})
+          this.firstRenderIf = true
+        }
        return (
         <Tree
           defaultSelectedKeys={[areas[0].id]}
@@ -38,7 +41,6 @@ export default class AreaTree extends React.Component {
           })}
         </Tree>
        )
-      
         function toTree(id, array) {
           const childArr = childrenArr(id, array)
           if(childArr.length > 0) {

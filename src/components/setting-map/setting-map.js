@@ -14,9 +14,18 @@ const Panel = Collapse.Panel
    }
 )
 class SettingMap extends React.Component {
-  state = {
-    selectDevices: [],
-    ifOnImg: false
+  constructor() {
+    super()
+    this.state = {
+      selectDevices: [],
+      ifOnImg: false
+    }
+    this.selectArea = this.selectArea.bind(this)
+  }
+  selectArea({areaId}) {
+      this.props.areaDevices({areaId: areaId})
+       this.props.areaInfo({id:areaId})
+       this.props.querySysInstallPlaces({areaId:areaId})
   }
   componentDidMount() {
     this.props.areaList1()
@@ -74,7 +83,7 @@ class SettingMap extends React.Component {
   // 地图设备渲染
   mapDeviceRender() {
     const devices = this.props.deivces.mapToDevices
-
+    
     return devices.map((device,index) => (
       <div key={device.id+index} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
         <Tag onClose={this.delDevice.bind(this,device)} closable >
@@ -185,7 +194,7 @@ submit() {
           <div className='map-area'>
           <Collapse defaultActiveKey={['1']}>
               <Panel header="区域" key="1">
-                <AreaTree select={this.select.bind(this)} />
+                <AreaTree select={this.selectArea} />
               </Panel>
           </Collapse>
          </div>

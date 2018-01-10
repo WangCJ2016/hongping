@@ -81,6 +81,11 @@ export const config = {
     remotePresets: '/rhost_querySysRemotePresets', // 预置位列表
     modifyRemotePresets: '/rhost_modifySysRemotePreset', // 删除／修改预置位
     createRemotePreset: '/rhost_createSysRemotePreset', // 添加预置位
+    createPreviewGroup: '/preview_createSrPreviewGroup', // 添加预览组
+    remotePreviewGroupList: '/preview_querySrPreviewGroups', // 预览列表
+    modifyPreviewGroup: '/preview_modifySrPreviewGroup', //修改／删除预览组
+    modifySysRemotePreview: '/preview_modifySysRemotePreview', // 添加／修改预览
+    getDevInfo: '/home_getDeviceInfo', // 根据DevID获取设备信息
   }
 }
 //get/post请求

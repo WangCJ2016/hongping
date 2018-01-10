@@ -137,10 +137,10 @@ export function areaList1(info) {
             parentId: '',
             level: area.level,
             children:[]}))
-           areaDevices({areaId: level1[0].id})(dispatch)
-           areaInfo({id:level1[0].id})(dispatch,getState)
-           querySysInstallPlaces({areaId:level1[0].id})(dispatch,getState)
-           dispatch(selectAreaIdSuccess(level1[0].id))
+          //  areaDevices({areaId: level1[0].id})(dispatch)
+          //  areaInfo({id:level1[0].id})(dispatch,getState)
+          //  querySysInstallPlaces({areaId:level1[0].id})(dispatch,getState)
+            dispatch(selectAreaIdSuccess(level1[0].id))
             dispatch(allAreas(arealist))
             dispatch(areaListSuccess(level1))
         }
@@ -255,18 +255,15 @@ function load() {
   }
 }
 export function areaInfo(info) {
-  return (dispatch,getState)=>{
-      const user = getState().user
-      console.log(user)
-      dispatch(load())
+  return (dispatch)=>{
+     // dispatch(load())
       request.get(config.api.base + config.api.picByarea,
                   {
                     token:token, 
                     ...info
         })
       .then(res=>{
-        console.log(res)
-        dispatch(load())
+      //  dispatch(load())
         if(res.success) {
           const info={
             picture: res.dataObject.picture?res.dataObject.picture:''

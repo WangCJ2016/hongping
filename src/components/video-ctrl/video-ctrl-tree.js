@@ -19,7 +19,6 @@ class VideoCtrlTree extends React.Component {
     this.deviceSelect = this.deviceSelect.bind(this)
   }
   deviceSelect(device) {
-    console.log(device)
     this.setState({
       activeId: device.id
     })
@@ -39,7 +38,6 @@ class VideoCtrlTree extends React.Component {
   render() {
     return (
       <div className='video-areaTree'>
-        
           <div className="float-left">
             <div className="title">区域</div>
             <AreaTree defaultExpandAll={true} select={this.props.videoAreaDevices} />
