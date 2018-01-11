@@ -2,6 +2,27 @@
   .ant-tabs-tabpane.ant-tabs-tabpane-active{
     overflow-x: auto
   }
+  .video-areaTree{
+    height: 230px;
+    overflow:auto;
+    .device{
+      min-width: 100px;
+      >div{
+        line-height: 30px;
+        cursor: pointer;
+        text-align: center
+      }
+      .active{
+        background-color: rgba($color: #dbdbdb, $alpha: .7)
+      }
+    }
+    .title{
+      line-height: 30px;
+      text-align: center;
+      background-color: #dbdbdb;
+      color: #fff;
+    }
+  }
   padding: 20px;
   .video-ctrl{
     min-width: 1440px;
@@ -144,27 +165,7 @@
         margin-top: 20px;
       }
     }
-    .video-areaTree{
-      height: 230px;
-      overflow:auto;
-      .device{
-        min-width: 100px;
-        >div{
-          line-height: 30px;
-          cursor: pointer;
-          text-align: center
-        }
-        .active{
-          background-color: rgba($color: #dbdbdb, $alpha: .7)
-        }
-      }
-      .title{
-        line-height: 30px;
-        text-align: center;
-        background-color: #dbdbdb;
-        color: #fff;
-      }
-    }
+   
   }
   .video-play-back{
     min-width: 1440px;

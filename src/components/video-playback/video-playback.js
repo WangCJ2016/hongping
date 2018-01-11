@@ -41,7 +41,7 @@ class VideoPlayBack extends React.Component {
               <VideoTableList />
           </div>
           <div className="float-right">
-            <VideoDeviceBack />
+            <VideoDeviceBack play={this.props.play} />
             <VideoSearch />
           </div>
         </div>
