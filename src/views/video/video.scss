@@ -267,6 +267,8 @@
 
 #play{
   width:100%!important;
+  position: relative;
+  z-index: -1;
 }
 
 .yuzhiwimodal{

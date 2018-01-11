@@ -37,7 +37,7 @@ class VideoCtrl extends React.Component {
   }
   state = {  }
   componentDidMount() {
-    //this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
+   // this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
   }
   
   // 选择屏幕
@@ -49,7 +49,7 @@ class VideoCtrl extends React.Component {
     
     if(this.props.video.hasSoundIf) {
       const a = this.play.XzVideo_RealPlaySound('关闭',0)
-      alert(a)
+     
     }else{
       this.play.XzVideo_RealPlaySound('打开',0)
     }
@@ -137,12 +137,10 @@ class VideoCtrl extends React.Component {
   }
   // 焦距
   jiaojuPlusCtrl(state) {
-    state?this.play.XzVideo_RealPlayControl(11,true,this.props.video.vv,5,0):
-    this.play.XzVideo_RealPlayControl(11,false,this.props.video.vv,5,0)
+    this.play.XzVideo_RealPlayControl(11,!state,this.props.video.vv,5,0)
   }
   jiaojuMinusCtrl(state) {
-    state?this.play.XzVideo_RealPlayControl(12,true,this.props.video.vv,5,0):
-    this.play.XzVideo_RealPlayControl(12,false,this.props.video.vv,5,0)
+    this.play.XzVideo_RealPlayControl(12,!state,this.props.video.vv,5,0)
   }
   render() {
     this.videoParams = {
@@ -174,8 +172,6 @@ class VideoCtrl extends React.Component {
             stopPlay={this.stopPlay}
             setScreen={this.setScreen} 
             videoProps={this.props.video}
-            jiaojuPlusCtrl={this.jiaojuPlusCtrl}
-            jiaojuMinusCtrl={this.jiaojuMinusCtrl}
             presets={this.props.video.presets}
             delPreset={this.props.modifyRemotePresets}
             createRemotePresets={this.props.createRemotePresets} />
@@ -197,7 +193,9 @@ class VideoCtrl extends React.Component {
               yutaiUp={this.yutaiUp}
               yutaiDown={this.yutaiDown}
               yutaiLeft={this.yutaiLeft}
-              yutaiRight={this.yutaiRight}/>
+              yutaiRight={this.yutaiRight}
+              jiaojuPlusCtrl={this.jiaojuPlusCtrl}
+              jiaojuMinusCtrl={this.jiaojuMinusCtrl}/>
           </TabPane>
           <TabPane tab="参数" key="2">
             <VideoCtrlParam 
