@@ -27,7 +27,7 @@ class VideoPlayBack extends React.Component {
     return (
         <div className='video-play-back'>
             <div className='float-left' style={{width:'70%'}}>
-              <object  id="play"
+              <object 
                 ref={(screen)=>this.play=screen}
                 classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
                 codebase="./XzVideoWebClient.cab#version=1.0.0.1"

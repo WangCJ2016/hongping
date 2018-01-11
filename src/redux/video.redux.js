@@ -9,6 +9,7 @@ const intialState = {
   contrast:5,
   saturation:5,
   hue:5,
+  playback: '1111',
   areaDevices: [],
   presets: {
     channelId: '',
@@ -28,6 +29,7 @@ const MODIFYPRESET = '[video] MODIFYPRESET'
 const CREATEPRESTS = '[video] CREATEPRESTS'
 const CREATEPREVIEWGROUP = '[video] CREATEPREVIEWGROUP'
 const PREVIEWGROUPLIST = '[video] PREVIEWGROUPLIST'
+const PLAYBACKDATA = '[video] PLAYBACKDATA'
 
 export function video(state=intialState,action) {
   switch (action.type) {
@@ -69,6 +71,10 @@ export function video(state=intialState,action) {
     case CREATEPREVIEWGROUP: {
       const previewGroup = [...state.previewGroup,action.payload]
       return {...state,previewGroup:previewGroup}
+    }
+
+    case PLAYBACKDATA:{ 
+      return {...state,playback:action.payload}
     }
     default:
       return state
@@ -284,6 +290,12 @@ export function modifySysRemotePreview(info) {
   }
 }
 // 根据DevID获取设备信息  视频播放信息
+function playBackData(data) {
+  return {
+    type:PLAYBACKDATA,
+    payload: data
+  }
+}
 export function getDevInfo(devId,play) {
   return (dispatch,getState) => {
     const user = getState().user
@@ -297,9 +309,14 @@ export function getDevInfo(devId,play) {
      if(res.success) {
        const data = res.dataObject
        const model = res.dataObject.host.model === 1?'HikHC-14':'DHNET-03'
-      //play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,res.dataObject.host.url,res.dataObject.host.port,res.dataObject.host.username,res.dataObject.host.psw,model,res.dataObject.index,0);
-      const a=play.XzVideo_FindDeviceFile(1,data.host.vid,data.host.url,data.host.port,data.host.username,data.host.psw,model,data.index,'2008-12-05 12:00:00','2018-01-11 12:00:00')
-      alert(a)
+      // this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
+     // const a = play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,res.dataObject.host.url,res.dataObject.host.port,res.dataObject.host.username,res.dataObject.host.psw,model,res.dataObject.index,0);
+      
+     const a=play.XzVideo_FindDeviceFile(1,data.host.vid,data.host.url,data.host.port,data.host.username,data.host.psw,model,data.index,'2017-12-31 12:00:00','2018-01-11 12:00:00')
+     // play.XzVideo_FindDeviceFile(2,1,"192.168.0.100",8000,"admin","wcj15858976305","HikHC-14",1,"2018-01-11 12:00:00","2018-01-11 13:00:00");  
+     alert(a)
+     dispatch(playBackData(a))
+      
     }
     })
   }

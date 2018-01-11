@@ -50,15 +50,8 @@ class SettingVideoBroadcastChannelDetail1 extends React.Component {
     this.props.modifyChannel({id: id, isDelete:1})
   }
   render() {
-    const columns = [ {
-              title: 'tip',
-              dataIndex: 'icon',
-              width: '20%',
-              key: 'icon',
-              render: (text,record) => (
-                <img src={require(`../../assets/imgs/${record.icon}.png`)} alt=""/>
-              )
-            },{
+    const columns = [
+           {
               title: '通道名称',
               dataIndex: 'name',
               width: '60%',

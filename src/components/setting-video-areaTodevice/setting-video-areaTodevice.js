@@ -209,14 +209,8 @@ class SettingVideoAreatoDevice extends React.Component {
   render() {
     const areas = this.props.area.areas
     const defaultSelectKeys = this.props.deivces.areaToDevices1.length>0? this.props.deivces.areaToDevices1.map(devices=>devices.id+'-'+devices.type):[]
-    const columns=[{
-      title: 'icon',
-      dataIndex: 'devIcon',
-      key: 'icon',
-      render: (text,record)=>(
-        record.devIcon?<img src={require(`../../assets/imgs/${record.devIcon}.png`)} alt=""/>:null
-      )
-    },{
+    const columns=[
+      {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',

@@ -10,7 +10,7 @@ class Video extends React.Component {
   render() {
     return (
       <div className='view-page'>
-        <Tabs defaultActiveKey="2">
+        <Tabs defaultActiveKey="1">
           <TabPane tab="视频监控" key="1">
             <VideoCtrl />
           </TabPane>
