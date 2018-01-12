@@ -74,8 +74,26 @@ export function video(state=intialState,action) {
     }
 
     case PLAYBACKDATA:{ 
-      return {...state,playback:action.payload}
+      const arr = action.payload.split('\n').map((doc,index) => {
+        const docArr = doc.split(',')
+       
+        return {
+          key:docArr[0],
+          id: index,
+          name:docArr[0],
+          host: '测试主机',
+          ip: '192.168.0.100',
+          channelname: '测试通道',
+          channelindex:1,
+          startime: docArr[2],
+          endtime: docArr[3],
+          size:docArr[1]
+        }
+      })
+     
+      return {...state,playback:arr}
     }
+  
     default:
       return state
   }
@@ -310,12 +328,11 @@ export function getDevInfo(devId,play) {
        const data = res.dataObject
        const model = res.dataObject.host.model === 1?'HikHC-14':'DHNET-03'
       // this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
-     // const a = play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,res.dataObject.host.url,res.dataObject.host.port,res.dataObject.host.username,res.dataObject.host.psw,model,res.dataObject.index,0);
+      const a = play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,res.dataObject.host.url,res.dataObject.host.port,res.dataObject.host.username,res.dataObject.host.psw,model,res.dataObject.index,0);
       
-     const a=play.XzVideo_FindDeviceFile(1,data.host.vid,data.host.url,data.host.port,data.host.username,data.host.psw,model,data.index,'2017-12-31 12:00:00','2018-01-11 12:00:00')
+    // const a=play.XzVideo_FindDeviceFile(1,data.host.vid,data.host.url,data.host.port,data.host.username,data.host.psw,model,data.index,'2018-01-11 09:30:00','2018-01-11 12:00:00')
      // play.XzVideo_FindDeviceFile(2,1,"192.168.0.100",8000,"admin","wcj15858976305","HikHC-14",1,"2018-01-11 12:00:00","2018-01-11 13:00:00");  
-     alert(a)
-     dispatch(playBackData(a))
+     //dispatch(playBackData(a))
       
     }
     })

@@ -151,7 +151,7 @@ class VideoCtrl extends React.Component {
     }
     return (
       <div className='video-ctrl clearfix'>
-         
+        
        <div className='float-left' style={{width:'70%'}}>
               <object
               ref={(screen)=>this.play=screen}

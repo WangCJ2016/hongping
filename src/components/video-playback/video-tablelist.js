@@ -1,5 +1,6 @@
 import React from 'react'
 import { Tabs, Table } from 'antd'
+import { connect } from 'react-redux'
 const TabPane = Tabs.TabPane;
 
 
@@ -100,27 +101,36 @@ const columns1 = [{
     <img src="" alt=""/>
   )
 }]
+
+@connect(
+  state=>({video: state.video}),
+ 
+)
 class VideoTableList extends React.Component {
   state = {  }
   render() {
+    console.log(JSON.stringify(this.props.video.playback))
     return (
       <div>
       <Tabs defaultActiveKey="1">
         <TabPane tab="回放文件列表" key="1">
            <Table 
-             pagination={false}
+             pagination={{
+               pageSize:5,
+               total:this.props.video.playback.length
+             }}
              columns={columns1} 
-            // dataSource={data}
-             scroll={{y:150}}
-             size='middle' />
+             dataSource={this.props.video.playback}
+            
+             />
         </TabPane>
         <TabPane tab="文件下载列表" key="2">
           <Table 
             pagination={false}
             columns={columns} 
             dataSource={data}
-            scroll={{y:150}}
-            size='middle' />
+           
+            />
         </TabPane>
       </Tabs>
       </div>
