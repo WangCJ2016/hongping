@@ -9,8 +9,9 @@ const intialState = {
   contrast:5,
   saturation:5,
   hue:5,
-  playback: '1111',
-  areaDevices: [],
+  playback: [],
+  videoDevices: [],
+  hongwaiDevices: [],
   presets: {
     channelId: '',
     presets: []
@@ -30,6 +31,7 @@ const CREATEPRESTS = '[video] CREATEPRESTS'
 const CREATEPREVIEWGROUP = '[video] CREATEPREVIEWGROUP'
 const PREVIEWGROUPLIST = '[video] PREVIEWGROUPLIST'
 const PLAYBACKDATA = '[video] PLAYBACKDATA'
+const PALYBACKSELECTDEVICE = '[video] PALYBACKSELECTDEVICE'
 
 export function video(state=intialState,action) {
   switch (action.type) {
@@ -49,7 +51,15 @@ export function video(state=intialState,action) {
       return {...state,...action.payload}
     }
     case VIDEOAREADEVICE: {
-      return {...state,areaDevices:action.payload}
+      if(action.payload.length===0){
+        return {...state}
+      }
+      if(action.payload[0].type === 1) {
+        return {...state,videoDevices:action.payload}
+      }
+      if(action.payload[0].type === 2) {
+        return {...state,hongwaiDevices:action.payload}
+      }
     }
     case REMOTEPRESETS: {
       return {...state,presets:action.payload}
@@ -72,7 +82,7 @@ export function video(state=intialState,action) {
       const previewGroup = [...state.previewGroup,action.payload]
       return {...state,previewGroup:previewGroup}
     }
-
+    // 回放状态
     case PLAYBACKDATA:{ 
       const arr = action.payload.split('\n').map((doc,index) => {
         const docArr = doc.split(',')
@@ -93,7 +103,9 @@ export function video(state=intialState,action) {
      
       return {...state,playback:arr}
     }
-  
+    case PALYBACKSELECTDEVICE: {
+      return {...state,playbackSelectDevice:action.payload}
+    }
     default:
       return state
   }
@@ -307,8 +319,15 @@ export function modifySysRemotePreview(info) {
    })
   }
 }
+// 回放选中设备
+export function palyBackSelectDevice(device) {
+  return {
+    type: PALYBACKSELECTDEVICE,
+    payload:device
+  }
+}
 // 根据DevID获取设备信息  视频播放信息
-function playBackData(data) {
+export function playBackData(data) {
   return {
     type:PLAYBACKDATA,
     payload: data

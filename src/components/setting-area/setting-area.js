@@ -20,9 +20,7 @@ class SettingArea1 extends React.Component {
   }
   // 展开
   onExpand(expanded, record) {
-    if(record.children.length===0) {
-      this.props.juniorArea({parentId:record.id})
-    }
+    
   }
   // 添加
   createSubmit() {
@@ -43,18 +41,7 @@ class SettingArea1 extends React.Component {
     this.props.modifyArea({id:area.id,isDelete:1,parentId:area.parentId})
   }
   render() {
-    console.log(this.props)
-    const rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      },
-      onSelect: (record, selected, selectedRows) => {
-        console.log(record, selected, selectedRows);
-      },
-      onSelectAll: (selected, selectedRows, changeRows) => {
-        console.log(selected, selectedRows, changeRows);
-      },
-    };
+   
     const columns = [{
         title: 'Name',
         dataIndex: 'name',
@@ -78,17 +65,18 @@ class SettingArea1 extends React.Component {
         )
     }]; 
       const data = this.props.areas
+      console.log(data)
       const { getFieldDecorator } = this.props.form;
     return (
       <div className='setting-area'>
       <div className='clearfix'>
         <Button type='primary' className='float-right' onClick={
-          ()=>this.setState({createVisible:true,createInfo:{level:1}})}>新增区域</Button>
+          ()=>this.setState({createVisible:true,createInfo:{level:0}})}>新增区域</Button>
       </div>
       {data.length>0? 
         <Table 
+        defaultExpandAllRows={true}
         columns={columns}
-        rowSelection={rowSelection}
         showHeader={false}
         pagination={false}
         dataSource={data} 

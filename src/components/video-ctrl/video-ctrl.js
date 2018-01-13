@@ -177,7 +177,7 @@ class VideoCtrl extends React.Component {
             createRemotePresets={this.props.createRemotePresets} />
        </div>
       <div className="ctrl-right float-right">
-        <Tabs defaultActiveKey="2" type="card">
+        <Tabs defaultActiveKey="1" type="card">
           <TabPane tab="设备" key="1">
            <VideoCtrlTree play={this.play} />
           </TabPane>

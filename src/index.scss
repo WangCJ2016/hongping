@@ -75,3 +75,11 @@ textarea{
   
  }
 }
+
+// tree 
+.ant-table-content{
+  .ant-table-tbody > tr > td, .ant-table-thead > tr > th{
+    text-align: left!important
+  }
+  
+}

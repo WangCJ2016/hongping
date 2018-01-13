@@ -25,7 +25,7 @@ class VideoPlayBack extends React.Component {
   }
   render() {
     return (
-        <div className='video-play-back'>
+        <div className='video-play-back clearfix'>
             <div className='float-left' style={{width:'70%'}}>
               <object 
                 ref={(screen)=>this.play=screen}
@@ -40,7 +40,7 @@ class VideoPlayBack extends React.Component {
                 playCtrl={this.props.playCtrl}/>
               <VideoTableList />
           </div>
-          <div className="float-right">
+          <div className="float-right" style={{width:'25%'}}>
             <VideoDeviceBack play={this.props.play} />
             <VideoSearch />
           </div>

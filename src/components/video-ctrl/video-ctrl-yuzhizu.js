@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import classname from 'classnames'
-import { Icon, Modal, Form, Input,Transfer,Collapse,Popconfirm } from 'antd'
+import { Icon, Modal, Form, Input,Transfer,Collapse,Popconfirm,Checkbox } from 'antd'
 import {videoAreaDevices, createPreviewGroup, remotePreviewGroupList,modifyPreviewGroup,modifySysRemotePreview,getDevInfo} from '../../redux/video.redux'
-import AreaTree from '../areaTree/areaTree'
+import TableAreaTree from '../areaTree/tableAreaTree'
 const FormItem = Form.Item
 const Panel = Collapse.Panel;
-
+const CheckboxGroup = Checkbox.Group;
 
 @connect(
   state=>({video: state.video}),
@@ -26,6 +26,8 @@ class VideoCtrlYuzhizu1 extends React.Component {
       previewSelectId:-1
      }
      this.realPlay = this.realPlay.bind(this)
+     this.transferClick = this.transferClick.bind(this)
+     this.checkboxChange = this.checkboxChange.bind(this)
   }
   
    componentDidMount() {
@@ -53,7 +55,8 @@ class VideoCtrlYuzhizu1 extends React.Component {
     })
   }
   editPreviewSubmit() {
-    this.props.modifySysRemotePreview({devIds:this.state.targetKeys.join(','),devType:1,groupId:this.state.selectPreview.id})
+    console.log(this.state.options)
+    this.props.modifySysRemotePreview({devIds:this.state.options.map(option=>option.value).join(','),devType:1,groupId:this.state.selectPreview.id})
         this.setState({editPreviewVisible: false})
   }
   // 删除
@@ -76,6 +79,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
             <Icon type='plus' onClick={()=>
               this.setState({selectPreview:list,editPreviewVisible:true},
                 function() {
+                  this.setState({options:this.state.selectPreview.previews.map(preview=>({ label: preview.devName, value: preview.devId }))})
                   this.setState({targetKeys:this.state.selectPreview.previews.map(list => list.devId)})})}/>
             <Icon type='edit' onClick={()=>this.setState({selectPreview:list,editvisible:true})} />
             <Popconfirm  title="确定删除?" onConfirm={this.confirm.bind(this)}   okText="确定" cancelText="取消">
@@ -93,11 +97,43 @@ class VideoCtrlYuzhizu1 extends React.Component {
       ))}
       </Collapse>
     )
-   
+  }
+  transferKeyChange(selectedRowKeys, selectedRows) {
+    this.setState({selectedRows:selectedRows})
+  }
+  transferClick(type) {
+    if(type === 'left') {
+      const newDevIdArr = []
+      this.state.targetKeys.forEach(id=>{
+        if(this.state.previewChecked.indexOf(id)===-1)
+        newDevIdArr.push(id)
+      })
+      this.setState({options:this.state.options.filter(id=>newDevIdArr.indexOf(id.value)>-1)})
+    }
+    if(type==='right') {
+      const arr = this.state.selectedRows.filter(row => row.type>0).map(item=>({label:item.name,value:item.id}))
+      let realArr = []
+      arr.forEach(item=>{
+        let has = false
+        this.state.options.forEach(option=>{
+          has = option.value === item.value? true: false
+        })
+        realArr = has?realArr:[...realArr,item]
+      })
+      console.log(realArr)
+      this.setState({
+        options:[...this.state.options,...realArr]
+      })
+    }
+  }
+  checkboxChange(checkedValue)  {
+    console.log(checkedValue)
+    this.setState({
+      previewChecked: checkedValue
+    })
   }
   render() {
     console.log(this.state)
-    const areaDevices = this.props.video.areaDevices.map(device => ({...device,key:device.id}))
     const { getFieldDecorator } = this.props.form;
     return (
         <div className='yuzhiwei'>
@@ -152,22 +188,19 @@ class VideoCtrlYuzhizu1 extends React.Component {
               onOk={this.editPreviewSubmit.bind(this)}
               onCancel={()=>this.setState({editPreviewVisible:false})}
               >
-              <div className='clearfix'>
-                <div className="float-left area">
+              <div className='transfer'>
+                <div className="area">
                   <div className="title">区域</div>
-                  <AreaTree defaultExpandAll={true} select={this.props.videoAreaDevices}/>
+                  <TableAreaTree rowSelection={{type:'checkbox',onChange:this.transferKeyChange.bind(this)}} />
                 </div>
-                <Transfer
-                  className='transfer float-right'
-                  dataSource={areaDevices}
-                  titles={['通道', '预览组']}
-                  render={item=>item.name}
-                  targetKeys={this.state.targetKeys}
-                  selectedKeys={this.state.selectedKeys}
-                  onChange={this.handleChange.bind(this)}
-                  onSelectChange={this.handleSelectChange.bind(this)}
-                  // onScroll={this.handleScroll}
-                  />
+                <div className="transfer-arr">
+                   <p onClick={()=>this.transferClick('left')}><img src={require('../../assets/imgs/transfer-left.png')} alt=""/></p>
+                   <p onClick={()=>this.transferClick('right')}><img src={require('../../assets/imgs/transfer-right.png')} alt=""/></p>
+                </div>
+                <div className="device area">
+                  <div className="title">设备</div>
+                  <CheckboxGroup options={this.state.options}  onChange={this.checkboxChange}/>
+              </div>
             </div>
           </Modal>
         </div>

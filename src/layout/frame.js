@@ -24,9 +24,10 @@ class Frame extends React.Component {
       {class: 'home',title: '区域',link:''},
       {class: 'people',title: '人员',link:''},
       {class: 'broadcast',title: '广播',link:''},
-      {class: 'warm',title: '告警',link:''},
       {class: 'video',title: '视频',link:''},
+      {class: 'car',title: '红外',link:''},
       {class: 'car',title: '门禁',link:''},
+      {class: 'car',title: '道闸',link:''},
   ]
    return navArray.map(item=>(
       <NavLink className='navlink' key={item.title} to={item.link}  activeClassName="selectedSub">

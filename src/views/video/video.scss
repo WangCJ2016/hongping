@@ -169,6 +169,9 @@
   }
   .video-play-back{
     min-width: 1440px;
+    .ant-form-item-control {
+      padding-left: 10px;
+    }
     .ctrl-bnts{
       .btn{
         width: 40px;
@@ -240,6 +243,7 @@
       width: 28%;
       height: 600px;
      // overflow-y: scroll;
+     
     }
     .video-search{
       .title{
@@ -274,6 +278,24 @@
 
 
 .yuzhiwimodal{
+  .ant-checkbox-group-item{
+    display: block;
+    text-align: left;
+  }
+  .device{
+    padding:0 10px;
+  }
+  .transfer{
+    display: flex;
+    justify-content: space-between;
+  }
+  .transfer-arr{
+    margin: 40px 20px;
+    align-self: center;
+    img{
+      cursor: pointer;
+    }
+  }
   .area{
     border: 1px solid #d9d9d9;
     border-radius: 4px;
