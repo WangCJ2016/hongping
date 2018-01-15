@@ -20,7 +20,7 @@ class VideoSearch1 extends React.PureComponent {
       return
     }
     this.props.form.validateFields((err, values) => {
-      if (!err) {
+      if (1) {
         console.log('Received values of form: ', values);
         const device = this.props.video.playbackSelectDevice
         const model = device.host.model === 1?'HikHC-14':'DHNET-03'
@@ -49,6 +49,7 @@ class VideoSearch1 extends React.PureComponent {
             >
               {getFieldDecorator('startDay', {
                 rules: [{ required: true, message: '请输入开始日期' }],
+
               })(
                 <DatePicker  />
               )}

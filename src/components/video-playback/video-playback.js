@@ -19,8 +19,10 @@ class VideoPlayBack extends React.Component {
   constructor() {
     super()
     this.state = {}
+    this.playCtrl = this.playCtrl.bind(this)
   }
   playCtrl(i) {
+    console.log(i)
     this.play.XzVideo_RecordPlayControl(i,0)
   }
   render() {
@@ -37,12 +39,12 @@ class VideoPlayBack extends React.Component {
                 >
               </object>
               <VideoCtrlBtns 
-                playCtrl={this.props.playCtrl}/>
-              <VideoTableList play={this.props.play} />
+                playCtrl={this.playCtrl}/>
+              <VideoTableList play={this.play} />
           </div>
           <div className="float-right" style={{width:'25%'}}>
-            <VideoDeviceBack play={this.props.play} />
-            <VideoSearch />
+            <VideoDeviceBack play={this.play} />
+            <VideoSearch play={this.play} />
           </div>
         </div>
     )

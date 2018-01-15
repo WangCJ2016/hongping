@@ -103,7 +103,7 @@ const columns1 = [{
 }]
 
 @connect(
-  state=>({video: state.video}),
+  state=>({video: state.video,user:state.user}),
  
 )
 class VideoTableList extends React.Component {
@@ -114,21 +114,22 @@ class VideoTableList extends React.Component {
   onRowClick(record,index) {
     const device = this.props.video.playbackSelectDevice
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
-    console.log(record,device)
-    this.play.XzVideo_RecordPlayByName(
+    console.log(this.props.user.account.name)
+    const a = this.props.play.XzVideo_RecordPlayByName(
       1,
-      '',
-      '',
+      this.props.user.account.name,
+      "",
+      0,
       device.host.vid,
       device.host.url,
       device.host.port,
       device.host.username,
-      device.host.psw,model,
+      device.host.psw,
+      model,
       device.index,
       record.name,
-      '2018-01-11 09:30:00',
-      '2018-01-11 12:00:00',
-      0)
+      '2018-01-11 09:30:00','2018-01-11 12:00:00',0)
+      console.log(a)
   }
   render() {
     return (
