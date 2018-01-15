@@ -11,6 +11,7 @@ const UPLOAD = '[area] UPLOAD'
 const SELECTID = '[area] SELECTID'
 const LEAVLTOP_SUCCESS = '[area] LEAVLTOP_SUCCESS'
 const AREADEVICESUCCESS = '[area] AREADEVICESUCCESS'
+const ADDAREADEVICE = '[area] ADDAREADEVICE'
 
 const initalState = {
   areas: [],
@@ -48,6 +49,22 @@ export function area(state=initalState, action) {
     }
     case SELECTID:{
       return {...state,selectAreaId:action.payload}
+    }
+    case ADDAREADEVICE: {
+      let extra = []
+      action.payload.forEach(ele => {
+        let is = false
+        state.allAreas.forEach(area=>{
+          if(area.id === ele.id) {
+            is = true
+          }
+        })
+        if(!is) {
+          extra.push(ele)
+        }
+      });
+      const allAreas = [...state.allAreas,...extra]
+      return {...state,allAreas:allAreas,areas_devices:fullTree(state.levelTopAreas,allAreas)}
     }
     default:
       return state
@@ -107,10 +124,14 @@ function area_deviceSuccess(data) {
     payload: data
   }
 }
+function addAreaDevice(data) {
+  return {
+    type: ADDAREADEVICE,
+    payload: data
+  }
+}
 export function videoAreaDevices(info) {
-  return (dispatch,getState)=>{
-    const allAreas = getState().area.allAreas
-    const level1 = getState().area.levelTopAreas
+  return (dispatch)=>{
     request.get(config.api.base + config.api.videoAreaDevices,{
       token: token,
       ...info
@@ -119,7 +140,7 @@ export function videoAreaDevices(info) {
      if(res.success) {
        if(res.dataObject){
         const extra =  res.dataObject.map(device=>({...device,parentId:info.areaId,key:device.id}))
-        dispatch(area_deviceSuccess(fullTree(level1,[...allAreas,...extra])))
+        dispatch(addAreaDevice(extra))
        }
      }
    })
