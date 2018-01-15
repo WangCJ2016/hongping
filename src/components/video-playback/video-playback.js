@@ -38,7 +38,7 @@ class VideoPlayBack extends React.Component {
               </object>
               <VideoCtrlBtns 
                 playCtrl={this.props.playCtrl}/>
-              <VideoTableList />
+              <VideoTableList play={this.props.play} />
           </div>
           <div className="float-right" style={{width:'25%'}}>
             <VideoDeviceBack play={this.props.play} />

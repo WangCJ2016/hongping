@@ -107,9 +107,30 @@ const columns1 = [{
  
 )
 class VideoTableList extends React.Component {
-  state = {  }
+  constructor() {
+    super()
+    this.onRowClick = this.onRowClick.bind(this)
+  }
+  onRowClick(record,index) {
+    const device = this.props.video.playbackSelectDevice
+    const model = device.host.model === 1?'HikHC-14':'DHNET-03'
+    console.log(record,device)
+    this.play.XzVideo_RecordPlayByName(
+      1,
+      '',
+      '',
+      device.host.vid,
+      device.host.url,
+      device.host.port,
+      device.host.username,
+      device.host.psw,model,
+      device.index,
+      record.name,
+      '2018-01-11 09:30:00',
+      '2018-01-11 12:00:00',
+      0)
+  }
   render() {
-    console.log(JSON.stringify(this.props.video.playback))
     return (
       <div>
       <Tabs defaultActiveKey="1">
@@ -119,9 +140,10 @@ class VideoTableList extends React.Component {
                pageSize:5,
                total:this.props.video.playback.length
              }}
+             size='small'
              columns={columns1} 
              dataSource={this.props.video.playback}
-            
+             onRowClick={this.onRowClick}
              />
         </TabPane>
         <TabPane tab="文件下载列表" key="2">
