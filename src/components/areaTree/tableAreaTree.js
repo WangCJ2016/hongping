@@ -10,8 +10,8 @@ const columns = [{
   key: 'name',
   render:(text,record)=>(
     <span>
-      {record.type===1?<img style={{width: '20px'}} src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
-      {record.type===2?<img style={{width: '20px'}} src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
+      {record.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
+      {record.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
       <span>{record.name}</span>
     </span>
   )

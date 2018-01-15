@@ -160,7 +160,7 @@ export function addDevices(info) {
     .then(res=>{
       console.log(res)
       if(res.success) {
-        areaDevices({areaId:info.areaId})(dispatch)
+        areaDevices1({areaId:info.areaId})(dispatch)
         message.success('保存成功！')
       }
     })

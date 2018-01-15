@@ -16,7 +16,8 @@ const intialState = {
     channelId: '',
     presets: []
   },
-  previewGroup: []
+  previewGroup: [],
+  downloadTableList: []
 }
 
 const CHANGESAVEVIDEO = '[video] CHANGESAVEVIDEO'
@@ -32,6 +33,7 @@ const CREATEPREVIEWGROUP = '[video] CREATEPREVIEWGROUP'
 const PREVIEWGROUPLIST = '[video] PREVIEWGROUPLIST'
 const PLAYBACKDATA = '[video] PLAYBACKDATA'
 const PALYBACKSELECTDEVICE = '[video] PALYBACKSELECTDEVICE'
+const DOWNLOAD_CREATE = '[video] DOWNLOAD_CREATE'
 
 export function video(state=intialState,action) {
   switch (action.type) {
@@ -105,6 +107,11 @@ export function video(state=intialState,action) {
     }
     case PALYBACKSELECTDEVICE: {
       return {...state,playbackSelectDevice:action.payload}
+    }
+    // download
+    case DOWNLOAD_CREATE: {
+      const lists = [...state.downloadTableList,action.payload]
+      return {...state,downloadTableList:lists}
     }
     default:
       return state
@@ -333,27 +340,14 @@ export function playBackData(data) {
     payload: data
   }
 }
-export function getDevInfo(devId,play) {
-  return (dispatch,getState) => {
-    const user = getState().user
-    request.get(config.api.base + config.api.getDevInfo,{
-      token:token,
-      devId: devId,
-      type:1
-    })
-    .then(res => {
-     console.log(res)
-     if(res.success) {
-       const data = res.dataObject
-       const model = res.dataObject.host.model === 1?'HikHC-14':'DHNET-03'
-      // this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
-      const a = play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,res.dataObject.host.url,res.dataObject.host.port,res.dataObject.host.username,res.dataObject.host.psw,model,res.dataObject.index,0);
-      
-    // const a=play.XzVideo_FindDeviceFile(1,data.host.vid,data.host.url,data.host.port,data.host.username,data.host.psw,model,data.index,'2018-01-11 09:30:00','2018-01-11 12:00:00')
-     // play.XzVideo_FindDeviceFile(2,1,"192.168.0.100",8000,"admin","wcj15858976305","HikHC-14",1,"2018-01-11 12:00:00","2018-01-11 13:00:00");  
-     //dispatch(playBackData(a))
-      
-    }
-    })
+
+
+// 设备录像
+
+// add donwload
+export function downloadCreate(data) {
+  return {
+    type: DOWNLOAD_CREATE,
+    payload: data
   }
 }

@@ -77,7 +77,6 @@ export function areaList(info) {
   return dispatch=>{
       request.get(config.api.base + config.api.areaLists,{token:token,pageNo:1,pageSize:1000, ...info})
       .then(res=>{
-        console.log(res)
         if(res.success) {
           const arealist = res.result.map((area,index) => ({
             name: area.name,
@@ -225,6 +224,8 @@ export function areaInfo(info) {
             picture: res.dataObject.picture?res.dataObject.picture:''
           }         
           dispatch(areaInfoSuccess(info))
+        }else{
+          dispatch(areaInfoSuccess({picture:''}))
         }
       })
   }

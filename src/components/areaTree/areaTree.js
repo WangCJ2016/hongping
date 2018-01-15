@@ -21,13 +21,14 @@ export default class AreaTree extends React.Component {
     }
     areaTreeRender() {
         const areas = this.props.area.areas
-        const arealist = this.props.area.arealist
+        const arealist = this.props.area.allAreas
         if(!this.firstRenderIf) {
           this.props.select({areaId:areas[0].id,type:1})
           this.firstRenderIf = true
         }
        return (
         <Tree
+          checkable={this.props.checkable}
           defaultSelectedKeys={[areas[0].id]}
           onSelect={this.select.bind(this)}
           defaultExpandAll={this.props.defaultExpandAll}

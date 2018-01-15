@@ -11,12 +11,29 @@ const Option = Select.Option;
   {createAccount, modifyAccount}
 )
 class SettingUserPeople1 extends React.Component {
-  state = { 
-    peopleEditVisible: false,
-    creatPeopleVisible: false,
-    selectIndex: 0
-   }
+  constructor() {
+    super()
+    this.state = { 
+      peopleEditVisible: false,
+      creatPeopleVisible: false,
+      selectIndex: 0,
+      intialPsw: 123456
+     }
+     this.resetPsw = this.resetPsw.bind(this)
+     this.createPswChange = this.createPswChange.bind(this)
+  }
+  resetPsw() {
+    this.setState({
+      intialPsw: 123456
+    })
+  }
+  createPswChange(e) {
+    this.setState({
+      intialPsw: e.target.value
+    })
+  }
   listRender() {
+   console.log(this.props.role.roleInfo)
    const peopleList = this.props.role.peopleList
    return peopleList.map((people,index) => {
     const style = classnames({
@@ -69,7 +86,7 @@ class SettingUserPeople1 extends React.Component {
         const info = values
         const data = {
           account: (info.createAccount),
-          password: info.createPassword,
+          password: this.state.intialPsw?this.state.intialPsw:123456,
           name: encodeURI(info.createName),
           telephone: info.createTelephone,
           department: encodeURI(info.createDept),
@@ -87,7 +104,7 @@ class SettingUserPeople1 extends React.Component {
     const { getFieldDecorator } = this.props.form
     return (
       <div className="setting-user-role float-right" style={{width:'65%'}}>
-          <div className="title role">人员<div className='abosulte' onClick={()=>this.setState({creatPeopleVisible:true})}><Icon type='plus'/></div></div>
+          <div className="title role">人员{this.props.role.roleInfo.id?<div className='abosulte' onClick={()=>this.setState({creatPeopleVisible:true})}><Icon type='plus'/></div>:null}</div>
           {this.props.role.peopleList?this.listRender():null}
           {/* 编辑人员modal */} 
           <Modal title="编辑人员" 
@@ -141,7 +158,7 @@ class SettingUserPeople1 extends React.Component {
                 {getFieldDecorator('editpassword',{
                   rules: [{ required: true,message: '请填写密码'  }],
                   initialValue: selectedPeople?selectedPeople.password:''
-                })(<Input type="text" suffix={<Button>重置</Button>}/>)}
+                })(<Input type="text" />)}
               </FormItem>
             </Form>
           </Modal>
@@ -189,11 +206,8 @@ class SettingUserPeople1 extends React.Component {
                 initialValue: ''
                })(<Input type="text" />)}
              </FormItem>
-             <FormItem label="密码">
-               {getFieldDecorator('createPassword',{
-                initialValue: '123456',
-                rules: [{ required: true,message: '请填写密码' }]
-               })(<Input type="number" suffix={<Button>重置</Button>}/>)}
+             <FormItem label="密码">   
+               <Input  value={this.state.intialPsw} onChange={this.createPswChange} suffix={<Button onClick={this.resetPsw}>重置</Button>}/>
              </FormItem>
            </Form>
          </Modal>

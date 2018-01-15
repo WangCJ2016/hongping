@@ -14,10 +14,10 @@ const Panel = Collapse.Panel
 )
 class HomeWarmPanel extends React.Component {
   state = {  }
-  select(key,e) {
-    this.props.selectAreaIdSuccess(key[0])
-    this.props.areaInfo({id:key[0]})
-    this.props.querySysInstallPlaces({areaId: key[0]})
+  select({areaId}) {
+    this.props.selectAreaIdSuccess(areaId)
+    this.props.areaInfo({id:areaId})
+    this.props.querySysInstallPlaces({areaId: areaId})
   }
   render() {
     return (

@@ -9,7 +9,8 @@ import { role_queryAreas,
          role_roleInfo,
          authorityList,
          accountList } from '../../redux/role.redux'
-import {areaList, juniorArea} from '../../redux/area.redux'
+import {areaList} from '../../redux/area.redux'
+import AreaTree from '../areaTree/areaTree'
 const TabPane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
 const FormItem = Form.Item;
@@ -20,20 +21,25 @@ const FormItem = Form.Item;
    rolesList, 
    modifyRole, 
    createRole, 
-   role_roleInfo,areaList, 
-   juniorArea, 
+   role_roleInfo,
+   areaList, 
    authorityList,
    accountList}
 )
 class SettingUserRole1 extends React.Component {
-  state = { 
-    createRoleVisible: false,
-    roleSetVisible: false,
-    roleEditVisible: false,
-    selectRoleIndex: -1,
-    areaAuthority: [],
-    roleInfo:{}
-   }
+  constructor() {
+    super()
+    this.state = { 
+      createRoleVisible: false,
+      roleSetVisible: false,
+      roleEditVisible: false,
+      selectRoleIndex: -1,
+      areaAuthority: [],
+      roleInfo:{}
+     }
+    this.treeSelect = this.treeSelect.bind(this)
+  }
+  treeSelect(){}
   componentDidMount() {
     this.props.rolesList()
     if(this.props.area.areas.length===0) {
@@ -101,46 +107,7 @@ class SettingUserRole1 extends React.Component {
     this.props.createRole({roleName: encodeURI(roleName)})
     this.setState({createRoleVisible: false})
   }
-  // 渲染区域树
-  areaTreeRender(defaultKeys) {
-    const areas = this.props.area.areas
-    const arealist = this.props.area.arealist
-   return (
-            <Tree
-                checkable
-                defaultCheckedKeys={defaultKeys}
-                defaultExpandAll={true}
-                onCheck={this.onAreaCheck.bind(this)}
-              >
-              { areas.map((level1,index) => {
-                return (
-                  <TreeNode title={level1.name} key={level1.id}>
-                    {toTree(level1.id,arealist)}
-                  </TreeNode>
-                )
-              })}
-            </Tree>
-         )
-  
-    function toTree(id, array) {
-      const childArr = childrenArr(id, array)
-      if(childArr.length > 0) {
-        return childArr.map((child,index) => (
-          <TreeNode key={child.id} title={child.name} >
-            {toTree(child.id, array)}
-          </TreeNode>
-        ))
-      }
-    }
-    function childrenArr(id, array) {
-      var newArry = []
-      for (var i in array) {
-          if (array[i].parentId === id)
-              newArry.push(array[i]);
-      }
-      return newArry;
-    }
-  }
+
   // 区域权限设置
   onAreaCheck(checkedKeys,e){
     this.setState({
@@ -160,10 +127,7 @@ class SettingUserRole1 extends React.Component {
     this.setState({roleSetVisible:false})
   }
   render() {
-    const areas = this.props.area.areas
     const { getFieldDecorator } = this.props.form;
-    const defaultKeys =  this.props.role.roleInfo.roleAreaId?this.props.role.roleInfo.roleAreaId:[]
-    console.log(this.props.role)
     return (
       <div className="setting-user-role float-left">
           <div className="title role">角色<div className='abosulte' onClick={()=>this.setState({createRoleVisible:true})}><Icon type='plus'/></div></div>
@@ -223,7 +187,7 @@ class SettingUserRole1 extends React.Component {
             >
             <Tabs tabPosition='left' defaultActiveKey="1" >
               <TabPane tab="区域" key="1">
-              {areas.length>0?this.areaTreeRender(defaultKeys):null}
+              <AreaTree select={this.treeSelect} defaultExpandAll={true} checkable={true}/>
               </TabPane>
               <TabPane tab="功能" key="2">
               <Tree

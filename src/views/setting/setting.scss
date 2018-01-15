@@ -22,7 +22,8 @@
      .anticon{
        font-size: 18px;
        margin-left: 10px;
-       color: #999
+       color: #999;
+       cursor: pointer;
      }
      .abosulte{
         position: absolute;
@@ -81,6 +82,7 @@
     >i{
       font-size: 15px;
       padding:15px 10px 10px 10px;
+      cursor: pointer;
     }
   }
   .setting-video-device{
@@ -113,6 +115,7 @@
 // 上传地图
 .setting-map{
   position: relative;
+  min-height: 500px;
   .ant-tag{
     border:none;
     background-color: transparent;

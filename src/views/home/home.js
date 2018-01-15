@@ -57,7 +57,7 @@ class Home extends React.Component {
                     >
                   <div  style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} >
                     <Tag >
-                    {device.devIcon?<img src={require('../../assets/imgs/cem_icon.png')} alt=""/>:null}
+                    <img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>
                     {device.name}</Tag>
                   </div> 
                 </Popover>
@@ -67,7 +67,7 @@ class Home extends React.Component {
        return <Popover content={<HomeBroadcast device={device} />} trigger="click" key={device.id+index} >
                 <div key={device.id+index} style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} >
                   <Tag >
-                  {device.devIcon?<img src={require('../../assets/imgs/br_icon.png')} alt=""/>:null}
+                  <img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>
                   {device.name}</Tag>
                 </div> 
               </Popover>
@@ -104,9 +104,11 @@ class Home extends React.Component {
         handleCancel={this.handleCancel.bind(this)} /> */}
 
         <HomeWarmPanel />
-        {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
-        <img id='img' src={areaInfo.picture} style={{width:'100%'}} alt="" />}
-        {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
+        <div style={{minHeight:'500px',textAlign:'center'}}>
+          {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
+          <img id='img' src={areaInfo.picture}  alt="" />}
+          {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
+        </div>
         {this.props.area.load?null:this.mapDeviceRender()}
         <HomeTable />
       </div>

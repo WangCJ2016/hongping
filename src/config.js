@@ -28,7 +28,7 @@ export const config = {
     modifyRole: '/role_modifyRole', // 修改角色名称
     createRole: '/role_createRole', // 创建角色
     queryAreas: '/role_queryAreas', //(获取区域)
-    roleInfo: '/ role_getRoleInfo', // 角色详情
+    roleInfo: '/role_getRoleInfo', // 角色详情
     peopleList: '/role_queryAccountPage', // 人员列表 
     createAccount: '/account_createAccount', // 新建人员
     modifyAccount: '/account_modifyAccount', // 修改删除账号

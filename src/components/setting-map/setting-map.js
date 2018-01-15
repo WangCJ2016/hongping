@@ -1,16 +1,15 @@
 import React from 'react'
-import { Tree, Collapse, message,Button,Tag,Spin } from 'antd';
+import { Collapse, message,Button,Tag,Spin } from 'antd';
 import { connect } from 'react-redux'
-import {areaList1, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
+import {areaList1,areaList, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
 import { areaDevices,allDevices,addDevices,createSysInstallPlace,querySysInstallPlaces,delMapDevice,addMapDevice,changeMapDevice } from '../../redux/setting.device.redux'
 import AreaTree from '../areaTree/areaTree'
-const TreeNode = Tree.TreeNode;
 const Panel = Collapse.Panel
 
 @connect(
   state=>({deivces:state.devices,area:state.area}),
   {
-    areaList1,selectAreaIdSuccess,areaDevices,allDevices,addDevices,uploadImg,areaInfo,createSysInstallPlace,querySysInstallPlaces,delMapDevice,addMapDevice,changeMapDevice
+    areaList,areaList1,selectAreaIdSuccess,areaDevices,allDevices,addDevices,uploadImg,areaInfo,createSysInstallPlace,querySysInstallPlaces,delMapDevice,addMapDevice,changeMapDevice
    }
 )
 class SettingMap extends React.Component {
@@ -23,59 +22,28 @@ class SettingMap extends React.Component {
     this.selectArea = this.selectArea.bind(this)
   }
   selectArea({areaId}) {
-      this.props.areaDevices({areaId: areaId})
+       this.props.areaDevices({areaId: areaId})
        this.props.areaInfo({id:areaId})
        this.props.querySysInstallPlaces({areaId:areaId})
+       this.props.selectAreaIdSuccess(areaId)
   }
   componentDidMount() {
     this.props.areaList1()
   }
-  areaTreeRender() {
-    const areas = this.props.area.areas
-    const arealist = this.props.area.arealist
-   return (
-    <Tree
-      defaultSelectedKeys={[areas[0].id]}
-      onSelect={this.select.bind(this)}
-      >
-      { areas.map((level1,index) => {
-        return (
-          <TreeNode title={level1.name} key={level1.id}>
-            {toTree(level1.id,arealist)}
-          </TreeNode>
-        )
-      })}
-    </Tree>
-   )
-  
-    function toTree(id, array) {
-      const childArr = childrenArr(id, array)
-      if(childArr.length > 0) {
-        return childArr.map((child,index) => (
-          <TreeNode key={child.id} title={child.name} >
-            {toTree(child.id, array)}
-          </TreeNode>
-        ))
-      }
-    }
-    function childrenArr(id, array) {
-      var newArry = []
-      for (var i in array) {
-          if (array[i].parentId === id)
-              newArry.push(array[i]);
-      }
-      return newArry;
-    }
-  }
-
   // 设备渲染
   deviceRender() {
     const devices = this.props.deivces.areaToDevices
     return devices.map(device => (
       <div key={device.id} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
         <Tag>
-        {device.type===1||device.type===2?<img src={require('../../assets/imgs/cem_icon.png')} alt=""/>:null}
-        {device.type===4?<img src={require('../../assets/imgs/br_icon.png')} alt=""/>:null}
+        {device.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
+        {device.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
+        {device.type===3?<img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
+        {device.type===4?<img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>:null}
+        {device.type===5?<img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>:null}
+        {device.type===6?<img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>:null}
+        {device.type===7?<img className='type-icon' src={require('../../assets/imgs/fireCtrl-icon.png')} alt=""/>:null}
+        {device.type===8?<img className='type-icon' src={require('../../assets/imgs/talk-icon.png')} alt=""/>:null}
         {device.name}</Tag>
       </div>
     ))
@@ -83,18 +51,23 @@ class SettingMap extends React.Component {
   // 地图设备渲染
   mapDeviceRender() {
     const devices = this.props.deivces.mapToDevices
-    
+    console.log(devices)
     return devices.map((device,index) => (
       <div key={device.id+index} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
         <Tag onClose={this.delDevice.bind(this,device)} closable >
-        {device.type===1||device.type===2?<img src={require('../../assets/imgs/cem_icon.png')} alt=""/>:null}
-        {device.type===4?<img src={require('../../assets/imgs/br_icon.png')} alt=""/>:null}
+        {device.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
+        {device.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
+        {device.type===3?<img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
+        {device.type===4?<img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>:null}
+        {device.type===5?<img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>:null}
+        {device.type===6?<img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>:null}
+        {device.type===7?<img className='type-icon' src={require('../../assets/imgs/fireCtrl-icon.png')} alt=""/>:null}
+        {device.type===8?<img className='type-icon' src={require('../../assets/imgs/talk-icon.png')} alt=""/>:null}
         {device.name}</Tag>
       </div>
     ))
   }
   delDevice(delDevice) {
-    console.log(delDevice)
     this.props.delMapDevice(delDevice)
   }
   dragStart(device,e){
@@ -117,7 +90,6 @@ class SettingMap extends React.Component {
       const x = ev.clientX - imgData.left
       const y = ev.clientY - imgData.top
       const data=ev.dataTransfer.getData("Text");
-      console.log(data)
       if(!data){
         return
       }
@@ -126,7 +98,7 @@ class SettingMap extends React.Component {
           meId:data.split('-')[4],
           name: data.split('-')[2],
           id: data.split('-')[0],
-          type: data.split('-')[1],
+          type: data.split('-')[1]-0,
           devIcon:data.split('-')[3],
           x:x,
           y:y
@@ -137,7 +109,7 @@ class SettingMap extends React.Component {
           meId:data.split('-')[4],
           name: data.split('-')[2],
           id: data.split('-')[0],
-          type: data.split('-')[1],
+          type: data.split('-')[1]-0,
           devIcon:data.split('-')[3],
           x:x,
           y:y
@@ -145,15 +117,6 @@ class SettingMap extends React.Component {
       }
     }
   }
-
- select(key,e) {
-    if(key[0]) {
-      this.props.areaDevices({areaId: key[0]})
-      this.props.selectAreaIdSuccess(key[0])
-      this.props.areaInfo({id:key[0]})
-      this.props.querySysInstallPlaces({areaId: key[0]})
-    }
- }
  onChange(info) {
    if(this.props.area.selectAreaId) {
     const file = info.target.files[0]
@@ -165,7 +128,6 @@ class SettingMap extends React.Component {
           src:this.result
         })
         that.props.uploadImg({picture:this.result,id:that.props.area.selectAreaId})
-       // console.log(this.result)
     }
    }else {
     message.error('请先选择区域');
@@ -209,10 +171,10 @@ submit() {
        ref={(div)=>this.div=div}
         onDrop={this.drop.bind(this)} 
         onDragOver={this.dragOver.bind(this)}
-        
+        style={{textAlign:'center'}}
         >
         {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
-        <img id='img' src={areaInfo.picture} style={{width:'100%'}} alt="" />}
+        <img id='img' src={areaInfo.picture}  alt="" />}
         {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
         {this.props.area.load?null:this.mapDeviceRender()}
        </div>
