@@ -3,7 +3,7 @@ const token = localStorage.getItem('token')
 const intialState = {
   saveVideoIf:false,
   hasSoundIf:true,
-  backVideoIf:false,
+  backVideoIf:true,
   vv:1,
   bright: 5,
   contrast:5,
@@ -34,6 +34,9 @@ const PREVIEWGROUPLIST = '[video] PREVIEWGROUPLIST'
 const PLAYBACKDATA = '[video] PLAYBACKDATA'
 const PALYBACKSELECTDEVICE = '[video] PALYBACKSELECTDEVICE'
 const DOWNLOAD_CREATE = '[video] DOWNLOAD_CREATE'
+const DOWNLOADPATH = '[video] DOWNLOADPATH'
+const DOWNLOAD_MODIFY = '[video] DOWNLOAD_MODIFY'
+const PLAYBACKVIDEO = '[video] PLAYBACKVIDEO'
 
 export function video(state=intialState,action) {
   switch (action.type) {
@@ -84,11 +87,10 @@ export function video(state=intialState,action) {
       const previewGroup = [...state.previewGroup,action.payload]
       return {...state,previewGroup:previewGroup}
     }
-    // 回放状态
+    // 回放列表
     case PLAYBACKDATA:{ 
       const arr = action.payload.split('\n').map((doc,index) => {
         const docArr = doc.split(',')
-       
         return {
           key:docArr[0],
           id: index,
@@ -105,6 +107,10 @@ export function video(state=intialState,action) {
      
       return {...state,playback:arr}
     }
+    // 现在正在回放
+    case PLAYBACKVIDEO:{
+      return {...state,playingBackVide: action.payload}
+    }
     case PALYBACKSELECTDEVICE: {
       return {...state,playbackSelectDevice:action.payload}
     }
@@ -112,6 +118,18 @@ export function video(state=intialState,action) {
     case DOWNLOAD_CREATE: {
       const lists = [...state.downloadTableList,action.payload]
       return {...state,downloadTableList:lists}
+    }
+    case DOWNLOAD_MODIFY:{
+      const lists = state.downloadTableList.map(list => {
+        if(list.key === action.payload.key){
+          return action.payload
+        }
+        return list
+      })
+      return {...state,downloadTableList:lists}
+    } 
+    case DOWNLOADPATH: {
+      return {...state,...action.payload}
     }
     default:
       return state
@@ -343,11 +361,30 @@ export function playBackData(data) {
 
 
 // 设备录像
-
+// 播放视频
+export function selectVideo(data) {
+  return {
+    type: PLAYBACKVIDEO,
+    payload: data
+  }
+}
 // add donwload
 export function downloadCreate(data) {
   return {
     type: DOWNLOAD_CREATE,
     payload: data
+  }
+}
+// modify downlaod
+export function downloadModify(data){
+  return {
+    type: DOWNLOAD_MODIFY,
+    payload: data
+  }
+}
+export function pathDownload(path) {
+  return {
+    type: DOWNLOADPATH,
+    payload:path
   }
 }

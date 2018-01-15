@@ -72,7 +72,8 @@ export function getInfo(token){
        // localStorage.setItem('token', res.dataObject.account.token)
         dispatch(authSuccess({account:account,resources:resources}))
       }else {
-        dispatch(errorMSG(res.msg))
+        window.location.replace("/login")
+        localStorage.removeItem('token')
       }
     })
   }
