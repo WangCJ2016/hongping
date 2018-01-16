@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tabs, Table, Icon } from 'antd'
 import { connect } from 'react-redux'
-import { downloadCreate,downloadModify,selectVideo } from '../../redux/video.redux'
+import { downloadCreate } from '../../redux/video.redux'
 const TabPane = Tabs.TabPane;
 
 
@@ -33,7 +33,7 @@ const columns = [{
 
 @connect(
   state=>({video: state.video,user:state.user}),
-  {downloadCreate,downloadModify,selectVideo}
+  {downloadCreate}
 )
 class VideoTableList extends React.Component {
   constructor() {
@@ -42,7 +42,6 @@ class VideoTableList extends React.Component {
     this.download = this.download.bind(this)
   }
   onRowClick(record,index) {
-    console.log(index)
     const device = this.props.video.playbackSelectDevice
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
     this.props.play.XzVideo_RecordPlayByName(
@@ -59,14 +58,6 @@ class VideoTableList extends React.Component {
       device.index,
       record.name,
       '2018-01-11 09:30:00','2018-01-11 12:00:00',0)
-      this.props.selectVideo(record)
-      // const a = this.props.play.GetLocallFile(0)
-      // alert(a)
-      // setInterval(()=>{
-      //   let pos = '50'
-      //   const a = this.props.play.GetLocallFile(0)
-      //   console.log(a)
-      // },1000)
   }
   download(record) {
     const device = this.props.video.playbackSelectDevice
@@ -81,29 +72,19 @@ class VideoTableList extends React.Component {
       model,
       device.index,
       record.name,
-      this.props.video.videoPath+record.name
+      "D:\\test.mp4"
     )
-    console.log(record.name)
     if(a!==-1) {
       const data = {
-        key: record.name,
         name: record.name,
         device: device.name,
         address:'本地',
-        'address-detail':this.props.video.videoPath,
+        'address-detail':'D:\\test.mp4',
         size:record.size,
-        progress:'0%'
+        progress:'0%',
+        downloadHandle: a
       }
       this.props.downloadCreate(data)
-      const interval = setInterval(()=>{
-         const progress =  this.props.play.XzVideo_GetDownLoadFilePos(a)
-         if(progress === 100){
-           clearInterval(interval)
-           this.props.downloadModify({...data,progress:100+'%'})
-         }else{
-           this.props.downloadModify({...data,progress:progress+'%'})
-         }
-      },500)
     }
   }
   render() {
@@ -146,10 +127,11 @@ class VideoTableList extends React.Component {
       },{
         title: '下载',
         render:(text,record)=>(
-          <Icon type='download' style={{ cursor: 'pointer'}} onClick={()=>this.download(record)} />
+          <Icon type='download' onClick={()=>this.download(record)} />
         )
     }]
     const downloadTablelist = this.props.video.downloadTableList
+    
     return (
       <div>
       <Tabs defaultActiveKey="1">

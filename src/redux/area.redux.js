@@ -1,6 +1,5 @@
 import { request, config} from '../config'
-import { message } from 'antd'
-//import { toTree } from '../utils';
+
 const token = localStorage.getItem('token')
 
 const ALLREAS_SUCCESS = '[area] ALLREAS_SUCCESS'
@@ -12,6 +11,7 @@ const SELECTID = '[area] SELECTID'
 const LEAVLTOP_SUCCESS = '[area] LEAVLTOP_SUCCESS'
 const AREADEVICESUCCESS = '[area] AREADEVICESUCCESS'
 const ADDAREADEVICE = '[area] ADDAREADEVICE'
+const AREAIMGSLIDERCHANGE = '[area] AREAIMGSLIDERCHANGE'
 
 const initalState = {
   areas: [],
@@ -21,7 +21,8 @@ const initalState = {
   areaInfo: [],
   load:false,
   upload:false,
-  selectAreaId: ''
+  selectAreaId: '',
+  areaImgSlider:1
 }
 
 export function area(state=initalState, action) {
@@ -65,6 +66,9 @@ export function area(state=initalState, action) {
       });
       const allAreas = [...state.allAreas,...extra]
       return {...state,allAreas:allAreas,areas_devices:fullTree(state.levelTopAreas,allAreas)}
+    }
+    case AREAIMGSLIDERCHANGE: {
+      return {...state,areaImgSlider: action.payload}
     }
     default:
       return state
@@ -284,7 +288,13 @@ export function uploadImg(info) {
     })
  }
 }
-
+// 首页图像缩放
+export function areaImgSlider(num) {
+  return {
+    type:AREAIMGSLIDERCHANGE,
+    payload:num
+  }
+}
 
 // 生成整棵树
 function fullTree(levelTopArr, allAreas) {

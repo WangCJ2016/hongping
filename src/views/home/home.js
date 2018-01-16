@@ -7,6 +7,7 @@ import { HomePerson, HomeCamera, HomeBroadcast } from '../../components/home-pop
 import  HomeSearch  from '../../components/home-search/home-search'
 import HomeWarmModal from '../../components/home-warm/home-warm'
 import HomeWarmPanel from '../../components/home-warm-panel/home-warm-panel'
+import HomeSlider from '../../components/home-slider/home-slider'
 import './home.scss'
 
 
@@ -48,6 +49,7 @@ class Home extends React.Component {
   }
   mapDeviceRender() {
     const devices = this.props.deivces.mapToDevices
+    const slider = this.props.area.areaImgSlider
     return devices.map((device,index) => {
       if(device.type === 1 || device.type === 2) {
         return  <Popover 
@@ -55,7 +57,7 @@ class Home extends React.Component {
                   content={HomeCamera(device)}
                   trigger="click"
                     >
-                  <div  style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} >
+                  <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                     <Tag >
                     <img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>
                     {device.name}</Tag>
@@ -65,7 +67,7 @@ class Home extends React.Component {
       }
       if(device.type === 4) {
        return <Popover content={<HomeBroadcast device={device} />} trigger="click" key={device.id+index} >
-                <div key={device.id+index} style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} >
+                <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                   <Tag >
                   <img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>
                   {device.name}</Tag>
@@ -104,12 +106,15 @@ class Home extends React.Component {
         handleCancel={this.handleCancel.bind(this)} /> */}
 
         <HomeWarmPanel />
-        <div style={{minHeight:'500px',textAlign:'center'}}>
+        <div style={{minHeight:'500px',textAlign:'left'}}>
+          <div style={{display:'inline-block',position:'relative',zIndex:0}}>
           {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
-          <img id='img' src={areaInfo.picture}  alt="" />}
+          <img id='img' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
           {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
+          {this.props.area.load?null:this.mapDeviceRender()}
+          <HomeSlider />
+          </div>
         </div>
-        {this.props.area.load?null:this.mapDeviceRender()}
         <HomeTable />
       </div>
     )
