@@ -42,7 +42,6 @@ class VideoTableList extends React.Component {
     this.download = this.download.bind(this)
   }
   onRowClick(record,index) {
-    console.log(index)
     const device = this.props.video.playbackSelectDevice
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
     this.props.play.XzVideo_RecordPlayByName(
@@ -60,8 +59,9 @@ class VideoTableList extends React.Component {
       record.name,
       '2018-01-11 09:30:00','2018-01-11 12:00:00',0)
       this.props.selectVideo(record)
-      // const a = this.props.play.GetLocallFile(0)
-      // alert(a)
+       const a = this.props.play.XzVideo_GetRecordPlayPos([0,50])
+       alert(a)
+       console.log(a)
       // setInterval(()=>{
       //   let pos = '50'
       //   const a = this.props.play.GetLocallFile(0)
@@ -83,7 +83,6 @@ class VideoTableList extends React.Component {
       record.name,
       this.props.video.videoPath+record.name
     )
-    console.log(record.name)
     if(a!==-1) {
       const data = {
         key: record.name,
