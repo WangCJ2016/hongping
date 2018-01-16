@@ -27,7 +27,7 @@ class SettingVideo extends React.Component {
   render() {
     return (
       <div className='setting-video'>
-      <Tabs type="card" defaultActiveKey='5' onTabClick={this.tabClick.bind(this)}>
+      <Tabs type="card" defaultActiveKey='1' onTabClick={this.tabClick.bind(this)}>
         <TabPane tab="服务器" key="1">
           <SettingVideoServer />
         </TabPane>

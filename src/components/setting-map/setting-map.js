@@ -173,10 +173,12 @@ submit() {
         onDragOver={this.dragOver.bind(this)}
         style={{textAlign:'center'}}
         >
-        {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
-        <img id='img' src={areaInfo.picture}  alt="" />}
-        {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
-        {this.props.area.load?null:this.mapDeviceRender()}
+        <div style={{display:'inline-block',position:'relative',zIndex:0}}>
+          {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
+          <img id='img' src={areaInfo.picture}  alt="" />}
+          {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
+          {this.props.area.load?null:this.mapDeviceRender()}
+        </div>
        </div>
        
           

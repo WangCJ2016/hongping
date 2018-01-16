@@ -21,29 +21,25 @@ class Frame extends React.Component {
   }
   navRender() {
     const navArray = [
-      {class: 'home',title: '区域',link:''},
-      {class: 'people',title: '人员',link:''},
-      {class: 'broadcast',title: '广播',link:''},
-      {class: 'video',title: '视频',link:''},
-      {class: 'car',title: '红外',link:''},
-      {class: 'car',title: '门禁',link:''},
-      {class: 'car',title: '道闸',link:''},
+      {class: 'home',title: '区域'},
+      {class: 'people',title: '人员'},
+      {class: 'broadcast',title: '广播'},
+      {class: 'video',title: '视频'},
+      {class: 'car',title: '红外'},
+      {class: 'car',title: '门禁'},
+      {class: 'car',title: '道闸'},
   ]
    return navArray.map(item=>(
-      <NavLink className='navlink' key={item.title} to={item.link}  activeClassName="selectedSub">
+      <a className='navlink' key={item.title} >
         <div className={'imgSub '+item.class}></div>
         <p className='nav_title'>{item.title}</p>
-      </NavLink>
+      </a>
     ))
   }
   topNavRender() {
     const navArray = [
       {class: 'home',title: '首页',link:'/home'},
       {class: 'video',title: '视频',link:'/video'},
-      {class: 'infrared',title: '红外',link:'/infrared'},
-      {class: 'people',title: '人员',link:'/people'},
-      {class: 'car',title: '车辆',link:'/car'},
-      {class: 'broadcast',title: '广播',link:'/broadcast'},
       {class: 'watch',title: '巡更',link:'/watch'},
       {class: 'setting',title: '设置',link:'/setting'}
   ]
@@ -57,7 +53,6 @@ class Frame extends React.Component {
   confirm() {
     localStorage.removeItem('token')
     window.location.replace("/login")
-  
   }
   render() {
     return (
