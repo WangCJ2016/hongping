@@ -6,13 +6,16 @@ import { connect } from 'react-redux'
 import Home from '../views/home/home'
 import Video from '../views/video/video'
 import Setting from '../views/setting/setting'
+import SideBar from '../views/sidebar/sidebar'
+import { changeSidebar } from '../redux/sidebar.redux'
 import './frame.scss'
 
 
 const { Header, Content, Sider } = Layout;
 
 @connect(
-  state=>state.user
+  state=>state.user,
+  {changeSidebar}
 )
 
 class Frame extends React.Component {
@@ -21,16 +24,16 @@ class Frame extends React.Component {
   }
   navRender() {
     const navArray = [
-      {class: 'home',title: '区域'},
-      {class: 'people',title: '人员'},
-      {class: 'broadcast',title: '广播'},
-      {class: 'video',title: '视频'},
-      {class: 'car',title: '红外'},
-      {class: 'car',title: '门禁'},
-      {class: 'car',title: '道闸'},
+      {class: 'area_sidebar',title: '区域'},
+      {class: 'people_sidebar',title: '人员'},
+      {class: 'broadcast_sidebar',title: '广播'},
+      {class: 'video_sidebar',title: '视频'},
+      {class: 'hongwia_sidebar',title: '红外'},
+      {class: 'guard_sidebar',title: '门禁'},
+      {class: 'daozha_sidebar',title: '道闸'},
   ]
    return navArray.map(item=>(
-      <a className='navlink' key={item.title} >
+      <a className='navlink' key={item.title} onClick={()=>this.props.changeSidebar(item.class)}>
         <div className={'imgSub '+item.class}></div>
         <p className='nav_title'>{item.title}</p>
       </a>
@@ -86,7 +89,8 @@ class Frame extends React.Component {
         })}
       />
       {this.navRender()}
-      <div className="submeun" style={{width:this.state.collapsed?'300px':'0'}}></div>
+      <SideBar />
+      
     </Sider>
         <Layout>
           <Content style={{ background: '#fff', marginLeft: '60px'}}>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table } from 'antd';
 import { connect } from 'react-redux'
-import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,videoAreaDevices} from '../../redux/area.redux'
+import {broadcastAreaDevices,areaList} from '../../redux/area.redux'
 
 
 const columns = [{
@@ -10,8 +10,7 @@ const columns = [{
   key: 'name',
   render:(text,record)=>(
     <span>
-      {record.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
-      {record.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
+      {record.type===4?<img className='type-icon' src={require('../../assets/imgs/br_icon.png')} alt=""/>:null}
       <span>{record.name}</span>
     </span>
   )
@@ -20,10 +19,10 @@ const columns = [{
 @connect(
     state=>({video:state.video,area:state.area}),
     {
-      areaList, uploadImg,areaInfo,selectAreaIdSuccess,videoAreaDevices
+      broadcastAreaDevices,areaList
      }
 )
-export default class TableAreaTree extends React.Component {
+export default class TableBroadcast extends React.Component {
     constructor() {
       super()
       this.onExpand = this.onExpand.bind(this)
@@ -34,17 +33,17 @@ export default class TableAreaTree extends React.Component {
  
     onExpand(expanded, record) {
       if(expanded) {
-        this.props.videoAreaDevices({areaId:record.id,type:1})
-        this.props.videoAreaDevices({areaId:record.id,type:2})
+        this.props.broadcastAreaDevices({areaId:record.id,type:4})
       }
     }
     onRowClick(record,index) {
       if(record.type&&this.props.deviceSelect) {
-        this.props.deviceSelect(record)
+        //this.props.deviceSelect(record)
       }
     }
     render() {
-        const data = this.props.area.areas_devices
+      console.log(this.props.area)
+        const data = this.props.area.areas_broDevices
         return ( 
                  <div className='tableAreaTree'>                    
                   <Table 

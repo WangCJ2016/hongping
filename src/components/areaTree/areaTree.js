@@ -1,20 +1,20 @@
 import React from 'react'
 import { Tree } from 'antd';
 import { connect } from 'react-redux'
-import {areaList1, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
+import {areaList, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
 const TreeNode = Tree.TreeNode;
 
 
 @connect(
     state=>({deivces:state.devices,area:state.area}),
     {
-        areaList1, uploadImg,areaInfo,selectAreaIdSuccess
+        areaList, uploadImg,areaInfo,selectAreaIdSuccess
      }
 )
 export default class AreaTree extends React.Component {
     firstRenderIf=false 
     componentDidMount(){
-        this.props.areaList1()
+        this.props.areaList()
     }
     select(e) {
       this.props.select({areaId:e[0],type:1})

@@ -81,7 +81,6 @@ class Home extends React.Component {
     const areaInfo = this.props.area.areaInfo
     return (
       <div className='home-page setting-map'>
-         <HomeSearch />
         {/*<Popover content={HomePerson()} trigger="click"  >
           <Button>人员</Button>
         </Popover>

@@ -1,0 +1,19 @@
+.submeun{
+  position: absolute;
+  top: 0;
+  left: 60px;
+  height: 100%;
+  background-color:#f6f6f6;
+  transition: width .2s;
+  z-index:9;
+  overflow: hidden;
+  .siderbar-wrap{
+    padding: 30px 10px;
+  }
+  .title{
+    margin-bottom: 20px;
+    >span{
+      font-size:16px;
+    }
+  }
+}

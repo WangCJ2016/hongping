@@ -142,6 +142,7 @@ export function areaDevices1(info) {
           key:device.id
         }))
         dispatch(areaDeviceSuccess1(data))
+        areaDevices(info)(dispatch)
       }
     })
 }

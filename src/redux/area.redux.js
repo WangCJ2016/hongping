@@ -12,6 +12,7 @@ const LEAVLTOP_SUCCESS = '[area] LEAVLTOP_SUCCESS'
 const AREADEVICESUCCESS = '[area] AREADEVICESUCCESS'
 const ADDAREADEVICE = '[area] ADDAREADEVICE'
 const AREAIMGSLIDERCHANGE = '[area] AREAIMGSLIDERCHANGE'
+const BRODEVICE_SUCCESS = '[area] BRODEVICE_SUCCESS'
 
 const initalState = {
   areas: [],
@@ -22,16 +23,22 @@ const initalState = {
   load:false,
   upload:false,
   selectAreaId: '',
-  areaImgSlider:1
+  areaImgSlider:1,
+  videoAllareas:[],
+  areas_broDevices: []
 }
 
 export function area(state=initalState, action) {
   switch (action.type) {
     case AREALIST_SUCCESS: {
-      return {...state, areas: action.payload,areas_devices:action.payload}
+      if(state.areas_broDevices.length===0) {
+        return {...state, areas: action.payload,areas_devices:action.payload,areas_broDevices:action.payload}
+      }else {
+        return {...state, areas: action.payload,areas_devices:action.payload}
+      }
     }
     case ALLREAS_SUCCESS: {
-      return {...state, allAreas: action.payload}
+      return {...state, allAreas: action.payload,videoAllareas: action.payload}
     }
     case LEAVLTOP_SUCCESS: {
       return {...state, levelTopAreas: action.payload}
@@ -51,11 +58,12 @@ export function area(state=initalState, action) {
     case SELECTID:{
       return {...state,selectAreaId:action.payload}
     }
+    // 视频
     case ADDAREADEVICE: {
       let extra = []
       action.payload.forEach(ele => {
         let is = false
-        state.allAreas.forEach(area=>{
+        state.videoAllareas.forEach(area=>{
           if(area.id === ele.id) {
             is = true
           }
@@ -64,11 +72,16 @@ export function area(state=initalState, action) {
           extra.push(ele)
         }
       });
-      const allAreas = [...state.allAreas,...extra]
-      return {...state,allAreas:allAreas,areas_devices:fullTree(state.levelTopAreas,allAreas)}
+      const allAreas = [...state.videoAllareas,...extra]
+      return {...state,videoAllareas:allAreas,areas_devices:fullTree(state.levelTopAreas,allAreas)}
     }
     case AREAIMGSLIDERCHANGE: {
       return {...state,areaImgSlider: action.payload}
+    }
+    // 广播
+    case BRODEVICE_SUCCESS: {
+      const allAreas = [...state.allAreas,...action.payload]
+      return {...state,areas_broDevices:fullTree(state.levelTopAreas,allAreas)}
     }
     default:
       return state
@@ -121,13 +134,7 @@ export function areaList(info) {
       })
   }
 }
-// 含有设备的区域树
-function area_deviceSuccess(data) {
-  return {
-    type: AREADEVICESUCCESS,
-    payload: data
-  }
-}
+// 含有设备的视频区域树
 function addAreaDevice(data) {
   return {
     type: ADDAREADEVICE,
@@ -150,6 +157,29 @@ export function videoAreaDevices(info) {
    })
   }
 }
+// 广播table
+function broadcastAreaDevicesSuccess(devices) {
+  return {
+    type: BRODEVICE_SUCCESS,
+    payload: devices
+  }
+}
+export function broadcastAreaDevices(info) {
+  return (dispatch)=>{
+    request.get(config.api.base + config.api.videoAreaDevices,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     if(res.success) {
+       if(res.dataObject){
+        const extra =  res.dataObject.map(device=>({...device,parentId:info.areaId,key:device.id}))
+        dispatch(broadcastAreaDevicesSuccess(extra))
+       }
+     }
+   })
+  }
+}
 // selecAreaId
 export function selectAreaIdSuccess(id) {
   return {
@@ -157,35 +187,7 @@ export function selectAreaIdSuccess(id) {
     payload: id
   }
 }
-export function areaList1(info) {
-  
-  return (dispatch,getState)=>{
-      request.get(config.api.base + config.api.areaLists,{token:token,pageNo:1,pageSize:1000, ...info})
-      .then(res=>{ 
-        if(res.success) {
-          const arealist = res.result.map((area,index) => ({
-            name: area.name,
-            id: area.id,
-            parentId: area.parentId,
-            level: area.level,
-            children:[]
-          }))
-          const level1 = res.result.filter(area => area.level===0).map((area,index) => ({
-            key:index,
-            name: area.name,
-            id: area.id,
-            parentId: '',
-            level: area.level,
-            children:[]}))
-          //  areaDevices({areaId: level1[0].id})(dispatch)
-          //  areaInfo({id:level1[0].id})(dispatch,getState)
-          //  querySysInstallPlaces({areaId:level1[0].id})(dispatch,getState)
-            dispatch(selectAreaIdSuccess(level1[0].id))
-            dispatch(areaListSuccess(level1))
-        }
-      })
-  }
-}
+
 
 // 新增区域
 export function createArea(info) {

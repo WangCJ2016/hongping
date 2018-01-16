@@ -1,7 +1,7 @@
 import React from 'react'
 import { Collapse, message,Button,Tag,Spin } from 'antd';
 import { connect } from 'react-redux'
-import {areaList1,areaList, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
+import {areaList, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
 import { areaDevices,allDevices,addDevices,createSysInstallPlace,querySysInstallPlaces,delMapDevice,addMapDevice,changeMapDevice } from '../../redux/setting.device.redux'
 import AreaTree from '../areaTree/areaTree'
 const Panel = Collapse.Panel
@@ -9,7 +9,7 @@ const Panel = Collapse.Panel
 @connect(
   state=>({deivces:state.devices,area:state.area}),
   {
-    areaList,areaList1,selectAreaIdSuccess,areaDevices,allDevices,addDevices,uploadImg,areaInfo,createSysInstallPlace,querySysInstallPlaces,delMapDevice,addMapDevice,changeMapDevice
+    areaList,selectAreaIdSuccess,areaDevices,allDevices,addDevices,uploadImg,areaInfo,createSysInstallPlace,querySysInstallPlaces,delMapDevice,addMapDevice,changeMapDevice
    }
 )
 class SettingMap extends React.Component {
@@ -28,7 +28,7 @@ class SettingMap extends React.Component {
        this.props.selectAreaIdSuccess(areaId)
   }
   componentDidMount() {
-    this.props.areaList1()
+    this.props.areaList()
   }
   // 设备渲染
   deviceRender() {

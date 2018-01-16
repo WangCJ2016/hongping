@@ -82,27 +82,27 @@
 .selectedSub{
   background-color: #363c46
 }
-.home{
+.area_sidebar{
   background: url('../assets/imgs/home.png')no-repeat center center;
   background-size: contain
 }
-.selected .home{
+.selected .area_sidebar{
   background: url('../assets/imgs/home_select.png')no-repeat center center;
   background-size: contain
 }
-.video{
+.video_sidebar{
   background: url('../assets/imgs/video.png')no-repeat center center;
   background-size: contain
 }
-.selected .video{
+.selected .video_sidebar{
   background: url('../assets/imgs/video_select.png')no-repeat center center;
   background-size: contain
 }
-.infrared{
+.hongwia_sidebar{
   background: url('../assets/imgs/infrared.png')no-repeat center center;
   background-size: contain
 }
-.selected .infrared{
+.selected .hongwia_sidebar{
   background: url('../assets/imgs/infrared_select.png')no-repeat center center;
   background-size: contain
 }
@@ -114,11 +114,11 @@
   background: url('../assets/imgs/warm_select.png')no-repeat center center;
   background-size: contain
 }
-.people{
+.people_sidebar{
   background: url('../assets/imgs/people.png')no-repeat center center;
   background-size: contain
 }
-.selected .people{
+.selected .people_sidebar{
   background: url('../assets/imgs/people_select.png')no-repeat center center;
   background-size: contain
 }
@@ -130,11 +130,11 @@
   background: url('../assets/imgs/car_select.png')no-repeat center center;
   background-size: contain
 }
-.broadcast{
+.broadcast_sidebar{
   background: url('../assets/imgs/broadcast.png')no-repeat center center;
   background-size: contain
 }
-.selected .broadcast{
+.selected .broadcast_sidebar{
   background: url('../assets/imgs/broadcast_select.png')no-repeat center center;
   background-size: contain
 }
@@ -154,15 +154,7 @@
   background: url('../assets/imgs/setting_select.png')no-repeat center center;
   background-size: contain
 }
-.submeun{
-  position: absolute;
-  top: 0;
-  left: 60px;
-  height: 100%;
-  background-color: red;
-  transition: width .2s;
-  z-index: 9999999999999999999999999999999999
-}
+
 .user-name{
   color:#fff;
   padding: 0 20px;
