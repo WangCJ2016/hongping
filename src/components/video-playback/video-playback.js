@@ -6,13 +6,13 @@ import VideoTableList from './video-tablelist'
 import VideoDeviceBack from './video-device-back'
 import VideoSearch from './video-search'
 import {areaList1, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
-import {pathDownload} from '../../redux/video.redux'
+import {pathDownload,palybacklist} from '../../redux/video.redux'
 
 
 @connect(
   state=>({deivces:state.devices,area:state.area,video: state.video}),
   {
-      areaList1, uploadImg,areaInfo,selectAreaIdSuccess,pathDownload
+      areaList1, uploadImg,areaInfo,selectAreaIdSuccess,pathDownload,palybacklist
    }
 )
 class VideoPlayBack extends React.Component {
@@ -25,10 +25,10 @@ class VideoPlayBack extends React.Component {
     // const b = this.play.GetLocallPath(2)
     // this.props.pathDownload({videoPath: a})
     // this.props.pathDownload({picPath: b})
-    // console.log(a)
+    // const c = this.play.GetLocallFile(1)
+    // this.props.palybacklist(JSON.stringify(c).slice(1,-2).split(',').map(item=>({name: item,key:item})))
   }
   render() {
-    
     return (
         <div className='video-play-back clearfix'>
             <div className='float-left' style={{width:'70%',position:'relative'}}>
@@ -42,8 +42,7 @@ class VideoPlayBack extends React.Component {
                 className='playScreen'
                 >
               </object>
-              <iframe src="javascript:false" frameborder="0"
-               style={{position:'absolute',top:0,left:'0px',top:0,width:'800px',height:'600px',filter:'alpha(opacity=0)',opacity:0,zIndex:19,display:'none'}}></iframe>
+             
              
               <VideoCtrlBtns 
                 play={this.play}/>

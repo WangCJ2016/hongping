@@ -17,7 +17,8 @@ const intialState = {
     presets: []
   },
   previewGroup: [],
-  downloadTableList: []
+  downloadTableList: [],
+  playbacklist:[]
 }
 
 const CHANGESAVEVIDEO = '[video] CHANGESAVEVIDEO'
@@ -37,6 +38,7 @@ const DOWNLOAD_CREATE = '[video] DOWNLOAD_CREATE'
 const DOWNLOADPATH = '[video] DOWNLOADPATH'
 const DOWNLOAD_MODIFY = '[video] DOWNLOAD_MODIFY'
 const PLAYBACKVIDEO = '[video] PLAYBACKVIDEO'
+const PLAYBACKLIST = '[video] PLAYBACKLIST'
 
 export function video(state=intialState,action) {
   switch (action.type) {
@@ -130,6 +132,10 @@ export function video(state=intialState,action) {
     } 
     case DOWNLOADPATH: {
       return {...state,...action.payload}
+    }
+    // 本地回放列表
+    case PLAYBACKLIST:{
+      return {...state,playbacklist:action.payload}
     }
     default:
       return state
@@ -386,5 +392,12 @@ export function pathDownload(path) {
   return {
     type: DOWNLOADPATH,
     payload:path
+  }
+}
+// 本地回放列表
+export function palybacklist(list){
+  return {
+    type: PLAYBACKLIST,
+    payload: list
   }
 }
