@@ -3,7 +3,8 @@ import { request, config} from '../config'
 const intialState = {
   area_sidebar: false,
   video_sidebar: false,
-  broadcast_sidebar: true
+  broadcast_sidebar: false,
+  people_sidebar: true
 }
 const CHANGESIDEBAR = '[sidebar] CHANGESIDEBAR'
 
@@ -18,6 +19,7 @@ export function sidebar(state = intialState, action ) {
           area_sidebar: false,
           video_sidebar: false,
           broadcast_sidebar:false,
+          people_sidebar: false,
           [action.payload]:true
         }
       }

@@ -74,6 +74,15 @@ class Home extends React.Component {
                 </div> 
               </Popover>
       }
+      if(device.type === 6) {
+        return <Popover content={<HomeBroadcast device={device} />} trigger="click" key={device.id+index} >
+                 <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+                   <Tag >
+                   <img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>
+                   {device.name}</Tag>
+                 </div> 
+               </Popover>
+       }
     })
   }
  

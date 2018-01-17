@@ -202,7 +202,7 @@ export function querySysInstallPlaces(info) {
     .then(res=>{
       console.log(res)
       if(res.success) {
-        const data = res.dataObject.map(device => ({
+        const data = res.dataObject.devices.map(device => ({
           id: device.devId,
           meId: device.id,
           name: device.devName,

@@ -7,13 +7,58 @@
   transition: width .2s;
   z-index:9;
   overflow: hidden;
+  text-align: center;
+  overflow: auto;
+  height: 100%;
   .siderbar-wrap{
     padding: 30px 10px;
+    height: 100%;
+    &.active{
+      display: none;
+    }
   }
   .title{
     margin-bottom: 20px;
+    line-height: 30px;
     >span{
       font-size:16px;
+    }
+    i{
+      margin-top: -3px;
+      font-size: 18px;
+    }
+  }
+  .collapse{
+    margin-top: 20px;
+  }
+  .peo-item{
+    padding: 10px 20px;
+    text-align: left;
+    background-color: #fff;
+    border:2px solid #fff;
+    margin-top: 2px;
+    &.itemActive{
+      background-color: #e6e9ee;
+      box-shadow: 2px 2px 3px rgba(0, 0,0, .3);
+    }
+  }
+  
+  .lable-item{
+    margin-top: 20px;
+  }
+  .trail-page{
+    height: 70%;
+    overflow: auto;
+    border-top: 1px solid #e8e8e8;
+    text-align: left;
+    .trail-item{
+      margin-left: 15px;
+      background-color: #fff;
+      padding:10px;
+      border-radius: 2px;
+      &.active{
+        box-shadow: 2px 2px 3px rgba(0, 0,0, .3);
+      }
     }
   }
 }

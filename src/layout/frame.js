@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import Home from '../views/home/home'
 import Video from '../views/video/video'
 import Setting from '../views/setting/setting'
+import Trail from '../components/trail/trail'
 import SideBar from '../views/sidebar/sidebar'
 import { changeSidebar } from '../redux/sidebar.redux'
 import './frame.scss'
@@ -98,6 +99,7 @@ class Frame extends React.Component {
                 <Route exact path='/home' component={Home}></Route>
                 <Route exact path='/video' component={Video}></Route>
                 <Route exact path='/setting' component={Setting}></Route>
+                <Route exact path='/trail' component={Trail}></Route>
               </Switch>
           </Content>
         </Layout>     

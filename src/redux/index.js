@@ -10,5 +10,6 @@ import { devices } from './setting.device.redux'
 import { alarm } from './alarm.redux'
 import { video } from './video.redux'
 import { sidebar } from './sidebar.redux'
+import { peo} from './peo.redux'
 
-export default combineReducers({user, role, area, settingServer, remoteHost, commHost,broadcastHost,devices,alarm,video,sidebar})
+export default combineReducers({user, role, area, settingServer, remoteHost, commHost,broadcastHost,devices,alarm,video,sidebar,peo})

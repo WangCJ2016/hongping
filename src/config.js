@@ -11,7 +11,7 @@ export const config = {
     }
   },
   api: {
-    base: 'http://47.100.123.83/hp/manage',
+    base: 'http://192.168.0.101:8080/hp/manage',
     login: '/do_login', // 登录
 
     areaLists: '/area_queryAreasPage', //区域列表
@@ -86,6 +86,12 @@ export const config = {
     modifyPreviewGroup: '/preview_modifySrPreviewGroup', //修改／删除预览组
     modifySysRemotePreview: '/preview_modifySysRemotePreview', // 添加／修改预览
     getDevInfo: '/home_getDeviceInfo', // 根据DevID获取设备信息
+
+    // 人员动态
+    getAllpeo: '/slv_queryPersonnelDynamics', // 全部人员动态
+    peoTrail:'/slv_queryPersonnelTrajectory', // 人员轨迹
+    trailDetail: '/slv_queryTrajectoryDetail', // 轨迹详情 
+    searchPeo: '/slv_queryPeopleByKeyword', // 关键字搜索人员
   }
 }
 //get/post请求
