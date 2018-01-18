@@ -1,10 +1,12 @@
-import { request, config} from '../config'
 
 const intialState = {
   area_sidebar: false,
   video_sidebar: false,
   broadcast_sidebar: false,
-  people_sidebar: true
+  people_sidebar: false,
+  hongwia_sidebar: false,
+  guard_sidebar: false,
+  daozha_sidebar: true
 }
 const CHANGESIDEBAR = '[sidebar] CHANGESIDEBAR'
 
@@ -20,6 +22,9 @@ export function sidebar(state = intialState, action ) {
           video_sidebar: false,
           broadcast_sidebar:false,
           people_sidebar: false,
+          hongwia_sidebar: false,
+          guard_sidebar: false,
+          daozha_sidebar: false,
           [action.payload]:true
         }
       }

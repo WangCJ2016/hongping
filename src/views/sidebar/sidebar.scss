@@ -10,6 +10,24 @@
   text-align: center;
   overflow: auto;
   height: 100%;
+  .fix-bottom{
+    position: fixed;
+    bottom: 0;
+    left: 60px;
+    line-height: 50px;
+    border-top: 1px solid #ccc;
+    width: 300px;
+    text-align: left;
+    >span{
+      margin-left: 25px;
+      margin-right: 40px;
+      cursor: pointer;
+    }
+  }
+  .bro-search-item{
+    text-align: left;
+    line-height: 40px;
+  }
   .siderbar-wrap{
     padding: 30px 10px;
     height: 100%;

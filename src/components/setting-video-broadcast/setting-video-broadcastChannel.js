@@ -109,9 +109,7 @@ class SettingVideoBroadcastChannelDetail1 extends React.Component {
                   initialValue: '1'
                 })(
                   <Select>
-                    <Option value='1'>可视</Option>
-                    <Option value='2'>热成像</Option>
-                    <Option value='3'>道闸</Option>
+                    <Option value='1'>广播</Option>
                   </Select>
                 )}
               </FormItem>

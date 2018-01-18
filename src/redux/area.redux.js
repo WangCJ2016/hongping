@@ -13,6 +13,9 @@ const AREADEVICESUCCESS = '[area] AREADEVICESUCCESS'
 const ADDAREADEVICE = '[area] ADDAREADEVICE'
 const AREAIMGSLIDERCHANGE = '[area] AREAIMGSLIDERCHANGE'
 const BRODEVICE_SUCCESS = '[area] BRODEVICE_SUCCESS'
+const HONGWAI_SUCCESS = '[area] HONGWAI_SUCCESS'
+const GUARD_SUCCESS = '[area] GUARD_SUCCESS'
+const DAOZHA_SUCCESS = '[area] DAOZHA_SUCCESS'
 
 const initalState = {
   areas: [],
@@ -25,20 +28,51 @@ const initalState = {
   selectAreaId: '',
   areaImgSlider:1,
   videoAllareas:[],
-  areas_broDevices: []
+  areas_broDevices: [],
+  areas_hongwaiDevices: [],
+  areas_guardDevices: [],
+  areas_daozhaDevices: []
 }
 
 export function area(state=initalState, action) {
   switch (action.type) {
     case AREALIST_SUCCESS: {
-      if(state.areas_broDevices.length===0) {
-        return {...state, areas: action.payload,areas_devices:action.payload,areas_broDevices:action.payload}
-      }else {
-        return {...state, areas: action.payload,areas_devices:action.payload}
+      let areas_broDevices = action.payload
+      let areas_hongwaiDevices = action.payload
+      let areas_guardDevices = action.payload
+      let areas_daozhaDevices = action.payload
+      if(state.areas_broDevices.length!==0) {
+        areas_broDevices = state.areas_broDevices
+      }
+      if(state.areas_hongwaiDevices.length!==0) {
+        areas_hongwaiDevices = state.areas_hongwaiDevices
+      }
+      if(state.areas_guardDevices.length!==0) {
+        areas_guardDevices = state.areas_guardDevices
+      }
+      if(state.areas_daozhaDevices.length!==0) {
+        areas_daozhaDevices = state.areas_daozhaDevices
+      }
+      return {
+        ...state, 
+        areas: action.payload,
+        areas_devices:action.payload,
+        areas_broDevices:areas_broDevices,
+        areas_hongwaiDevices:areas_hongwaiDevices,
+        areas_guardDevices:areas_guardDevices,
+        areas_daozhaDevices: areas_daozhaDevices
       }
     }
     case ALLREAS_SUCCESS: {
-      return {...state, allAreas: action.payload,videoAllareas: action.payload}
+      return {
+        ...state, 
+        allAreas: action.payload,
+        videoAllareas: action.payload,
+        broAllareas: action.payload,
+        hongwaiAreas: action.payload,
+        guardAreas:action.payload,
+        daozhaAreas: action.payload
+      }
     }
     case LEAVLTOP_SUCCESS: {
       return {...state, levelTopAreas: action.payload}
@@ -80,8 +114,71 @@ export function area(state=initalState, action) {
     }
     // 广播
     case BRODEVICE_SUCCESS: {
-      const allAreas = [...state.allAreas,...action.payload]
-      return {...state,areas_broDevices:fullTree(state.levelTopAreas,allAreas)}
+      let extra = []
+      action.payload.forEach(ele => {
+        let is = false
+        state.broAllareas.forEach(area=>{
+          if(area.id === ele.id) {
+            is = true
+          }
+        })
+        if(!is) {
+          extra.push(ele)
+        }
+      })
+      const allAreas = [...state.broAllareas,...extra]
+      return {...state,broAllareas:allAreas,areas_broDevices:fullTree(state.levelTopAreas,allAreas)}
+    }
+    // 红外
+    case HONGWAI_SUCCESS: {
+      let extra = []
+      action.payload.forEach(ele => {
+        let is = false
+        state.hongwaiAreas.forEach(area=>{
+          if(area.id === ele.id) {
+            is = true
+          }
+        })
+        if(!is) {
+          extra.push(ele)
+        }
+      })
+      const allAreas = [...state.hongwaiAreas,...extra]
+      return {...state,hongwaiAreas:allAreas,areas_hongwaiDevices:fullTree(state.levelTopAreas,allAreas)}
+    }
+    // 道闸
+    case DAOZHA_SUCCESS: {
+      let extra = []
+      action.payload.forEach(ele => {
+        let is = false
+        state.daozhaAreas.forEach(area=>{
+          if(area.id === ele.id) {
+            is = true
+          }
+        })
+        if(!is) {
+          extra.push(ele)
+        }
+      })
+      const allAreas = [...state.daozhaAreas,...extra]
+      return {...state,daozhaAreas:allAreas,areas_daozhaDevices:fullTree(state.levelTopAreas,allAreas)}
+    }
+      // 门禁
+    case GUARD_SUCCESS: {
+      let extra = []
+      action.payload.forEach(ele => {
+        let is = false
+        state.guardAreas.forEach(area=>{
+          if(area.id === ele.id) {
+            is = true
+          }
+        })
+        if(!is) {
+          extra.push(ele)
+        }
+      })
+      const allAreas = [...state.guardAreas,...extra]
+      return {...state,guardAreas:allAreas,areas_guardDevices:fullTree(state.levelTopAreas,allAreas)}
     }
     default:
       return state
@@ -175,6 +272,75 @@ export function broadcastAreaDevices(info) {
        if(res.dataObject){
         const extra =  res.dataObject.map(device=>({...device,parentId:info.areaId,key:device.id}))
         dispatch(broadcastAreaDevicesSuccess(extra))
+       }
+     }
+   })
+  }
+}
+// 红外 table
+function hongwaiAreaDevicesSuccess(devices) {
+  return {
+    type: HONGWAI_SUCCESS,
+    payload: devices
+  }
+}
+export function hongwaiAreaDevices(info) {
+  return (dispatch)=>{
+    request.get(config.api.base + config.api.videoAreaDevices,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     if(res.success) {
+       if(res.dataObject){
+        const extra =  res.dataObject.map(device=>({...device,parentId:info.areaId,key:device.id}))
+        dispatch(hongwaiAreaDevicesSuccess(extra))
+       }
+     }
+   })
+  }
+}
+// 道闸 table
+function daozhaAreaDevicesSuccess(devices) {
+  return {
+    type: DAOZHA_SUCCESS,
+    payload: devices
+  }
+}
+export function daozhaAreaDevices(info) {
+  return (dispatch)=>{
+    request.get(config.api.base + config.api.videoAreaDevices,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     if(res.success) {
+       if(res.dataObject){
+        const extra =  res.dataObject.map(device=>({...device,parentId:info.areaId,key:device.id}))
+        dispatch(daozhaAreaDevicesSuccess(extra))
+       }
+     }
+   })
+  }
+}
+// 门禁 table
+function guardAreaDevicesSuccess(devices) {
+  return {
+    type: GUARD_SUCCESS,
+    payload: devices
+  }
+}
+export function guardAreaDevices(info) {
+  return (dispatch)=>{
+    request.get(config.api.base + config.api.videoAreaDevices,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     if(res.success) {
+       if(res.dataObject){
+        const extra =  res.dataObject.map(device=>({...device,parentId:info.areaId,key:device.id}))
+        dispatch(guardAreaDevicesSuccess(extra))
        }
      }
    })

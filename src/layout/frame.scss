@@ -154,7 +154,22 @@
   background: url('../assets/imgs/setting_select.png')no-repeat center center;
   background-size: contain
 }
-
+.daozha_sidebar{
+  background: url('../assets/imgs/daozha_off.png')no-repeat center center;
+  background-size: contain
+}
+.selected .daozha_sidebar{
+  background: url('../assets/imgs/daozha_on.png')no-repeat center center;
+  background-size: contain
+}
+.guard_sidebar{
+  background: url('../assets/imgs/guard_off.png')no-repeat center center;
+  background-size: contain
+}
+.selected .guard_sidebar{
+  background: url('../assets/imgs/guard_on.png')no-repeat center center;
+  background-size: contain
+}
 .user-name{
   color:#fff;
   padding: 0 20px;

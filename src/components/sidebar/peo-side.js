@@ -120,7 +120,7 @@ class PeoSider extends React.Component {
           <Collapse bordered={false} className='collapse'>
            {this.peoRender()}
           </Collapse>
-          <div></div>
+          
           <div className="title" style={{textAlign:'left',marginTop:'15px'}}>
               <span>人员搜索结果</span>
           </div>

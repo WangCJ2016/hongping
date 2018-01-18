@@ -1,36 +1,39 @@
 import React from 'react'
-import { Table } from 'antd';
+import { Table,Checkbox } from 'antd';
 import { connect } from 'react-redux'
 import {broadcastAreaDevices,areaList} from '../../redux/area.redux'
+import { selectBroIndex } from '../../redux/broadcast.redux'
+import { unquie } from '../../utils'
 
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
-  render:(text,record)=>(
-    <span>
-      {record.type===4?<img className='type-icon' src={require('../../assets/imgs/br_icon.png')} alt=""/>:null}
-      <span>{record.name}</span>
-    </span>
-  )
-}];
 
 @connect(
-    state=>({video:state.video,area:state.area}),
+    state=>({video:state.video,area:state.area,broadcast:state.broadcast}),
     {
-      broadcastAreaDevices,areaList
+      broadcastAreaDevices,areaList,selectBroIndex
      }
 )
 export default class TableBroadcast extends React.Component {
     constructor() {
       super()
       this.onExpand = this.onExpand.bind(this)
+      this.state = {
+        selectIndex: []
+      }
     }
     componentDidMount(){
         this.props.areaList()
     }
- 
+    onChange(index,e) {
+      if(e.target.checked) {
+        this.props.selectBroIndex(unquie([...this.props.broadcast.selectBroIndex,index]))
+      }else{
+        const index1 = this.props.broadcast.selectBroIndex.indexOf(index)
+        let newArr = this.props.broadcast.selectBroIndex.slice()
+        newArr.splice(index1,1)
+        this.props.selectBroIndex(newArr)
+      }
+    }
     onExpand(expanded, record) {
       if(expanded) {
         this.props.broadcastAreaDevices({areaId:record.id,type:4})
@@ -42,7 +45,25 @@ export default class TableBroadcast extends React.Component {
       }
     }
     render() {
-      console.log(this.props.area)
+        const columns = [{
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
+          render:(text,record)=>(
+            <span>
+              {record.type===1?
+                <span>
+                  <Checkbox onChange={this.onChange.bind(this,record.index)}>
+                  <img className='type-icon' src={require('../../assets/imgs/br_icon.png')} alt=""/>
+                  {record.name}</Checkbox>
+                </span>
+                :<span>
+                <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+                {record.name}</span>}
+              
+            </span>
+          )
+        }];
         const data = this.props.area.areas_broDevices
         return ( 
                  <div className='tableAreaTree'>                    

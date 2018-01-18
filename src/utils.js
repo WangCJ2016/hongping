@@ -92,3 +92,8 @@ export function alarmType(type) {
             return ''
     }
 }
+
+// 数组去重
+export function unquie(arr) {
+    return  [...new Set(arr)]
+}

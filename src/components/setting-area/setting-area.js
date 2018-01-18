@@ -65,7 +65,6 @@ class SettingArea1 extends React.Component {
         )
     }]; 
       const data = this.props.areas
-      console.log(data)
       const { getFieldDecorator } = this.props.form;
     return (
       <div className='setting-area'>

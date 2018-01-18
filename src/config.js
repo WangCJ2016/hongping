@@ -92,6 +92,8 @@ export const config = {
     peoTrail:'/slv_queryPersonnelTrajectory', // 人员轨迹
     trailDetail: '/slv_queryTrajectoryDetail', // 轨迹详情 
     searchPeo: '/slv_queryPeopleByKeyword', // 关键字搜索人员
+    // 广播
+
   }
 }
 //get/post请求
