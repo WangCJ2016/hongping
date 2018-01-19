@@ -200,18 +200,21 @@ export function querySysInstallPlaces(info) {
       ...info
     })
     .then(res=>{
-      console.log(res)
       if(res.success) {
-        const data = res.dataObject.devices.map(device => ({
-          id: device.devId,
-          meId: device.id,
-          name: device.devName,
-          devIcon: device.devIcon?device.devIcon:'',
-          type: device.type,
-          x:device.x,
-          y:device.y
-        }))
-        dispatch(querySysInstallPlacesSuccess(data))
+         if(res.dataObject.devices) {
+          const data = res.dataObject.devices.map(device => ({
+            id: device.devId,
+            meId: device.id,
+            name: device.devName,
+            devIcon: device.devIcon?device.devIcon:'',
+            type: device.type,
+            x:device.x,
+            y:device.y
+          }))
+          dispatch(querySysInstallPlacesSuccess(data))
+         }else{
+          dispatch(querySysInstallPlacesSuccess([]))
+         }
       }
     })
 }

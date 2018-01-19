@@ -94,7 +94,7 @@ class Frame extends React.Component {
       
     </Sider>
         <Layout>
-          <Content style={{ background: '#fff', marginLeft: '60px'}}>
+          <Content style={{ background: '#fff', marginLeft: '60px',height:'100%'}}>
               <Switch>
                 <Route exact path='/home' component={Home}></Route>
                 <Route exact path='/video' component={Video}></Route>

@@ -108,14 +108,13 @@
 .areaTodeviceModal{
   .ant-tree >li{
     width: 50%;
-    float: left
+    float: left;
   }
 }
 
 // 上传地图
 .setting-map{
-  position: relative;
-  min-height: 500px;
+  height: 100%;
   .ant-tag{
     border:none;
     background-color: transparent;
@@ -141,11 +140,13 @@
     width: 200px;
     position: absolute;
     left: 15px;
+    z-index: 1
   }
   .device-area{
     width: 200px;
     position: absolute;
     right: 15px;
+    z-index: 1
   }
   
 }

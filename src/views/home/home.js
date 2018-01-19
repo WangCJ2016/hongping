@@ -36,13 +36,11 @@ class Home extends React.Component {
   
   // modal
   handleModalOk(e) {
-    console.log(e);
     this.setState({
       modalvisible: false,
     });
   }
   handleCancel(e) {
-    console.log(e);
     this.setState({
       modalvisible: false,
     });
@@ -114,16 +112,18 @@ class Home extends React.Component {
         handleCancel={this.handleCancel.bind(this)} /> */}
 
         <HomeWarmPanel />
-        <div style={{minHeight:'500px',textAlign:'left'}}>
+        <div className='area-Map'>
           <div style={{display:'inline-block',position:'relative',zIndex:0}}>
           {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
           <img id='img' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
           {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
           {this.props.area.load?null:this.mapDeviceRender()}
-          <HomeSlider />
           </div>
+          <HomeSlider />
         </div>
+        <div style={{height:'30%'}}>
         <HomeTable />
+        </div>
       </div>
     )
   }

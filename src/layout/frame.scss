@@ -11,6 +11,9 @@
   color: #fff;
   min-width: 1200px;
 }
+.ant-layout{
+  min-height: calc(100% - 69px)
+}
 .ant-layout-header{
   padding: 0 20px;
   z-index: 99;

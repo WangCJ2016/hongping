@@ -19,9 +19,7 @@ class SettingVideo extends React.Component {
   tabClick(e) {
     if(e === '5') {
       this.props.areaList()
-      this.props.allDevices({type: 'remote'})
-      this.props.allDevices({type: 'comm'})
-      this.props.allDevices({type: 'broadcast'})
+      
     }
   }
   render() {

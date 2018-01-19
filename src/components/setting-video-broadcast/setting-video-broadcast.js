@@ -165,8 +165,8 @@ class SettingVideoBroadcast1 extends React.Component {
                     initialValue: selectHost?selectHost.productor:'',
                   })(
                     <Select  >
-                      <Option value={0}>海康</Option>
-                      <Option value={1}>大华</Option>
+                      <Option value="0">海康</Option>
+                      <Option value="1">大华</Option>
                     </Select>)}
                   
                 </FormItem>

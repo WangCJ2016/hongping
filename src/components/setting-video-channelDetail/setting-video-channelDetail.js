@@ -170,23 +170,12 @@ class SettingVideoChannelDetail1 extends React.Component {
                   initialValue:selectChannel?selectChannel.type:''
                 })(
                   <Select>
-                    <Option value='1'>可视</Option>
-                    <Option value='2'>热成像</Option>
-                    <Option value='3'>道闸</Option>
+                    <Option value={1}>可视</Option>
+                    <Option value={2}>热成像</Option>
+                    <Option value={3}>道闸</Option>
                   </Select>
                 )}
               </FormItem>
-              {/* <FormItem label="图标">
-                {getFieldDecorator('editicon',{
-                  rules: [{ required: true,message: '请填写图标'}],
-                  initialValue:selectChannel?selectChannel.icon:''
-                })(
-                  <Select>
-                  <Option value='ipc'><img src={require('../../assets/imgs/ipc.png')} alt=""/></Option>
-                  <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
-                  </Select>
-                )}
-              </FormItem> */}
               <FormItem label="备注">
                 {getFieldDecorator('editremark',{
                   initialValue:selectChannel?selectChannel.remark:''

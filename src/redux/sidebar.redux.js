@@ -6,7 +6,7 @@ const intialState = {
   people_sidebar: false,
   hongwia_sidebar: false,
   guard_sidebar: false,
-  daozha_sidebar: true
+  daozha_sidebar: false
 }
 const CHANGESIDEBAR = '[sidebar] CHANGESIDEBAR'
 

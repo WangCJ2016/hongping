@@ -50,9 +50,8 @@ class SettingVideoAreatoDevice extends React.Component {
          {devices.map(host => (
           <TreeNode title={host.name} key={host.id}  disableCheckbox={true}>
            {host.remoteChannels.map(channel => {
-            return (
-            <TreeNode title={channel.name} key={channel.id+'-'+toTypeStr(channel.typeStr)} />
-           )})}
+            return <TreeNode disabled={channel.disabled!=='N'} title={channel.name} key={channel.id+'-'+toTypeStr(channel.typeStr)} />
+           })}
           </TreeNode>
         ))}
       </Tree>
@@ -85,7 +84,7 @@ class SettingVideoAreatoDevice extends React.Component {
           <TreeNode title={device.name} key={device.id} disabled>
           {device.properties.map(property => {
            return (
-            <TreeNode title={property.name} key={property.id+'-'+toTypeStr(property.typeStr)} />
+            <TreeNode title={property.name} disabled={property.disabled!=='N'} key={property.id+'-'+toTypeStr(property.typeStr)} />
            )})}
           </TreeNode>
          ))}
@@ -118,7 +117,7 @@ class SettingVideoAreatoDevice extends React.Component {
         <TreeNode title={host.name} key={host.id} disabled>
          {host.channels.map(channel => {
           return (
-          <TreeNode title={channel.name} key={channel.id+'-'+toTypeStr(channel.typeStr)} />
+          <TreeNode title={channel.name} disabled={channel.disabled!=='N'} key={channel.id+'-'+toTypeStr(channel.typeStr)} />
          )})}
         </TreeNode>
       ))}
@@ -128,9 +127,7 @@ class SettingVideoAreatoDevice extends React.Component {
   }
   onAreaCheck() {}
   tabClick(e) {
-    if(this.props.deivces[e+'Devices'].length===0) {
-      this.props.allDevices({type: e})
-    }
+      this.props.allDevices({type: e,areaId: this.state.selectAreaId})
   }
   remoteOncheck(keys,e) {
     this.remoteArr = keys.checked
@@ -144,7 +141,6 @@ class SettingVideoAreatoDevice extends React.Component {
   addSubmit() {
       const areaToDevices = this.props.deivces.areaToDevices1.length>0? this.props.deivces.areaToDevices1.map(devices=>devices.id+'-'+devices.type):[]
       const arr = [...this.remoteArr,...this.commArr,...this.broadcastArr]
-      console.log(arr)
       let plusArray = []
       let minusArray = []
       arr.forEach(deviceid => {
@@ -202,7 +198,7 @@ class SettingVideoAreatoDevice extends React.Component {
         </div>
         <div className="setting-user-role float-right" style={{width: '60%'}}>
             <div className="title role">设备
-            <div className='abosulte' onClick={()=>{this.setState({addVisible:true});this.remoteArr=[];this.commArr=[];this.broadcastArr=[]}}><Icon type='plus'/></div></div>
+            <div className='abosulte' onClick={()=>{this.setState({addVisible:true});this.remoteArr=[];this.commArr=[];this.broadcastArr=[];this.tabClick('remote')}}><Icon type='plus'/></div></div>
             {this.props.deivces.areaToDevices1.length>0?
               <Table columns={columns} dataSource={this.props.deivces.areaToDevices1} pagination={false} showHeader={false}/>:null}
         </div>
@@ -219,17 +215,17 @@ class SettingVideoAreatoDevice extends React.Component {
           <Tabs defaultActiveKey="remote" onTabClick={this.tabClick.bind(this)}>
             <TabPane tab="视频、红外、道闸设备" key="remote" >
 
-              {this.props.deivces.remoteDevices?this.remoteRender(defaultSelectKeys):null}
+              {this.props.deivces.remoteDevices.length>0?this.remoteRender(defaultSelectKeys):null}
 
             </TabPane>
             <TabPane tab="门禁、消防设备" key="comm">
            
-            {this.props.deivces.commDevices?this.commRender(defaultSelectKeys):null}
+            {this.props.deivces.commDevices.length>0?this.commRender(defaultSelectKeys):null}
            
             </TabPane>
             <TabPane tab="广播设备" key="broadcast">
            
-            {this.props.deivces.broadcastDevices?this.broadcastRender(defaultSelectKeys):null}
+            {this.props.deivces.broadcastDevices.length>0?this.broadcastRender(defaultSelectKeys):null}
            
             </TabPane>
           </Tabs>:null}

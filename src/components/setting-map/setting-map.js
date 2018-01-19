@@ -171,7 +171,7 @@ submit() {
        ref={(div)=>this.div=div}
         onDrop={this.drop.bind(this)} 
         onDragOver={this.dragOver.bind(this)}
-        style={{textAlign:'center'}}
+        style={{textAlign:'center',overflow:'auto'}}
         >
         <div style={{display:'inline-block',position:'relative',zIndex:0}}>
           {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
