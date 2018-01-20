@@ -6,7 +6,8 @@ const intialState = {
   people_sidebar: false,
   hongwia_sidebar: false,
   guard_sidebar: false,
-  daozha_sidebar: false
+  daozha_sidebar: false,
+  homeLeftIf: false
 }
 const CHANGESIDEBAR = '[sidebar] CHANGESIDEBAR'
 
@@ -14,9 +15,8 @@ export function sidebar(state = intialState, action ) {
   switch (action.type) {
     case CHANGESIDEBAR: {
       if(state[action.payload]) {
-        return {...state,[action.payload]:false}
+        return {...state,[action.payload]:false,homeLeftIf:false}
       } else {
-
         return {...state,
           area_sidebar: false,
           video_sidebar: false,
@@ -25,7 +25,8 @@ export function sidebar(state = intialState, action ) {
           hongwia_sidebar: false,
           guard_sidebar: false,
           daozha_sidebar: false,
-          [action.payload]:true
+          [action.payload]:true,
+          homeLeftIf:true
         }
       }
     }

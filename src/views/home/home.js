@@ -13,7 +13,7 @@ import './home.scss'
 
 
 @connect(
-  state=>({deivces:state.devices,area:state.area}),
+  state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar}),
   
 )
 class Home extends React.Component {
@@ -57,8 +57,10 @@ class Home extends React.Component {
                     >
                   <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                     <Tag >
-                    <img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>
-                    {device.name}</Tag>
+                    {device.type === 1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:
+                    <img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>
+                  }
+                    {device.devName}</Tag>
                   </div> 
                 </Popover>
        
@@ -68,12 +70,12 @@ class Home extends React.Component {
                 <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                   <Tag >
                   <img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>
-                  {device.name}</Tag>
+                  {device.devName}</Tag>
                 </div> 
               </Popover>
       }
       if(device.type === 6) {
-        return <Popover content={<HomeBroadcast device={device} />} trigger="click" key={device.id+index} >
+        return <Popover content={HomePerson(device)} trigger="click" key={device.id+index} >
                  <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>
@@ -87,7 +89,7 @@ class Home extends React.Component {
   render() {
     const areaInfo = this.props.area.areaInfo
     return (
-      <div className='home-page setting-map'>
+      <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'360px':'60px'}}>
         {/*<Popover content={HomePerson()} trigger="click"  >
           <Button>人员</Button>
         </Popover>

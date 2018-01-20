@@ -4,12 +4,12 @@ import { Icon, Button, Tabs, Input } from 'antd'
 const ButtonGroup = Button.Group;
 const TabPane = Tabs.TabPane;
 
-export function HomePerson() {
+export function HomePerson(peo) {
   return (
     <div className="home-popover">
-      <p className='title'><Icon className="float-left" type="user" style={{ fontSize: 13 }} />张三</p>
-      <p>电话：18868877305</p>
-      <p>部门：工程部-施工部</p>
+      <p className='title'><Icon className="float-left" type="user" style={{ fontSize: 13 }} />{peo.name}</p>
+      <p>电话：{peo.telephone}</p>
+      <p>部门：{peo.department}</p>
     </div>
   )
 }
@@ -18,7 +18,7 @@ export function HomeCamera(props) {
   return (
     <div className="home-popover">
       <p className='title'>
-        <Icon type="camera" className='float-left'  style={{ fontSize: 13 }} />{props.name}
+        <Icon type="camera" className='float-left'  style={{ fontSize: 13 }} />{props.devName}
       </p>
       <ButtonGroup className='clearfix'>
         <Button className='float-left' type="primary">

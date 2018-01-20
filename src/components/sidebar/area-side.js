@@ -22,7 +22,7 @@ class AreaSideBar extends React.Component {
   }
   render() {
     return (
-      <div className='submeun' style={{width:this.props.sidebar.area_sidebar?'300px':'0'}}>
+      <div className='submeun' style={{width:this.props.sidebar.area_sidebar?'300px':'0',backgroundColor:'#fff'}}>
         <div className='siderbar-wrap'> 
           <div className="title clearfix">
           <span className='float-left'>区域</span>

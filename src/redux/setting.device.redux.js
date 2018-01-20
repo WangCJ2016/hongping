@@ -202,16 +202,7 @@ export function querySysInstallPlaces(info) {
     .then(res=>{
       if(res.success) {
          if(res.dataObject.devices) {
-          const data = res.dataObject.devices.map(device => ({
-            id: device.devId,
-            meId: device.id,
-            name: device.devName,
-            devIcon: device.devIcon?device.devIcon:'',
-            type: device.type,
-            x:device.x,
-            y:device.y
-          }))
-          dispatch(querySysInstallPlacesSuccess(data))
+          dispatch(querySysInstallPlacesSuccess(res.dataObject.devices))
          }else{
           dispatch(querySysInstallPlacesSuccess([]))
          }
