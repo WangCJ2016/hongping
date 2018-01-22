@@ -6,19 +6,22 @@ const initialState = {
   peoList: [],
   trails:[],
   traildetail:[],
-  searchPeoList:[]
+  searchPeoList:[],
+  picture:''
 }
 const GETALLPEO = '[peo] GETALLPEO'
 const GETTRAIL = '[peo] GETTRAIL'
 const TRAILDetail = '[peo] TRAILDetail'
 const SEARCHPEO = '[peo] SEARCHPEO'
+const AREAIMG = '[peo] AREAIMG'
 
 export function peo(state = initialState, action ) {
   switch (action.type) {
     case GETALLPEO:
     case GETTRAIL:
     case TRAILDetail:
-    case SEARCHPEO: {
+    case SEARCHPEO:
+    case AREAIMG: {
       return {...state,...action.payload}
     } 
     default:
@@ -45,7 +48,7 @@ export function getAllpeo(token){
   }
 }
 // 人员轨迹
-function peoTrailSuccess(data) {
+ export function peoTrailSuccess(data) {
   return {
     type:GETTRAIL,
     payload: data
@@ -64,6 +67,7 @@ export function peoTrail(info) {
 }
 // 轨迹详情
 function TrailDetailSuccess(data) {
+  console.log(data)
   return {
     type:TRAILDetail,
     payload: data
@@ -96,5 +100,41 @@ export function searchPeo(info) {
        dispatch(searchPeoSuccess({searchPeoList:res.dataObject}))
       }
     })
+  }
+}
+
+// 区域img
+// 获取区域图片
+function areaInfoSuccess(info) {
+  return {
+    type:AREAIMG,
+    payload: info
+  }
+}
+// function load() {
+//   return {
+//     type: LOADCHANGE,
+//     payload: ''
+//   }
+// }
+export function areaImg(info) {
+  return (dispatch)=>{
+      //dispatch(load())
+      request.get(config.api.base + config.api.picByarea,
+                  {
+                    token:token, 
+                    ...info
+        })
+      .then(res=>{
+      //  dispatch(load())
+        if(res.success) {
+          const info={
+            picture: res.dataObject.picture?res.dataObject.picture:''
+          }         
+          dispatch(areaInfoSuccess(info))
+        }else{
+          dispatch(areaInfoSuccess({picture:''}))
+        }
+      })
   }
 }

@@ -2,6 +2,7 @@ import { request, config} from '../config'
 
 const token = localStorage.getItem('token')
 
+const FIRSTAREAID = '[area] FIRSTAREAID'
 const ALLREAS_SUCCESS = '[area] ALLREAS_SUCCESS'
 const AREALIST_SUCCESS = '[area] AREALIST_SUCCESS'
 const AREAINFO = '[area] AREAINFO'
@@ -31,11 +32,15 @@ const initalState = {
   areas_broDevices: [],
   areas_hongwaiDevices: [],
   areas_guardDevices: [],
-  areas_daozhaDevices: []
+  areas_daozhaDevices: [],
+  firstAreaId: ''
 }
 
 export function area(state=initalState, action) {
   switch (action.type) {
+    case FIRSTAREAID: {
+      return {...state,firstAreaId:action.payload}
+    }
     case AREALIST_SUCCESS: {
       let areas_broDevices = action.payload
       let areas_hongwaiDevices = action.payload
@@ -186,6 +191,12 @@ export function area(state=initalState, action) {
 }
 
 // 区域列表
+function firstAreaId(id) {
+  return {
+    type: FIRSTAREAID,
+    payload: id
+  }
+}
 function areaListSuccess(areas) {
   return {
     type: AREALIST_SUCCESS,
@@ -224,6 +235,7 @@ export function areaList(info) {
             parentId: '',
             level: area.level,
             children:[]}))
+          dispatch(firstAreaId(level1[0].id))
           dispatch(leavlTopAreas(level1))
           dispatch(areaListSuccess(fullTree(level1,arealist)))
           dispatch(allAreas(arealist))

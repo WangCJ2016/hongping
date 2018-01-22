@@ -18,7 +18,9 @@ const intialState = {
   },
   previewGroup: [],
   downloadTableList: [],
-  playbacklist:[]
+  playbacklist:[],
+  startime:'',
+  endtime: ''
 }
 
 const CHANGESAVEVIDEO = '[video] CHANGESAVEVIDEO'
@@ -39,6 +41,7 @@ const DOWNLOADPATH = '[video] DOWNLOADPATH'
 const DOWNLOAD_MODIFY = '[video] DOWNLOAD_MODIFY'
 const PLAYBACKVIDEO = '[video] PLAYBACKVIDEO'
 const PLAYBACKLIST = '[video] PLAYBACKLIST'
+const PLAYBACKTIME = '[video] PLAYBACKTIME'
 
 export function video(state=intialState,action) {
   switch (action.type) {
@@ -136,6 +139,10 @@ export function video(state=intialState,action) {
     // 本地回放列表
     case PLAYBACKLIST:{
       return {...state,playbacklist:action.payload}
+    }
+    // 回放时间
+    case PLAYBACKTIME: {
+      return {...state,...action.payload}
     }
     default:
       return state
@@ -399,5 +406,12 @@ export function palybacklist(list){
   return {
     type: PLAYBACKLIST,
     payload: list
+  }
+}
+// 回放时间参数
+export function playbackTime(data) {
+  return {
+    type: PLAYBACKTIME,
+    payload: data
   }
 }

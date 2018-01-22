@@ -1,6 +1,5 @@
 import queryString from 'query-string'
 import 'whatwg-fetch'
-import {_} from 'lodash'
 //api配置
 export const config = {
   header: {
@@ -119,4 +118,33 @@ export const request = {
   }
 }
 
-
+// 日期国际化配置
+export const locale = {
+  "lang":{
+     "today": "今天",
+      "now": "现在",
+      "ok": "确定",
+      "clear": "清除",
+      "month": "月",
+      "year": "年",
+      "timeSelect": "选择时间",
+      "dateSelect": "选择日期",
+      "monthSelect": "选择月份",
+      "yearSelect": "选择年",
+      "decadeSelect": "Choose a decade",
+      "yearFormat": "YYYY",
+      "dateFormat": "M/D/YYYY",
+      "dayFormat": "D",
+      "dateTimeFormat": "M/D/YYYY HH:mm:ss",
+      "monthFormat": "MMMM",
+      "monthBeforeYear": true,
+      "previousMonth": "上个月",
+      "nextMonth": "下个月",
+      "previousYear": "前一年",
+      "nextYear": "下一年",
+      "previousDecade": "Last decade",
+      "nextDecade": "Next decade",
+      "previousCentury": "上世纪",
+      "nextCentury": "下世纪"
+  }
+}

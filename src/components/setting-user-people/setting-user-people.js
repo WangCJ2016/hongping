@@ -1,10 +1,10 @@
 import React from 'react'
-import { Icon, Modal, Form, Input, Select, Button, Popconfirm } from 'antd'
+import { Icon, Modal, Form, Input, Button, Popconfirm } from 'antd'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
 import { createAccount, modifyAccount } from '../../redux/role.redux'
 const FormItem = Form.Item
-const Option = Select.Option;
+
 
 @connect(
   state => ({role:state.role}),

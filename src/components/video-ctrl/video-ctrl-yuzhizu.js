@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import classname from 'classnames'
-import { Icon, Modal, Form, Input,Transfer,Collapse,Popconfirm,Checkbox } from 'antd'
+import { Icon, Modal, Form, Input,Collapse,Popconfirm,Checkbox } from 'antd'
 import {videoAreaDevices, createPreviewGroup, remotePreviewGroupList,modifyPreviewGroup,modifySysRemotePreview,getDevInfo} from '../../redux/video.redux'
 import TableAreaTree from '../areaTree/tableAreaTree'
 const FormItem = Form.Item

@@ -3,7 +3,8 @@ import { Icon,Input,Collapse,DatePicker,Button,Timeline } from 'antd'
 import className from 'classnames'
 import { withRouter } from 'react-router-dom'
 import { changeSidebar } from '../../redux/sidebar.redux'
-import { getAllpeo, peoTrail, trailDetail,searchPeo } from '../../redux/peo.redux'
+import { getAllpeo, peoTrail, trailDetail,searchPeo,areaImg,peoTrailSuccess } from '../../redux/peo.redux'
+import { locale } from '../../config'
 import { connect } from 'react-redux'
 const Search = Input.Search
 const Panel = Collapse.Panel
@@ -12,7 +13,7 @@ const Panel = Collapse.Panel
 @connect(
   state=>({sidebar:state.sidebar, peo: state.peo}),
   {
-    changeSidebar,getAllpeo,peoTrail,trailDetail,searchPeo
+    changeSidebar,getAllpeo,peoTrail,trailDetail,searchPeo,areaImg,peoTrailSuccess
   }
 )
 class PeoSider extends React.Component {
@@ -21,7 +22,7 @@ class PeoSider extends React.Component {
     this.state = {
       peopleIdExSelect: '',
       peopleIdExSelect1:'',
-      peoTrailPage: true,
+      peoTrailPage: false,
       selectTrail: -1,
       startTime:'',
       endTime:''
@@ -43,7 +44,7 @@ class PeoSider extends React.Component {
             'peo-item': true,
             itemActive: peo.peopleIdEx === this.state.peopleIdExSelect
           })
-         return <div className={styles} key={peo.peopleIdEx} onClick={()=>this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true})}>
+         return <div className={styles} key={peo.peopleIdEx} onClick={()=>{this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true});this.props.peoTrailSuccess({trails:[]})}}>
             <div>{peo.people.peopleName}</div>
             <div>{peo.people.phone}</div>
             <div>{peo.people.department.deptName}</div>
@@ -59,7 +60,7 @@ class PeoSider extends React.Component {
         'peo-item': true,
         itemActive: peo.peopleIdEx === this.state.peopleIdExSelect1
       })
-     return <div className={styles} key={peo.peopleIdEx} onClick={()=>this.setState({peopleIdExSelect1:peo.peopleIdEx,peoTrailPage:true})}>
+     return <div className={styles} key={peo.peopleIdEx} onClick={()=>{this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true});this.props.peoTrailSuccess({trails:[]})}}>
             <div>{peo.peopleName}</div>
             <div>{peo.phone}</div>
             <div>{peo.department.deptName}</div>
@@ -73,7 +74,7 @@ class PeoSider extends React.Component {
         'trail-item':true,
         active: trail.regionId === this.state.selectTrail
       })
-     return <Timeline.Item color={trail.regionId === this.state.selectTrail?'red':'#17b89f'} onClick={()=>this.trailSelect(trail.regionId)}>
+     return <Timeline.Item color={trail.regionId === this.state.selectTrail.regionId?'red':'#17b89f'} onClick={()=>this.trailSelect(trail)}>
         <div className={style} key={trail.regionId}>
           <div><span>开始：</span><span>{trail.minTime}</span></div>
           <div><span>结束：</span><span>{trail.maxTime}</span></div>
@@ -82,15 +83,16 @@ class PeoSider extends React.Component {
       </Timeline.Item>
     })
   }
-  trailSelect(id) {
+  trailSelect(trail) {
     this.setState({
-      selectTrail: id
+      selectTrail: trail
     })
-    this.props.trailDetail({peopleIdEx:'A97B',regionId:id,startTime:'',endTime:''})
+    this.props.trailDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:'',endTime:''})
+    this.props.areaImg({id:trail.areaId})
     this.props.history.push('/trail')
   }
   trailSubmit() {
-    this.props.peoTrail({peopleIdEx:"A97B",startTime:this.state.startTime,endTime:this.state.endTime})   
+    this.props.peoTrail({peopleIdEx:this.state.peopleIdExSelect,startTime:this.state.startTime,endTime:this.state.endTime})   
   }
   startTime(value,dateString) {
     this.setState({startTime: dateString})
@@ -139,6 +141,7 @@ class PeoSider extends React.Component {
                 format="YYYY-MM-DD HH:mm:ss"
                 placeholder="选择开始时间"
                 onChange={this.startTime}
+                locale={locale}
               />
             </div>
             <div className='lable-item'>
@@ -148,6 +151,7 @@ class PeoSider extends React.Component {
                 format="YYYY-MM-DD HH:mm:ss"
                 placeholder="选择结束时间"
                 onChange={this.endTime}
+                locale={locale}
               />
             </div>
             <div className='lable-item'>
@@ -157,7 +161,7 @@ class PeoSider extends React.Component {
           <div className='trail-page'>
             <div className="title" style={{textAlign:'left'}}>
               <Icon type="user" />
-              <span>张三轨迹查询</span>
+              <span>轨迹查询</span>
             </div>
             <Timeline>
             {this.trailRender()}

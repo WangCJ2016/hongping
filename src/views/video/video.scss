@@ -243,13 +243,15 @@
       }
     }
     .video-device-back{
-      min-width: 300px;
-      width: 28%;
       height: 600px;
+      border: 1px solid #e8e8e8;
      // overflow-y: scroll;
      
     }
     .video-search{
+      .lable-item{
+        padding: 10px 20px;
+      }
       .title{
         margin-top: 10px;
         color: #ccc;

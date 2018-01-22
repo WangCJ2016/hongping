@@ -22,7 +22,9 @@ class Hosts1 extends React.Component {
     this.props.hostLists()
   }
   changeHandle(key) {
-    key?this.props.deviceLists({hostId: key}):null
+    if(key) {
+      this.props.deviceLists({hostId: key})
+    }
   }
   hostRender() {
     const hosts = this.props.commHosts

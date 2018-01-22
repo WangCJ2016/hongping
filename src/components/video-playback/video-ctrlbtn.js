@@ -49,8 +49,10 @@ class VideoCtrlBtns extends React.Component {
       model,
       device.index,
       this.props.video.playback[backvideoIndex].name,
-      '2018-01-11 09:30:00','2018-01-11 12:00:00',0)
-      a?this.props.selectVideo(this.props.video.playback[backvideoIndex]):null
+      this.props.video.startTime,this.props.video.endTime,0)
+      if(a) {
+        this.props.selectVideo(this.props.video.playback[backvideoIndex])
+      }
    }
   }
   

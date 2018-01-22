@@ -14,18 +14,15 @@ export function HomePerson(peo) {
   )
 }
 
-export function HomeCamera(props) {
+export function HomeCamera(device,videoPlay) {
   return (
     <div className="home-popover">
       <p className='title'>
-        <Icon type="camera" className='float-left'  style={{ fontSize: 13 }} />{props.devName}
+        <Icon type="camera" className='float-left'  style={{ fontSize: 13 }} />{device.name}
       </p>
       <ButtonGroup className='clearfix'>
-        <Button className='float-left' type="primary">
+        <Button type="primary" onClick={()=>videoPlay()}>
           预览
-        </Button>
-        <Button className='float-right' type="primary">
-          回放
         </Button>
     </ButtonGroup>
     </div>

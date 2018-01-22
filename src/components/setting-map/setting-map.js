@@ -51,7 +51,6 @@ class SettingMap extends React.Component {
   // 地图设备渲染
   mapDeviceRender() {
     const devices = this.props.deivces.mapToDevices
-    console.log(devices)
     return devices.map((device,index) => (
       <div key={device.id+index} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
         <Tag onClose={this.delDevice.bind(this,device)} closable >

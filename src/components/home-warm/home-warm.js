@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Tabs, Table, Icon, Input, Select, Button, Pagination } from 'antd'
+import { Modal, Tabs, Table, Icon, Select, Button, Pagination } from 'antd'
 import './home-warm.scss'
 const TabPane = Tabs.TabPane
 const Option = Select.Option;

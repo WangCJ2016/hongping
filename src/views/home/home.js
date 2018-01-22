@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button,Popover, Input,Collapse,Tree,Spin,Tag } from 'antd'
+import { Button,Popover, Input,Collapse,Tree,Spin,Tag,Modal } from 'antd'
 import { connect } from 'react-redux'
 
 import HomeTable from '../../components/home-table/home-table'
@@ -9,22 +9,31 @@ import HomeWarmModal from '../../components/home-warm/home-warm'
 import HomeWarmPanel from '../../components/home-warm-panel/home-warm-panel'
 import HomeSlider from '../../components/home-slider/home-slider'
 import './home.scss'
-
+import {areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
+import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar}),
-  
+  {areaInfo,querySysInstallPlaces,selectAreaIdSuccess}
 )
 class Home extends React.Component {
   constructor() {
     super()
     this.state = {
       visible: false,
-      modalvisible: false
+      modalvisible: false,
+      videoVisible: false
+    }
+    this.videoPlay = this.videoPlay.bind(this)
+  }
+  componentDidMount() {
+    if(this.props.area.firstAreaId) {
+      this.props.querySysInstallPlaces({areaId: this.props.area.firstAreaId})
+      this.props.selectAreaIdSuccess(this.props.area.firstAreaId)
+      this.props.areaInfo({id:this.props.area.firstAreaId})
     }
   }
-  
   hide() {
     this.setState({
       visible: false,
@@ -33,7 +42,6 @@ class Home extends React.Component {
   handleVisibleChange(visible) {
     this.setState({ visible });
   }
-  
   // modal
   handleModalOk(e) {
     this.setState({
@@ -52,7 +60,7 @@ class Home extends React.Component {
       if(device.type === 1 || device.type === 2) {
         return  <Popover 
                   key={device.id+index}
-                  content={HomeCamera(device)}
+                  content={HomeCamera(device,this.videoPlay)}
                   trigger="click"
                     >
                   <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
@@ -60,7 +68,7 @@ class Home extends React.Component {
                     {device.type === 1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:
                     <img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>
                   }
-                    {device.devName}</Tag>
+                    {device.name}</Tag>
                   </div> 
                 </Popover>
        
@@ -70,7 +78,7 @@ class Home extends React.Component {
                 <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                   <Tag >
                   <img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>
-                  {device.devName}</Tag>
+                  {device.name}</Tag>
                 </div> 
               </Popover>
       }
@@ -85,7 +93,14 @@ class Home extends React.Component {
        }
     })
   }
- 
+  // 预览
+  videoPlay(){ 
+    this.setState({
+      videoVisible:true
+    },()=>{
+      
+    })
+  }
   render() {
     const areaInfo = this.props.area.areaInfo
     return (
@@ -126,6 +141,27 @@ class Home extends React.Component {
         <div style={{height:'30%'}}>
         <HomeTable />
         </div>
+        <Modal
+          title="视频预览" 
+          visible={this.state.videoVisible}
+          style={{ top: 200 }}
+          width='50%'
+          okText='确定'
+          cancelText='取消' 
+          footer={false}
+          onCancel={()=>this.setState({videoVisible:false})}
+        >
+          <object
+            ref={(screen)=>this.play=screen}
+            classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
+            codebase="./XzVideoWebClient.cab#version=1.0.0.1"
+            height={600}
+            width={800}
+            align='center' 
+            
+            >
+          </object>
+        </Modal>
       </div>
     )
   }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Slider, Icon } from 'antd';
+import { Slider } from 'antd';
 import { connect } from 'react-redux'
 import { areaImgSlider } from '../../redux/area.redux'
 @connect(

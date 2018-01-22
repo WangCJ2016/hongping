@@ -202,7 +202,16 @@ export function querySysInstallPlaces(info) {
     .then(res=>{
       if(res.success) {
          if(res.dataObject.devices) {
-          dispatch(querySysInstallPlacesSuccess(res.dataObject.devices))
+          const data = res.dataObject.devices.map(device => ({
+            id: device.devId,
+            meId: device.id,
+            name: device.devName||device.name,
+            devIcon: device.devIcon?device.devIcon:'',
+            type: device.type,
+            x:device.x,
+            y:device.y
+          }))
+          dispatch(querySysInstallPlacesSuccess(data))
          }else{
           dispatch(querySysInstallPlacesSuccess([]))
          }
@@ -213,13 +222,14 @@ export function querySysInstallPlaces(info) {
 
 // 删除设备
 export function delMapDevice(del) {
+  console.log(del)
   return (dispatch,getState) => {
      const user = getState().user
     request.get(config.api.base + config.api.delInstatllPlace,{
       token:token,
       accountId: user.account.id,
       type: 'delete',
-      ids: del.id
+      ids: del.meId
     })
     .then(res => {
       dispatch({

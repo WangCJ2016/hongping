@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tabs, message } from 'antd'
 import { connect } from 'react-redux'
-import {changeSaveVideoIf, changeSoundIf, playCtrlChange, paramsChange,modifyRemotePresets,createRemotePresets,getDevInfo} from '../../redux/video.redux'
+import {changeSaveVideoIf, changeSoundIf, playCtrlChange, paramsChange,modifyRemotePresets,createRemotePresets} from '../../redux/video.redux'
 import VideoCtrlTree from './video-ctrl-tree'
 import VideoCtrlYuntai from './video-ctrl-yuntai'
 import VideoCtrlYuzhizu from './video-ctrl-yuzhizu'
@@ -48,7 +48,7 @@ class VideoCtrl extends React.Component {
   soundCtrl() {
     
     if(this.props.video.hasSoundIf) {
-      const a = this.play.XzVideo_RealPlaySound('关闭',0)
+     this.play.XzVideo_RealPlaySound('关闭',0)
      
     }else{
       this.play.XzVideo_RealPlaySound('打开',0)
@@ -91,21 +91,19 @@ class VideoCtrl extends React.Component {
   // 道闸控制
   remoteCtrl(num) {
     const a=this.play.XzVideo_RemoteControl_Barriergate(num,1,9,0)
-    alert(a)
-     if(a&&num===0) {
-      message.info('已关闭道闸')
-      return
-    }else{
-      message.error('关闭道闸失败，请重试')
+     if(a) {
+       if(num===0) {
+          message.info('已关闭道闸')
+          return
+       }
+      if(num===1) {
+        message.info('已开启道闸')
+        return
+        }
+    } else {
+      message.info('开启或关闭道闸失败')
       return
     }
-     if(a&&num===1) {
-      message.info('已开启道闸')
-      return
-      }else{
-        message.error('开启道闸失败，请重试')
-        return
-      }
   }
   // 全屏
   fullscreen() {

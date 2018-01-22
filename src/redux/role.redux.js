@@ -162,7 +162,7 @@ export function modifyRole(info) {
            info.roleName = decodeURI(info.roleName)
            dispatch(updateRole(info))
          }
-         if(info.isDelete==1) {
+         if(info.isDelete===1) {
            dispatch(deletefn(info.id))
          }
         }
