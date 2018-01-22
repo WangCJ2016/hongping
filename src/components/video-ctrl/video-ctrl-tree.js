@@ -18,7 +18,7 @@ class VideoCtrlTree extends React.Component {
     this.deviceSelect = this.deviceSelect.bind(this)
   }
   deviceSelect(device) {
-    console.log(device)
+    console.log(JSON.stringify(device))
     this.setState({
       activeId: device.id
     })

@@ -11,6 +11,8 @@ import HomeSlider from '../../components/home-slider/home-slider'
 import './home.scss'
 import {areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
 import { querySysInstallPlaces,getDevInfo } from '../../redux/setting.device.redux'
+import VideoCtrlYuntai from '../../components/video-ctrl/video-ctrl-yuntai'
+import VideoCtrlParam from '../../components/video-ctrl/video-ctrl-params'
 
 
 @connect(
@@ -25,8 +27,10 @@ class Home extends React.Component {
       modalvisible: false,
       videoVisible: false
     }
+  
     this.videoPlay = this.videoPlay.bind(this)
   }
+  
   componentDidMount() {
     if(this.props.area.firstAreaId) {
       this.props.querySysInstallPlaces({areaId: this.props.area.firstAreaId})
@@ -99,11 +103,14 @@ class Home extends React.Component {
       videoVisible:true
     },()=>{
       setTimeout(()=>{
-        console.log(this.play)
         this.props.getDevInfo({devId:device.id,type:device.type},this.play)
+        this.setState({
+          aa:''
+        })
       })
     })
   }
+
   render() {
     const areaInfo = this.props.area.areaInfo
     return (
@@ -154,16 +161,25 @@ class Home extends React.Component {
           footer={false}
           onCancel={()=>this.setState({videoVisible:false})}
         >
-          <object
-            ref={(screen)=>this.play=screen}
-            classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
-            codebase="./XzVideoWebClient.cab#version=1.0.0.1"
-            height={600}
-            width={800}
-            align='center' 
-            
-            >
-          </object>
+         <div className="clearfix">
+            <div className="float-left" style={{width:'70%'}}>
+              <object
+                id='play'
+                ref={(screen)=>this.play=screen}
+                classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
+                codebase="./XzVideoWebClient.cab#version=1.0.0.1"
+                height={400}
+                align='center' 
+                style={{width:'100%'}}
+                >
+              </object>
+            </div>
+            <div className="float-right"  style={{width:'30%'}}>
+              <VideoCtrlYuntai play={this.play} aa={this.state.aa} />
+              <VideoCtrlParam play={this.play} aa={this.state.aa}/>
+            </div>
+         </div>
+           
         </Modal>
       </div>
     )

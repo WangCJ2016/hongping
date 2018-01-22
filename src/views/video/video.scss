@@ -84,83 +84,8 @@
       margin-left: 10px;
       border: 1px solid #ccc;
     }
-    .yuntai{
-      padding: 10px;
-      .outround{
-        width: 180px;
-        height: 180px;
-        border-radius: 50%;
-        background-color: #17b89f;
-        margin: 10px auto;
-        position: relative;
-      }
-      .inround{
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        background-color: #fff;
-        margin: 0 auto;
-        transform: translateY(50%)
-      }
-      .btn{
-        position: absolute;
-        padding: 12px;
-        border-radius: 50%;
-        cursor: pointer;
-        i{
-          color: #fff;
-          font-size: 20px;
-        }
-        &:active{
-          background-color: #16a08a;
-        }
-      }
-      .count-ctrl{
-        text-align: center;
-        .jujiao-btn{
-          display: inline-block;
-          margin-top: 20px;
-          margin-left: 15px;
-          cursor: pointer;
-          width: 110px;
-          line-height: 40px;
-          border: 1px solid #e8e8e8;
-          border-radius: 2px;
-          i{
-            vertical-align: middle;
-            font-size: 18px;
-            color: #ccc;
-          }
-        }
-      }
-    }
-    .yuzhiwei {
-      height: 230px;
-      .add-group{
-        width: 90%;
-        margin: 0 auto;
-        font-size: 16px;
-        line-height: 30px;
-        border-bottom: 1px solid #e8e8e8;
-      }
-      .ant-collapse-item{
-        position: relative;
-        .ant-collapse-header{
-          padding-right: 100px;
-        }
-      }
-      .abosulte1{
-        position: absolute;
-        right: 0;
-        top:0;
-        background-color: #fff;
-        >i{
-          font-size: 15px;
-          padding:15px 10px 10px 10px;
-        }
-      }
-      i{margin-right: 10px;font-size: 16px}
-    }
+   
+    
     .ctrlParam{
       padding: 20px;
       .paramSlide{
