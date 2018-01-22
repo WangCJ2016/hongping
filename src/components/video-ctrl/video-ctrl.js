@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tabs, message } from 'antd'
 import { connect } from 'react-redux'
-import {changeSaveVideoIf, changeSoundIf, playCtrlChange, paramsChange,modifyRemotePresets,createRemotePresets} from '../../redux/video.redux'
+import {changeSaveVideoIf, changeSoundIf, playCtrlChange, paramsChange,modifyRemotePresets,createRemotePresets,modalVisiable} from '../../redux/video.redux'
 import VideoCtrlTree from './video-ctrl-tree'
 import VideoCtrlYuntai from './video-ctrl-yuntai'
 import VideoCtrlYuzhizu from './video-ctrl-yuzhizu'
@@ -13,7 +13,7 @@ const TabPane = Tabs.TabPane;
 @connect(
     state=>({video: state.video}),
     {
-        changeSaveVideoIf,changeSoundIf,playCtrlChange,paramsChange,modifyRemotePresets,createRemotePresets
+        changeSaveVideoIf,changeSoundIf,playCtrlChange,paramsChange,modifyRemotePresets,createRemotePresets,modalVisiable
      }
 )
 class VideoCtrl extends React.Component {
@@ -26,14 +26,7 @@ class VideoCtrl extends React.Component {
     this.realCapPicture = this.realCapPicture.bind(this)
     this.stopPlay = this.stopPlay.bind(this)
     this.remoteCtrl = this.remoteCtrl.bind(this)
-    this.fullscreen = this.fullscreen.bind(this)
-    this.setVideoEffect = this.setVideoEffect.bind(this)
-    this.yutaiUp = this.yutaiUp.bind(this)
-    this.yutaiDown = this.yutaiDown.bind(this)
-    this.yutaiLeft = this.yutaiLeft.bind(this)
-    this.yutaiRight = this.yutaiRight.bind(this)
-    this.jiaojuPlusCtrl = this.jiaojuPlusCtrl.bind(this)
-    this.jiaojuMinusCtrl = this.jiaojuMinusCtrl.bind(this)
+    this.fullscreen = this.fullscreen.bind(this)    
   }
   state = {  }
   componentDidMount() {
@@ -115,38 +108,8 @@ class VideoCtrl extends React.Component {
      }
   }
 
-  // 设置参数
-  setVideoEffect(obj){
-    const params = Object.values(obj)
-    this.play.XzVideo_SetVideoEffect(0,params[0],params[1],params[2],params[3])
-  }
-// 云台
-  yutaiUp(state){
-   this.play.XzVideo_RealPlayControl(21,!state,this.props.video.vv,5,0)
-  }
-  yutaiDown(state){
-    this.play.XzVideo_RealPlayControl(22,!state,this.props.video.vv,5,0)
-  }
-  yutaiLeft(state){
-    this.play.XzVideo_RealPlayControl(23,!state,this.props.video.vv,5,0)
-  }
-  yutaiRight(state){
-    this.play.XzVideo_RealPlayControl(24,!state,this.props.video.vv,5,0)
-  }
-  // 焦距
-  jiaojuPlusCtrl(state) {
-    this.play.XzVideo_RealPlayControl(11,!state,this.props.video.vv,5,0)
-  }
-  jiaojuMinusCtrl(state) {
-    this.play.XzVideo_RealPlayControl(12,!state,this.props.video.vv,5,0)
-  }
+
   render() {
-    this.videoParams = {
-      bright: this.props.video.bright,
-      contrast: this.props.video.contrast,
-      saturation: this.props.video.saturation,
-      hue: this.props.video.hue
-    }
     return (
       <div className='video-ctrl clearfix'> 
        <div className='float-left' style={{width:'70%'}}>
@@ -157,11 +120,12 @@ class VideoCtrl extends React.Component {
               height={600}
               width={800}
               align='center' 
-           
+              style={{visibility:this.props.video.modalVisiable?'hidden':'visible'}}
               >
               </object>
           <VideoCtrlBtn
             style={{marginTop:'30px'}} 
+            modalVisiable={this.props.modalVisiable}
             fullscreen={this.fullscreen}
             remoteCtrl={this.remoteCtrl}
             soundCtrl={this.soundCtrl}
@@ -187,19 +151,11 @@ class VideoCtrl extends React.Component {
         <Tabs defaultActiveKey="1" type="card">
           <TabPane tab="云台" key="1">
             <VideoCtrlYuntai  
-              playCtrlChange={this.props.playCtrlChange}
-              yutaiUp={this.yutaiUp}
-              yutaiDown={this.yutaiDown}
-              yutaiLeft={this.yutaiLeft}
-              yutaiRight={this.yutaiRight}
-              jiaojuPlusCtrl={this.jiaojuPlusCtrl}
-              jiaojuMinusCtrl={this.jiaojuMinusCtrl}/>
+              play={this.play}/>
           </TabPane>
           <TabPane tab="参数" key="2">
             <VideoCtrlParam 
-            setVideoEffect={this.setVideoEffect}
-            paramsChange={this.props.paramsChange}
-            videoParams={this.videoParams}
+              play={this.play}
              />
           </TabPane>
         </Tabs>

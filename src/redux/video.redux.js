@@ -20,7 +20,8 @@ const intialState = {
   downloadTableList: [],
   playbacklist:[],
   startime:'',
-  endtime: ''
+  endtime: '',
+  modalVisiable: false,
 }
 
 const CHANGESAVEVIDEO = '[video] CHANGESAVEVIDEO'
@@ -42,6 +43,7 @@ const DOWNLOAD_MODIFY = '[video] DOWNLOAD_MODIFY'
 const PLAYBACKVIDEO = '[video] PLAYBACKVIDEO'
 const PLAYBACKLIST = '[video] PLAYBACKLIST'
 const PLAYBACKTIME = '[video] PLAYBACKTIME'
+const MODALVISIABLE = '[video] MODALVISIABLE'
 
 export function video(state=intialState,action) {
   switch (action.type) {
@@ -143,6 +145,10 @@ export function video(state=intialState,action) {
     // 回放时间
     case PLAYBACKTIME: {
       return {...state,...action.payload}
+    }
+    // 视频modal
+    case MODALVISIABLE: {
+      return {...state,modalVisiable:!state.modalVisiable}
     }
     default:
       return state
@@ -413,5 +419,11 @@ export function playbackTime(data) {
   return {
     type: PLAYBACKTIME,
     payload: data
+  }
+}
+// 视频visiable
+export function modalVisiable() {
+  return {
+    type: MODALVISIABLE
   }
 }

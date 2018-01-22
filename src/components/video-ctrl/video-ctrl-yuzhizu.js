@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import classname from 'classnames'
 import { Icon, Modal, Form, Input,Collapse,Popconfirm,Checkbox } from 'antd'
-import {videoAreaDevices, createPreviewGroup, remotePreviewGroupList,modifyPreviewGroup,modifySysRemotePreview,getDevInfo} from '../../redux/video.redux'
+import {videoAreaDevices, createPreviewGroup, remotePreviewGroupList,modifyPreviewGroup,modifySysRemotePreview,getDevInfo,modalVisiable} from '../../redux/video.redux'
 import TableAreaTree from '../areaTree/tableAreaTree'
 const FormItem = Form.Item
 const Panel = Collapse.Panel;
@@ -11,7 +11,7 @@ const CheckboxGroup = Checkbox.Group;
 @connect(
   state=>({video: state.video}),
   {
-    videoAreaDevices, createPreviewGroup, remotePreviewGroupList,modifyPreviewGroup,modifySysRemotePreview,getDevInfo
+    videoAreaDevices, createPreviewGroup, remotePreviewGroupList,modifyPreviewGroup,modifySysRemotePreview,getDevInfo,modalVisiable
    }
 )
 class VideoCtrlYuzhizu1 extends React.Component {
@@ -28,6 +28,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
      this.realPlay = this.realPlay.bind(this)
      this.transferClick = this.transferClick.bind(this)
      this.checkboxChange = this.checkboxChange.bind(this)
+     this.previewsGroupClick = this.previewsGroupClick.bind(this)
   }
   
    componentDidMount() {
@@ -55,7 +56,6 @@ class VideoCtrlYuzhizu1 extends React.Component {
     })
   }
   editPreviewSubmit() {
-    console.log(this.state.options)
     this.props.modifySysRemotePreview({devIds:this.state.options.map(option=>option.value).join(','),devType:1,groupId:this.state.selectPreview.id})
         this.setState({editPreviewVisible: false})
   }
@@ -69,6 +69,13 @@ class VideoCtrlYuzhizu1 extends React.Component {
   handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
     this.setState({ selectedKeys: [...sourceSelectedKeys, ...targetSelectedKeys] });
   }
+  previewsGroupClick(list) {
+    this.props.modalVisiable()
+    this.setState({selectPreview:list,editPreviewVisible:true},
+      function() {
+        this.setState({options:this.state.selectPreview.previews.map(preview=>({ label: preview.devName, value: preview.devId }))})
+        this.setState({targetKeys:this.state.selectPreview.previews.map(list => list.devId)})})
+  }
   previewsGroupRender() {
     const lists =  this.props.video.previewGroup
     return (
@@ -76,12 +83,8 @@ class VideoCtrlYuzhizu1 extends React.Component {
       {lists.map((list,index) => (
         <Panel header={list.title} key={index}>
           <div className='abosulte1' >
-            <Icon type='plus' onClick={()=>
-              this.setState({selectPreview:list,editPreviewVisible:true},
-                function() {
-                  this.setState({options:this.state.selectPreview.previews.map(preview=>({ label: preview.devName, value: preview.devId }))})
-                  this.setState({targetKeys:this.state.selectPreview.previews.map(list => list.devId)})})}/>
-            <Icon type='edit' onClick={()=>this.setState({selectPreview:list,editvisible:true})} />
+            <Icon type='plus' onClick={()=> this.previewsGroupClick(list)}/>
+            <Icon type='edit' onClick={()=>{this.setState({selectPreview:list,editvisible:true});this.props.modalVisiable()}} />
             <Popconfirm  title="确定删除?" onConfirm={this.confirm.bind(this)}   okText="确定" cancelText="取消">
               <Icon onClick={()=>this.setState({selectPreview:list})} type='delete'/>
             </Popconfirm>
@@ -120,24 +123,21 @@ class VideoCtrlYuzhizu1 extends React.Component {
         })
         realArr = has?realArr:[...realArr,item]
       })
-      console.log(realArr)
       this.setState({
         options:[...this.state.options,...realArr]
       })
     }
   }
   checkboxChange(checkedValue)  {
-    console.log(checkedValue)
     this.setState({
       previewChecked: checkedValue
     })
   }
   render() {
-    console.log(this.state)
     const { getFieldDecorator } = this.props.form;
     return (
         <div className='yuzhiwei'>
-            <div className="add-group" onClick={()=>this.setState({createvisible:true})}>
+            <div className="add-group" onClick={()=>{this.setState({createvisible:true});this.props.modalVisiable()}}>
               <Icon type='plus'/>添加预览组
             </div>
             {this.previewsGroupRender()}
@@ -148,7 +148,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
               okText='保存'
               cancelText='取消'
               onOk={this.createSubmit.bind(this)}
-              onCancel={()=>this.setState({createvisible:false})}
+              onCancel={()=>{this.setState({createvisible:false});this.props.modalVisiable()}}
               >
               <Form layout='inline'>
                 <FormItem label="预置位名称">
@@ -167,7 +167,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
               className='yuzhiwimodal'
               cancelText='取消'
               onOk={this.editSubmit.bind(this)}
-              onCancel={()=>this.setState({editvisible:false})}
+              onCancel={()=>{this.setState({editvisible:false});this.props.modalVisiable()}}
               >
               <Form layout='inline'>
                 <FormItem label="预置位名称">
@@ -186,7 +186,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
               className='yuzhiwimodal'
               cancelText='取消'
               onOk={this.editPreviewSubmit.bind(this)}
-              onCancel={()=>this.setState({editPreviewVisible:false})}
+              onCancel={()=>{this.setState({editPreviewVisible:false});this.props.modalVisiable()}}
               >
               <div className='transfer'>
                 <div className="area">

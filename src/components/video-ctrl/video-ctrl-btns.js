@@ -52,7 +52,7 @@ class VideoCtrlBtn1 extends React.Component {
     ))
   }
   render() {
-    console.log(this.props.presets)
+    
     const { getFieldDecorator } = this.props.form
     return (
       <div className="controls clearfix">
@@ -79,7 +79,7 @@ class VideoCtrlBtn1 extends React.Component {
                 <img src={require('../../assets/imgs/video_full.png')} onClick={this.props.fullscreen} alt=""/>
               </Tooltip>
               <div className="controls-btn"><Icon type="poweroff" onClick={this.props.stopPlay}/>关闭通道</div>
-              <div  onClick={()=>this.setState({visible:true})} className="controls-btn"><Icon type="plus" />添加预置位</div>
+              <div  onClick={()=>{this.setState({visible:true});this.props.modalVisiable()}} className="controls-btn"><Icon type="plus" />添加预置位</div>
               <div style={{position:'relative',display:'inline-block'}}>
                 <div className="controls-btn" onClick={()=>this.setState({yuzhiweiVisible:!this.state.yuzhiweiVisible})}>调用预置位 {this.state.yuzhiweiVisible?<Icon type='down'/>:<Icon type='up'/>}
                 </div>
@@ -102,7 +102,7 @@ class VideoCtrlBtn1 extends React.Component {
               okText='保存'
               cancelText='取消'
               onOk={this.submit.bind(this)}
-              onCancel={()=>this.setState({visible:false})}
+              onCancel={()=>{this.setState({visible:false});this.props.modalVisiable()}}
               >
               <Form layout='inline'>
                 <FormItem label="预置位名称">

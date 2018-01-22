@@ -1,7 +1,14 @@
 import React from 'react'
 import {Slider} from 'antd'
+import { connect } from 'react-redux'
+import {paramsChange} from '../../redux/video.redux'
 
-
+@connect(
+  state=>({video: state.video}),
+  {
+    paramsChange
+   }
+)
 class VideoCtrlParam extends React.PureComponent {
   constructor() {
     super()
@@ -10,20 +17,31 @@ class VideoCtrlParam extends React.PureComponent {
     this.constrastChange = this.constrastChange.bind(this)
     this.saturationChange = this.saturationChange.bind(this)
     this.hueChange = this.hueChange.bind(this)
+    this.setVideoEffect = this.setVideoEffect.bind(this)
   }
   brightChange(e) {
-    this.props.setVideoEffect({...this.props.videoParams,bright:e})
+    this.setVideoEffect({...this.videoParams,bright:e})
   }
   constrastChange(e) {
-    this.props.setVideoEffect({...this.props.videoParams,contrast:e})
+    this.setVideoEffect({...this.videoParams,contrast:e})
   }
   saturationChange(e) {
-    this.props.setVideoEffect({...this.props.videoParams,saturation:e})
+    this.setVideoEffect({...this.videoParams,saturation:e})
   }
   hueChange(e) {
-    this.props.setVideoEffect({...this.props.videoParams,hue:e})
+    this.setVideoEffect({...this.videoParams,hue:e})
+  }
+  setVideoEffect(obj){
+    const params = Object.values(obj)
+    this.props.play.XzVideo_SetVideoEffect(0,params[0],params[1],params[2],params[3])
   }
   render() {
+    this.videoParams = {
+      bright: this.props.video.bright,
+      contrast: this.props.video.contrast,
+      saturation: this.props.video.saturation,
+      hue: this.props.video.hue
+    }
     return (
       <div className='ctrlParam'>
         <div className="count-ctrl">
