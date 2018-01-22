@@ -40,6 +40,7 @@ class VideoPlayBack extends React.Component {
                 width={800}
                 height={600}
                 className='playScreen'
+                
                 >
               </object>
              

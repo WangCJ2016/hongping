@@ -21,7 +21,7 @@ export function HomeCamera(device,videoPlay) {
         <Icon type="camera" className='float-left'  style={{ fontSize: 13 }} />{device.name}
       </p>
       <ButtonGroup className='clearfix'>
-        <Button type="primary" onClick={()=>videoPlay()}>
+        <Button type="primary" onClick={()=>videoPlay(device)}>
           预览
         </Button>
     </ButtonGroup>

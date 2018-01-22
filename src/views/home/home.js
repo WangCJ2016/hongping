@@ -10,12 +10,12 @@ import HomeWarmPanel from '../../components/home-warm-panel/home-warm-panel'
 import HomeSlider from '../../components/home-slider/home-slider'
 import './home.scss'
 import {areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
-import { querySysInstallPlaces } from '../../redux/setting.device.redux'
+import { querySysInstallPlaces,getDevInfo } from '../../redux/setting.device.redux'
 
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar}),
-  {areaInfo,querySysInstallPlaces,selectAreaIdSuccess}
+  {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo}
 )
 class Home extends React.Component {
   constructor() {
@@ -94,11 +94,14 @@ class Home extends React.Component {
     })
   }
   // 预览
-  videoPlay(){ 
+  videoPlay(device){ 
     this.setState({
       videoVisible:true
     },()=>{
-      
+      setTimeout(()=>{
+        console.log(this.play)
+        this.props.getDevInfo({devId:device.id,type:device.type},this.play)
+      })
     })
   }
   render() {

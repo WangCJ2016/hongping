@@ -148,8 +148,7 @@ class VideoCtrl extends React.Component {
       hue: this.props.video.hue
     }
     return (
-      <div className='video-ctrl clearfix'>
-        
+      <div className='video-ctrl clearfix'> 
        <div className='float-left' style={{width:'70%'}}>
               <object
               ref={(screen)=>this.play=screen}
@@ -158,6 +157,7 @@ class VideoCtrl extends React.Component {
               height={600}
               width={800}
               align='center' 
+           
               >
               </object>
           <VideoCtrlBtn

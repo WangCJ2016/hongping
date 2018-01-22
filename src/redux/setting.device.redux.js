@@ -298,3 +298,21 @@ export function searchBroadcast(info) {
   }
 }
 
+// home yulan
+export function getDevInfo(info,play) {
+  return (dispatch,getState) => {
+    const user = getState().user
+    request.get(config.api.base + config.api.getDevInfo,{
+      token:token,
+      ...info
+    })
+    .then(res => {
+     console.log(res)
+     if(res.success) {
+       const device = res.dataObject
+       const model = device.host.model === 1?'HikHC-14':'DHNET-03'
+       play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+     }
+    })
+  }
+}
