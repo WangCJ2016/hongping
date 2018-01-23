@@ -11,6 +11,9 @@ const columns = [{
   render:(text,record)=>(
     <span>
       {record.type==='10003'?<img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>:null}
+      {record.type!=='10003'?
+        <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+        :null}
       <span>{record.name}</span>
     </span>
   )

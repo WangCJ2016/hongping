@@ -12,6 +12,9 @@ const columns = [{
     <span>
       {record.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
       {record.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
+      {record.type!==1&&record.type!==2?
+        <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+        :null}
       <span>{record.name}</span>
     </span>
   )

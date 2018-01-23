@@ -148,9 +148,9 @@ class Home extends React.Component {
           </div>
           <HomeSlider />
         </div>
-        <div style={{height:'30%'}}>
+       
         <HomeTable />
-        </div>
+      
         <Modal
           title="视频预览" 
           visible={this.state.videoVisible}
