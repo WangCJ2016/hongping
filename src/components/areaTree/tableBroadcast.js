@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table,Checkbox } from 'antd';
+import { Table } from 'antd';
 import { connect } from 'react-redux'
 import {broadcastAreaDevices,areaList} from '../../redux/area.redux'
 import { selectBroIndex } from '../../redux/broadcast.redux'
@@ -18,8 +18,10 @@ export default class TableBroadcast extends React.Component {
       super()
       this.onExpand = this.onExpand.bind(this)
       this.state = {
-        selectIndex: []
+        selectIndex: [],
+        selectKeys:['0b6d2ac417844ee3829833eccf931ff4']
       }
+
     }
     componentDidMount(){
         this.props.areaList()
@@ -33,6 +35,12 @@ export default class TableBroadcast extends React.Component {
         newArr.splice(index1,1)
         this.props.selectBroIndex(newArr)
       }
+    }
+    areaChangeSelect(selectedRowKeys, selectedRows) {
+      selectedRowKeys.forEach(id=>{
+        //this.props.broadcastAreaDevices({areaId:record.id,type:4}) 需要一个多区域搜索的接口
+      })
+      this.setState({selectKeys:selectedRowKeys})
     }
     onExpand(expanded, record) {
       if(expanded) {
@@ -53,11 +61,12 @@ export default class TableBroadcast extends React.Component {
             <span>
               {record.type===1?
                 <span>
-                  <Checkbox onChange={this.onChange.bind(this,record.index)}>
+                  
                   <img className='type-icon' src={require('../../assets/imgs/br_icon.png')} alt=""/>
-                  {record.name}</Checkbox>
+                  {record.name}
                 </span>
                 :<span>
+                
                 <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
                 {record.name}</span>}
               
@@ -68,7 +77,10 @@ export default class TableBroadcast extends React.Component {
         return ( 
                  <div className='tableAreaTree'>                    
                   <Table 
-                    rowSelection={this.props.rowSelection}
+                    rowSelection={{
+                      selectedRowKeys: this.state.selectKeys,
+                      onChange:this.areaChangeSelect.bind(this)
+                    }}
                     pagination={false}
                     showHeader={false}
                     columns={columns}

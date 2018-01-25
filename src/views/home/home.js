@@ -164,7 +164,6 @@ class Home extends React.Component {
          <div className="clearfix">
             <div className="float-left" style={{width:'70%'}}>
               <object
-                id='play'
                 ref={(screen)=>this.play=screen}
                 classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
                 codebase="./XzVideoWebClient.cab#version=1.0.0.1"
@@ -176,7 +175,6 @@ class Home extends React.Component {
             </div>
             <div className="float-right"  style={{width:'30%'}}>
               <VideoCtrlYuntai play={this.play} aa={this.state.aa} />
-              <VideoCtrlParam play={this.play} aa={this.state.aa}/>
             </div>
          </div>
            

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Layout,Popconfirm,Icon } from 'antd';
 import { Route, Switch,NavLink} from 'react-router-dom'
+import className from 'classnames'
 
 import { connect } from 'react-redux'
 import Home from '../views/home/home'
@@ -21,7 +22,8 @@ const { Header, Content, Sider } = Layout;
 
 class Frame extends React.Component {
   state = {
-    collapsed:false
+    collapsed:false,
+    siderActiveIndex: -1
   }
   navRender() {
     const navArray = [
@@ -33,19 +35,25 @@ class Frame extends React.Component {
       {class: 'guard_sidebar',title: '门禁'},
       {class: 'daozha_sidebar',title: '道闸'},
   ]
-   return navArray.map(item=>(
-      <a className='navlink' key={item.title} onClick={()=>this.props.changeSidebar(item.class)}>
+   return navArray.map(item=>{
+     const style = className({
+      navlink: true,
+      active: this.state.siderActiveIndex === item.title
+     })
+     return <a className={style} key={item.title} onClick={()=>{this.props.changeSidebar(item.class);this.setState({siderActiveIndex:item.title})}}>
         <div className={'imgSub '+item.class}></div>
         <p className='nav_title'>{item.title}</p>
       </a>
-    ))
+   })
   }
   topNavRender() {
     const navArray = [
-      {class: 'home',title: '首页',link:'/home'},
-      {class: 'video',title: '视频',link:'/video'},
-      {class: 'watch',title: '巡更',link:'/watch'},
-      {class: 'setting',title: '设置',link:'/setting'}
+      {class: 'home',title: '应急中心',link:'/home'},
+      {class: 'video',title: '视频监控',link:'/video'},
+      {class: 'watch',title: '巡更上传',link:'/watch'},
+      {class: 'status',title: '实时状态',link:'/watch'},
+      {class: 'history',title: '历史分析',link:'/watch'},
+      {class: 'setting',title: '个人设置、系统配置',link:'/setting'}
   ]
    return navArray.map(item=>(
       <NavLink className='navtoplink' key={item.title} to={item.link}  activeClassName="selected">
@@ -57,6 +65,9 @@ class Frame extends React.Component {
   confirm() {
     localStorage.removeItem('token')
     window.location.replace("/login")
+  }
+  siderBarRender() {
+    
   }
   render() {
     return (
@@ -75,26 +86,21 @@ class Frame extends React.Component {
         </div>
       </Header>
       <Layout>
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={true}
-        collapsedWidth={60}
-      >
-      <div className="logo" />
-      <Icon
-        className="trigger"
-        type={this.state.collapsed ? 'menu-fold' : 'menu-unfold'}
-        onClick={()=>this.setState({
-          collapsed: !this.state.collapsed,
-        })}
-      />
-      {this.navRender()}
-      <SideBar />
-      
-    </Sider>
+      {
+        this.props.location.pathname==='/home'||this.props.location.pathname==='/trail'?
+          <Sider
+              trigger={null}
+              collapsible
+              collapsed={true}
+              collapsedWidth={60}
+            > 
+            {this.navRender()}
+            <SideBar />
+          </Sider>
+        :null
+      }
         <Layout>
-          <Content style={{ background: '#fff', marginLeft: '60px',height:'100%'}}>
+          <Content style={{ background: '#fff', marginLeft: this.props.location.pathname==='/home'||this.props.location.pathname==='/trail'?'60px':'0',height:'100%'}}>
               <Switch>
                 <Route exact path='/home' component={Home}></Route>
                 <Route exact path='/video' component={Video}></Route>

@@ -195,7 +195,7 @@ module.exports = {
               {
                 loader: require.resolve('less-loader'), // compiles Less to CSS
                 options: {
-                  "modifyVars":{"@primary-color":"#17b89f"}
+                  "modifyVars":{"@primary-color":"#006f6b"}
                 }
               }
             ],

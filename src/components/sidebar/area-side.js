@@ -26,8 +26,9 @@ class AreaSideBar extends React.Component {
       <div className='submeun' style={{width:this.props.sidebar.area_sidebar?'300px':'0'}}>
         <div className='siderbar-wrap'> 
           <div className="title clearfix">
-          <span className='float-left'>区域</span>
-          <span className='float-right'><Icon type='close' onClick={()=>this.props.changeSidebar('area_sidebar')}></Icon></span></div>
+            <span className='float-left'>区域</span>
+            <span className='float-right'><Icon type='close' onClick={()=>this.props.changeSidebar('area_sidebar')}></Icon></span>
+          </div>
           <AreaTree select={this.select} defaultExpandAll={true}/>
         </div>
       </div>

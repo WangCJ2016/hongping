@@ -41,7 +41,7 @@ export function getAllpeo(token){
     request.get(config.api.base + config.api.getAllpeo,{ token: token})
     .then(res=>{
       console.log(res)
-      if(res.success) {
+      if(res.success&&res.dataObject) {
         dispatch(getAllpeoSuccess({peoList:res.dataObject}))
       }
     })

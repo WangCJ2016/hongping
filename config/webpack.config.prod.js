@@ -212,7 +212,7 @@ module.exports = {
                     {
                       loader: require.resolve('less-loader'), // compiles Less to CSS
                       options: {
-                        "modifyVars":{"@primary-color":"#17b89f"}
+                        "modifyVars":{"@primary-color":"#006f6b"}
                       }
                     }
                   ],
@@ -372,7 +372,6 @@ module.exports = {
           // https://github.com/facebookincubator/create-react-app/issues/2612
           return;
         }
-        console.log(message);
       },
       minify: true,
       // For unknown URLs, fallback to the index page

@@ -16,16 +16,20 @@ export default class AreaTree extends React.Component {
     componentDidMount(){
         this.props.areaList()
     }
+    componentDidUpdate(prevProps, prevState) {
+      if(this.props.area.areas&&this.props.area.areas[0]&&!this.firstRenderIf) {
+        this.props.select({areaId:this.props.area.areas[0].id,type:1})
+        this.firstRenderIf = true
+      }
+     
+    }
     select(e) {
       this.props.select({areaId:e[0],type:1})
     }
     areaTreeRender() {
         const areas = this.props.area.areas
         const arealist = this.props.area.allAreas
-        if(!this.firstRenderIf) {
-          this.props.select({areaId:areas[0].id,type:1})
-          this.firstRenderIf = true
-        }
+        
        return (
         <Tree
           checkable={this.props.checkable}

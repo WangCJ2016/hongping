@@ -1,5 +1,5 @@
 import React from 'react'
-import {Icon,Input,Checkbox} from 'antd'
+import {Icon,Input,Checkbox,message} from 'antd'
 import { unquie } from '../../utils'
 import TableBroadcast from '../areaTree/tableBroadcast'
 import { connect } from 'react-redux'
@@ -15,8 +15,12 @@ class BroadcastSider extends React.Component {
   constructor() {
     super()
     this.state={
-      selectBroId: ''
+      selectBroId: '',
+      voiceBroadcastStart: false,
+      fileBroadcastStart: false
     }
+    this.voiceBroadcast = this.voiceBroadcast.bind(this)
+    this.fileBroadcast = this.fileBroadcast.bind(this)
   }
   onChange(index,e) {
     if(e.target.checked) {
@@ -37,6 +41,49 @@ class BroadcastSider extends React.Component {
               {bro.name}</Checkbox>
           </div>
     })
+  }
+  // 语音播报
+  voiceBroadcast() {
+    if(!this.state.voiceBroadcastStart){
+      const a =this.play.FileBroadcast('ip','TargeIdList')
+      if(a) {
+        message.success('开始播报语音')
+        this.setState({
+          voiceBroadcastStart:true
+        })
+      }else{
+        message.error('播报语音失败')
+      }
+    }else {
+      const a = this.play.EndVoiceBroadcast()
+      a?message.success('已关闭'):message.error('关闭失败')
+      this.setState({
+        voiceBroadcastStart:false
+      })
+    }
+  }
+  // 文件播报
+  fileBroadcast() {
+    if(!this.state.fileBroadcastStart) {
+      const a = this.play.GetLocallFile()
+      if(a!=='') {
+        const a = this.play.FileBroadcast('ip','TargeIdList',a)
+        if(a) {
+          message.success('开始播报文件语音')
+        } else {
+          message.error('播报语音失败')
+        }
+      }else {
+        message.error('文件夹下没有文件')
+      }
+    }else {
+      const a = this.play.EndFileBroadcast()
+      a?message.success('已关闭'):message.error('关闭失败')
+      this.setState({
+        voiceBroadcastStart:false
+      })
+    }
+    
   }
   render() {
     return (
@@ -59,9 +106,18 @@ class BroadcastSider extends React.Component {
         </div>
         <div className="fix-bottom">
           <span>已选择<strong style={{color: '#17b89f'}}>{this.props.broadcast.selectBroIndex.length}</strong></span>
-          <span><img src={require('../../assets/imgs/bro-icon.png')} alt=""/></span>
-          <span><Icon type="folder" /></span>
+          <span onClick={this.voiceBroadcast}><Icon type="notification" style={{color:this.state.voiceBroadcastStart?'#006f6b':''}} /></span>
+          <span onClick={this.fileBroadcast}><Icon type="folder" style={{color:this.state.fileBroadcastStart?'#006f6b':''}} /></span>
         </div>
+        <object
+                ref={(screen)=>this.play=screen}
+                classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
+                codebase="./XzVideoWebClient.cab#version=1.0.0.1"
+                width={0}
+                height={0}
+                style={{visibility:'hidden'}}
+                >
+              </object>
       </div>
     )
   }

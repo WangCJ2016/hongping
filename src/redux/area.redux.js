@@ -14,6 +14,7 @@ const AREADEVICESUCCESS = '[area] AREADEVICESUCCESS'
 const ADDAREADEVICE = '[area] ADDAREADEVICE'
 const AREAIMGSLIDERCHANGE = '[area] AREAIMGSLIDERCHANGE'
 const BRODEVICE_SUCCESS = '[area] BRODEVICE_SUCCESS'
+const BROADCASTSELECTKEYS = '[area] BROADCASTSELECTKEYS'
 const HONGWAI_SUCCESS = '[area] HONGWAI_SUCCESS'
 const GUARD_SUCCESS = '[area] GUARD_SUCCESS'
 const DAOZHA_SUCCESS = '[area] DAOZHA_SUCCESS'
@@ -273,6 +274,7 @@ function broadcastAreaDevicesSuccess(devices) {
     payload: devices
   }
 }
+// 广播区域展开
 export function broadcastAreaDevices(info) {
   return (dispatch)=>{
     request.get(config.api.base + config.api.videoAreaDevices,{
@@ -281,9 +283,35 @@ export function broadcastAreaDevices(info) {
     })
    .then(res=>{
      if(res.success) {
+       console.log(res)
        if(res.dataObject){
-        const extra =  res.dataObject.map(device=>({...device,parentId:info.areaId,key:device.id}))
+        const extra =  res.dataObject.map(device=>({...device,parentId:info.areaId,key:device.key}))
         dispatch(broadcastAreaDevicesSuccess(extra))
+       }
+     }
+   })
+  }
+}
+// 广播选中id
+function broadcastAreaDevicesKeySuccess(keys) {
+  return {
+    type: BROADCASTSELECTKEYS,
+    payload: keys
+  }
+}
+export function broadcastAreaDevicesKey(info) {
+  return (dispatch)=>{
+    request.get(config.api.base + config.api.videoAreaDevices,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     if(res.success) {
+       if(res.dataObject){
+        const extra =  res.dataObject.map(device=>device.id)
+        dispatch(broadcastAreaDevicesKeySuccess(extra))
+       }else{
+        dispatch(broadcastAreaDevicesKeySuccess([]))
        }
      }
    })

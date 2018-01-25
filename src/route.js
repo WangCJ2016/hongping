@@ -1,12 +1,11 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch} from 'react-router-dom'
-import Frame from '../src/layout/frame'
+import { HashRouter, Route, Switch} from 'react-router-dom'
 import Home from './views/home/home'
  const routes = () => (
-  <BrowserRouter>
+  <HashRouter>
 		<Switch>
       <Route path='/home' component={Home}></Route>
 		</Switch>
-	</BrowserRouter>
+	</HashRouter>
 )
 export default routes

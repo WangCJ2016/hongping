@@ -61,9 +61,6 @@ class HomeTable extends React.Component {
         <TabPane tab="报警" key="1">
         <HomeTableList />
         </TabPane>
-        <TabPane tab="人员" key="2">
-        <HomeTableList />
-        </TabPane>
         <TabPane tab="车辆" key="3">
         <CarsTable 
         carPages={this.props.alarm.carPages}

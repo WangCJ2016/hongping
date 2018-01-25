@@ -49,7 +49,6 @@ class HomeTableList extends React.Component {
     this.setState({suggest:e.target.value})
   }
   render() {
-    console.log(this.props)
     const alarmInfo = this.props.alarm.alarmInfo
     const columns = [{
       title: '名称',
