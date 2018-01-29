@@ -186,4 +186,9 @@
   border-right: 1px solid #fff;
   border-left: 1px solid #fff;
 }
-.ant-layout-sider::-webkit-scrollbar {display:none}
+.ant-layout{
+  height: calc(100% - 69px)
+}
+.ant-layout-sider{
+  overflow: hidden
+}
