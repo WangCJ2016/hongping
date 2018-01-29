@@ -4,8 +4,8 @@ import { locale } from '../../config'
 
 class VideoPlayBackByTime extends React.Component {
   state = { 
-    startTime:'',
-    endTime:''
+    startTime:'2018-01-29 12:00:00',
+    endTime:'2018-01-29 12:10:00'
    }
   startTime(value,dateString) {
     this.setState({startTime: dateString})
@@ -15,8 +15,8 @@ class VideoPlayBackByTime extends React.Component {
   }
   handleSubmit() {
     const device = this.props.device
-    console.log(device)
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
+    console.log(JSON.stringify(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,this.state.startTime,this.state.endTime,0))
     this.props.play.XzVideo_RecordPlayByTime(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,this.state.startTime,this.state.endTime,0)
   }
   render() {
@@ -28,7 +28,7 @@ class VideoPlayBackByTime extends React.Component {
             showTime
             format="YYYY-MM-DD HH:mm:ss"
             placeholder="选择开始时间"
-            onChange={this.startTime}
+            onChange={this.startTime.bind(this)}
             locale={locale}
           />
         </div>
@@ -38,7 +38,7 @@ class VideoPlayBackByTime extends React.Component {
             showTime
             format="YYYY-MM-DD HH:mm:ss"
             placeholder="选择结束时间"
-            onChange={this.endTime}
+            onChange={this.endTime.bind(this)}
             locale={locale}
           />
         </div>

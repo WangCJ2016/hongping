@@ -25,7 +25,7 @@
 .header_title{
   font-size: 16px;
 }
-.logo,header_title{
+.logo,.header_title{
   float: left;
 }
 .logout{
@@ -186,3 +186,4 @@
   border-right: 1px solid #fff;
   border-left: 1px solid #fff;
 }
+.ant-layout-sider::-webkit-scrollbar {display:none}
