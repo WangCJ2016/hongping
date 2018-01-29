@@ -12,8 +12,12 @@ import {changeBackVideoIf,selectVideo} from '../../redux/video.redux'
 class VideoCtrlBtns extends React.Component {
   constructor() {
     super()
+    this.state = {
+      progress:0
+    }
     this.playCtrl = this.playCtrl.bind(this)
     this.prenextClick = this.prenextClick.bind(this)
+    this.playProgress = this.playProgress.bind(this)
   }
   playCtrl(i) {
    if(i===3||i===4) {
@@ -55,7 +59,18 @@ class VideoCtrlBtns extends React.Component {
       }
    }
   }
-  
+  playProgress(e) {
+    if(this.props.video.backVideoIf) {
+      setInterval(()=>{
+        const a = this.props.play.XzVideo_GetRecordPlayPosEx(0)
+        this.setState({progress:a})
+      })
+    }
+    this.setState({
+      progress: e
+    })
+    this.props.play.XzVideo_SetRecordPlayPos(0,e)
+  }
   render() {
     return (
         <div className='ctrl-bnts'>
@@ -90,7 +105,7 @@ class VideoCtrlBtns extends React.Component {
             </span>
           </Tooltip>
           <div className='_slide'>
-            <Slider defaultValue={30}  />
+            <Slider value={this.state.progress} onChange={this.playProgress} />
           </div>
           
         </div>

@@ -14,7 +14,7 @@ import { querySysInstallPlaces,getDevInfo } from '../../redux/setting.device.red
 import VideoCtrlYuntai from '../../components/video-ctrl/video-ctrl-yuntai'
 import VideoCtrlParam from '../../components/video-ctrl/video-ctrl-params'
 import VideoPlayBackByTime from '../../components/video-playback/video-playback-bytime'
-
+import VideoCtrlBtns from '../../components/video-playback/video-ctrlbtn'
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar}),
@@ -215,6 +215,8 @@ videoPlayBack(device) {
                 style={{width:'100%'}}
                 >
               </object>
+              <VideoCtrlBtns 
+              play={this.playback}/>
             </div>
             <div className="float-right"  style={{width:'30%'}}>
               <VideoPlayBackByTime play={this.playback} device={this.props.deivces.devinfo} />
