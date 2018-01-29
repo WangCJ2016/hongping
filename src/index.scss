@@ -8,11 +8,7 @@ body {
   height: 100%;
 }
 .ant-layout-sider{
-  position: fixed!important;
-    left: 0;
-    top: 60px;
-    bottom: 0;
-    z-index: 9
+  
 }
 .ant-layout{
   min-height: calc(100% - 60px);

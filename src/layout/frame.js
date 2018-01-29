@@ -72,7 +72,7 @@ class Frame extends React.Component {
   render() {
     return (
       
-      <Layout>
+      <Layout className='mylayout'>
       <Header className="header">
         <img className='logo' src={require('../assets/imgs/logo.png')} alt=""/>
         <span className='header_title'>五系统一中心平台</span>
