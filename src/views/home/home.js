@@ -212,7 +212,7 @@ videoPlayBack(device) {
                 codebase="./XzVideoWebClient.cab#version=1.0.0.1"
                 height={400}
                 align='center' 
-                style={{width:'100%',height:'100%'}}
+                style={{width:'100%'}}
                 >
               </object>
             </div>
