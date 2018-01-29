@@ -13,6 +13,7 @@ import {areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
 import { querySysInstallPlaces,getDevInfo } from '../../redux/setting.device.redux'
 import VideoCtrlYuntai from '../../components/video-ctrl/video-ctrl-yuntai'
 import VideoCtrlParam from '../../components/video-ctrl/video-ctrl-params'
+import VideoPlayBackByTime from '../../components/video-playback/video-playback-bytime'
 
 
 @connect(
@@ -25,10 +26,12 @@ class Home extends React.Component {
     this.state = {
       visible: false,
       modalvisible: false,
-      videoVisible: false
+      videoVisible: false,
+      videoBackVisible: false
     }
   
     this.videoPlay = this.videoPlay.bind(this)
+    this.videoPlayBack = this.videoPlayBack.bind(this)
   }
   
   componentDidMount() {
@@ -64,8 +67,8 @@ class Home extends React.Component {
       if(device.type === 1 || device.type === 2) {
         return  <Popover 
                   key={device.id+index}
-                  content={HomeCamera(device,this.videoPlay)}
-                  trigger="click"
+                  content={HomeCamera(device,this.videoPlay,this.videoPlayBack)}
+                 
                     >
                   <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                     <Tag >
@@ -103,14 +106,26 @@ class Home extends React.Component {
       videoVisible:true
     },()=>{
       setTimeout(()=>{
-        this.props.getDevInfo({devId:device.id,type:device.type},this.play)
+        this.props.getDevInfo({devId:device.id,type:device.type},'play',this.play)
         this.setState({
           aa:''
         })
       })
     })
   }
-
+// 回放
+videoPlayBack(device) {
+  this.setState({
+    videoBackVisible:true
+  },()=>{
+    setTimeout(()=>{
+      this.props.getDevInfo({devId:device.id,type:device.type},'playback')
+      this.setState({
+        aa:''
+      })
+    })
+  })
+}
   render() {
     const areaInfo = this.props.area.areaInfo
     return (
@@ -160,8 +175,8 @@ class Home extends React.Component {
           cancelText='取消' 
           footer={false}
           onCancel={()=>this.setState({videoVisible:false})}
-        >
-         <div className="clearfix">
+          >
+          <div className="clearfix">
             <div className="float-left" style={{width:'70%'}}>
               <object
                 ref={(screen)=>this.play=screen}
@@ -175,6 +190,34 @@ class Home extends React.Component {
             </div>
             <div className="float-right"  style={{width:'30%'}}>
               <VideoCtrlYuntai play={this.play} aa={this.state.aa} />
+            </div>
+         </div>
+           
+        </Modal>
+        <Modal
+          title="视频回放" 
+          visible={this.state.videoBackVisible}
+          style={{ top: 200 }}
+          width='50%'
+          okText='确定'
+          cancelText='取消' 
+          footer={false}
+          onCancel={()=>this.setState({videoBackVisible:false})}
+          >
+          <div className="clearfix">
+            <div className="float-left" style={{width:'70%'}}>
+              <object
+                ref={(screen)=>this.playback=screen}
+                classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
+                codebase="./XzVideoWebClient.cab#version=1.0.0.1"
+                height={400}
+                align='center' 
+                style={{width:'100%',height:'100%'}}
+                >
+              </object>
+            </div>
+            <div className="float-right"  style={{width:'30%'}}>
+              <VideoPlayBackByTime play={this.playback} device={this.props.deivces.devinfo} />
             </div>
          </div>
            

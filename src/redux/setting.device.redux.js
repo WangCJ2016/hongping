@@ -20,6 +20,7 @@ const DELMAPDEVICE = '[device] DELMAPDEVICE'
 const ADDMAPDEVICE = '[device] ADDMAPDEVICE'
 const CHANGEMAPDEVICE = '[device] CHANGEMAPDEVICE'
 const DEVICESEARCH = '[device] DEVICESEARCH'
+const DEVINFO = '[device] DEVINFO'
 
 export function devices(state=initalState,action) {
   switch (action.type) {
@@ -56,6 +57,10 @@ export function devices(state=initalState,action) {
     // search
     case DEVICESEARCH: {
       return {...state,searchDevice:action.payload}
+    }
+    // home yulan
+    case DEVINFO: {
+      return {...state,devinfo:action.payload}
     }
     default:
       return state
@@ -299,7 +304,13 @@ export function searchBroadcast(info) {
 }
 
 // home yulan
-export function getDevInfo(info,play) {
+function devinfoSuccess(info) {
+  return {
+    type: DEVINFO,
+    payload: info
+  }
+}
+export function getDevInfo(info,type,play) {
   return (dispatch,getState) => {
     const user = getState().user
     request.get(config.api.base + config.api.getDevInfo,{
@@ -311,7 +322,11 @@ export function getDevInfo(info,play) {
      if(res.success) {
        const device = res.dataObject
        const model = device.host.model === 1?'HikHC-14':'DHNET-03'
-       play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+       dispatch(devinfoSuccess(res.dataObject))
+       if(type==='play') {
+        play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+       }
+       
      }
     })
   }

@@ -10,7 +10,7 @@ export const config = {
     }
   },
   api: {
-    base: 'http://192.168.0.101:8080/hp/manage',
+    base: 'http://47.100.123.83/hp/manage',
     login: '/do_login', // 登录
 
     areaLists: '/area_queryAreasPage', //区域列表

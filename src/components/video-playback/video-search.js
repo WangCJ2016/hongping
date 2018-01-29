@@ -40,7 +40,6 @@ class VideoSearch extends React.PureComponent {
       this.state.startTime,
       this.state.endTime)
       this.props.playbackTime({startTime: this.state.startTime,endTime:this.startTime.endTime})
-      console.log(JSON.stringify(a))
       this.props.playBackData(a)
   }
   startTime(value,dateString) {

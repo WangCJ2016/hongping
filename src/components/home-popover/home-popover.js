@@ -14,17 +14,20 @@ export function HomePerson(peo) {
   )
 }
 
-export function HomeCamera(device,videoPlay) {
+export function HomeCamera(device,videoPlay,videoPlayBack) {
   return (
     <div className="home-popover">
       <p className='title'>
         <Icon type="camera" className='float-left'  style={{ fontSize: 13 }} />{device.name}
       </p>
       <ButtonGroup className='clearfix'>
-        <Button type="primary" onClick={()=>videoPlay(device)}>
-          预览
-        </Button>
-    </ButtonGroup>
+      <Button className='float-left' type="primary" onClick={()=>videoPlay(device)}>
+        预览
+      </Button>
+      <Button className='float-right' type="primary" onClick={()=>videoPlayBack(device)}>
+        回放
+      </Button>
+  </ButtonGroup>
     </div>
   )
 }
