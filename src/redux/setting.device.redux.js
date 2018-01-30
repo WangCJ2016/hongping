@@ -10,7 +10,8 @@ const initalState = {
   broadcastDevices: [],
   mapToDevices: [],
   load: false,
-  searchDevice: null
+  searchDevice: null,
+  videoPicArr:[]
 }
 const AREADEVICES = '[device] AREADEVICE'
 const AREADEVICES1 = '[device] AREADEVICE1'
@@ -21,6 +22,7 @@ const ADDMAPDEVICE = '[device] ADDMAPDEVICE'
 const CHANGEMAPDEVICE = '[device] CHANGEMAPDEVICE'
 const DEVICESEARCH = '[device] DEVICESEARCH'
 const DEVINFO = '[device] DEVINFO'
+const VIDEOPIC = '[device] VIDEOPIC'
 
 export function devices(state=initalState,action) {
   switch (action.type) {
@@ -61,6 +63,22 @@ export function devices(state=initalState,action) {
     // home yulan
     case DEVINFO: {
       return {...state,devinfo:action.payload}
+    }
+    case VIDEOPIC: {
+      const arr = action.payload.split('\n').map((doc,index) => {
+        const docArr = doc.split(',')
+        return {
+          key:docArr[0],
+          id: index,
+          name:docArr[0],
+          BDateTime:docArr[2],
+          CardNum: docArr[3],
+          License: docArr[4],
+          size:docArr[1],
+          RecogResul: docArr[5]
+        }
+      })
+      return {...state,videoPicArr:arr}
     }
     default:
       return state
@@ -310,6 +328,12 @@ function devinfoSuccess(info) {
     payload: info
   }
 }
+ export function videoPic(data) {
+  return {
+    type: VIDEOPIC,
+    payload: data
+  }
+}
 export function getDevInfo(info,type,play) {
   return (dispatch,getState) => {
     const user = getState().user
@@ -326,10 +350,7 @@ export function getDevInfo(info,type,play) {
        if(type==='play') {
         play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
        }
-       if(type==='pic') {
-        const a = play.XzVideo_FindDevicePicture(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,'2018-01-29 12:00:00','2018-01-29 12:30:00','0xff',"","",0)
-        console.log(JSON.stringify(a))
-       }
+       
      }
     })
   }
