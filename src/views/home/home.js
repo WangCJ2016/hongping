@@ -27,11 +27,13 @@ class Home extends React.Component {
       visible: false,
       modalvisible: false,
       videoVisible: false,
-      videoBackVisible: false
+      videoBackVisible: false,
+      videoPicVisible: false
     }
   
     this.videoPlay = this.videoPlay.bind(this)
     this.videoPlayBack = this.videoPlayBack.bind(this)
+    this.videoPic = this.videoPic.bind(this)
   }
   
   componentDidMount() {
@@ -67,7 +69,7 @@ class Home extends React.Component {
       if(device.type === 1 || device.type === 2) {
         return  <Popover 
                   key={device.id+index}
-                  content={HomeCamera(device,this.videoPlay,this.videoPlayBack)}
+                  content={HomeCamera({device:device,videoPlay:this.videoPlay,videoPlayBack:this.videoPlayBack})}
                  
                     >
                   <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
@@ -79,6 +81,18 @@ class Home extends React.Component {
                   </div> 
                 </Popover>
        
+      }
+      if(device.type===3) {
+        return  <Popover 
+                  key={device.id+index}
+                  content={HomeCamera({device:device,videoPic:this.videoPic})}
+                    >
+                  <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+                    <Tag >
+                    <img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>
+                    {device.name}</Tag>
+                  </div> 
+                </Popover>
       }
       if(device.type === 4) {
        return <Popover content={<HomeBroadcast device={device} />} trigger="click" key={device.id+index} >
@@ -120,6 +134,19 @@ videoPlayBack(device) {
   },()=>{
     setTimeout(()=>{
       this.props.getDevInfo({devId:device.id,type:device.type},'playback')
+      this.setState({
+        aa:''
+      })
+    })
+  })
+}
+// 历史图片
+videoPic(device) {
+  this.setState({
+    videoPicVisible:true
+  },()=>{
+    setTimeout(()=>{
+      this.props.getDevInfo({devId:device.id,type:device.type},'pic')
       this.setState({
         aa:''
       })
@@ -220,6 +247,35 @@ videoPlayBack(device) {
             </div>
             <div className="float-right"  style={{width:'30%'}}>
               <VideoPlayBackByTime play={this.playback} device={this.props.deivces.devinfo} />
+            </div>
+         </div>
+           
+        </Modal>
+        <Modal
+          title="历史图片" 
+          visible={this.state.videoPicVisible}
+          style={{ top: 200 }}
+          width='50%'
+          okText='确定'
+          cancelText='取消' 
+          footer={false}
+          onCancel={()=>this.setState({videoPicVisible:false})}
+          >
+          <div className="clearfix">
+            
+              <object
+                ref={(screen)=>this.videoPic=screen}
+                classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
+                codebase="./XzVideoWebClient.cab#version=1.0.0.1"
+      
+                align='center' 
+                style={{visibility:'hidden'}}
+                >
+              </object>
+           
+           
+            <div className="float-right"  style={{width:'30%'}}>
+              
             </div>
          </div>
            

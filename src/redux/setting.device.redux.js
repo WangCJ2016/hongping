@@ -326,7 +326,10 @@ export function getDevInfo(info,type,play) {
        if(type==='play') {
         play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
        }
-       
+       if(type==='pic') {
+        const a = play.XzVideo_FindDevicePicture(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,'2018-01-29 12:00:00','2018-01-29 12:30:00','0xff',"","",0)
+        console.log(JSON.stringify(a))
+       }
      }
     })
   }

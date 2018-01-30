@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout,Popconfirm,Icon } from 'antd';
+import { Layout,Popconfirm } from 'antd';
 import { Route, Switch,NavLink} from 'react-router-dom'
 import className from 'classnames'
 
@@ -9,6 +9,7 @@ import Video from '../views/video/video'
 import Setting from '../views/setting/setting'
 import Trail from '../components/trail/trail'
 import SideBar from '../views/sidebar/sidebar'
+import UserCenter from '../views/userCenter/userCenter'
 import { changeSidebar } from '../redux/sidebar.redux'
 import './frame.scss'
 
@@ -51,9 +52,10 @@ class Frame extends React.Component {
       {class: 'home',title: '应急中心',link:'/home'},
       {class: 'video',title: '视频监控',link:'/video'},
       {class: 'watch',title: '巡更上传',link:'/watch'},
-      {class: 'status',title: '实时状态',link:'/watch'},
-      {class: 'history',title: '历史分析',link:'/watch'},
-      {class: 'setting',title: '个人设置、系统配置',link:'/setting'}
+      {class: 'status',title: '实时状态',link:'/status'},
+      {class: 'history',title: '历史分析',link:'/history'},
+      {class: 'usercenter',title: '个人设置',link:'/userCenter'},
+      {class: 'setting',title: '系统配置',link:'/setting'}
   ]
    return navArray.map(item=>(
       <NavLink className='navtoplink' key={item.title} to={item.link}  activeClassName="selected">
@@ -107,6 +109,7 @@ class Frame extends React.Component {
                 <Route exact path='/video' component={Video}></Route>
                 <Route exact path='/setting' component={Setting}></Route>
                 <Route exact path='/trail' component={Trail}></Route>
+                <Route exact path='/userCenter' component={UserCenter}></Route>
               </Switch>
           </Content>
         </Layout>     
