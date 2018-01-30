@@ -22,6 +22,7 @@ const intialState = {
   startime:'',
   endtime: '',
   modalVisiable: false,
+  videoProgress: 0
 }
 
 const CHANGESAVEVIDEO = '[video] CHANGESAVEVIDEO'
@@ -44,6 +45,7 @@ const PLAYBACKVIDEO = '[video] PLAYBACKVIDEO'
 const PLAYBACKLIST = '[video] PLAYBACKLIST'
 const PLAYBACKTIME = '[video] PLAYBACKTIME'
 const MODALVISIABLE = '[video] MODALVISIABLE'
+const VIDEOPROGRESS = '[video] VIDEOPROGRESS'
 
 export function video(state=intialState,action) {
   switch (action.type) {
@@ -149,6 +151,10 @@ export function video(state=intialState,action) {
     // 视频modal
     case MODALVISIABLE: {
       return {...state,modalVisiable:!state.modalVisiable}
+    }
+    // video progress
+    case VIDEOPROGRESS: {
+      return {...state,videoProgress:action.payload}
     }
     default:
       return state
@@ -425,5 +431,12 @@ export function playbackTime(data) {
 export function modalVisiable() {
   return {
     type: MODALVISIABLE
+  }
+}
+// video progress
+export function videoProgress(progress) {
+  return {
+    type: VIDEOPROGRESS,
+    payload: progress
   }
 }

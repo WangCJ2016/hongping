@@ -1,7 +1,13 @@
 import React from 'react'
 import {DatePicker,Button} from 'antd'
 import { locale } from '../../config'
+import { connect } from 'react-redux'
+import {videoProgress} from '../../redux/video.redux'
 
+@connect(
+  null,
+  {videoProgress}
+)
 class VideoPlayBackByTime extends React.Component {
   state = { 
     startTime:'2018-01-29 12:00:00',
@@ -16,8 +22,17 @@ class VideoPlayBackByTime extends React.Component {
   handleSubmit() {
     const device = this.props.device
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
-    console.log(JSON.stringify(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,this.state.startTime,this.state.endTime,0))
-    this.props.play.XzVideo_RecordPlayByTime(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,this.state.startTime,this.state.endTime,0)
+    const a = this.props.play.XzVideo_RecordPlayByTime(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,this.state.startTime,this.state.endTime,0)
+    if(a) {
+      const timer=setInterval(()=>{
+        const a = this.props.play.XzVideo_GetRecordPlayPosEx(0)
+        if(a===100){
+          clearInterval(timer)
+        }
+        console.log(a)
+        this.props.videoProgress(a)
+      },1000)
+    }
   }
   render() {
     return (

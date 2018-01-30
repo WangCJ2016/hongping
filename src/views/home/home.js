@@ -161,7 +161,7 @@ videoPlayBack(device) {
           {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
           {this.props.area.load?null:this.mapDeviceRender()}
           </div>
-          <HomeSlider />
+         
         </div>
        
         <HomeTable />

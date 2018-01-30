@@ -1,12 +1,12 @@
 import React from 'react'
 import { Tooltip, Slider } from 'antd'
 import { connect} from 'react-redux'
-import {changeBackVideoIf,selectVideo} from '../../redux/video.redux'
+import {changeBackVideoIf,selectVideo,videoProgress} from '../../redux/video.redux'
 
 @connect(
   state=>({video: state.video,user: state.user}),
   {
-    changeBackVideoIf,selectVideo
+    changeBackVideoIf,selectVideo,videoProgress
    }
 )
 class VideoCtrlBtns extends React.Component {
@@ -60,15 +60,8 @@ class VideoCtrlBtns extends React.Component {
    }
   }
   playProgress(e) {
-    if(this.props.video.backVideoIf) {
-      setInterval(()=>{
-        const a = this.props.play.XzVideo_GetRecordPlayPosEx(0)
-        this.setState({progress:a})
-      })
-    }
-    this.setState({
-      progress: e
-    })
+   
+    this.props.videoProgress(e)
     this.props.play.XzVideo_SetRecordPlayPos(0,e)
   }
   render() {
@@ -105,7 +98,7 @@ class VideoCtrlBtns extends React.Component {
             </span>
           </Tooltip>
           <div className='_slide'>
-            <Slider value={this.state.progress} onChange={this.playProgress} />
+            <Slider value={this.props.video.videoProgress} onChange={this.playProgress} />
           </div>
           
         </div>
