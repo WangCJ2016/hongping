@@ -1,6 +1,6 @@
 .submeun{
   position: absolute;
-  top: 0;
+  top: 69px;
   left: 60px;
   height: 100%;
   background-color:#f6f6f6;
@@ -9,6 +9,15 @@
   z-index:9;
   text-align: center;
   overflow: auto;
+  -ms-scroll-chaining: chained;
+  -ms-overflow-style: none;
+  -ms-content-zooming: zoom;
+  -ms-scroll-rails: none;
+  -ms-content-zoom-limit-min: 100%;
+  -ms-content-zoom-limit-max: 500%;
+  -ms-scroll-snap-type: proximity;
+  -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
+  -ms-overflow-style: none;
   height: 100%;
   .fix-bottom{
     position: absolute;

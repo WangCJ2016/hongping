@@ -95,10 +95,11 @@ class Frame extends React.Component {
               collapsedWidth={60}
             > 
             {this.navRender()}
-            <SideBar />
+           
           </Sider>
         :null
       }
+       <SideBar />
         <Layout>
           <Content style={{ background: '#fff', marginLeft: this.props.location.pathname==='/home'||this.props.location.pathname==='/trail'?'60px':'0',height:'100%'}}>
               <Switch>
