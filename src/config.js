@@ -31,6 +31,7 @@ export const config = {
     peopleList: '/role_queryAccountPage', // 人员列表 
     createAccount: '/account_createAccount', // 新建人员
     modifyAccount: '/account_modifyAccount', // 修改删除账号
+    getAccountInfo: '/account_getAccountInfo', // 账号详情
 
     serverlist: '/server_querySysServersPage', // 服务器列表
     modifyServer: '/server_modifySysServers', // 修改／删除服务器

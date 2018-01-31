@@ -25,7 +25,6 @@ class SettingVideoServer1 extends React.Component {
   }
   editSubmit() {
     this.props.form.validateFields(['innerIp','maxConn','name','outerIp','port','remark','timeout','type'],(err,values)=>{
-      console.log(err,values)
       if(!err) {
         values.name = encodeURI(values.name)
         values.remark = encodeURI(values.remark)

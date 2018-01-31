@@ -14,7 +14,6 @@ class Login extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const info = this.props.form.getFieldsValue()
-    console.log(this.props.form.getFieldsValue())
     this.props.login({username: info.userName, password: info.password})
     //this.props.history.push('/home')
   }
@@ -25,7 +24,6 @@ class Login extends React.Component {
     }
   }
   render() {
-    console.log(this.props)
     const { getFieldDecorator } = this.props.form;
     return (
       <div className='login-page'>
