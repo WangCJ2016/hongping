@@ -133,7 +133,7 @@ videoPlayBack(device) {
     videoBackVisible:true
   },()=>{
     setTimeout(()=>{
-      this.props.getDevInfo({devId:device.id,type:device.type},'playback')
+      this.props.getDevInfo({devId:device.id,type:device.type},'playback',this.playback)
       this.setState({
         aa:''
       })
@@ -142,11 +142,13 @@ videoPlayBack(device) {
 }
 // 历史图片
 videoPic(device) {
+
   this.setState({
     videoPicVisible:true
   },()=>{
     setTimeout(()=>{
-      this.props.getDevInfo({devId:device.id,type:device.type},'pic')
+      console.log(this.videoPic)
+      this.props.getDevInfo({devId:device.id,type:device.type},'pic',this.videoPic)
       this.setState({
         aa:''
       })

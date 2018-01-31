@@ -318,7 +318,7 @@ export function getDevInfo(info,type,play) {
       ...info
     })
     .then(res => {
-     console.log(res)
+    
      if(res.success) {
        const device = res.dataObject
        const model = device.host.model === 1?'HikHC-14':'DHNET-03'
@@ -327,6 +327,7 @@ export function getDevInfo(info,type,play) {
         play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
        }
        if(type==='pic') {
+        console.log(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,'2018-01-29 12:00:00','2018-01-29 12:30:00','0xff',"","",0)
         const a = play.XzVideo_FindDevicePicture(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,'2018-01-29 12:00:00','2018-01-29 12:30:00','0xff',"","",0)
         console.log(JSON.stringify(a))
        }
