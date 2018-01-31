@@ -130,32 +130,6 @@ class Home extends React.Component {
       })
     })
   }
-<<<<<<< HEAD
-// 回放
-videoPlayBack(device) {
-  this.setState({
-    videoBackVisible:true
-  },()=>{
-    setTimeout(()=>{
-      this.props.getDevInfo({devId:device.id,type:device.type},'playback',this.playback)
-      this.setState({
-        aa:''
-      })
-    })
-  })
-}
-// 历史图片
-videoPic(device) {
-
-  this.setState({
-    videoPicVisible:true
-  },()=>{
-    setTimeout(()=>{
-      console.log(this.videoPic)
-      this.props.getDevInfo({devId:device.id,type:device.type},'pic',this.videoPic)
-      this.setState({
-        aa:''
-=======
   // 回放
   videoPlayBack(device) {
     this.setState({
@@ -179,7 +153,6 @@ videoPic(device) {
         this.setState({
           aa:''
         })
->>>>>>> bbfadfa66b0b1e9c93bdda07dde619bccbfd03ac
       })
     })
   }

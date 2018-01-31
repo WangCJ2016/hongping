@@ -24,9 +24,9 @@ class UserCenter1 extends React.Component {
   }
   componentDidMount() {
     this.setState({
-      videoPath:this.play.GetLocallPath(1),
-      picPath:this.play.GetLocallPath(2),
-      broadcastPath:this.play.GetLocallFile()
+      // videoPath:this.play.GetLocallPath(1),
+      // picPath:this.play.GetLocallPath(2),
+     // broadcastPath:this.play.GetLocallFile()
     })
   }
   confirm(rule, value, callback) {
