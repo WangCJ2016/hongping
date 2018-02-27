@@ -28,15 +28,14 @@
     position: absolute;
     right: 15px;
     z-index: 1;
+    background-color: rgba(0, 0, 0,0.3);
     .ant-collapse-header{
       padding: 9px 0 9px 40px;
-      background-color: #fff; 
+     
     }
-    .ant-collapse .ant-collapse-content{
-      background-color: rgba($color: #000000, $alpha: .2);
-    }
+   
     .panel-title{
-      background-color: #fff;
+     
       height: 40px;
       padding: 10px;
       >div{

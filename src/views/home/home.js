@@ -16,6 +16,7 @@ import VideoCtrlYuntai from '../../components/video-ctrl/video-ctrl-yuntai'
 import VideoCtrlParam from '../../components/video-ctrl/video-ctrl-params'
 import VideoPlayBackByTime from '../../components/video-playback/video-playback-bytime'
 import VideoCtrlBtns from '../../components/video-playback/video-ctrlbtn'
+import Selection from '../../components/react-drag-select/selection'
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar}),
@@ -237,6 +238,10 @@ class Home extends React.Component {
           <img id='img' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
           {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
           {this.props.area.load?null:this.mapDeviceRender()}
+          <Selection style={{width:'500px',height:'500px',backgroundColor: '#000'}}>
+            
+          </Selection>
+          
           </div>
          
         </div>

@@ -54,7 +54,8 @@ class HomeTable extends React.Component {
   render() {
     return (
       <div className='hometable' style={{top:this.state.top}}>
-      <div className='pullUp-btn'><img
+      <div className='pullUp-btn'>
+      <img
       onMouseDown={this.mouseDown}
        src={require('../../assets/imgs/pull-up.png')} alt=""/></div>
       <Tabs defaultActiveKey="1" onTabClick={this.onTabClick}>

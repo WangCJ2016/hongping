@@ -78,7 +78,16 @@ class Frame extends React.Component {
       <Header className="header">
         <img className='logo' src={require('../assets/imgs/logo.png')} alt=""/>
         <span className='header_title'>五系统一中心平台</span>
-        
+        <div style={{position:'absolute',left:'230px',top:'10px',display:'flex'}}>
+          <div>
+             <div style={{lineHeight:'25px',backgroundColor:'#000',padding:'0 10px',textAlign:'center'}}>报警总数</div>
+             <div style={{lineHeight:'25px', backgroundColor:'#fff',padding:'0 10px',textAlign:'center',color:'#333'}}>0</div>
+          </div>
+          <div style={{marginLeft:'5px'}}>
+             <div style={{lineHeight:'25px',backgroundColor:'#000',padding:'0 10px'}}>未处理总数</div>
+             <div style={{lineHeight:'25px', backgroundColor:'#fff',padding:'0 10px',textAlign:'center',color:'#333'}}>0</div>
+          </div>
+        </div>
         <Popconfirm title="确认退出?" onConfirm={this.confirm.bind(this)}  okText="确定" cancelText="取消">
           <span className='float-right logout'><img  src={require('../assets/imgs/logout.png')} alt=""/></span>
         </Popconfirm>
@@ -103,7 +112,7 @@ class Frame extends React.Component {
       }
        <SideBar />
         <Layout>
-          <Content style={{ background: '#fff', marginLeft: this.props.location.pathname==='/home'||this.props.location.pathname==='/trail'?'60px':'0',height:'100%'}}>
+          <Content style={{ background: '#fff', height:'100%'}}>
               <Switch>
                 <Route exact path='/home' component={Home}></Route>
                 <Route exact path='/video' component={Video}></Route>
