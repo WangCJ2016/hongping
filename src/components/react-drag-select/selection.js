@@ -1,4 +1,4 @@
-import React,{ReactDOM} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import * as _ from 'lodash' 
 
@@ -15,14 +15,67 @@ class Selection extends React.Component {
     }
     this._onMouseDown = this._onMouseDown.bind(this)
     this._onMouseUp = this._onMouseUp.bind(this)
+    this._onMouseMove = this._onMouseMove.bind(this)
   }
-
+  _onMouseDown(e) {
+    if(!this.props.dragSelectEnbled) {
+        return
+    }
+    var ev = e || window.event
+    console.log(ev.pageX,e.clientX,ev.offsetX)
+    this.setState({
+      startPoint: {x:ev.clientX-60,y:ev.clientY-70},
+      endPoint:{x:ev.clientX-60,y:ev.clientY-70},
+      mouseDown:true
+    })
+    window.document.addEventListener('mousemove', this._onMouseMove);
+    window.document.addEventListener('mouseup', this._onMouseUp);
+  }
+  _onMouseMove(e) {
+    var ev = e || window.event
+    this.setState({
+      endPoint:{x:ev.clientX-60,y:ev.clientY-70},
+    })
+  }
+  _onMouseUp(e) {
+    
+    window.document.removeEventListener('mousemove', this._onMouseMove);
+    window.document.removeEventListener('mouseup', this._onMouseUp);
+    const left = Math.min(this.state.startPoint.x,this.state.endPoint.x)
+    const top = Math.min(this.state.startPoint.y,this.state.endPoint.y)
+    const right = Math.max(this.state.startPoint.x,this.state.endPoint.x)
+    const bottom = Math.max(this.state.startPoint.y,this.state.endPoint.y)
+    this.props.mouseUp(left,top,right,bottom)
+    this.setState({
+      startPoint:null,
+      endPoint:null
+    })
+  }
+  
+  renderSelectionBox() {
+     const left = Math.min(this.state.startPoint.x,this.state.endPoint.x)
+     const top = Math.min(this.state.startPoint.y,this.state.endPoint.y)
+     const width = Math.abs(this.state.startPoint.x - this.state.endPoint.x)
+     const height = Math.abs(this.state.startPoint.y - this.state.endPoint.y)
+      return  (
+        <div style={{
+          background:'rgba(0,0,0,0.3)',
+          border:'2px dashed #333',
+          position:'absolute',
+          left:left+'px',
+          top:top+'px',
+          width:width+'px',
+          height:height+'px'
+        }}>
+        </div>
+      )
+    
+  }
   render() {
-    var className = 'selection ' + (this.state.mouseDown ? 'dragging' : '');
     return(
-      <div className={className} style={{width:'500px',height:'500px',backgroundColor:'red'}} ref='selectionBox' onMouseDown={this._onMouseDown}>
-        {this.renderChildren()}
-        {this.renderSelectionBox()}
+      <div  style={{position:'absolute',left:0,right:0,top:0,bottom:0}} ref='selectionBox' onMouseDown={this._onMouseDown}>
+        {this.props.children}
+        {this.props.dragSelectEnbled&&this.state.mouseDown&&this.state.endPoint?this.renderSelectionBox():null}
       </div>
     )
   }
@@ -34,7 +87,7 @@ Selection.propTypes= {
 }
 
 Selection.defaultProps = {
-  enabled: true,
+  dragSelectEnbled: false,
   onSelectionChange: _.noop,
 }
 export default Selection

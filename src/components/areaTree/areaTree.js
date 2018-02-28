@@ -26,6 +26,12 @@ export default class AreaTree extends React.Component {
     select(e) {
       this.props.select({areaId:e[0],type:1})
     }
+    treeNodeRend(name) {
+     return <span>
+      <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+      {name}
+      </span>
+    }
     areaTreeRender() {
         const areas = this.props.area.areas
         const arealist = this.props.area.allAreas
@@ -39,7 +45,10 @@ export default class AreaTree extends React.Component {
           >
           { areas.map((level1,index) => {
             return (
-              <TreeNode title={level1.name} key={level1.id}>
+              <TreeNode title={<span>
+                <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+                {level1.name}
+                </span>} key={level1.id}>
                 {toTree(level1.id,arealist)}
               </TreeNode>
             )
@@ -50,7 +59,10 @@ export default class AreaTree extends React.Component {
           const childArr = childrenArr(id, array)
           if(childArr.length > 0) {
             return childArr.map((child,index) => (
-              <TreeNode key={child.id} title={child.name} >
+              <TreeNode key={child.id} title={<span>
+                <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+                {child.name}
+                </span>} >
                 {toTree(child.id, array)}
               </TreeNode>
             ))

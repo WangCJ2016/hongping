@@ -86,6 +86,7 @@ class BroadcastSider extends React.Component {
     
   }
   render() {
+    
     return (
       <div className='submeun' style={{width:this.props.sidebar.broadcast_sidebar?'300px':'0'}}>
         <div className='siderbar-wrap'> 

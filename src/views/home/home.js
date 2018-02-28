@@ -1,23 +1,30 @@
 import React from 'react'
-import { Popover,Spin,Tag,Modal,Table } from 'antd'
+import { Popover,Spin,Tag,Modal,Table,Tree } from 'antd'
 import { connect } from 'react-redux'
 
 import HomeTable from '../../components/home-table/home-table'
 import { HomePerson, HomeCamera, HomeBroadcast } from '../../components/home-popover/home-popover'
-import  HomeSearch  from '../../components/home-search/home-search'
-import HomeWarmModal from '../../components/home-warm/home-warm'
 import HomeWarmPanel from '../../components/home-warm-panel/home-warm-panel'
-import HomeSlider from '../../components/home-slider/home-slider'
 import './home.scss'
 import {areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
 import { querySysInstallPlaces,getDevInfo,videoPic } from '../../redux/setting.device.redux'
 import {videoProgress} from '../../redux/video.redux'
 import VideoCtrlYuntai from '../../components/video-ctrl/video-ctrl-yuntai'
-import VideoCtrlParam from '../../components/video-ctrl/video-ctrl-params'
 import VideoPlayBackByTime from '../../components/video-playback/video-playback-bytime'
 import VideoCtrlBtns from '../../components/video-playback/video-ctrlbtn'
 import Selection from '../../components/react-drag-select/selection'
-
+import DragSelectModal from '../../components/home-modals/dragSelectModal'
+import CheckboxTree from 'react-checkbox-tree';
+import 'react-checkbox-tree/lib/react-checkbox-tree.css';
+const nodes = [{
+  value: 'mars',
+  label: 'Mars',
+  children: [
+      { value: 'phobos', label: 'Phobos' },
+      { value: 'deimos', label: 'Deimos' },
+  ],
+}];
+const TreeNode = Tree.TreeNode
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar}),
   {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic}
@@ -30,7 +37,11 @@ class Home extends React.Component {
       modalvisible: false,
       videoVisible: false,
       videoBackVisible: false,
-      videoPicVisible: false
+      videoPicVisible: false,
+      dragSelectVisible: false,
+      rectInDevice:[],
+      checked: [],
+      expanded: [],
     }
   
     this.videoPlay = this.videoPlay.bind(this)
@@ -107,6 +118,15 @@ class Home extends React.Component {
                 </div> 
               </Popover>
       }
+      if(device.type === 5) {
+        return <Popover content={<HomeBroadcast device={device} />} trigger="click" key={device.id+index} >
+                 <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+                   <Tag >
+                   <img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>
+                   {device.name}</Tag>
+                 </div> 
+               </Popover>
+       }
       if(device.type === 6) {
         return <Popover content={HomePerson(device)} trigger="click" key={device.id+index} >
                  <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
@@ -179,6 +199,20 @@ class Home extends React.Component {
         console.log(JSON.stringify(a))
         this.props.videoPic(a)
   }
+  mouseUp(left,top,right,bottom) {
+    let rectInDevice = []
+    const devices = this.props.deivces.mapToDevices
+    devices.forEach(device => {
+      if(device.x>left&&device.x<right&&device.y>top&&device.y<bottom) {
+        rectInDevice.push(device)
+      }
+    })
+    this.setState({
+      dragSelectVisible:true,
+      rectInDevice: rectInDevice
+    })
+  }
+ 
   render() {
     const columns = [{
         title: 'Name',
@@ -208,44 +242,25 @@ class Home extends React.Component {
     const areaInfo = this.props.area.areaInfo
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'360px':'60px'}}>
-        {/*<Popover content={HomePerson()} trigger="click"  >
-          <Button>人员</Button>
-        </Popover>
-        <Popover 
-          content={HomeCamera(this.hide.bind(this))}
-          trigger="click"
-          visible={this.state.visible}
-          onVisibleChange={this.handleVisibleChange.bind(this)}>
-          <Button>摄像头</Button>
-        </Popover>
-        <Popover content={<HomeBroadcast />} trigger="click"  >
-         <Button>广播</Button>
-       </Popover>
-        <div className='HomeTable'>
-          <HomeTable />
-        </div>
-        <Button onClick={()=>this.props.history.push('/login')}>tiaozhuan</Button>
-        <Button onClick={()=>this.setState({modalvisible:true})}>警报处理</Button>
-        <HomeWarmModal 
-        visible={this.state.modalvisible}
-        handleOk={this.handleModalOk.bind(this)}
-        handleCancel={this.handleCancel.bind(this)} /> */}
-
-        <HomeWarmPanel />
+        <HomeWarmPanel dragSelect={()=>this.setState({dragSelectEnbled:true})} />
         <div className='area-Map'>
           <div style={{display:'inline-block',position:'relative',zIndex:0}}>
           {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
           <img id='img' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
           {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
-          {this.props.area.load?null:this.mapDeviceRender()}
-          <Selection style={{width:'500px',height:'500px',backgroundColor: '#000'}}>
-            
-          </Selection>
           
+          <Selection style={{width:'500px',height:'500px',backgroundColor: '#000'}} dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
+          {this.props.area.load?null:this.mapDeviceRender()}
+          </Selection>
+
           </div>
          
         </div>
-       
+        <Tree
+        checkable
+        showIcon={true}>
+          <TreeNode title={<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=''/>}></TreeNode>
+        </Tree>
         <HomeTable />
       
         <Modal
@@ -276,6 +291,7 @@ class Home extends React.Component {
          </div>
            
         </Modal>
+
         <Modal
           title="视频回放" 
           visible={this.state.videoBackVisible}
@@ -306,6 +322,7 @@ class Home extends React.Component {
          </div>
            
         </Modal>
+
         <Modal
           title="历史图片" 
           visible={this.state.videoPicVisible}
@@ -337,6 +354,8 @@ class Home extends React.Component {
          </div>
            
         </Modal>
+
+        <DragSelectModal visible={this.state.dragSelectVisible} rectInDevice={this.state.rectInDevice} onCancel={()=>this.setState({dragSelectVisible:false})}></DragSelectModal>
       </div>
     )
   }

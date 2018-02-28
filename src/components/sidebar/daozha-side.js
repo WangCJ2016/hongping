@@ -44,12 +44,22 @@ class DaozhaSider extends React.Component {
             placeholder="请输入关键字"
             style={{ width: 220 }}
             onSearch={value => this.props.searchHongwaiVideo({name:encodeURI(value),type:3})} />
-            <div style={{marginTop:'15px'}}><DaozhaTree select={this.select} defaultExpandAllRows={true}/></div>
+            <div style={{marginTop:'15px'}}><DaozhaTree play={this.play} select={this.select} defaultExpandAllRows={true}/></div>
             <div className="title" style={{textAlign:'left',marginTop:'15px'}}>
               <span>道闸搜索结果</span>
            </div>
            {this.searchVideoRender()}
         </div>
+        <object 
+        ref={(screen)=>this.play=screen}
+        classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
+        codebase="./XzVideoWebClient.cab#version=1.0.0.1"
+        width={0}
+        height={0}
+        className='playScreen'
+        
+        >
+      </object>
       </div>
     )
   }

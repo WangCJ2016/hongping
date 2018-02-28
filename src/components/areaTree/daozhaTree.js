@@ -1,23 +1,10 @@
 import React from 'react'
-import { Table } from 'antd';
+import { Table,Switch } from 'antd';
 import { connect } from 'react-redux'
 import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,daozhaAreaDevices} from '../../redux/area.redux'
 
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
-  render:(text,record)=>(
-    <span>
-      {record.type===3?<img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
-      {record.type!==3?
-        <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
-        :null}
-      <span>{record.name}</span>
-    </span>
-  )
-}];
+
 
 @connect(
     state=>({video:state.video,area:state.area}),
@@ -29,6 +16,7 @@ export default class DaozhaTree extends React.Component {
     constructor() {
       super()
       this.onExpand = this.onExpand.bind(this)
+      this.onChange = this.onChange.bind(this)
     }
     componentDidMount(){
         this.props.areaList()
@@ -44,8 +32,32 @@ export default class DaozhaTree extends React.Component {
         this.props.deviceSelect(record)
       }
     }
+    onChange(checked) {
+      console.log(checked,this.props.play)
+      if(checked) {
+        this.props.play.XzVideo_RemoteControl_Barriergate(1,1,5,0)
+      }else{
+        this.props.play.XzVideo_RemoteControl_Barriergate(0,1,5,0)
+      }
+    }
     render() {
         const data = this.props.area.areas_daozhaDevices
+
+        const columns = [{
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
+          render:(text,record)=>(
+            <span>
+              {record.type===3?<img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
+              {record.type!==3?
+                <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+                :null}
+              <span style={{marginRight:'20px'}}>{record.name}</span>
+              {record.type===3?<Switch defaultChecked={false} onChange={this.onChange} />:null}
+            </span>
+          )
+        }];
         return ( 
                  <div className='tableAreaTree'>                    
                   <Table 
