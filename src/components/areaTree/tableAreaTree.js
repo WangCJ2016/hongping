@@ -2,28 +2,14 @@ import React from 'react'
 import { Table } from 'antd';
 import { connect } from 'react-redux'
 import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,videoAreaDevices} from '../../redux/area.redux'
+import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
-  render:(text,record)=>(
-    <span>
-      {record.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
-      {record.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
-      {record.type!==1&&record.type!==2?
-        <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
-        :null}
-      <span>{record.name}</span>
-    </span>
-  )
-}];
 
 @connect(
     state=>({video:state.video,area:state.area}),
     {
-      areaList, uploadImg,areaInfo,selectAreaIdSuccess,videoAreaDevices
+      areaList, uploadImg,areaInfo,selectAreaIdSuccess,videoAreaDevices,querySysInstallPlaces
      }
 )
 export default class TableAreaTree extends React.Component {
@@ -46,7 +32,29 @@ export default class TableAreaTree extends React.Component {
         this.props.deviceSelect(record)
       }
     }
+    goLoc(parentId) {
+      this.props.areaInfo({id:parentId})
+      this.props.querySysInstallPlaces({areaId:parentId})
+    }
     render() {
+        const columns = [{
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
+          render:(text,record)=>(
+            <span>
+              {record.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
+              {record.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
+              {record.type!==1&&record.type!==2?
+                <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+                :null}
+              <span>{record.name}</span>
+              {record.type!==1&&record.type!==2?
+                null
+                :<a onClick={this.goLoc.bind(this,record.parentId)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>}
+            </span>
+          )
+        }]
         const data = this.props.area.areas_devices
         return ( 
                  <div className='tableAreaTree'>                    

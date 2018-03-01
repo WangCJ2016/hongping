@@ -2,27 +2,14 @@ import React from 'react'
 import { Table } from 'antd';
 import { connect } from 'react-redux'
 import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,hongwaiAreaDevices} from '../../redux/area.redux'
+import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
-  render:(text,record)=>(
-    <span>
-      {record.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
-      {record.type!==2?
-        <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
-        :null}
-      <span>{record.name}</span>
-    </span>
-  )
-}];
 
 @connect(
     state=>({video:state.video,area:state.area}),
     {
-      areaList, uploadImg,areaInfo,selectAreaIdSuccess,hongwaiAreaDevices
+      areaList, uploadImg,areaInfo,selectAreaIdSuccess,hongwaiAreaDevices,querySysInstallPlaces
      }
 )
 export default class HongwaiTree extends React.Component {
@@ -44,7 +31,28 @@ export default class HongwaiTree extends React.Component {
         this.props.deviceSelect(record)
       }
     }
+    goLoc(parentId) {
+      this.props.areaInfo({id:parentId})
+      this.props.querySysInstallPlaces({areaId:parentId})
+    }
     render() {
+        const columns = [{
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
+          render:(text,record)=>(
+            <span>
+              {record.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
+              {record.type!==2?
+                <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+                :null}
+              <span>{record.name}</span>
+              {record.type!==2?
+                null
+                :<a onClick={this.goLoc.bind(this,record.parentId)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>}
+            </span>
+          )
+        }]
         const data = this.props.area.areas_hongwaiDevices
         return ( 
                  <div className='tableAreaTree'>                    

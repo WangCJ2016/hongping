@@ -1,16 +1,18 @@
 import React from 'react'
-import { Tree, Icon } from 'antd';
+import { Tree } from 'antd';
 import { connect } from 'react-redux'
-import {broadcastAreaDevices,areaList} from '../../redux/area.redux'
+import {broadcastAreaDevices,areaList,areaInfo} from '../../redux/area.redux'
 import { selectBroIndex } from '../../redux/broadcast.redux'
+import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import { unquie } from '../../utils'
+import './tree.scss'
 
 const TreeNode = Tree.TreeNode;
 
 @connect(
     state=>({video:state.video,area:state.area,broadcast:state.broadcast}),
     {
-      broadcastAreaDevices,areaList,selectBroIndex
+      broadcastAreaDevices,areaList,selectBroIndex,areaInfo,querySysInstallPlaces
      }
 )
 export default class TableBroadcast extends React.Component {
@@ -43,13 +45,16 @@ export default class TableBroadcast extends React.Component {
       this.setState({selectKeys:selectedRowKeys})
     }
     onExpand(expandedKeys, e) {
-      console.log(expandedKeys,e)
       if(e.expanded) {
         this.props.broadcastAreaDevices({areaId:e.node.props.eventKey,type:4})
       }
     }
     onCheck(checkedKeys) {
       console.log(checkedKeys)
+    }
+    goLoc(parentId) {
+      this.props.areaInfo({id:parentId})
+      this.props.querySysInstallPlaces({areaId:parentId})
     }
     treeRender() {
       const data = this.props.area.areas_broDevices
@@ -80,7 +85,11 @@ export default class TableBroadcast extends React.Component {
             {!Tchildren.type?<img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
             :<img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>}
             {Tchildren.name}
-            <Icon type='loc' />
+            {
+              Tchildren.type?<a onClick={this.goLoc.bind(this,Tchildren.parentId)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>:
+             null
+            }
+            
             </span>} key={Tchildren.id}>
             {this.toTree(Tchildren.children)}
           </TreeNode>

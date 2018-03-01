@@ -59,7 +59,6 @@ class Frame extends React.Component {
   ]
    return navArray.map(item=>(
       <NavLink className='navtoplink' key={item.title} to={item.link}  activeClassName="selected">
-        
         <span className='navtop_title'>{item.title}</span>
       </NavLink>
     ))
@@ -68,10 +67,17 @@ class Frame extends React.Component {
     localStorage.removeItem('token')
     window.location.replace("/login")
   }
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
+    if(nextProps.location.pathname!=='/home'){
+      //this.props.changeSidebar
+    } 
+  }
   siderBarRender() {
     
   }
   render() {
+    
     return (
       
       <Layout className='mylayout'>
@@ -110,7 +116,7 @@ class Frame extends React.Component {
           </Sider>
         :null
       }
-       <SideBar />
+       {this.props.location.pathname==='/home'||this.props.location.pathname==='/trail'?<SideBar />:null}
         <Layout>
           <Content style={{ background: '#fff', height:'100%'}}>
               <Switch>

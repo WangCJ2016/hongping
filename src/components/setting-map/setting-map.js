@@ -36,14 +36,14 @@ class SettingMap extends React.Component {
     return devices.map(device => (
       <div key={device.id} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
         <Tag>
-        {device.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
-        {device.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
-        {device.type===3?<img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
-        {device.type===4?<img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>:null}
-        {device.type===5?<img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>:null}
-        {device.type===6?<img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>:null}
-        {device.type===7?<img className='type-icon' src={require('../../assets/imgs/fireCtrl-icon.png')} alt=""/>:null}
-        {device.type===8?<img className='type-icon' src={require('../../assets/imgs/talk-icon.png')} alt=""/>:null}
+        {device.type===1?<img draggable='false' className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
+        {device.type===2?<img draggable='false' className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
+        {device.type===3?<img draggable='false' className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
+        {device.type===4?<img draggable='false' className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>:null}
+        {device.type===5?<img draggable='false' className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>:null}
+        {device.type===6?<img draggable='false' className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>:null}
+        {device.type===7?<img draggable='false' className='type-icon' src={require('../../assets/imgs/fireCtrl-icon.png')} alt=""/>:null}
+        {device.type===8?<img draggable='false' className='type-icon' src={require('../../assets/imgs/talk-icon.png')} alt=""/>:null}
         {device.name}</Tag>
       </div>
     ))
@@ -54,14 +54,14 @@ class SettingMap extends React.Component {
     return devices.map((device,index) => (
       <div key={device.id+index} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
         <Tag onClose={this.delDevice.bind(this,device)} closable >
-        {device.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
-        {device.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
-        {device.type===3?<img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
-        {device.type===4?<img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>:null}
-        {device.type===5?<img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>:null}
-        {device.type===6?<img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>:null}
-        {device.type===7?<img className='type-icon' src={require('../../assets/imgs/fireCtrl-icon.png')} alt=""/>:null}
-        {device.type===8?<img className='type-icon' src={require('../../assets/imgs/talk-icon.png')} alt=""/>:null}
+        {device.type===1?<img draggable='false' className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
+        {device.type===2?<img draggable='false' className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
+        {device.type===3?<img draggable='false' className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
+        {device.type===4?<img draggable='false' className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>:null}
+        {device.type===5?<img draggable='false' className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>:null}
+        {device.type===6?<img draggable='false' className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>:null}
+        {device.type===7?<img draggable='false' className='type-icon' src={require('../../assets/imgs/fireCtrl-icon.png')} alt=""/>:null}
+        {device.type===8?<img draggable='false' className='type-icon' src={require('../../assets/imgs/talk-icon.png')} alt=""/>:null}
         {device.name}</Tag>
       </div>
     ))

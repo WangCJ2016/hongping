@@ -14,17 +14,8 @@ import VideoPlayBackByTime from '../../components/video-playback/video-playback-
 import VideoCtrlBtns from '../../components/video-playback/video-ctrlbtn'
 import Selection from '../../components/react-drag-select/selection'
 import DragSelectModal from '../../components/home-modals/dragSelectModal'
-import CheckboxTree from 'react-checkbox-tree';
-import 'react-checkbox-tree/lib/react-checkbox-tree.css';
-const nodes = [{
-  value: 'mars',
-  label: 'Mars',
-  children: [
-      { value: 'phobos', label: 'Phobos' },
-      { value: 'deimos', label: 'Deimos' },
-  ],
-}];
-const TreeNode = Tree.TreeNode
+
+
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar}),
   {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic}
@@ -256,11 +247,6 @@ class Home extends React.Component {
           </div>
          
         </div>
-        <Tree
-        checkable
-        showIcon={true}>
-          <TreeNode title={<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=''/>}></TreeNode>
-        </Tree>
         <HomeTable />
       
         <Modal
