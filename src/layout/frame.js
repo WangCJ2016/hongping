@@ -84,7 +84,7 @@ class Frame extends React.Component {
       <Header className="header">
         <img className='logo' src={require('../assets/imgs/logo.png')} alt=""/>
         <span className='header_title'>五系统一中心平台</span>
-        <div style={{position:'absolute',left:'230px',top:'10px',display:'flex'}}>
+        <div style={{position:'absolute',left:'230px',top:'10px'}} className='flex'>
           <div>
              <div style={{lineHeight:'25px',backgroundColor:'#000',padding:'0 10px',textAlign:'center'}}>报警总数</div>
              <div style={{lineHeight:'25px', backgroundColor:'#fff',padding:'0 10px',textAlign:'center',color:'#333'}}>0</div>

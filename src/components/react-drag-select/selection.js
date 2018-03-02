@@ -22,7 +22,6 @@ class Selection extends React.Component {
         return
     }
     var ev = e || window.event
-    console.log(ev.pageX,e.clientX,ev.offsetX)
     this.setState({
       startPoint: {x:ev.clientX-60,y:ev.clientY-70},
       endPoint:{x:ev.clientX-60,y:ev.clientY-70},
@@ -62,6 +61,7 @@ class Selection extends React.Component {
           background:'rgba(0,0,0,0.3)',
           border:'2px dashed #333',
           position:'absolute',
+          zIndex:'99',
           left:left+'px',
           top:top+'px',
           width:width+'px',
@@ -73,7 +73,7 @@ class Selection extends React.Component {
   }
   render() {
     return(
-      <div  style={{position:'absolute',left:0,right:0,top:0,bottom:0}} ref='selectionBox' onMouseDown={this._onMouseDown}>
+      <div  style={{position:'absolute',left:0,right:0,top:0,bottom:0,zIndex:99,background:'rgba(255,255,255,0)'}} ref='selectionBox' onMouseDown={this._onMouseDown}>
         {this.props.children}
         {this.props.dragSelectEnbled&&this.state.mouseDown&&this.state.endPoint?this.renderSelectionBox():null}
       </div>

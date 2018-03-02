@@ -78,7 +78,7 @@ class Home extends React.Component {
                   content={HomeCamera({device:device,videoPlay:this.videoPlay,videoPlayBack:this.videoPlayBack})}
                  
                     >
-                  <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px',userSelect:'none'}} >
+                  <div className='user-select'  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                     <Tag >
                     {device.type === 1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:
                     <img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>
@@ -93,7 +93,7 @@ class Home extends React.Component {
                   key={device.id+index}
                   content={HomeCamera({device:device,videoPlay:this.videoPlay,videoPlayBack:this.videoPlayBack,videoPic:this.videoPic})}
                     >
-                  <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px',userSelect:'none'}} >
+                  <div  className='user-select'  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                     <Tag >
                     <img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>
                     {device.name}</Tag>
@@ -102,7 +102,7 @@ class Home extends React.Component {
       }
       if(device.type === 4) {
        return <Popover content={<HomeBroadcast device={device} />}  key={device.id+index} >
-                <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px',userSelect:'none'}} >
+                <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                   <Tag >
                   <img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>
                   {device.name}</Tag>
@@ -111,7 +111,7 @@ class Home extends React.Component {
       }
       if(device.type === 5) {
         return <Popover content={<HomeGuard device={device} />}  key={device.id+index} >
-                 <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px',userSelect:'none'}} >
+                 <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>
                    {device.name}</Tag>
@@ -120,7 +120,7 @@ class Home extends React.Component {
        }
       if(device.type === 6) {
         return <Popover content={HomePerson(device)}  key={device.id+index} >
-                 <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px',userSelect:'none'}} >
+                 <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>
                    {device.name}</Tag>
@@ -236,7 +236,7 @@ class Home extends React.Component {
         <div className='area-Map'>
           <div style={{display:'inline-block',position:'relative',zIndex:0}}>
           {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
-          <img id='img' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
+          <img id='img' draggable='false' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
           {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
           
           <Selection  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
