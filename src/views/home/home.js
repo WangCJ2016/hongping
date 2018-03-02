@@ -3,7 +3,7 @@ import { Popover,Spin,Tag,Modal,Table,Tree } from 'antd'
 import { connect } from 'react-redux'
 
 import HomeTable from '../../components/home-table/home-table'
-import { HomePerson, HomeCamera, HomeBroadcast } from '../../components/home-popover/home-popover'
+import { HomePerson, HomeCamera, HomeBroadcast,HomeGuard } from '../../components/home-popover/home-popover'
 import HomeWarmPanel from '../../components/home-warm-panel/home-warm-panel'
 import './home.scss'
 import {areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
@@ -78,7 +78,7 @@ class Home extends React.Component {
                   content={HomeCamera({device:device,videoPlay:this.videoPlay,videoPlayBack:this.videoPlayBack})}
                  
                     >
-                  <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+                  <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px',userSelect:'none'}} >
                     <Tag >
                     {device.type === 1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:
                     <img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>
@@ -91,9 +91,9 @@ class Home extends React.Component {
       if(device.type===3) {
         return  <Popover 
                   key={device.id+index}
-                  content={HomeCamera({device:device,videoPic:this.videoPic})}
+                  content={HomeCamera({device:device,videoPlay:this.videoPlay,videoPlayBack:this.videoPlayBack,videoPic:this.videoPic})}
                     >
-                  <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+                  <div  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px',userSelect:'none'}} >
                     <Tag >
                     <img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>
                     {device.name}</Tag>
@@ -101,8 +101,8 @@ class Home extends React.Component {
                 </Popover>
       }
       if(device.type === 4) {
-       return <Popover content={<HomeBroadcast device={device} />} trigger="click" key={device.id+index} >
-                <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+       return <Popover content={<HomeBroadcast device={device} />}  key={device.id+index} >
+                <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px',userSelect:'none'}} >
                   <Tag >
                   <img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>
                   {device.name}</Tag>
@@ -110,8 +110,8 @@ class Home extends React.Component {
               </Popover>
       }
       if(device.type === 5) {
-        return <Popover content={<HomeBroadcast device={device} />} trigger="click" key={device.id+index} >
-                 <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+        return <Popover content={<HomeGuard device={device} />}  key={device.id+index} >
+                 <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px',userSelect:'none'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>
                    {device.name}</Tag>
@@ -119,8 +119,8 @@ class Home extends React.Component {
                </Popover>
        }
       if(device.type === 6) {
-        return <Popover content={HomePerson(device)} trigger="click" key={device.id+index} >
-                 <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+        return <Popover content={HomePerson(device)}  key={device.id+index} >
+                 <div key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px',userSelect:'none'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>
                    {device.name}</Tag>
@@ -187,7 +187,6 @@ class Home extends React.Component {
     const device = this.props.deivces.devinfo
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
     const a = this.videoPic.XzVideo_FindDevicePicture(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,startTime,endTime,'0xff',"","",0)
-        console.log(JSON.stringify(a))
         this.props.videoPic(a)
   }
   mouseUp(left,top,right,bottom) {
@@ -240,7 +239,7 @@ class Home extends React.Component {
           <img id='img' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
           {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
           
-          <Selection style={{width:'500px',height:'500px',backgroundColor: '#000'}} dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
+          <Selection  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
           {this.props.area.load?null:this.mapDeviceRender()}
           </Selection>
 
@@ -341,7 +340,7 @@ class Home extends React.Component {
            
         </Modal>
 
-        <DragSelectModal visible={this.state.dragSelectVisible} rectInDevice={this.state.rectInDevice} onCancel={()=>this.setState({dragSelectVisible:false})}></DragSelectModal>
+        <DragSelectModal visible={this.state.dragSelectVisible} videoPlay={this.videoPlay}  rectInDevice={this.state.rectInDevice} onCancel={()=>this.setState({dragSelectVisible:false})}></DragSelectModal>
       </div>
     )
   }

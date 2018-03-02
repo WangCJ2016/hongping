@@ -34,7 +34,21 @@ export function HomeCamera({device,videoPlay,videoPlayBack,videoPic}) {
     </div>
   )
 }
-
+export function HomeGuard({device}) {
+  return (
+    <div className="home-popover">
+      <p className='title'>
+        <Icon type="camera" className='float-left'  style={{ fontSize: 13 }} />{device.name}
+      </p>
+      <ButtonGroup className='clearfix'>
+      <Button  type="primary" onClick={()=>{}}>
+        开门
+      </Button>
+     
+  </ButtonGroup>
+    </div>
+  )
+}
 export class HomeBroadcast extends React.Component {
   state = { 
     src:''

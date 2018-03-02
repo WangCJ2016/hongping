@@ -67,6 +67,7 @@ class Trail extends React.Component {
     return (
       <div>
         <div style={{textAlign:'center'}}><Button type='primary' onClick={()=>this.setState({animation:false})}>暂停</Button><Button type='primary'>快进</Button></div>
+        
         <div className='peo-trail' style={{left:this.props.sidebar.homeLeftIf?'360px':'0'}} ref={(outDiv)=>this.outDiv=outDiv} >
           <canvas ref={(canvas)=>this.canvas=canvas} className='canvas' >
             你的浏览器还不支持canvas
