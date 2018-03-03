@@ -13,5 +13,7 @@ import { sidebar } from './sidebar.redux'
 import { peo} from './peo.redux'
 import { broadcast } from './broadcast.redux'
 import { videSider } from './video.sider.redux'
+import { status } from './status.redux'
+import { watch } from './watch.redux'
 
-export default combineReducers({user, role, area,videSider, settingServer, remoteHost, commHost,broadcastHost,devices,alarm,video,sidebar,peo,broadcast})
+export default combineReducers({user, role,watch, area,videSider, settingServer, remoteHost, commHost,broadcastHost,devices,alarm,video,sidebar,peo,broadcast,status})

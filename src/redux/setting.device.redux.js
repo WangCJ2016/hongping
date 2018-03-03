@@ -13,6 +13,7 @@ const initalState = {
   searchDevice: null,
   videoPicArr:[]
 }
+const DATASUCCESS = '[device] DATASUCCESS'
 const AREADEVICES = '[device] AREADEVICE'
 const AREADEVICES1 = '[device] AREADEVICE1'
 const ALLDEVICES = '[device] ALLDEVICES'
@@ -26,6 +27,9 @@ const VIDEOPIC = '[device] VIDEOPIC'
 
 export function devices(state=initalState,action) {
   switch (action.type) {
+    case DATASUCCESS: {
+      return {...state,...action.payload}
+    }
     case ALLDEVICES: {
       return {...state,[action.payload.type+'Devices']:action.payload.data}
     }
@@ -39,7 +43,7 @@ export function devices(state=initalState,action) {
       return {...state,mapToDevices:action.payload}
     }
     case DELMAPDEVICE: {
-      const mapToDevices = state.mapToDevices.filter(device => device.meId!==action.payload.meId)
+      const mapToDevices = state.mapToDevices.filter(device => device.id!==action.payload.id)
       const areaToDevices = [...state.areaToDevices,action.payload]
       return {...state,mapToDevices:mapToDevices,areaToDevices:areaToDevices}
     }
@@ -84,6 +88,12 @@ export function devices(state=initalState,action) {
       return state
   }
 }
+function dataSuccess(data) {
+  return {
+    type: DATASUCCESS,
+    payload: data
+  }
+}
 // 获取设备
 function allDeviceSuccess(devices) {
   return {
@@ -125,15 +135,28 @@ export function areaDevices(info) {
     .then(res=>{
       console.log(res)
       if(res.success) {
-        const data = res.dataObject.map(device => ({
-          name: device.devName?device.devName:'',
-          devIcon: device.devIcon?device.devIcon:'',
-          id: device.devId,
-          type: device.type,
-          meId: device.id,
-          key:device.id
+       
+        dispatch(areaDeviceSuccess(res.dataObject))
+      }
+    })
+}
+}
+// 区域下级区域列表
+export function nextArea(info) {
+  return dispatch=>{
+    request.get(config.api.base + config.api.nextArea,{
+      token:token,
+      ...info,
+  })
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        const data = res.dataObject.map(area => ({
+          name: area.name,
+          id: area.id,
+          type:10
         }))
-        dispatch(areaDeviceSuccess(data))
+        dispatch(dataSuccess({nextAreas:data}))
       }
     })
 }
@@ -156,15 +179,8 @@ export function areaDevices1(info) {
     .then(res=>{
       console.log(res)
       if(res.success) {
-        const data = res.dataObject.map(device => ({
-          name: device.devName?device.devName:'',
-          devIcon: device.devIcon?device.devIcon:'',
-          id: device.devId,
-          type: device.type,
-          meId: device.id,
-          key:device.id
-        }))
-        dispatch(areaDeviceSuccess1(data))
+      
+        dispatch(areaDeviceSuccess1(res.dataObject))
         areaDevices(info)(dispatch)
       }
     })
@@ -207,7 +223,7 @@ export function createSysInstallPlace(info) {
         message.success('保存成功！')
       }
     })
-}
+ }
 }
 // 获取地图已绑定设备
 function querySysInstallPlacesSuccess(data) {
@@ -225,16 +241,8 @@ export function querySysInstallPlaces(info) {
     .then(res=>{
       if(res.success) {
          if(res.dataObject.devices) {
-          const data = res.dataObject.devices.map(device => ({
-            id: device.devId,
-            meId: device.id,
-            name: device.devName||device.name,
-            devIcon: device.devIcon?device.devIcon:'',
-            type: device.type,
-            x:device.x,
-            y:device.y
-          }))
-          dispatch(querySysInstallPlacesSuccess(data))
+         
+          dispatch(querySysInstallPlacesSuccess(res.dataObject.devices))
          }else{
           dispatch(querySysInstallPlacesSuccess([]))
          }
@@ -242,6 +250,7 @@ export function querySysInstallPlaces(info) {
     })
 }
 }
+// 
 
 // 删除设备
 export function delMapDevice(del) {
@@ -252,7 +261,7 @@ export function delMapDevice(del) {
       token:token,
       accountId: user.account.id,
       type: 'delete',
-      ids: del.meId
+      ids: del.id
     })
     .then(res => {
       dispatch({

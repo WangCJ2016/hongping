@@ -55,34 +55,32 @@ class Property1 extends React.Component {
       key: 'icon',
       width: '30%',
       render: (text, record)=>{
-        console.log(record)
        return record.icon?
         <img src={require(`../../assets/imgs/${record.icon}.png`)} alt=""/>:null
       }
-    },{
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        width: '40%',
       },{
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-          <span className='video-action'>
-            <a><Icon type='edit' onClick={() => this.setState({selectProperty:record,editVisible:true})}/></a>
-            <a>
-              <Popconfirm title="确定删除？" onConfirm={this.delete.bind(this,record.id)}  okText="确定" cancelText="取消">
-              <Icon type='delete'/>
-              </Popconfirm>
-            </a>
-          </span>
-        )
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
+          width: '40%',
+        },{
+          title: 'Action',
+          key: 'action',
+          render: (text, record) => (
+            <span className='video-action'>
+              <a><Icon type='edit' onClick={() => this.setState({selectProperty:record,editVisible:true})}/></a>
+              <a>
+                <Popconfirm title="确定删除？" onConfirm={this.delete.bind(this,record.id)}  okText="确定" cancelText="取消">
+                <Icon type='delete'/>
+                </Popconfirm>
+              </a>
+            </span>
+          )
       }
     ]
   const { getFieldDecorator } = this.props.form;
   const commPorperty = this.props.coomProperties
   const selectProperty = this.state.selectProperty
-  console.log(selectProperty)
     return (
         <div className="setting-user-role setting-video-device  float-right">
           <div className="title role">通信属性<div className='abosulte' onClick={()=>this.setState({createVisible:true})}><Icon type='plus'/></div></div>

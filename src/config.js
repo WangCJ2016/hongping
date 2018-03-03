@@ -64,6 +64,7 @@ export const config = {
     
     areaDevices1:'/device_queryAreaDevices', // 获取区域已绑定设备
     areaDevices: '/install_queryAreaDevices', // (获取区域已绑定设备
+    nextArea: '/install_queryAreaBindAreas',
     allDevices: '/device_queryAllDevices', //获取设备
     createDeviceArea: '/device_modifySysDeviceArea', //区域设备绑定
     createSysInstallPlace: '/install_createSysInstallPlace ', // 添加地图设备绑
@@ -73,6 +74,7 @@ export const config = {
     alertmPages: '/home_queryAlarmsPage', // 报警列表
     getAlarmInfo: '/home_getAlarmInfo', // 报警详情
     modifyAlarm: '/home_modifyAlarm', // 报警处理
+    alarmCount: '/home_getAlarmsCount',
     searchChannel: '/rhost_querySysRemoteChannelsPage', //搜索摄像头
     searchBroadcast: '/bhost_querySysBroadcastChannelsPage', //搜索广播
     carPages: '/home_queryCarsPage', // 车辆信息
@@ -93,7 +95,19 @@ export const config = {
     trailDetail: '/slv_queryTrajectoryDetail', // 轨迹详情 
     searchPeo: '/slv_queryPeopleByKeyword', // 关键字搜索人员
     // 广播
-
+    // 实时状态
+    getStatus:'/home_syncServerDatas',
+    position:'/slv_queryPositionPage',
+    // 历史分析
+    historyFstatistics: '/home_queryAlarmsFStatistics',
+    // 巡更
+    getWatchTasks: '/patrol_queryPatrolTasks',
+    addTask:'/patrol_createPatrolTasks',
+    editTask:'/patrol_modifyPatrolTasks',
+    taskPoints:'/patrol_queryPatrolPoints',
+    addPoint:'/patrol_createPatrolPoints',
+    editPoint:'/patrol_modifyPatrolPoints',
+    watchHistoryPage: '/patrol_queryPatrolHistoryPage'
   }
 }
 //get/post请求

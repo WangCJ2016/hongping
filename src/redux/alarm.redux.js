@@ -8,6 +8,7 @@ const initialState = {
   carPages:{}
 }
 
+const DATASUCCESS = '[alarm] DATASUCCESS'
 const ALARMPAGE_SUCCESS = '[alarm] ALARMPAGE_SUCCESS'
 const ALARMMODIFY_SUCCESS = '[alarm] ALARMMODIFY_SUCCESS'
 const ALARMINFO_SUCCESS = '[alarm] ALARMINFO_SUCCESS'
@@ -15,6 +16,9 @@ const CARPAGES_SUCCESS = '[alarm] CARPAGES_SUCCESS'
 
 export function alarm(state=initialState,action) {
   switch (action.type) {
+    case DATASUCCESS:{
+      return {...state,...action.payload}
+    }
     case ALARMPAGE_SUCCESS: {
       return {...state,alarmlist: action.payload}
     }
@@ -37,6 +41,13 @@ export function alarm(state=initialState,action) {
       return state
   }
 }
+function dataSuccess(data) {
+  return {
+    type: DATASUCCESS,
+    payload: data
+  }
+}
+
 // 警报列表
 function alarmPagesSuccess(list) {
   return {
@@ -139,6 +150,21 @@ export function carPages() {
      if(res.success) {
        const cars = res.result.map(car => ({...car,key:car.id}))
         dispatch(carPagesSuccess({...res,result:cars}))
+     }
+   })
+  }
+}
+
+// 首页报警数量
+export function alarmCount() {
+  return (dispatch) => {
+    request.get(config.api.base + config.api.alarmCount,{
+      token: token
+    })
+   .then(res=>{
+     console.log(res)
+     if(res.success) {
+      dispatch(dataSuccess({alarmCount:res.dataObject.total,alarmUndo:res.dataObject.undo}))
      }
    })
   }

@@ -2,14 +2,14 @@ import React from 'react'
 import { Collapse, message,Button,Tag,Spin } from 'antd';
 import { connect } from 'react-redux'
 import {areaList, uploadImg,areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
-import { areaDevices,allDevices,addDevices,createSysInstallPlace,querySysInstallPlaces,delMapDevice,addMapDevice,changeMapDevice } from '../../redux/setting.device.redux'
+import { areaDevices,allDevices,addDevices,createSysInstallPlace,nextArea,querySysInstallPlaces,delMapDevice,addMapDevice,changeMapDevice } from '../../redux/setting.device.redux'
 import AreaTree from '../areaTree/areaTree'
 const Panel = Collapse.Panel
 
 @connect(
   state=>({deivces:state.devices,area:state.area}),
   {
-    areaList,selectAreaIdSuccess,areaDevices,allDevices,addDevices,uploadImg,areaInfo,createSysInstallPlace,querySysInstallPlaces,delMapDevice,addMapDevice,changeMapDevice
+    areaList,selectAreaIdSuccess,areaDevices,nextArea,allDevices,addDevices,uploadImg,areaInfo,createSysInstallPlace,querySysInstallPlaces,delMapDevice,addMapDevice,changeMapDevice
    }
 )
 class SettingMap extends React.Component {
@@ -25,6 +25,7 @@ class SettingMap extends React.Component {
        this.props.areaDevices({areaId: areaId})
        this.props.areaInfo({id:areaId})
        this.props.querySysInstallPlaces({areaId:areaId})
+       this.props.nextArea({areaId:areaId})
        this.props.selectAreaIdSuccess(areaId)
   }
   componentDidMount() {
@@ -34,7 +35,7 @@ class SettingMap extends React.Component {
   deviceRender() {
     const devices = this.props.deivces.areaToDevices
     return devices.map(device => (
-      <div key={device.id} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
+      <div key={device.id} data-id={JSON.stringify(device)}  className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
         <Tag>
         {device.type===1?<img draggable='false' className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
         {device.type===2?<img draggable='false' className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
@@ -44,7 +45,18 @@ class SettingMap extends React.Component {
         {device.type===6?<img draggable='false' className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>:null}
         {device.type===7?<img draggable='false' className='type-icon' src={require('../../assets/imgs/fireCtrl-icon.png')} alt=""/>:null}
         {device.type===8?<img draggable='false' className='type-icon' src={require('../../assets/imgs/talk-icon.png')} alt=""/>:null}
-        {device.name}</Tag>
+        {device.devName}</Tag>
+      </div>
+    ))
+  }
+  nextAreaRender() {
+    const nextAreas = this.props.deivces.nextAreas
+    return nextAreas.map(area=>(
+      <div key={area.id} data-id={JSON.stringify(area)}  className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,area)} onDragEnd={this.dragend.bind(this)}>
+        <Tag>
+        <img draggable='false' className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+        {area.name}
+        </Tag>
       </div>
     ))
   }
@@ -52,7 +64,7 @@ class SettingMap extends React.Component {
   mapDeviceRender() {
     const devices = this.props.deivces.mapToDevices
     return devices.map((device,index) => (
-      <div key={device.id+index} id={device.id+'-'+device.type+'-'+device.name+'-'+device.devIcon+'-'+device.meId} style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
+      <div key={index} data-id={JSON.stringify(device)}  style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
         <Tag onClose={this.delDevice.bind(this,device)} closable >
         {device.type===1?<img draggable='false' className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
         {device.type===2?<img draggable='false' className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
@@ -62,7 +74,8 @@ class SettingMap extends React.Component {
         {device.type===6?<img draggable='false' className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>:null}
         {device.type===7?<img draggable='false' className='type-icon' src={require('../../assets/imgs/fireCtrl-icon.png')} alt=""/>:null}
         {device.type===8?<img draggable='false' className='type-icon' src={require('../../assets/imgs/talk-icon.png')} alt=""/>:null}
-        {device.name}</Tag>
+        {device.type===10?<img draggable='false' className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>:null}
+        {device.devName||device.name}</Tag>
       </div>
     ))
   }
@@ -70,7 +83,7 @@ class SettingMap extends React.Component {
     this.props.delMapDevice(delDevice)
   }
   dragStart(device,e){
-   e.dataTransfer.setData("Text",e.target.id);
+   e.dataTransfer.setData("data",e.target.dataset.id);
    if(e.target.style.left) {
      this.setState({
        ifOnImg: true
@@ -88,28 +101,19 @@ class SettingMap extends React.Component {
       const imgData = document.getElementById('img').getBoundingClientRect()
       const x = ev.clientX - imgData.left
       const y = ev.clientY - imgData.top
-      const data=ev.dataTransfer.getData("Text");
+      const data=JSON.parse(ev.dataTransfer.getData("data"))
       if(!data){
         return
       }
       if(this.state.ifOnImg) {
         this.props.changeMapDevice({
-          meId:data.split('-')[4],
-          name: data.split('-')[2],
-          id: data.split('-')[0],
-          type: data.split('-')[1]-0,
-          devIcon:data.split('-')[3],
+          ...data,
           x:x,
-          y:y
-        })
+          y:y})
         this.setState({ifOnImg:false})
       }else {
         this.props.addMapDevice({
-          meId:data.split('-')[4],
-          name: data.split('-')[2],
-          id: data.split('-')[0],
-          type: data.split('-')[1]-0,
-          devIcon:data.split('-')[3],
+          ...data,
           x:x,
           y:y
         })
@@ -134,7 +138,14 @@ class SettingMap extends React.Component {
 }
 // 保存
 submit() {
-  const devIds = this.props.deivces.mapToDevices.map(device => device.id).join(',')
+  console.log(this.props.deivces.mapToDevices)
+  const devIds = this.props.deivces.mapToDevices.map(device => {
+    if(device.devId){
+      return device.devId
+    }else {
+      return device.id
+    }
+  }).join(',')
   const types = this.props.deivces.mapToDevices.map(device => device.type).join(',')
   const x = this.props.deivces.mapToDevices.map(device => device.x).join(',')
   const y = this.props.deivces.mapToDevices.map(device => device.y).join(',')
@@ -163,6 +174,9 @@ submit() {
           <Collapse defaultActiveKey={['1']}>
             <Panel header="设备" key="1">
                 {this.props.deivces.areaToDevices?this.deviceRender():null}
+            </Panel>
+            <Panel header="下级区域" key="2">
+                {this.props.deivces.nextAreas?this.nextAreaRender():null}
             </Panel>
         </Collapse>
        </div>

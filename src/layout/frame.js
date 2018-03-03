@@ -10,21 +10,28 @@ import Setting from '../views/setting/setting'
 import Trail from '../components/trail/trail'
 import SideBar from '../views/sidebar/sidebar'
 import UserCenter from '../views/userCenter/userCenter'
+import Status from '../views/status/status'
+import History from '../views/history/history'
+import Watch from '../views/watch/watch'
 import { changeSidebar } from '../redux/sidebar.redux'
+import { alarmCount } from '../redux/alarm.redux'
 import './frame.scss'
 
 
 const { Header, Content, Sider } = Layout;
 
 @connect(
-  state=>state.user,
-  {changeSidebar}
+  state=>({user:state.user,alarm:state.alarm}),
+  {changeSidebar,alarmCount}
 )
 
 class Frame extends React.Component {
   state = {
     collapsed:false,
     siderActiveIndex: -1
+  }
+  componentDidMount() {
+    this.props.alarmCount()
   }
   navRender() {
     const navArray = [
@@ -51,7 +58,7 @@ class Frame extends React.Component {
     const navArray = [
       {class: 'home',title: '应急中心',link:'/home'},
       {class: 'video',title: '视频监控',link:'/video'},
-      {class: 'watch',title: '巡更上传',link:'/watch'},
+      {class: 'watch',title: '巡更管理',link:'/watch'},
       {class: 'status',title: '实时状态',link:'/status'},
       {class: 'history',title: '历史分析',link:'/history'},
       {class: 'usercenter',title: '个人设置',link:'/userCenter'},
@@ -67,12 +74,7 @@ class Frame extends React.Component {
     localStorage.removeItem('token')
     window.location.replace("/login")
   }
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
-    if(nextProps.location.pathname!=='/home'){
-      //this.props.changeSidebar
-    } 
-  }
+
   siderBarRender() {
     
   }
@@ -87,11 +89,11 @@ class Frame extends React.Component {
         <div style={{position:'absolute',left:'230px',top:'10px'}} className='flex'>
           <div>
              <div style={{lineHeight:'25px',backgroundColor:'#000',padding:'0 10px',textAlign:'center'}}>报警总数</div>
-             <div style={{lineHeight:'25px', backgroundColor:'#fff',padding:'0 10px',textAlign:'center',color:'#333'}}>0</div>
+             <div style={{lineHeight:'25px', backgroundColor:'#fff',padding:'0 10px',textAlign:'center',color:'#333'}}>{this.props.alarm.alarmCount}</div>
           </div>
           <div style={{marginLeft:'5px'}}>
              <div style={{lineHeight:'25px',backgroundColor:'#000',padding:'0 10px'}}>未处理总数</div>
-             <div style={{lineHeight:'25px', backgroundColor:'#fff',padding:'0 10px',textAlign:'center',color:'#333'}}>0</div>
+             <div style={{lineHeight:'25px', backgroundColor:'#fff',padding:'0 10px',textAlign:'center',color:'#333'}}>{this.props.alarm.alarmUndo}</div>
           </div>
         </div>
         <Popconfirm title="确认退出?" onConfirm={this.confirm.bind(this)}  okText="确定" cancelText="取消">
@@ -122,8 +124,11 @@ class Frame extends React.Component {
               <Switch>
                 <Route exact path='/home' component={Home}></Route>
                 <Route exact path='/video' component={Video}></Route>
+                <Route exact path='/status' component={Status}></Route>
+                <Route exact path='/history' component={History}></Route>
                 <Route exact path='/setting' component={Setting}></Route>
                 <Route exact path='/trail' component={Trail}></Route>
+                <Route exact path='/watch' component={Watch}></Route>
                 <Route exact path='/userCenter' component={UserCenter}></Route>
               </Switch>
           </Content>

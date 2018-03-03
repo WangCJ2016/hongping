@@ -1,0 +1,183 @@
+import { request, config} from '../config'
+import { weekFormate } from '../utils'
+import { message } from 'antd'
+
+const token = localStorage.getItem('token')
+const intialState = {
+  
+}
+const DATASUCCESS = '[watch] DATASUCCESS'
+const ADDTASKSUCCESS = '[watch] ADDTASKSUCCESS'
+const EDITTASKSUCCESS = '[watch] EDITTASKSUCCESS'
+const DELETETASKSUCCESS = '[watch] DELETETASKSUCCESS'
+
+export function watch(state = intialState, action ) {
+  switch (action.type) {
+    case DATASUCCESS: {
+      return {...state,...action.payload}
+    }
+    case ADDTASKSUCCESS: {
+      const watchTasks = [...state.watchTasks,action.payload]
+      return {...state,watchTasks:watchTasks}
+    }
+    case EDITTASKSUCCESS: {
+     const watchTasks = state.watchTasks.map(task => {
+        if(task.id === action.payload.id) {
+          return action.payload
+        }
+        return task
+      })
+      return {...state,watchTasks:watchTasks}
+    }
+    case DELETETASKSUCCESS: {
+      const watchTasks = state.watchTasks.filter(task => task.id!==action.payload.id)
+      return {...state,watchTasks:watchTasks}
+    }
+    default:
+      return state
+  }
+}
+
+export function dataSuccess(data) {
+  return {
+    type: DATASUCCESS,
+    payload: data
+  }
+}
+
+export function getWatchTasks() {
+  return dispatch => {
+    request.get( config.api.base + config.api.getWatchTasks, {token:token})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        const arr = res.dataObject.map(task => ({
+          ...task,
+          key:task.id,
+          day:weekFormate(task.day)
+        }))
+        TaskPoints({taskId:arr[0].id})(dispatch)
+        dispatch(dataSuccess({watchTasks: arr,selectTask:arr[0]}))
+      }
+    })
+  }
+}
+
+function addTaskSuccess(data) {
+  return {
+    type: ADDTASKSUCCESS,
+    payload: data
+  }
+}
+export function addTask(info) {
+  return (dispatch,getState) => {
+    const user = getState().user
+    request.get( config.api.base + config.api.addTask, {token:token,accountId:user.account.id,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        const data = {
+          ...res.dataObject,
+          key:res.dataObject.id,
+          day:weekFormate(res.dataObject.day)
+        }
+        
+        dispatch(addTaskSuccess(data))
+      }
+    })
+  }
+}
+
+function editTaskSuccess(data) {
+  return {
+    type: EDITTASKSUCCESS,
+    payload: data
+  }
+}
+function deleteTaskSuccess(data) {
+  return {
+    type: DELETETASKSUCCESS,
+    payload: data
+  }
+}
+export function editTask(info) {
+  return (dispatch,getState) => {
+    const user = getState().user
+    request.get( config.api.base + config.api.editTask, {token:token,accountId:user.account.id,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        if(info.isDelete) {
+          dispatch(deleteTaskSuccess(info))
+        }else{
+          const data = {
+            ...res.dataObject,
+            key:res.dataObject.id,
+            day:weekFormate(res.dataObject.day)
+          }
+          dispatch(editTaskSuccess(data))
+        }
+      }else{
+        message.warning(res.msg);
+      }
+    })
+  }
+}
+
+export function TaskPoints(info) {
+  return dispatch => {
+    request.get( config.api.base + config.api.taskPoints, {token:token,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        const arr = res.dataObject.map(point => ({
+          ...point,
+          key:point.id,
+        }))
+        dispatch(dataSuccess({taskPoints: arr}))
+      }
+    })
+  }
+}
+
+export function addPoint(info) {
+  return (dispatch,getState) => {
+    const user = getState().user
+    request.get( config.api.base + config.api.addPoint, {token:token,accountId:user.account.id,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        TaskPoints({taskId:info.taskId})(dispatch)
+      }
+    })
+  }
+}
+
+export function editPoint(info) {
+  return (dispatch,getState) => {
+    const user = getState().user
+    request.get( config.api.base + config.api.editPoint, {token:token,accountId:user.account.id,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        TaskPoints({taskId:info.taskId})(dispatch)
+      }
+    })
+  }
+}
+
+export function watchHistoryPage(info) {
+  return (dispatch) => {
+    request.get( config.api.base + config.api.watchHistoryPage, {token:token,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success&&res.result) {
+        const arr = res.result.map(task => ({
+          ...task,
+          key:task.id
+        }))
+        dispatch(dataSuccess({historyTasks:arr,historyTasksTotal:res.records}))
+      }
+    })
+  }
+}
