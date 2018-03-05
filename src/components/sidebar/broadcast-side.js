@@ -1,5 +1,5 @@
 import React from 'react'
-import {Icon,Input,Checkbox,message} from 'antd'
+import {Icon,Input,Checkbox,message,Modal} from 'antd'
 import { unquie } from '../../utils'
 import TableBroadcast from '../areaTree/tableBroadcast'
 import { connect } from 'react-redux'
@@ -23,6 +23,7 @@ class BroadcastSider extends React.Component {
     this.voiceBroadcast = this.voiceBroadcast.bind(this)
     this.fileBroadcast = this.fileBroadcast.bind(this)
   }
+  
   onChange(index,e) {
     if(e.target.checked) {
       this.props.selectBroIndex(unquie([...this.props.broadcast.selectBroIndex,index]))
@@ -119,6 +120,7 @@ class BroadcastSider extends React.Component {
           <span onClick={this.fileBroadcast}><Icon type="folder" style={{color:this.state.fileBroadcastStart?'#006f6b':''}} /></span>
         </div>:null
         }
+        <Modal></Modal>
         <object
                 ref={(screen)=>this.play=screen}
                 classID="clsid:1D3667C2-A790-4CCB-B3F2-3E2AE54BCFAA"
