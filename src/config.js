@@ -107,7 +107,10 @@ export const config = {
     taskPoints:'/patrol_queryPatrolPoints',
     addPoint:'/patrol_createPatrolPoints',
     editPoint:'/patrol_modifyPatrolPoints',
-    watchHistoryPage: '/patrol_queryPatrolHistoryPage'
+    watchHistoryPage: '/patrol_queryPatrolHistoryPage',
+    getTaskDefaultTime: '/patrol_getPatrolTaskTime',
+    setTaskTime: '/patrol_setPatrolTaskTime',
+    watchPointsUpload:'/home_createPatrolHistorys' 
   }
 }
 //get/post请求

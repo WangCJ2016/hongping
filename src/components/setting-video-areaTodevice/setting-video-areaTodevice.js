@@ -139,7 +139,7 @@ class SettingVideoAreatoDevice extends React.Component {
     this.broadcastArr = keys.checked
   }
   addSubmit() {
-      const areaToDevices = this.props.deivces.areaToDevices1.length>0? this.props.deivces.areaToDevices1.map(devices=>devices.id+'-'+devices.type):[]
+      const areaToDevices = this.props.deivces.areaToDevices1.length>0? this.props.deivces.areaToDevices1.map(devices=>devices.devId+'-'+devices.type):[]
       const arr = [...this.remoteArr,...this.commArr,...this.broadcastArr]
       let plusArray = []
       let minusArray = []
@@ -170,7 +170,7 @@ class SettingVideoAreatoDevice extends React.Component {
     this.setState({selectAreaId:areaId})
   }
   render() {
-    const defaultSelectKeys = this.props.deivces.areaToDevices1.length>0? this.props.deivces.areaToDevices1.map(devices=>devices.id+'-'+devices.type):[]
+    const defaultSelectKeys = this.props.deivces.areaToDevices1.length>0? this.props.deivces.areaToDevices1.map(devices=>devices.devId+'-'+devices.type):[]
     const columns=[{
        title:'Icon',
        key: 'Icon',
@@ -189,6 +189,11 @@ class SettingVideoAreatoDevice extends React.Component {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+    },
+    {
+      title: 'devName',
+      dataIndex: 'devName',
+      key: 'devName',
     }]
     return (
       <div>
@@ -200,7 +205,7 @@ class SettingVideoAreatoDevice extends React.Component {
             <div className="title role">设备
             <div className='abosulte' onClick={()=>{this.setState({addVisible:true});this.remoteArr=[];this.commArr=[];this.broadcastArr=[];this.tabClick('remote')}}><Icon type='plus'/></div></div>
             {this.props.deivces.areaToDevices1.length>0?
-              <Table columns={columns} dataSource={this.props.deivces.areaToDevices1} pagination={false} showHeader={false}/>:null}
+              <Table columns={columns} dataSource={this.props.deivces.areaToDevices1} size='small' showHeader={false}/>:null}
         </div>
         <Modal title="区域设备绑定"
           visible={this.state.addVisible}

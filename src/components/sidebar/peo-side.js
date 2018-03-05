@@ -37,8 +37,9 @@ class PeoSider extends React.Component {
   }
   peoRender() {
     const peolist = this.props.peo.peoList
-    return peolist.map(area => (
-      <Panel header={area.regionName} key={area.id}>
+    console.log(peolist)
+    return peolist.map((area,index) => (
+      <Panel header={area.regionName} key={index}>
         {area.postions?area.postions.map(peo=>{
           const styles = className({
             'peo-item': true,

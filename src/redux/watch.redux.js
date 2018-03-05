@@ -181,3 +181,41 @@ export function watchHistoryPage(info) {
     })
   }
 }
+
+export function getTaskDefaultTime() {
+  return (dispatch) => {
+    request.get( config.api.base + config.api.getTaskDefaultTime, {token:token})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        const time = res.dataObject === '-'?'':res.dataObject
+        dispatch(dataSuccess({taskTime: time}))
+      }
+    })
+  }
+}
+
+export function setTaskTime(info) {
+  return (dispatch) => {
+    request.get( config.api.base + config.api.setTaskTime, {token:token,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        message.info('设置成功')
+        dispatch(dataSuccess({taskTime: info.time}))
+      }
+    })
+  }
+}
+
+export function watchPointsUpload(info) {
+  return (dispatch) => {
+    request.get( config.api.base + config.api.watchPointsUpload, {token:token,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        message.info('上传成功')
+      }
+    })
+  }
+}

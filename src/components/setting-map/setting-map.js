@@ -55,7 +55,7 @@ class SettingMap extends React.Component {
       <div key={area.id} data-id={JSON.stringify(area)}  className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,area)} onDragEnd={this.dragend.bind(this)}>
         <Tag>
         <img draggable='false' className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
-        {area.name}
+        {area.name||area.devName}
         </Tag>
       </div>
     ))
@@ -63,21 +63,23 @@ class SettingMap extends React.Component {
   // 地图设备渲染
   mapDeviceRender() {
     const devices = this.props.deivces.mapToDevices
-    return devices.map((device,index) => (
-      <div key={index} data-id={JSON.stringify(device)}  style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
-        <Tag onClose={this.delDevice.bind(this,device)} closable >
-        {device.type===1?<img draggable='false' className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
-        {device.type===2?<img draggable='false' className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
-        {device.type===3?<img draggable='false' className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
-        {device.type===4?<img draggable='false' className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>:null}
-        {device.type===5?<img draggable='false' className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>:null}
-        {device.type===6?<img draggable='false' className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>:null}
-        {device.type===7?<img draggable='false' className='type-icon' src={require('../../assets/imgs/fireCtrl-icon.png')} alt=""/>:null}
-        {device.type===8?<img draggable='false' className='type-icon' src={require('../../assets/imgs/talk-icon.png')} alt=""/>:null}
-        {device.type===10?<img draggable='false' className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>:null}
-        {device.devName||device.name}</Tag>
-      </div>
-    ))
+    return devices.map((device,index) => {
+     return (<div key={device.id||index} data-id={JSON.stringify(device)}  style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
+        <Tag key={device.id||index} onClose={this.delDevice.bind(this,device)} closable={true} >
+          {device.type===1?<img draggable='false' className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
+          {device.type===2?<img draggable='false' className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
+          {device.type===3?<img draggable='false' className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
+          {device.type===4?<img draggable='false' className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>:null}
+          {device.type===5?<img draggable='false' className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>:null}
+          {device.type===6?<img draggable='false' className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>:null}
+          {device.type===7?<img draggable='false' className='type-icon' src={require('../../assets/imgs/fireCtrl-icon.png')} alt=""/>:null}
+          {device.type===8?<img draggable='false' className='type-icon' src={require('../../assets/imgs/talk-icon.png')} alt=""/>:null}
+          {device.type===10?<img draggable='false' className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>:null}
+          <span>{device.name||device.devName}</span>
+        </Tag>
+      </div>)
+    }
+    )
   }
   delDevice(delDevice) {
     this.props.delMapDevice(delDevice)
@@ -138,17 +140,17 @@ class SettingMap extends React.Component {
 }
 // 保存
 submit() {
-  console.log(this.props.deivces.mapToDevices)
-  const devIds = this.props.deivces.mapToDevices.map(device => {
+  const deviceArr = this.props.deivces.mapToDevices.filter(device=>device.type!==6)
+  const devIds = deviceArr.map(device => {
     if(device.devId){
       return device.devId
     }else {
       return device.id
     }
   }).join(',')
-  const types = this.props.deivces.mapToDevices.map(device => device.type).join(',')
-  const x = this.props.deivces.mapToDevices.map(device => device.x).join(',')
-  const y = this.props.deivces.mapToDevices.map(device => device.y).join(',')
+  const types = deviceArr.map(device => device.type).join(',')
+  const x = deviceArr.map(device => device.x).join(',')
+  const y = deviceArr.map(device => device.y).join(',')
   this.props.createSysInstallPlace({areaId:this.props.area.selectAreaId,devIds:devIds,types:types,x:x,y:y})
 }
   render() {
@@ -160,7 +162,6 @@ submit() {
               <span>上传图片</span>
               <input type="file" onChange={this.onChange.bind(this)} />
             </span>
-           
             <Button type='primary' className='float-right' onClick={this.submit.bind(this)}>保存</Button>
           </div>
           <div className='map-area'>
@@ -171,7 +172,7 @@ submit() {
           </Collapse>
          </div>
        <div className="device-area">
-          <Collapse defaultActiveKey={['1']}>
+          <Collapse defaultActiveKey={['1','2']}>
             <Panel header="设备" key="1">
                 {this.props.deivces.areaToDevices?this.deviceRender():null}
             </Panel>
@@ -190,6 +191,7 @@ submit() {
           {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
           <img id='img' src={areaInfo.picture}  alt="" />}
           {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
+          
           {this.props.area.load?null:this.mapDeviceRender()}
         </div>
        </div>

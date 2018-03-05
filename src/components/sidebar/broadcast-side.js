@@ -8,7 +8,7 @@ import { searchBroadcast,selectBroIndex } from '../../redux/broadcast.redux'
 const Search = Input.Search
 
 @connect(
-  state=>({sidebar:state.sidebar,broadcast:state.broadcast}),
+  state=>({sidebar:state.sidebar,broadcast:state.broadcast,area:state.area}),
   {changeSidebar,searchBroadcast,selectBroIndex}
 )
 class BroadcastSider extends React.Component {
@@ -17,7 +17,8 @@ class BroadcastSider extends React.Component {
     this.state={
       selectBroId: '',
       voiceBroadcastStart: false,
-      fileBroadcastStart: false
+      fileBroadcastStart: false,
+      selectIndexArr: []
     }
     this.voiceBroadcast = this.voiceBroadcast.bind(this)
     this.fileBroadcast = this.fileBroadcast.bind(this)
@@ -44,8 +45,9 @@ class BroadcastSider extends React.Component {
   }
   // 语音播报
   voiceBroadcast() {
+
     if(!this.state.voiceBroadcastStart){
-      const a =this.play.FileBroadcast('ip','TargeIdList')
+      const a =this.play.VoiceBroadcast(this.props.area.broadcastIp,this.state.selectIndexArr.join(','))
       if(a) {
         message.success('开始播报语音')
         this.setState({
@@ -67,7 +69,7 @@ class BroadcastSider extends React.Component {
     if(!this.state.fileBroadcastStart) {
       const a = this.play.GetLocallFile()
       if(a!=='') {
-        const a = this.play.FileBroadcast('ip','TargeIdList',a)
+        const a = this.play.FileBroadcast(this.props.area.broadcastIp,this.state.selectIndexArr.join(','),a)
         if(a) {
           message.success('开始播报文件语音')
         } else {
@@ -85,8 +87,12 @@ class BroadcastSider extends React.Component {
     }
     
   }
+  treeSelectIndex(keys) {
+    this.setState({
+      selectIndexArr: keys
+    })
+  }
   render() {
-    
     return (
       <div className='submeun' style={{width:this.props.sidebar.broadcast_sidebar?'300px':'0'}}>
         <div className='siderbar-wrap'> 
@@ -98,21 +104,24 @@ class BroadcastSider extends React.Component {
           style={{ width: 220 }}
           onSearch={value => this.props.searchBroadcast({name:encodeURI(value)})} />
           <div style={{marginTop:'15px'}}>
-          <TableBroadcast />
+          <TableBroadcast treeSelectIndex={this.treeSelectIndex.bind(this)} />
           </div>
           <div className="title" style={{textAlign:'left',marginTop:'15px'}}>
               <span>广播搜索结果</span>
           </div>
           {this.searchBroRender()}
         </div>
-        <div className="fix-bottom">
-          <span>已选择<strong style={{color: '#17b89f'}}>{this.props.broadcast.selectBroIndex.length}</strong></span>
+        {
+          this.props.sidebar.broadcast_sidebar?
+          <div className="fix-bottom">
+          <span>已选择<strong style={{color: '#17b89f'}}>{this.state.selectIndexArr.length}</strong></span>
           <span onClick={this.voiceBroadcast}><Icon type="notification" style={{color:this.state.voiceBroadcastStart?'#006f6b':''}} /></span>
           <span onClick={this.fileBroadcast}><Icon type="folder" style={{color:this.state.fileBroadcastStart?'#006f6b':''}} /></span>
-        </div>
+        </div>:null
+        }
         <object
                 ref={(screen)=>this.play=screen}
-                classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
+                classID="clsid:1D3667C2-A790-4CCB-B3F2-3E2AE54BCFAA"
                 codebase="./XzVideoWebClient.cab#version=1.0.0.1"
                 width={0}
                 height={0}

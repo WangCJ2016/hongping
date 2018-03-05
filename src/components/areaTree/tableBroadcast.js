@@ -50,7 +50,9 @@ export default class TableBroadcast extends React.Component {
       }
     }
     onCheck(checkedKeys) {
-      console.log(checkedKeys)
+      const keys = checkedKeys.filter(key => key.length<5)
+      console.log(keys)
+      this.props.treeSelectIndex(keys)
     }
     goLoc(parentId) {
       this.props.areaInfo({id:parentId})
@@ -63,7 +65,7 @@ export default class TableBroadcast extends React.Component {
         checkable={true}
         multiple={true}
         onExpand={this.onExpand}
-        onCheck={this.onCheck}
+        onCheck={this.onCheck.bind(this)}
         >
            {
             data.map(treenode=>(
@@ -90,7 +92,7 @@ export default class TableBroadcast extends React.Component {
              null
             }
             
-            </span>} key={Tchildren.id}>
+            </span>} key={Tchildren.type?Tchildren.index:Tchildren.id}>
             {this.toTree(Tchildren.children)}
           </TreeNode>
         ))

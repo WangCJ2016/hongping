@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { getWatchTasks,addTask,editTask,TaskPoints,addPoint,dataSuccess,editPoint } from '../../redux/watch.redux'
 import { Table,Button,Icon,Modal,Form,Input,Select,Popconfirm,Row,Col } from 'antd'
+import WatchTaskTime from '../../components/watch-components/watchTaskTime'
 const FormItem = Form.Item;
 const Option = Select.Option
 
@@ -157,7 +158,7 @@ class WatchTask1 extends React.Component {
    
     return (
       <div>
-         
+         <WatchTaskTime></WatchTaskTime>
          <Row>
            <Col span={11}>
            <div style={{textAlign:'right'}}>

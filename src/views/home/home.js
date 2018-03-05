@@ -34,7 +34,7 @@ class Home extends React.Component {
       checked: [],
       expanded: [],
     }
-  
+    this.goNextArea = this.goNextArea.bind(this)
     this.videoPlay = this.videoPlay.bind(this)
     this.videoPlayBack = this.videoPlayBack.bind(this)
     this.videoPic = this.videoPic.bind(this)
@@ -83,7 +83,7 @@ class Home extends React.Component {
                     {device.type === 1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:
                     <img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>
                   }
-                    {device.name}</Tag>
+                    {device.name||device.devName}</Tag>
                   </div> 
                 </Popover>
        
@@ -96,7 +96,7 @@ class Home extends React.Component {
                   <div  className='user-select'  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                     <Tag >
                     <img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>
-                    {device.name}</Tag>
+                    {device.name||device.devName}</Tag>
                   </div> 
                 </Popover>
       }
@@ -105,7 +105,7 @@ class Home extends React.Component {
                 <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                   <Tag >
                   <img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>
-                  {device.name}</Tag>
+                  {device.name||device.devName}</Tag>
                 </div> 
               </Popover>
       }
@@ -114,7 +114,7 @@ class Home extends React.Component {
                  <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>
-                   {device.name}</Tag>
+                   {device.name||device.devName}</Tag>
                  </div> 
                </Popover>
        }
@@ -123,11 +123,30 @@ class Home extends React.Component {
                  <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>
-                   {device.name}</Tag>
+                   {device.name||device.devName}</Tag>
                  </div> 
                </Popover>
        }
+       if(device.type === 10) {
+        return (
+          <div  className='user-select' key={device.id+index} onClick={()=>this.goNextArea(device)} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+            <Tag >
+            <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+            {device.name||device.devName}</Tag>
+          </div> 
+        ) 
+       }
     })
+  }
+  // 下级区域
+  goNextArea(device) {
+    console.log(device)
+    this.props.areaInfo({id:device.devId})
+    this.props.querySysInstallPlaces({areaId:device.devId})
+  }
+  // 上级区域
+  goParentArea() {
+    
   }
   // 预览
   videoPlay(device){ 

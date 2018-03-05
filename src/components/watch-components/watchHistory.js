@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {watchHistoryPage} from '../../redux/watch.redux'
-import { Table } from 'antd'
+import {watchHistoryPage,watchPointsUpload} from '../../redux/watch.redux'
+import { Table,Button } from 'antd'
 
 const columns = [{
-  title:'电位',
+  title:'点位',
   dataIndex: 'point',
   key:'point'
 },
@@ -16,7 +16,7 @@ const columns = [{
 @connect(
   state => ({watch: state.watch}),
   {
-    watchHistoryPage
+    watchHistoryPage,watchPointsUpload
   }
 )
 class WatchHistory extends React.Component {
@@ -32,9 +32,15 @@ class WatchHistory extends React.Component {
       pageSize:10
     })
   }
+  upload() {
+    //this.
+  }
   render() {
     return (
       <div>
+        <div style={{textAlign:'right'}}>
+         <Button type='primary' onClick={this.upload.bind(this)}>巡更上传</Button>
+        </div>
         <Table 
           columns={columns} 
           dataSource={this.props.watch.historyTasks}
@@ -44,6 +50,15 @@ class WatchHistory extends React.Component {
             pageSize:10
           }}
           ></Table>
+          <object
+                ref={(screen)=>this.play=screen}
+                classID="clsid 330B9C94-354F-45C1-B100-C2502CF22EA3"
+                codebase="./XzVideoWebClient.cab#version=1.0.0.1"
+                width={0}
+                height={0}
+                align='center' 
+                >
+              </object>
       </div>
     )
   }

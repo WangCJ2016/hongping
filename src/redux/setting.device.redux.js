@@ -11,7 +11,8 @@ const initalState = {
   mapToDevices: [],
   load: false,
   searchDevice: null,
-  videoPicArr:[]
+  videoPicArr:[],
+  nextAreas:[]
 }
 const DATASUCCESS = '[device] DATASUCCESS'
 const AREADEVICES = '[device] AREADEVICE'
@@ -43,13 +44,27 @@ export function devices(state=initalState,action) {
       return {...state,mapToDevices:action.payload}
     }
     case DELMAPDEVICE: {
-      const mapToDevices = state.mapToDevices.filter(device => device.id!==action.payload.id)
-      const areaToDevices = [...state.areaToDevices,action.payload]
-      return {...state,mapToDevices:mapToDevices,areaToDevices:areaToDevices}
+      console.log(state.mapToDevices,action.payload)
+      if(action.payload.type!==10) {
+        const mapToDevices = state.mapToDevices.filter(device => device.id!==action.payload.id)
+        console.log(mapToDevices)
+        const areaToDevices = [...state.areaToDevices,action.payload]
+        return {...state,mapToDevices:mapToDevices,areaToDevices:areaToDevices}
+      }else{
+        const mapToDevices = state.mapToDevices.filter(device => device.id!==action.payload.id)
+        const nextAreas = [...state.nextAreas,action.payload]
+        console.log(mapToDevices,nextAreas)
+        return {...state,mapToDevices:mapToDevices,nextAreas:nextAreas}
+      }
     }
     case ADDMAPDEVICE: {
-      const areaToDevices = state.areaToDevices.filter(device => device.id!==action.payload.id)
+      if(action.payload.type===10) {
+        const nextAreas = state.nextAreas.filter(area => area.id!==action.payload.id)
+        return {...state,mapToDevices:[...state.mapToDevices,action.payload],nextAreas:nextAreas}
+      }else{
+        const areaToDevices = state.areaToDevices.filter(device => device.id!==action.payload.id)
       return {...state,mapToDevices:[...state.mapToDevices,action.payload],areaToDevices:areaToDevices}
+      }
     }
     case CHANGEMAPDEVICE: {
       const mapToDevices = state.mapToDevices.map(device => {
@@ -179,8 +194,11 @@ export function areaDevices1(info) {
     .then(res=>{
       console.log(res)
       if(res.success) {
-      
-        dispatch(areaDeviceSuccess1(res.dataObject))
+        const arr = res.dataObject.map(device => ({
+          ...device,
+          key:device.id
+        }))
+        dispatch(areaDeviceSuccess1(arr))
         areaDevices(info)(dispatch)
       }
     })

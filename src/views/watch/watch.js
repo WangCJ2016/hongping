@@ -9,7 +9,7 @@ class Watch extends React.Component {
   render() {
     return (
       <div style={{padding:'20px'}}>
-        <Tabs defaultActiveKey="2">
+        <Tabs defaultActiveKey="1">
           <TabPane tab="巡更任务" key="1">
             <WatchTask />
           </TabPane>

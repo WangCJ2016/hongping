@@ -53,8 +53,8 @@ const columns3 = [{
   key: 'index',
   },{
     title: '通道名称',
-    dataIndex: 'index',
-    key: 'index',
+    dataIndex: 'channelName',
+    key: 'channelName',
     },{
   title: '状态',
   dataIndex: 'status',
@@ -118,28 +118,32 @@ class Status extends React.Component {
         <Tabs defaultActiveKey="1" onChange={this.onChange.bind(this)}>
           <TabPane tab="服务器" key="1">
             <Table 
+             loading={servers?false:true}
               columns={columns} 
               dataSource={servers}></Table>
           </TabPane>
           <TabPane tab="视频主机" key="2">
             <Table 
-
+                loading={videoHosts?false:true}
                 columns={columns2} 
                 dataSource={videoHosts}></Table>
           </TabPane>
           <TabPane tab="视频通道" key="3">
             <Table
+            loading={videoChannel?false:true}
             columns={columns3} 
             dataSource={videoChannel}></Table>
           </TabPane>
           <TabPane tab="人员基站" key="4">
             <Table
+            loading={position?false:true}
             columns={columns4} 
             dataSource={position}></Table>
           
           </TabPane>
           <TabPane tab="广播服务" key="5">
             <Table
+            loading={broadcastChannel?false:true}
             columns={columns5} 
             dataSource={broadcastChannel}></Table>
           </TabPane>

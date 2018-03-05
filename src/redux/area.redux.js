@@ -2,6 +2,7 @@ import { request, config} from '../config'
 
 const token = localStorage.getItem('token')
 
+const DATASUCCESS = '[area] DATASUCCESS'
 const FIRSTAREAID = '[area] FIRSTAREAID'
 const ALLREAS_SUCCESS = '[area] ALLREAS_SUCCESS'
 const AREALIST_SUCCESS = '[area] AREALIST_SUCCESS'
@@ -39,6 +40,9 @@ const initalState = {
 
 export function area(state=initalState, action) {
   switch (action.type) {
+    case DATASUCCESS: {
+      return {...state,...action.payload}
+    }
     case FIRSTAREAID: {
       return {...state,firstAreaId:action.payload}
     }
@@ -191,6 +195,12 @@ export function area(state=initalState, action) {
   }
 }
 
+function dataSuccess(data) {
+  return {
+    type: DATASUCCESS,
+    payload: data
+  }
+}
 // 区域列表
 function firstAreaId(id) {
   return {
@@ -285,6 +295,7 @@ export function broadcastAreaDevices(info) {
      if(res.success) {
        console.log(res)
        if(res.dataObject){
+        dispatch(dataSuccess({broadcastIp:res.dataObject[0].host.ip}))
         const extra =  res.dataObject.map(device=>({...device,parentId:info.areaId,key:device.key}))
         dispatch(broadcastAreaDevicesSuccess(extra))
        }
