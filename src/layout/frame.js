@@ -79,30 +79,30 @@ class Frame extends React.Component {
     
   }
   render() {
-    
+    console.log(this.props)
     return (
-      
       <Layout className='mylayout'>
       <Header className="header">
         <img className='logo' src={require('../assets/imgs/logo.png')} alt=""/>
         <span className='header_title'>五系统一中心平台</span>
-        <div style={{position:'absolute',left:'230px',top:'10px'}} className='flex'>
+        <div  className='flex'>
           <div>
-             <div style={{lineHeight:'25px',backgroundColor:'#000',padding:'0 10px',textAlign:'center'}}>报警总数</div>
-             <div style={{lineHeight:'25px', backgroundColor:'#fff',padding:'0 10px',textAlign:'center',color:'#333'}}>{this.props.alarm.alarmCount}</div>
+             <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px',textAlign:'center'}}>报警总数</div>
+             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.alarm.alarmCount}</div>
           </div>
           <div style={{marginLeft:'5px'}}>
-             <div style={{lineHeight:'25px',backgroundColor:'#000',padding:'0 10px'}}>未处理总数</div>
-             <div style={{lineHeight:'25px', backgroundColor:'#fff',padding:'0 10px',textAlign:'center',color:'#333'}}>{this.props.alarm.alarmUndo}</div>
+             <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px'}}>未处理总数</div>
+             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.alarm.alarmUndo}</div>
           </div>
         </div>
-        <Popconfirm title="确认退出?" onConfirm={this.confirm.bind(this)}  okText="确定" cancelText="取消">
-          <span className='float-right logout'><img  src={require('../assets/imgs/logout.png')} alt=""/></span>
-        </Popconfirm>
-        <span className='float-right user-name'>{this.props.account?this.props.account.name:''}</span>
+        
         <div className='float-right top-nav-link'>
             {this.topNavRender()}
         </div>
+        <span className='float-right user-name'>{this.props.user.account?this.props.user.account.name:''}</span>
+        <Popconfirm title="确认退出?" onConfirm={this.confirm.bind(this)}  okText="确定" cancelText="取消">
+          <span className='float-right logout'><img  src={require('../assets/imgs/logout.png')} alt=""/></span>
+        </Popconfirm>
       </Header>
       <Layout>
       {

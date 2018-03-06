@@ -37,10 +37,10 @@ class HomeWarmPanel extends React.Component {
       <div className='home-warm-panel'>   
         <div className='float-right'>
           <div className='panel-title clearfix'>
-            <div className='float-left' style={{cursor:'pointer'}} onClick={()=>this.sliderChange('plus')}><img src={require('../../assets/imgs/ic_plus.png')} alt=""/>放大</div>
-            <div className='float-left' style={{cursor:'pointer'}} onClick={()=>this.sliderChange('mius')}><img src={require('../../assets/imgs/ic_mius.png')} alt=""/>缩小</div>
-            <div className='float-left' style={{cursor:'pointer'}} onClick={()=>this.props.dragSelect()}><img src={require('../../assets/imgs/ic_kuangxuan.png')} alt=""/>框选</div>
-            <div className='float-left' style={{cursor:'pointer'}} onClick={()=>this.props.goParentArea()}><img src={require('../../assets/imgs/ic_kuangxuan.png')} alt=""/>上级区域</div>
+            <div className='float-left' style={{cursor:'pointer',color:'#fff'}} onClick={()=>this.sliderChange('plus')}><img src={require('../../assets/imgs/ic_plus.png')} alt=""/>放大</div>
+            <div className='float-left' style={{cursor:'pointer',color:'#fff'}} onClick={()=>this.sliderChange('mius')}><img src={require('../../assets/imgs/ic_mius.png')} alt=""/>缩小</div>
+            <div className='float-left' style={{cursor:'pointer',color:'#fff'}} onClick={()=>this.props.dragSelect()}><img src={require('../../assets/imgs/ic_kuangxuan.png')} alt=""/>框选</div>
+            <div className='float-left' style={{cursor:'pointer',color:'#fff'}} onClick={()=>this.props.goParentArea()}><img src={require('../../assets/imgs/area_icon2.png')} alt=""/>上级区域</div>
           </div>     
         </div>
       </div>

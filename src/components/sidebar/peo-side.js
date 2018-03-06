@@ -70,13 +70,13 @@ class PeoSider extends React.Component {
   }
   trailRender() {
     const trails = this.props.peo.trails
-    return trails.map(trail=>{
+    return trails.map((trail,index)=>{
       const style=className({
         'trail-item':true,
         active: trail.regionId === this.state.selectTrail
       })
-     return <Timeline.Item color={trail.regionId === this.state.selectTrail.regionId?'red':'#17b89f'} onClick={()=>this.trailSelect(trail)}>
-        <div className={style} key={trail.regionId}>
+     return <Timeline.Item key={index} color={trail.regionId === this.state.selectTrail.regionId?'red':'#17b89f'} onClick={()=>this.trailSelect(trail)}>
+        <div className={style} key={index}>
           <div><span>开始：</span><span>{trail.minTime}</span></div>
           <div><span>结束：</span><span>{trail.maxTime}</span></div>
           <div><span>地点：</span><span>{trail.regionName}</span></div>

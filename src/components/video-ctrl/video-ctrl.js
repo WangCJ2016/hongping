@@ -112,15 +112,12 @@ class VideoCtrl extends React.Component {
   render() {
     return (
       <div className='video-ctrl clearfix'> 
-       <div className='float-left' style={{width:'70%'}}>
+       <div className='float-left' style={{width:'70%',height:'660px'}}>
               <object
               ref={(screen)=>this.play=screen}
               classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
               codebase="./XzVideoWebClient.cab#version=1.0.0.1"
-              height={600}
-              width={800}
-              align='center' 
-              style={{visibility:this.props.video.modalVisiable?'hidden':'visible'}}
+              style={{width:'100%',height:'100%',visibility:this.props.video.modalVisiable?'hidden':'visible'}}
               >
               </object>
           <VideoCtrlBtn

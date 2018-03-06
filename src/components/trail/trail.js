@@ -14,6 +14,7 @@ class Trail extends React.Component {
     }
   }
   componentDidMount() {
+    
     this.canvasRender()
   }
  componentDidUpdate() {
@@ -24,22 +25,20 @@ class Trail extends React.Component {
     canvas.width=this.outDiv.getBoundingClientRect().width
     canvas.height=this.outDiv.getBoundingClientRect().height
     const context = canvas.getContext("2d");
-    //context.clearRect(0,0,this.outDiv.getBoundingClientRect().width,this.outDiv.getBoundingClientRect().height);
-    
+   
     const trails = this.props.peo.traildetail
      //设置样式
      context.lineWidth = 2;
      context.strokeStyle = "#17b89f";
     //设置对象起始点和终点
-    const that = this
     for(let i=0;i<trails.length;i++) {
+      context.clearRect(0,0,10000,10000);
       (function() {
-       const timer = setTimeout(()=>{
-          if(!that.state.animation){
-            clearTimeout(timer)
-            return
+        setTimeout(()=>{
+          if(i === 0) {
+            context.moveTo(trails[i].locationX/10,trails[i].locationY/10)
           }
-          context.lineTo(trails[i].locationX/10,trails[i].locationY/10);
+          context.lineTo(trails[i].locationX/10,trails[i].locationY/10)
           context.stroke();
         },100*i)
       })()

@@ -1,12 +1,12 @@
 import React from 'react'
-import { Popover,Spin,Tag,Modal,Table,Tree } from 'antd'
+import { Popover,Spin,Tag,Modal,Table,Switch } from 'antd'
 import { connect } from 'react-redux'
 
 import HomeTable from '../../components/home-table/home-table'
 import { HomePerson, HomeCamera, HomeBroadcast,HomeGuard } from '../../components/home-popover/home-popover'
 import HomeWarmPanel from '../../components/home-warm-panel/home-warm-panel'
 import './home.scss'
-import {areaInfo,selectAreaIdSuccess} from '../../redux/area.redux'
+import {areaInfo,selectAreaIdSuccess,getAreaInfo} from '../../redux/area.redux'
 import { querySysInstallPlaces,getDevInfo,videoPic } from '../../redux/setting.device.redux'
 import {videoProgress} from '../../redux/video.redux'
 import VideoCtrlYuntai from '../../components/video-ctrl/video-ctrl-yuntai'
@@ -18,7 +18,7 @@ import DragSelectModal from '../../components/home-modals/dragSelectModal'
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar}),
-  {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic}
+  {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo}
 )
 class Home extends React.Component {
   constructor() {
@@ -40,6 +40,8 @@ class Home extends React.Component {
     this.videoPic = this.videoPic.bind(this)
     this.playbackSearch = this.playbackSearch.bind(this)
     this.playPicSeach = this.playPicSeach.bind(this)
+    this.goParentArea = this.goParentArea.bind(this)
+   
   }
   
   componentDidMount() {
@@ -47,6 +49,7 @@ class Home extends React.Component {
       this.props.querySysInstallPlaces({areaId: this.props.area.firstAreaId})
       this.props.selectAreaIdSuccess(this.props.area.firstAreaId)
       this.props.areaInfo({id:this.props.area.firstAreaId})
+      this.props.getAreaInfo({id: this.props.area.firstAreaId})
     }
   }
   hide() {
@@ -101,7 +104,7 @@ class Home extends React.Component {
                 </Popover>
       }
       if(device.type === 4) {
-       return <Popover content={<HomeBroadcast device={device} />}  key={device.id+index} >
+       return <Popover content={<HomeBroadcast IndexArr={[device.index]}  />}  key={device.id+index} >
                 <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                   <Tag >
                   <img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>
@@ -138,15 +141,21 @@ class Home extends React.Component {
        }
     })
   }
+
   // 下级区域
   goNextArea(device) {
-    console.log(device)
     this.props.areaInfo({id:device.devId})
     this.props.querySysInstallPlaces({areaId:device.devId})
+    this.props.getAreaInfo({id: device.devId})
   }
   // 上级区域
   goParentArea() {
-    
+    const parentId =  this.props.area.areaParentId
+    if(parentId) {
+      this.props.areaInfo({id:parentId})
+      this.props.querySysInstallPlaces({areaId:parentId})
+      this.props.getAreaInfo({id: parentId})
+    }
   }
   // 预览
   videoPlay(device){ 
@@ -154,10 +163,10 @@ class Home extends React.Component {
       videoVisible:true
     },()=>{
       setTimeout(()=>{
-        this.props.getDevInfo({devId:device.id,type:device.type},'play',this.play)
-        this.setState({
-          aa:''
-        })
+        // this.props.getDevInfo({devId:device.id,type:device.type},'play',this.play)
+        // this.setState({
+        //   aa:''
+        // })
       })
     })
   }
@@ -218,7 +227,8 @@ class Home extends React.Component {
     })
     this.setState({
       dragSelectVisible:true,
-      rectInDevice: rectInDevice
+      rectInDevice: rectInDevice,
+      dragSelectEnbled:false
     })
   }
  
@@ -251,20 +261,20 @@ class Home extends React.Component {
     const areaInfo = this.props.area.areaInfo
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'360px':'60px'}}>
-        <HomeWarmPanel dragSelect={()=>this.setState({dragSelectEnbled:true})} />
+        <HomeWarmPanel 
+        dragSelect={()=>this.setState({dragSelectEnbled:true})}
+        goParentArea={this.goParentArea} />
         <div className='area-Map'>
           <div style={{display:'inline-block',position:'relative',zIndex:0}}>
           {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
           <img id='img' draggable='false' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
           {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
-          
           <Selection  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
           {this.props.area.load?null:this.mapDeviceRender()}
           </Selection>
-
           </div>
-         
         </div>
+       
         <HomeTable />
       
         <Modal
@@ -290,6 +300,7 @@ class Home extends React.Component {
               </object>
             </div>
             <div className="float-right"  style={{width:'30%'}}>
+              <div style={{textAlign:'center'}}>开关:<Switch /></div>
               <VideoCtrlYuntai play={this.play} aa={this.state.aa} />
             </div>
          </div>

@@ -1,16 +1,18 @@
 import React from 'react'
-import {Icon,Input,Checkbox,message,Modal} from 'antd'
+import {Icon,Input,Checkbox,message} from 'antd'
 import { unquie } from '../../utils'
 import TableBroadcast from '../areaTree/tableBroadcast'
 import { connect } from 'react-redux'
 import {changeSidebar} from '../../redux/sidebar.redux'
 import { searchBroadcast,selectBroIndex } from '../../redux/broadcast.redux'
+import broadcastHoc from '../broadcastHoc/broadcastHoc'
 const Search = Input.Search
 
 @connect(
   state=>({sidebar:state.sidebar,broadcast:state.broadcast,area:state.area}),
   {changeSidebar,searchBroadcast,selectBroIndex}
 )
+@broadcastHoc
 class BroadcastSider extends React.Component {
   constructor() {
     super()
@@ -18,7 +20,8 @@ class BroadcastSider extends React.Component {
       selectBroId: '',
       voiceBroadcastStart: false,
       fileBroadcastStart: false,
-      selectIndexArr: []
+      selectIndexArr: [],
+      fileModalVisible:false
     }
     this.voiceBroadcast = this.voiceBroadcast.bind(this)
     this.fileBroadcast = this.fileBroadcast.bind(this)
@@ -46,47 +49,11 @@ class BroadcastSider extends React.Component {
   }
   // 语音播报
   voiceBroadcast() {
-
-    if(!this.state.voiceBroadcastStart){
-      const a =this.play.VoiceBroadcast(this.props.area.broadcastIp,this.state.selectIndexArr.join(','))
-      if(a) {
-        message.success('开始播报语音')
-        this.setState({
-          voiceBroadcastStart:true
-        })
-      }else{
-        message.error('播报语音失败')
-      }
-    }else {
-      const a = this.play.EndVoiceBroadcast()
-      a?message.success('已关闭'):message.error('关闭失败')
-      this.setState({
-        voiceBroadcastStart:false
-      })
-    }
+    this.props.voiceBroadcast(this.state.selectIndexArr)
   }
   // 文件播报
   fileBroadcast() {
-    if(!this.state.fileBroadcastStart) {
-      const a = this.play.GetLocallFile()
-      if(a!=='') {
-        const a = this.play.FileBroadcast(this.props.area.broadcastIp,this.state.selectIndexArr.join(','),a)
-        if(a) {
-          message.success('开始播报文件语音')
-        } else {
-          message.error('播报语音失败')
-        }
-      }else {
-        message.error('文件夹下没有文件')
-      }
-    }else {
-      const a = this.play.EndFileBroadcast()
-      a?message.success('已关闭'):message.error('关闭失败')
-      this.setState({
-        voiceBroadcastStart:false
-      })
-    }
-    
+    this.props.fileBroadcast(this.state.selectIndexArr)
   }
   treeSelectIndex(keys) {
     this.setState({
@@ -120,7 +87,7 @@ class BroadcastSider extends React.Component {
           <span onClick={this.fileBroadcast}><Icon type="folder" style={{color:this.state.fileBroadcastStart?'#006f6b':''}} /></span>
         </div>:null
         }
-        <Modal></Modal>
+        
         <object
                 ref={(screen)=>this.play=screen}
                 classID="clsid:1D3667C2-A790-4CCB-B3F2-3E2AE54BCFAA"

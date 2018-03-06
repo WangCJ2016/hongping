@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tree } from 'antd';
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import {broadcastAreaDevices,areaList,areaInfo} from '../../redux/area.redux'
 import { selectBroIndex } from '../../redux/broadcast.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
@@ -15,6 +16,7 @@ const TreeNode = Tree.TreeNode;
       broadcastAreaDevices,areaList,selectBroIndex,areaInfo,querySysInstallPlaces
      }
 )
+@withRouter
 export default class TableBroadcast extends React.Component {
     constructor() {
       super()
@@ -51,10 +53,12 @@ export default class TableBroadcast extends React.Component {
     }
     onCheck(checkedKeys) {
       const keys = checkedKeys.filter(key => key.length<5)
-      console.log(keys)
       this.props.treeSelectIndex(keys)
     }
     goLoc(parentId) {
+      if(this.props.location.pathname !== '/home') {
+        this.props.history.push('home')
+      } 
       this.props.areaInfo({id:parentId})
       this.props.querySysInstallPlaces({areaId:parentId})
     }
@@ -99,9 +103,7 @@ export default class TableBroadcast extends React.Component {
       }
     }
     render() {
-       
         const data = this.props.area.areas_broDevices
-        
         return ( 
                  <div className='tableAreaTree'>                    
                   {data?this.treeRender():null}

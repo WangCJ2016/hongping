@@ -195,7 +195,7 @@ export function area(state=initalState, action) {
   }
 }
 
-function dataSuccess(data) {
+export function dataSuccess(data) {
   return {
     type: DATASUCCESS,
     payload: data
@@ -467,11 +467,26 @@ export function areaInfo(info) {
           const info={
             picture: res.dataObject.picture?res.dataObject.picture:''
           }         
+
           dispatch(areaInfoSuccess(info))
         }else{
           dispatch(areaInfoSuccess({picture:''}))
         }
       })
+  }
+}
+export function getAreaInfo(info) {
+  return (dispatch)=>{
+    request.get(config.api.base + config.api.areaInfo,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     console.log(res)
+     if(res.success) {
+       dispatch(dataSuccess({areaParentId:res.dataObject.parentId}))
+     }
+   })
   }
 }
 // 上传区域图片

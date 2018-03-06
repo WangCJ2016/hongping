@@ -37,7 +37,6 @@ class Selection extends React.Component {
     })
   }
   _onMouseUp(e) {
-    
     window.document.removeEventListener('mousemove', this._onMouseMove);
     window.document.removeEventListener('mouseup', this._onMouseUp);
     const left = Math.min(this.state.startPoint.x,this.state.endPoint.x)

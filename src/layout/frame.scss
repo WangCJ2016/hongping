@@ -10,6 +10,8 @@
   width: 100%;
   color: #fff;
   min-width: 1350px;
+  display: flex;
+  align-items: center
 }
 .ant-layout{
   min-height: calc(100% - 69px)
@@ -19,7 +21,6 @@
   z-index: 99;
 }
 .logo{
-  margin-top: 15px;
   margin-right: 20px;
 }
 .header_title{
@@ -31,10 +32,6 @@
 .logout{
   width: 50px;
   text-align: right;
-  height: 60px;
-  img{
-    vertical-align: middle;
-  }
 }
 .trigger {
   font-size: 18px;
@@ -183,7 +180,6 @@
   color:#fff;
   padding: 0 20px;
   line-height: 30px;
-  margin-top: 20px;
   vertical-align: middle;
   border-right: 1px solid #fff;
   border-left: 1px solid #fff;
@@ -195,5 +191,7 @@
   overflow: hidden
 }
 .flex{
-  display: flex
+  display: flex;
+  flex:1;
+  justify-content: center
 }

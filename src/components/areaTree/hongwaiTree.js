@@ -1,6 +1,7 @@
 import React from 'react'
 import { Table } from 'antd';
 import { connect } from 'react-redux'
+import { withRouter} from 'react-router-dom'
 import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,hongwaiAreaDevices} from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 
@@ -12,6 +13,7 @@ import { querySysInstallPlaces } from '../../redux/setting.device.redux'
       areaList, uploadImg,areaInfo,selectAreaIdSuccess,hongwaiAreaDevices,querySysInstallPlaces
      }
 )
+@withRouter
 export default class HongwaiTree extends React.Component {
     constructor() {
       super()
@@ -32,6 +34,9 @@ export default class HongwaiTree extends React.Component {
       }
     }
     goLoc(parentId) {
+      if(this.props.location.pathname !== '/home') {
+        this.props.history.push('home')
+      } 
       this.props.areaInfo({id:parentId})
       this.props.querySysInstallPlaces({areaId:parentId})
     }

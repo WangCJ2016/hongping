@@ -24,7 +24,10 @@ export default class AreaTree extends React.Component {
      
     }
     select(e) {
-      this.props.select({areaId:e[0],type:1})
+      console.log(e)
+      if(e.length>0) {
+        this.props.select({areaId:e[0],type:1})
+      }
     }
     treeNodeRend(name) {
      return <span>
