@@ -260,7 +260,7 @@ class Home extends React.Component {
     }]
     const areaInfo = this.props.area.areaInfo
     return (
-      <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'360px':'60px'}}>
+      <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
         <HomeWarmPanel 
         dragSelect={()=>this.setState({dragSelectEnbled:true})}
         goParentArea={this.goParentArea} />
@@ -269,7 +269,7 @@ class Home extends React.Component {
           {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
           <img id='img' draggable='false' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
           {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
-          <Selection  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
+          <Selection offsetLeft={this.props.sidebar.offsetLeft}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
           {this.props.area.load?null:this.mapDeviceRender()}
           </Selection>
           </div>

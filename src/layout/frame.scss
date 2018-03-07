@@ -14,7 +14,8 @@
   align-items: center
 }
 .ant-layout{
-  min-height: calc(100% - 69px)
+  min-height: calc(100% - 69px);
+  background-color: #fff
 }
 .ant-layout-header{
   padding: 0 20px;
@@ -61,7 +62,7 @@
  }
 }
 .mylayout{
-  margin-top: 69px
+  margin-top: 69px;
 }
 .img{
   width: 22px;

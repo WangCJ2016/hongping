@@ -15,14 +15,15 @@ import History from '../views/history/history'
 import Watch from '../views/watch/watch'
 import { changeSidebar } from '../redux/sidebar.redux'
 import { alarmCount } from '../redux/alarm.redux'
+import { dataSuccess } from '../redux/sidebar.redux'
 import './frame.scss'
 
 
 const { Header, Content, Sider } = Layout;
 
 @connect(
-  state=>({user:state.user,alarm:state.alarm}),
-  {changeSidebar,alarmCount}
+  state=>({user:state.user,alarm:state.alarm,sidebar:state.sidebar}),
+  {changeSidebar,alarmCount,dataSuccess}
 )
 
 class Frame extends React.Component {
@@ -31,7 +32,13 @@ class Frame extends React.Component {
     siderActiveIndex: -1
   }
   componentDidMount() {
-    this.props.alarmCount()
+   this.props.alarmCount()
+   this.timer = setInterval(()=>{
+      this.props.alarmCount()
+    },600000)
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer)
   }
   navRender() {
     const navArray = [
@@ -75,11 +82,14 @@ class Frame extends React.Component {
     window.location.replace("/login")
   }
 
-  siderBarRender() {
-    
+  onScroll(e) {
+    if(this.props.sidebar.homeLeftIf) {
+      this.props.dataSuccess({offsetLeft: 360 - e.nativeEvent.target.scrollLeft})
+    }else{
+      this.props.dataSuccess({offsetLeft: 60 - e.nativeEvent.target.scrollLeft})
+    }
   }
   render() {
-    console.log(this.props)
     return (
       <Layout className='mylayout'>
       <Header className="header">
@@ -119,8 +129,8 @@ class Frame extends React.Component {
         :null
       }
        {this.props.location.pathname==='/home'||this.props.location.pathname==='/trail'?<SideBar />:null}
-        <Layout>
-          <Content style={{ background: '#fff', height:'100%'}}>
+        <Layout style={{overflowX:'auto'}} onScroll={this.onScroll.bind(this)}>
+          <Content style={{ background: '#fff', height:'100%',}}>
               <Switch>
                 <Route exact path='/home' component={Home}></Route>
                 <Route exact path='/video' component={Video}></Route>

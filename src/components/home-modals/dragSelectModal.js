@@ -123,7 +123,6 @@ class DragSelectModal extends React.Component {
         key: 'action',
         render: (text,record) => <Switch></Switch>
     }]
-    console.log(this.props.rectInDevice)
     return (
       <Modal
         title="框选结果" 

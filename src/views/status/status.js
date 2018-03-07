@@ -32,8 +32,8 @@ const columns = [{
 }]
 const columns2 = [{
       title: 'ip',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'url',
+      key: 'url',
   },{
     title: '主机名称',
     dataIndex: 'name',
@@ -45,16 +45,16 @@ const columns2 = [{
 }]
 const columns3 = [{
     title: '主机名称',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'RemoteHostName',
+    key: 'RemoteHostName',
   },{
   title: '通道序号',
   dataIndex: 'index',
   key: 'index',
   },{
     title: '通道名称',
-    dataIndex: 'channelName',
-    key: 'channelName',
+    dataIndex: 'name',
+    key: 'name',
     },{
   title: '状态',
   dataIndex: 'status',

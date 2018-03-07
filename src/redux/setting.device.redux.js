@@ -44,16 +44,14 @@ export function devices(state=initalState,action) {
       return {...state,mapToDevices:action.payload}
     }
     case DELMAPDEVICE: {
-      console.log(state.mapToDevices,action.payload)
       if(action.payload.type!==10) {
         const mapToDevices = state.mapToDevices.filter(device => device.id!==action.payload.id)
-        console.log(mapToDevices)
+        
         const areaToDevices = [...state.areaToDevices,action.payload]
         return {...state,mapToDevices:mapToDevices,areaToDevices:areaToDevices}
       }else{
         const mapToDevices = state.mapToDevices.filter(device => device.id!==action.payload.id)
         const nextAreas = [...state.nextAreas,action.payload]
-        console.log(mapToDevices,nextAreas)
         return {...state,mapToDevices:mapToDevices,nextAreas:nextAreas}
       }
     }

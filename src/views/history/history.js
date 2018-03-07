@@ -9,10 +9,6 @@ const FormItem = Form.Item
 
 
 const columns = [{
-  title: '名称',
-  dataIndex: 'event',
-  key: 'event',
-},{
   title: '等级',
   dataIndex: 'degree',
   key: 'degree',
@@ -60,13 +56,21 @@ class History1 extends React.Component {
   handleSearch(e) {
     this.props.form.validateFields((err, values) => {
       e.preventDefault()
-
+      console.log(values.startTime.format('YYYY-MM'))
       if (!err) {
-        const month = new Date(values['date']).getMonth()+1<=9?'0'+(new Date(values['date']).getMonth()+1):new Date(values['date']).getMonth()+1
-        this.props.historyFstatistics({
-          ...values,
-          date: new Date(values['date']).getFullYear() +'-'+ month
-        })
+        if(values.type==='0') {
+          this.props.historyFstatistics({
+            place: encodeURI(values.place),
+            startTime: values.startTime.format('YYYY-MM'),
+            endTime:values.endTime.format('YYYY-MM'),
+          })
+        }else{
+          this.props.historyFstatistics({
+            ...values,
+            startTime: values.startTime.format('YYYY-MM'),
+            endTime:values.endTime.format('YYYY-MM'),
+          })
+        }
       }
     });
   }
@@ -83,7 +87,7 @@ class History1 extends React.Component {
           onSubmit={this.handleSearch.bind(this)}
         >
           <Row gutter={40}>
-            <Col span={6} >
+            <Col span={5} >
               <FormItem {...formItemLayout} label={'地点'}>
                 {getFieldDecorator('place',{
                   initialValue:''
@@ -92,21 +96,31 @@ class History1 extends React.Component {
                 )}
               </FormItem>
             </Col>
-            <Col span={6} >
-            <FormItem {...formItemLayout} label={'日期'}>
-              {getFieldDecorator('date',{
+            <Col span={5} >
+            <FormItem {...formItemLayout} label={'起始时间'}>
+              {getFieldDecorator('startTime',{
                 initialValue: moment(new Date(), 'YYYY-MM')
               })(
                 <MonthPicker format='YYYY-MM' placeholder="请选择日期" />
               )}
             </FormItem>
           </Col>
-          <Col span={6} >
+            <Col span={5} >
+            <FormItem {...formItemLayout} label={'结束日期'}>
+              {getFieldDecorator('endTime',{
+                initialValue: moment(new Date(), 'YYYY-MM')
+              })(
+                <MonthPicker format='YYYY-MM' placeholder="请选择日期" />
+              )}
+            </FormItem>
+          </Col>
+          <Col span={5} >
             <FormItem {...formItemLayout} label={'类型'}>
               {getFieldDecorator('type',{
-                initialValue:"1"
+                initialValue:"0"
               })(
                 <Select  >
+                  <Option value="0">全部</Option>
                   <Option value="1">消防报警</Option>
                   <Option value="2">红外报警</Option>
                   <Option value="3" >移动侦测报警</Option>
@@ -116,7 +130,7 @@ class History1 extends React.Component {
               )}
             </FormItem>
           </Col>
-          <Col span={6} >
+          <Col span={4} >
             <FormItem {...formItemLayout} >
              
                 <Button type='primary' htmlType="submit">搜索</Button>

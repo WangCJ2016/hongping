@@ -23,17 +23,18 @@ class Selection extends React.Component {
     }
     var ev = e || window.event
     this.setState({
-      startPoint: {x:ev.clientX-60,y:ev.clientY-70},
-      endPoint:{x:ev.clientX-60,y:ev.clientY-70},
+      startPoint: {x:ev.clientX-this.props.offsetLeft,y:ev.clientY-70},
+      endPoint:{x:ev.clientX-this.props.offsetLeft,y:ev.clientY-70},
       mouseDown:true
     })
     window.document.addEventListener('mousemove', this._onMouseMove);
     window.document.addEventListener('mouseup', this._onMouseUp);
   }
   _onMouseMove(e) {
+    console.log(this.props.offsetLeft)
     var ev = e || window.event
     this.setState({
-      endPoint:{x:ev.clientX-60,y:ev.clientY-70},
+      endPoint:{x:ev.clientX-this.props.offsetLeft,y:ev.clientY-70},
     })
   }
   _onMouseUp(e) {

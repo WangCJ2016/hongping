@@ -7,15 +7,17 @@ const intialState = {
   hongwia_sidebar: false,
   guard_sidebar: false,
   daozha_sidebar: false,
-  homeLeftIf: false
+  homeLeftIf: false,
+  offsetLeft: 60
 }
 const CHANGESIDEBAR = '[sidebar] CHANGESIDEBAR'
+const DATASUCCESS = '[siderbar] DATASUCCESS'
 
 export function sidebar(state = intialState, action ) {
   switch (action.type) {
     case CHANGESIDEBAR: {
       if(state[action.payload]) {
-        return {...state,[action.payload]:false,homeLeftIf:false}
+        return {...state,[action.payload]:false,homeLeftIf:false,offsetLeft: 60}
       } else {
         return {...state,
           area_sidebar: false,
@@ -26,12 +28,22 @@ export function sidebar(state = intialState, action ) {
           guard_sidebar: false,
           daozha_sidebar: false,
           [action.payload]:true,
-          homeLeftIf:true
+          homeLeftIf:true,
+          offsetLeft: 360
         }
       }
     }
+    case DATASUCCESS: {
+      return {...state,...action.payload}
+    }
     default:
       return state
+  }
+}
+export function dataSuccess(data) {
+  return {
+    type: DATASUCCESS,
+    payload: data
   }
 }
 
