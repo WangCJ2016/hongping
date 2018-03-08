@@ -73,7 +73,7 @@ const broadcastHoc = (WrappedCom) => {
       };
 
       return (
-        <div >
+        <div>
           <WrappedCom voiceBroadcast={this.voiceBroadcast} broadcastFile={this.broadcastFile} {...this.props}></WrappedCom>
           <Modal
             visible={this.state.fileModalVisible}
@@ -85,7 +85,7 @@ const broadcastHoc = (WrappedCom) => {
             <Table size='small' rowSelection={rowSelection} columns={columns} dataSource={this.state.dataSource}></Table>  
           </Modal>
           <object
-            ref={(screen)=>this.playback=screen}
+            ref={(screen)=>this.play=screen}
             classID="clsid:1D3667C2-A790-4CCB-B3F2-3E2AE54BCFAA"
             codebase="./XzVideoWebClient.cab#version=1.0.0.1"
             width={0}

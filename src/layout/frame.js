@@ -122,6 +122,7 @@ class Frame extends React.Component {
               collapsible
               collapsed={true}
               collapsedWidth={60}
+              style={{height: document.body.clientHeight+'px'}}
             > 
             {this.navRender()}
            

@@ -111,7 +111,7 @@ export const config = {
     watchHistoryPage: '/patrol_queryPatrolHistoryPage',
     getTaskDefaultTime: '/patrol_getPatrolTaskTime',
     setTaskTime: '/patrol_setPatrolTaskTime',
-    watchPointsUpload:'/home_createPatrolHistorys',
+    watchPointsUpload:'/patrol_createPatrolHistorys',
   }
 }
 //get/post请求
