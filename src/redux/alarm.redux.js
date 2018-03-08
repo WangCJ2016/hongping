@@ -11,7 +11,6 @@ const initialState = {
 const DATASUCCESS = '[alarm] DATASUCCESS'
 const ALARMPAGE_SUCCESS = '[alarm] ALARMPAGE_SUCCESS'
 const ALARMMODIFY_SUCCESS = '[alarm] ALARMMODIFY_SUCCESS'
-const ALARMINFO_SUCCESS = '[alarm] ALARMINFO_SUCCESS'
 const CARPAGES_SUCCESS = '[alarm] CARPAGES_SUCCESS'
 
 export function alarm(state=initialState,action) {
@@ -31,9 +30,7 @@ export function alarm(state=initialState,action) {
        })
        return {...state,alarmlist: alarmlist}
     }
-    case ALARMINFO_SUCCESS: {
-      return {...state,alarmInfo: action.payload}
-    }
+   
     case CARPAGES_SUCCESS: {
       return {...state,carPages: action.payload}
     }
@@ -59,24 +56,20 @@ export function alarmPages(info) {
   return dispatch => {
     request.get(config.api.base + config.api.alertmPages,{
       token: token,
-      ...info
+      ...info,
+      pageSize:7,
     })
     .then(res => {
       if(res.success) {
+        dispatch(dataSuccess({alarmPageTotal:res.records}))
         dispatch(alarmPagesSuccess(res.result))
       }
     })
   }
 }
 // 报警详情
-function getAlarmInfoSuccess(info) {
-  return {
-    type: ALARMINFO_SUCCESS,
-    payload: info
-  }
-}
 export function getAlarmInfo(info) {
-  return dispatch => {
+  return (dispatch) => {
     request.get(config.api.base + config.api.getAlarmInfo,{
       token: token,
       ...info
@@ -84,25 +77,9 @@ export function getAlarmInfo(info) {
     .then(res => {
       console.log(res)
       if(res.success) {
-        const data = {
-          channels: res.dataObject.channels.map(channel => ({
-            name: channel.name,
-            id: channel.id,
-            type: channel.type,
-            key: channel.id
-          })),
-          degree: res.dataObject.degree,
-          device: res.dataObject.device,
-          deviceId: res.dataObject.deviceId,
-          deviceType: res.dataObject.deviceType,
-          event: res.dataObject.event,
-          gmtCreate: res.dataObject.gmtCreate,
-          id:res.dataObject.id,
-          type: res.dataObject.type,
-          place: res.dataObject.place,
-          status: res.dataObject.status
-        }
-        dispatch(getAlarmInfoSuccess(data))
+        dispatch(dataSuccess({alarmInfo: res.dataObject}))
+        alarmLinkDevices({areaId: res.dataObject.install.areaId,type:'broadcast'})(dispatch)
+        alarmLinkDevices({areaId: res.dataObject.install.areaId,type:'gate'})(dispatch)
       }
     })
   }
@@ -128,6 +105,21 @@ export function modifyAlarm(info) {
        dispatch(modifyAlarmSuccess(res.dataObject))
      }else{
       message.error('处理失败')
+     }
+   })
+  }
+}
+// 警报相关设备
+export function alarmLinkDevices(info) {
+  return (dispatch) => {
+    request.get(config.api.base + config.api.alarmLinkDevices,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     console.log(res)
+     if(res.success) {
+      dispatch(dataSuccess({[info.type+'Devices']: res.dataObject}))
      }
    })
   }

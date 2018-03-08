@@ -41,7 +41,8 @@ class Home extends React.Component {
     this.playbackSearch = this.playbackSearch.bind(this)
     this.playPicSeach = this.playPicSeach.bind(this)
     this.goParentArea = this.goParentArea.bind(this)
-   
+    this.openDoor = this.openDoor.bind(this)
+    this.daozhaCtrl = this.daozhaCtrl.bind(this)
   }
   
   componentDidMount() {
@@ -113,7 +114,7 @@ class Home extends React.Component {
               </Popover>
       }
       if(device.type === 5) {
-        return <Popover content={<HomeGuard device={device} />}  key={device.id+index} >
+        return <Popover content={<HomeGuard device={device} openDoor={this.openDoor}/>}  key={device.id+index} >
                  <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>
@@ -160,7 +161,8 @@ class Home extends React.Component {
   // 预览
   videoPlay(device){ 
     this.setState({
-      videoVisible:true
+      videoVisible:true,
+      deviceType: device.type
     },()=>{
       setTimeout(()=>{
         // this.props.getDevInfo({devId:device.id,type:device.type},'play',this.play)
@@ -169,6 +171,14 @@ class Home extends React.Component {
         // })
       })
     })
+  }
+  // 门禁开门
+  openDoor() {
+
+  }
+  // 道闸控制
+  daozhaCtrl(e) {
+    this.play.XzVideo_RemoteControl_Barriergate(e?1:0,1,5,1)
   }
   // 回放
   videoPlayBack(device) {
@@ -275,7 +285,7 @@ class Home extends React.Component {
           </div>
         </div>
        
-        <HomeTable />
+        <HomeTable videoPlay={this.videoPlay} openDoor={this.openDoor} />
       
         <Modal
           title="视频预览" 
@@ -300,7 +310,7 @@ class Home extends React.Component {
               </object>
             </div>
             <div className="float-right"  style={{width:'30%'}}>
-              <div style={{textAlign:'center'}}>开关:<Switch /></div>
+              {this.state.deviceType===3?<div style={{textAlign:'center'}}>开关:<Switch onChange={this.daozhaCtrl} /></div>:null}
               <VideoCtrlYuntai play={this.play} aa={this.state.aa} />
             </div>
          </div>
@@ -370,7 +380,7 @@ class Home extends React.Component {
            
         </Modal>
 
-        <DragSelectModal visible={this.state.dragSelectVisible} videoPlay={this.videoPlay}  rectInDevice={this.state.rectInDevice} onCancel={()=>this.setState({dragSelectVisible:false})}></DragSelectModal>
+        <DragSelectModal visible={this.state.dragSelectVisible} daozhaCtrl={this.daozhaCtrl} videoPlay={this.videoPlay}  rectInDevice={this.state.rectInDevice} onCancel={()=>this.setState({dragSelectVisible:false})}></DragSelectModal>
       </div>
     )
   }

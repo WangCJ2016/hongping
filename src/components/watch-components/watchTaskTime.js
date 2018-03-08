@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form,Input,Button,Row,Col,TimePicker } from 'antd'
+import { Form,Button,Row,Col,TimePicker } from 'antd'
 import { connect} from 'react-redux'
 import { getTaskDefaultTime,setTaskTime } from '../../redux/watch.redux'
 import moment from 'moment'

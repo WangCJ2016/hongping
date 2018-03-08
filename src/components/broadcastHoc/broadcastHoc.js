@@ -73,7 +73,7 @@ const broadcastHoc = (WrappedCom) => {
       };
 
       return (
-        <div style={{height:'32px'}}>
+        <div >
           <WrappedCom voiceBroadcast={this.voiceBroadcast} broadcastFile={this.broadcastFile} {...this.props}></WrappedCom>
           <Modal
             visible={this.state.fileModalVisible}

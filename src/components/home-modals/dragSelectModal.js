@@ -121,8 +121,20 @@ class DragSelectModal extends React.Component {
         title: '操作',
         dataIndex: 'action',
         key: 'action',
-        render: (text,record) => <Switch></Switch>
+        render: (text,record) => <Switch onChange={(e)=>this.props.daozhaCtrl(e)}></Switch>
     }]
+    const columnsPerson = [
+      {
+        title: '名字',
+        dataIndex: 'name',
+        key: 'name',
+     },
+     {
+      title: '部门',
+      dataIndex: 'department',
+      key: 'department',
+     }
+    ]
     return (
       <Modal
         title="框选结果" 
@@ -140,7 +152,7 @@ class DragSelectModal extends React.Component {
            <Table size='small' columns={columnsBroadCast} dataSource={this.dataType(4)} />
           </TabPane>
           <TabPane tab="人员" key="4">
-           
+           <Table size='small' columns={columnsPerson} dataSource={this.dataType(6)} />
           </TabPane>
           <TabPane tab="门禁" key="5">
            <Table size='small' columns={columnsGuard} dataSource={this.dataType(5)} />

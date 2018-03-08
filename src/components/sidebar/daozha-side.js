@@ -20,7 +20,6 @@ class DaozhaSider extends React.Component {
   }
   searchVideoRender() {
     const searchHongwaiList = this.props.videSider.searchHongwaiList
-    console.log(searchHongwaiList)
     return searchHongwaiList.map(video=>{
       const styles = className({
         'bro-search-item': true,

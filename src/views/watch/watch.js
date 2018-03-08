@@ -2,6 +2,7 @@ import React from 'react'
 import { Tabs } from 'antd'
 import WatchTask from '../../components/watch-components/watchTask'
 import WatchHistory from '../../components/watch-components/watchHistory'
+import WatchUpload from '../../components/watch-components/watchUpload'
 const TabPane = Tabs.TabPane
 
 class Watch extends React.Component {
@@ -9,9 +10,12 @@ class Watch extends React.Component {
   render() {
     return (
       <div style={{padding:'20px'}}>
-        <Tabs defaultActiveKey="1">
+        <Tabs defaultActiveKey="3">
           <TabPane tab="巡更任务" key="1">
             <WatchTask />
+          </TabPane>
+          <TabPane tab="巡更上传" key="3">
+            <WatchUpload />
           </TabPane>
           <TabPane tab="巡更历史" key="2">
            <WatchHistory />

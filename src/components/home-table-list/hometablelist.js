@@ -1,10 +1,10 @@
 import React from 'react'
-import { Checkbox,Modal, Tabs, Table, Icon, Button, Pagination } from 'antd';
-import className from 'classnames'
+import { Table,Modal, Tabs, Button } from 'antd';
 import {connect} from 'react-redux'
 import { alarmPages,modifyAlarm,getAlarmInfo } from '../../redux/alarm.redux'
 import './home-table-list.scss'
 import { alarmDegree, alarmType } from '../../utils'
+import broadcastHoc from '../broadcastHoc/broadcastHoc'
 const TabPane = Tabs.TabPane
 
 
@@ -12,32 +12,66 @@ const TabPane = Tabs.TabPane
   state => ({alarm:state.alarm,user:state.user}),
   {alarmPages,modifyAlarm,getAlarmInfo}
 )
+@broadcastHoc
 class HomeTableList extends React.Component {
   state={
     visible: false,
     suggest:''
   }
   componentDidMount() {
-    this.props.alarmPages()
+    this.props.alarmPages({pageNo:1})
   }
   alarmlistRender() {
+    const columns = [{
+        title: '状态',
+        dataIndex: 'status',
+        key:'status',
+        render:(text,record)=>{
+          return <span>{record.status === 0?'未处理':'已处理'}</span>
+        }
+      }, {
+        title: '时间',
+        dataIndex: 'time',
+        key:'time'
+      },
+      {
+        title: '类型',
+        dataIndex: 'type',
+        key:'type',
+        render:(text,record)=>{
+          return <span>{alarmType(record.type)}</span>
+        }
+      },
+      {
+        title: '等级',
+        dataIndex: 'degree',
+        key:'degree',
+        render:(text,record)=>{
+          return <span>{alarmDegree(record.degree).degree}</span>
+        }
+      },
+      {
+        title: '设备',
+        dataIndex: 'device',
+        key:'device'
+      },
+      {
+        title: '操作',
+        render:(text,record)=>{
+          return <Button onClick={this.alarmClick.bind(this,record)} type='primary'>处理</Button>
+        }
+    }];
     const list = this.props.alarm.alarmlist
-    return list.map(alarm => {
-      const style = className({
-        item: true,
-        [alarmDegree(alarm.degree).class]:true
-      })
-      return (
-        <div className={style} key={alarm.id} onClick={this.alarmClick.bind(this,alarm)}>
-          <Checkbox></Checkbox>
-          <span className='status'>{alarm.status === 0?'未处理':'已处理'}</span>
-          <span className='time'>{alarm.gmtCreate}</span>
-          <span className='type'>{alarmType(alarm.type)}</span>
-          <Button size='small' ghost>{alarmDegree(alarm.degree).degree}</Button>
-          <span className='device'>{alarm.device}</span>
-        </div>
-      )
-    })
+    return <Table 
+              pagination={{
+                pageSize:7,
+                onChange:(e)=>this.props.alarmPages({pageNo:e}),
+                total:this.props.alarm.alarmPageTotal
+              }}  
+              rowKey={(record)=>{return record.id}}
+              columns={columns} 
+              dataSource={list} 
+              size='small' />
   }
   alarmClick(alarm) {
     this.setState({
@@ -59,42 +93,54 @@ class HomeTableList extends React.Component {
       key:'action',
       render: (text, record) => (
         <span>
-          <Icon type='sound' style={{marginRight:'10px'}} ></Icon>
-          <Icon type='sound'></Icon>
+          <a onClick={()=>this.props.videoPlay(record)}>预览</a>
         </span>
       ),
     }];
-    const rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      },
-      onSelect: (record, selected, selectedRows) => {
-        console.log(record, selected, selectedRows);
-      },
-      onSelectAll: (selected, selectedRows, changeRows) => {
-        console.log(selected, selectedRows, changeRows);
-      },
-      getCheckboxProps: record => ({
-        disabled: record.name === 'Disabled User',    // Column configuration not to be checked
-      }),
-    };
+    const columns1 = [{
+      title: '名称',
+      dataIndex: 'name',
+     }, {
+      title: '操作',
+      dataIndex: 'action',
+      key:'action',
+      render: (text, record) => (
+        <span>
+          <Button size='small' type='primary' onClick={()=>this.props.voiceBroadcast([record.index])}>语音播报</Button>
+          <Button size='small' type='primary' onClick={()=>this.props.broadcastFile([record.index])}>文件播报</Button>
+        </span>
+      ),
+    }];
+    const columns2 = [{
+      title: '名称',
+      dataIndex: 'name',
+     }, {
+      title: '操作',
+      dataIndex: 'action',
+      key:'action',
+      render: (text, record) => (
+        <span>
+          <a onClick={()=>this.props.open(record)}>开门</a>
+        </span>
+      ),
+    }];
     const dataChannels = alarmInfo.channels
+    const broadcastDevices = this.props.alarm.broadcastDevices
+    const gateDevices = this.props.alarm.gateDevices
     return (
       <div className="list">
-       <div className="item">
-       <Button type='primary'>一键处理</Button>
-       </div>
-        {this.props.alarm.alarmlist.length>0?this.alarmlistRender():null}
+        {this.alarmlistRender()}
         <Modal title="报警" 
         visible={this.state.visible}
         onOk={this.props.handleOk} 
+        width='50%'
         onCancel={()=>this.setState({visible: false})}
         className='home-warm-modal'
         footer={null}
       >
         <div className="home-warm-content">
-          <div className="first-content">
-            <div className='left'>
+          <div className="first-content clearfix">
+            <div style={{float:'left',width:'30%'}}>
               <p className="title">详情</p>
               <p>时间：{alarmInfo?alarmInfo.gmtCreate:''}</p>
               <p>类型： {alarmInfo?alarmType(alarmInfo.type):''}</p>
@@ -102,19 +148,33 @@ class HomeTableList extends React.Component {
               <p>设备：{alarmInfo?alarmInfo.device:''}</p>
               <p>位置：{alarmInfo?alarmInfo.place:''}</p>
             </div>
-            <div className="right">
+            <div style={{float:'right',width:'60%'}}>
               <p className="title">联动</p>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="摄像头" key="1">
                   <Table 
-                  rowSelection={rowSelection}
                   columns={columns} 
+                  rowKey={(record)=>record.id}
                   dataSource={dataChannels}
                   pagination={false}
                   size='small' />
                 </TabPane>
-                <TabPane tab="广播" key="2">Content of Tab Pane 2</TabPane>
-                <TabPane tab="门禁" key="3">Content of Tab Pane 3</TabPane>
+                <TabPane tab="广播" key="2">
+                  <Table 
+                    columns={columns1} 
+                    rowKey={(record)=>record.id}
+                    dataSource={broadcastDevices}
+                    pagination={false}
+                    size='small' />
+                </TabPane>
+                <TabPane tab="门禁" key="3">
+                <Table 
+                  columns={columns2} 
+                  rowKey={(record)=>record.id}
+                  dataSource={gateDevices}
+                  pagination={false}
+                  size='small' />
+                </TabPane>
               </Tabs>
             </div>
           </div>
@@ -128,11 +188,10 @@ class HomeTableList extends React.Component {
               <span>处理人:{this.props.user.account?this.props.user.account.name:''}</span>
               <span>状态:{alarmInfo?alarmInfo.status === 0?'未处理':'已处理':''}    
               </span>
-              <Button type="primary" disabled={alarmInfo?alarmInfo.status === 1:false} onClick={()=>this.props.modifyAlarm({id:alarmInfo.id,suggest:this.state.suggest})}>处理</Button>
+              <Button style={{float:'right'}} type="primary" disabled={alarmInfo?alarmInfo.status === 1:false} onClick={()=>this.props.modifyAlarm({id:alarmInfo.id,suggest:this.state.suggest})}>处理</Button>
             </div>
           </div>
           </div>
-          <Pagination style={{textAlign:'center', paddingBottom:'10px'}} simple defaultCurrent={2} total={50} />
       </Modal>
       </div>
     )

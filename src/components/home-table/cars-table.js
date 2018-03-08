@@ -2,17 +2,20 @@ import React from 'react'
 import { Table } from 'antd'
 
 const columns = [{
-    title: 'time',
+    title: '时间',
     dataIndex: 'time',
     key: 'time', 
   },{
-    title: 'carNo',
+    title: '车牌',
     dataIndex: 'carNo',
     key: 'carNo', 
   },{
     title: 'action',
     dataIndex: 'action',
     key: 'action', 
+    render:(text,record)=>(
+      <span>{record.action===1?'进':'出'}</span>
+    )
   },{
     title: 'gate',
     dataIndex: 'gate',
@@ -45,10 +48,11 @@ class CarsTable extends React.Component {
           total: data.records,
           onChange: this.pageChange
         }}
+        rowKey={(record)=>record.id}
         size='small'
         dataSource={data.result}
-        showHeader={false}
-        scroll={{y:200}} />
+        
+         />
     )
   }
 }

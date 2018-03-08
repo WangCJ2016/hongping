@@ -35,7 +35,7 @@ export function HomeGuard({device}) {
   return (
     <div className="home-popover">
       <ButtonGroup className='clearfix'>
-      <Button  type="primary" onClick={()=>{}}>
+      <Button  type="primary" onClick={()=>this.props.openDoor()}>
         开门
       </Button>  
   </ButtonGroup>

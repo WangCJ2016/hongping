@@ -74,6 +74,7 @@ export const config = {
     alertmPages: '/home_queryAlarmsPage', // 报警列表
     getAlarmInfo: '/home_getAlarmInfo', // 报警详情
     modifyAlarm: '/home_modifyAlarm', // 报警处理
+    alarmLinkDevices: '/home_getAlarmLinkageDevices',
     alarmCount: '/home_getAlarmsCount',
     searchChannel: '/rhost_querySysRemoteChannelsPage', //搜索摄像头
     searchBroadcast: '/bhost_querySysBroadcastChannelsPage', //搜索广播
@@ -110,7 +111,7 @@ export const config = {
     watchHistoryPage: '/patrol_queryPatrolHistoryPage',
     getTaskDefaultTime: '/patrol_getPatrolTaskTime',
     setTaskTime: '/patrol_setPatrolTaskTime',
-    watchPointsUpload:'/home_createPatrolHistorys' 
+    watchPointsUpload:'/home_createPatrolHistorys',
   }
 }
 //get/post请求

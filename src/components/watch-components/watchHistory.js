@@ -50,15 +50,6 @@ class WatchHistory extends React.Component {
             pageSize:10
           }}
           ></Table>
-          <object
-                ref={(screen)=>this.play=screen}
-                classID="clsid 330B9C94-354F-45C1-B100-C2502CF22EA3"
-                codebase="./XzVideoWebClient.cab#version=1.0.0.1"
-                width={0}
-                height={0}
-                align='center' 
-                >
-              </object>
       </div>
     )
   }
