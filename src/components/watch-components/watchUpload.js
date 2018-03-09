@@ -36,6 +36,7 @@ class WatchUpload1 extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         let watchData = []
+        console.log(this.play)
         const count = this.play.hcPTcomm(values.chuankou,values.boud)
         for(let i=0;i<count;i++) {
           const a = this.play.hcPTrecord(i)
@@ -115,8 +116,8 @@ class WatchUpload1 extends React.Component {
         ></Table>
         <object
           ref={(screen)=>this.play=screen}
-          classID="clsid 330B9C94-354F-45C1-B100-C2502CF22EA3"
-          codebase="./XzVideoWebClient.cab#version=1.0.0.1"
+          classid="clsid:330B9C94-354F-45C1-B100-C2502CF22EA3"
+	        codebase="./XzVideoWebClient.cab#version=1.0.0.1"
           width={0}
           height={0}
           align='center' 

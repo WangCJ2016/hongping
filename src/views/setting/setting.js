@@ -1,31 +1,45 @@
 import React from 'react'
 import './setting.scss'
 import { Tabs } from 'antd'
+import { connect } from 'react-redux'
 import SettingUser from '../../components/setting-user/setting-user'
 import SettingArea from '../../components/setting-area/setting-area'
 import SettingVideo from '../../components/setting-video/setting-video'
 import SettingMap from '../../components/setting-map/setting-map'
 const TabPane = Tabs.TabPane
 
+@connect(
+  state=>({user:state.user})
+)
 class Setting extends React.Component {
   state = {  }
   render() {
+    const {authMenu} = this.props.user
     return (
         <div className='setting-page'>
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="区域管理" key="1">
+          <Tabs>
+          {authMenu.indexOf('setting-area')>-1?
+            <TabPane tab="区域管理" key="setting-area">
               <SettingArea />
-            </TabPane>
-            <TabPane tab="用户&角色" key="2">
-              <SettingUser />
-            </TabPane>
-            <TabPane tab="设备配置" key="3">
-             <SettingVideo />
-            </TabPane>
-            <TabPane tab="其他子系统配置" key="4">Content of Tab Pane 2</TabPane>
-            <TabPane tab="地图设置" key="5">
-              <SettingMap />
-            </TabPane>
+            </TabPane>:null
+          }
+          {authMenu.indexOf('setting-user')>-1?
+            <TabPane tab="用户&角色" key="setting-user">
+            <SettingUser />
+           </TabPane>:null
+          }
+          {
+            authMenu.indexOf('setting-device')>-1?
+            <TabPane tab="设备配置" key="setting-device">
+            <SettingVideo />
+           </TabPane>:null
+          }
+          {
+            authMenu.indexOf('setting-map')>-1?
+            <TabPane tab="地图设置" key="setting-map">
+            <SettingMap />
+          </TabPane>:null
+          }
           </Tabs>
         </div>
     )

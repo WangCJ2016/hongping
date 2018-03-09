@@ -87,7 +87,7 @@ const columns5 = [{
   key: 'status',
   }]
 @connect(
-  state => ({status: state.status}),
+  state => ({status: state.status,user:state.user}),
   {
     getServerStatus,getVideoHostStatus,getVideChannelStatus,postion,getBroadcastChannelStatus
   }
@@ -98,55 +98,72 @@ class Status extends React.Component {
     this.props.getServerStatus()
   }
   onChange(e) {
-    if(e==='2') {
+    if(e==='status-host') {
       this.props.getVideoHostStatus()
     }
-    if(e==='3') {
+    if(e==='status-channel') {
       this.props.getVideChannelStatus()
     }
-    if(e==='4') {
+    if(e==='status-station') {
       this.props.postion()
     }
-    if(e==='5') {
+    if(e==='status-broadcast') {
       this.props.getBroadcastChannelStatus()
     }
   }
   render() {
     const { servers, videoHosts,videoChannel,broadcastChannel,position} = this.props.status
+    const {authMenu} = this.props.user
     return (
       <div style={{padding:'20px'}}>
-        <Tabs defaultActiveKey="1" onChange={this.onChange.bind(this)}>
-          <TabPane tab="服务器" key="1">
-            <Table 
-             loading={servers?false:true}
-              columns={columns} 
-              dataSource={servers}></Table>
-          </TabPane>
-          <TabPane tab="视频主机" key="2">
-            <Table 
-                loading={videoHosts?false:true}
-                columns={columns2} 
-                dataSource={videoHosts}></Table>
-          </TabPane>
-          <TabPane tab="视频通道" key="3">
+        <Tabs  onChange={this.onChange.bind(this)}>
+          {
+            authMenu.indexOf('status-server')>-1?
+            <TabPane tab="服务器" key="status-server">
+              <Table 
+              loading={servers?false:true}
+                columns={columns} 
+                dataSource={servers}></Table>
+            </TabPane>:null
+          }
+          {
+            authMenu.indexOf('status-host')>-1?
+            <TabPane tab="视频主机" key="status-host">
+              <Table 
+                  loading={videoHosts?false:true}
+                  columns={columns2} 
+                  dataSource={videoHosts}></Table>
+            </TabPane>:null
+          }
+          {
+            authMenu.indexOf('status-channel')>-1?
+            <TabPane tab="视频通道" key="status-channel">
+              <Table
+              loading={videoChannel?false:true}
+              columns={columns3} 
+              dataSource={videoChannel}></Table>
+            </TabPane>:null
+          }
+          {
+            authMenu.indexOf('status-station')>-1? 
+            <TabPane tab="人员基站" key="status-station">
+              <Table
+              loading={position?false:true}
+              columns={columns4} 
+              dataSource={position}></Table>
+            
+            </TabPane>:null
+          }
+          {
+            authMenu.indexOf('status-broadcast')>-1? 
+            <TabPane tab="广播服务" key="status-broadcast">
             <Table
-            loading={videoChannel?false:true}
-            columns={columns3} 
-            dataSource={videoChannel}></Table>
-          </TabPane>
-          <TabPane tab="人员基站" key="4">
-            <Table
-            loading={position?false:true}
-            columns={columns4} 
-            dataSource={position}></Table>
+              loading={broadcastChannel?false:true}
+              columns={columns5} 
+              dataSource={broadcastChannel}></Table>
+            </TabPane>:null
+          }
           
-          </TabPane>
-          <TabPane tab="广播服务" key="5">
-            <Table
-            loading={broadcastChannel?false:true}
-            columns={columns5} 
-            dataSource={broadcastChannel}></Table>
-          </TabPane>
         </Tabs>
       </div>
     )

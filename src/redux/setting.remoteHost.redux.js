@@ -1,5 +1,5 @@
 import { request, config} from '../config'
-
+import { message } from 'antd'
 const token = localStorage.getItem('token')
 const initialState = {
   remoteHosts: [],
@@ -166,7 +166,6 @@ export function createHost(info) {
       ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           const host = res.dataObject
           const list = {
@@ -187,6 +186,8 @@ export function createHost(info) {
             mediaServer3Id:host.mediaServer3Id
           }
           dispatch(createSuccess(list))
+        }else{
+          message.error(res.msg)
         }
       })
   }
@@ -213,7 +214,6 @@ export function modifyHost(info) {
       ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           if(info.isDelete) {
             dispatch(delHost(res.dataObject.id))
@@ -239,6 +239,8 @@ export function modifyHost(info) {
             dispatch(modifySuccess(list))
           }
          
+        }else{
+          message.error(res.msg)
         }
       })
   }
@@ -258,7 +260,6 @@ export function channels(info) {
      ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           const list = res.dataObject.map(channel => ({
            name: channel.name,
@@ -290,7 +291,6 @@ export function createChannel(info) {
       ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           const channel = res.dataObject
           const list = {
@@ -303,6 +303,8 @@ export function createChannel(info) {
            key:channel.id
           }
           dispatch(createChannelSuccess(list))
+        }else{
+          message.error(res.msg)
         }
       })
   }
@@ -330,7 +332,6 @@ export function modifyChannel(info) {
       ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           if(info.isDelete) {
             dispatch(delChannel(res.dataObject.id))
@@ -348,6 +349,8 @@ export function modifyChannel(info) {
             dispatch(modifyChannelSuccess(list))
           }
          
+        }else{
+          message.error(res.msg)
         }
       })
   }

@@ -1,4 +1,5 @@
 import { request, config} from '../config'
+import { message } from 'antd'
 
 const token = localStorage.getItem('token')
 const initialState = {
@@ -112,6 +113,8 @@ export function modifyServer(info) {
             dispatch(modifyServerSuccess(data))
           }
           
+        }else{
+          message.error(res.msg)
         }
       })
   }
@@ -132,7 +135,6 @@ export function createServer(info) {
       ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           const server = {
             key: res.dataObject.id,
@@ -147,6 +149,8 @@ export function createServer(info) {
             remark:res.dataObject.remark
           }
           dispatch(createServerSuccess(server))
+        }else{
+          message.error(res.msg)
         }
       })
   }

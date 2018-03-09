@@ -3,7 +3,6 @@ import { Input,Col,DatePicker,Select,Form,Row,Button,Table } from 'antd'
 import { connect } from 'react-redux'
 import { historyFstatistics } from '../../redux/status.redux'
 import moment from 'moment'
-const { MonthPicker } = DatePicker
 const Option = Select.Option
 const FormItem = Form.Item
 
@@ -56,19 +55,18 @@ class History1 extends React.Component {
   handleSearch(e) {
     this.props.form.validateFields((err, values) => {
       e.preventDefault()
-      console.log(values.startTime.format('YYYY-MM'))
       if (!err) {
         if(values.type==='0') {
           this.props.historyFstatistics({
             place: encodeURI(values.place),
-            startTime: values.startTime.format('YYYY-MM'),
-            endTime:values.endTime.format('YYYY-MM'),
+            startTime: values.startTime.format('YYYY-MM-DD'),
+            endTime:values.endTime.format('YYYY-MM-DD'),
           })
         }else{
           this.props.historyFstatistics({
             ...values,
-            startTime: values.startTime.format('YYYY-MM'),
-            endTime:values.endTime.format('YYYY-MM'),
+            startTime: values.startTime.format('YYYY-MM-DD'),
+            endTime:values.endTime.format('YYYY-MM-DD'),
           })
         }
       }
@@ -99,18 +97,18 @@ class History1 extends React.Component {
             <Col span={5} >
             <FormItem {...formItemLayout} label={'起始时间'}>
               {getFieldDecorator('startTime',{
-                initialValue: moment(new Date(), 'YYYY-MM')
+                initialValue: moment(new Date(), 'YYYY-MM-DD')
               })(
-                <MonthPicker format='YYYY-MM' placeholder="请选择日期" />
+                <DatePicker format='YYYY-MM-DD' placeholder="请选择日期" />
               )}
             </FormItem>
           </Col>
             <Col span={5} >
             <FormItem {...formItemLayout} label={'结束日期'}>
               {getFieldDecorator('endTime',{
-                initialValue: moment(new Date(), 'YYYY-MM')
+                initialValue: moment(new Date(), 'YYYY-MM-DD')
               })(
-                <MonthPicker format='YYYY-MM' placeholder="请选择日期" />
+                <DatePicker format='YYYY-MM-DD' placeholder="请选择日期" />
               )}
             </FormItem>
           </Col>

@@ -20,8 +20,9 @@ export const config = {
     areaInfo: '/area_getAreasInfo', //  区域详情
     uploadAreaImg: '/area_uploadAreaImg', // 上传区域图片
     picByarea: '/area_queryPictureByAreaId', // 获取地图
-
+  
     getInfo: '/do_getAccountInfo',  // (获取角色)
+    getMenu: '/role_queryResources', // 获取菜单
     rolesList:'/role_queryRolePage', // 角色列表
     authorityList: '/role_queryResources', // 权限菜单
     modifyRole: '/role_modifyRole', // 修改角色名称

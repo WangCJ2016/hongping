@@ -10,40 +10,54 @@ class Trail extends React.Component {
   constructor() {
     super()
     this.state = {
-      animation:true
+      animation:true,
+      time:100
     }
   }
-  componentDidMount() {
-    
-    this.canvasRender()
+  componentWillReceiveProps(nextProps) {
+    console.log(this.props.peo.picture===nextProps.peo.picture)
+    if(!this.props.peo.picture===nextProps.peo.picture) {
+      const canvas = this.canvas
+      canvas.width=this.outDiv.clientWidth - 1
+      canvas.height=this.outDiv.clientHeight - 1
+      
+    }
   }
- componentDidUpdate() {
-  this.canvasRender()
- }
   canvasRender() {
     const canvas = this.canvas
-    canvas.width=this.outDiv.getBoundingClientRect().width
-    canvas.height=this.outDiv.getBoundingClientRect().height
-    const context = canvas.getContext("2d");
+    canvas.width=this.outDiv.clientWidth
+    canvas.height=this.outDiv.clientHeight
    
+    const context = canvas.getContext("2d");
+    this.context = context
     const trails = this.props.peo.traildetail
      //设置样式
      context.lineWidth = 2;
      context.strokeStyle = "#17b89f";
     //设置对象起始点和终点
-    for(let i=0;i<trails.length;i++) {
-      context.clearRect(0,0,10000,10000);
+    // context.beginPath()
+    // context.lineTo(10,10)
+    // context.lineTo(20,20)
+    // context.stroke()
+    // context.beginPath()
+    // context.lineTo(100,100)
+    // context.stroke()
+    // context.beginPath()
+    // context.lineTo(100,200)
+    // context.stroke()
+    const that = this
+    for(let i=0;i<trails.length;i=i+2) {
       (function() {
         setTimeout(()=>{
-          if(i === 0) {
-            context.moveTo(trails[i].locationX/10,trails[i].locationY/10)
-          }
+          context.beginPath()
           context.lineTo(trails[i].locationX/10,trails[i].locationY/10)
-          context.stroke();
-        },100*i)
+          context.lineTo(trails[i+1].locationX/10,trails[i+1].locationY/10)
+          context.closePath()
+          context.stroke()
+        },that.state.time*i)
       })()
     }
-  
+   
     //绘制
     
   }
@@ -62,10 +76,15 @@ class Trail extends React.Component {
     }) 
     return peoTipArr
   }
+  onClick() {
+    this.canvasRender()
+  }
   render() {
     return (
       <div>
-        <div style={{textAlign:'center'}}><Button type='primary' onClick={()=>this.setState({animation:false})}>暂停</Button><Button type='primary'>快进</Button></div>
+        <div style={{textAlign:'center'}}>
+        <Button type='primary' onClick={this.onClick.bind(this)}>开始绘制</Button>
+        <Button type='primary' onClick={()=>this.setState({time:10})}>快进</Button></div>
         
         <div className='peo-trail' style={{left:this.props.sidebar.homeLeftIf?'360px':'0'}} ref={(outDiv)=>this.outDiv=outDiv} >
           <canvas ref={(canvas)=>this.canvas=canvas} className='canvas' >

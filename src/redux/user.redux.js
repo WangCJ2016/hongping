@@ -1,11 +1,10 @@
 import { request, config} from '../config'
-
-const ERROR_MSG = 'ERROR_MSG'
+import { message } from 'antd'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
 const token = localStorage.getItem('token')
 const intialState = {
   redirectTo:'',
-  msg:''
+  authMenu:[]
 }
 
 export function user(state = intialState, action ) {
@@ -13,54 +12,46 @@ export function user(state = intialState, action ) {
     case 'AUTH_SUCCESS': {
       return {...state,...action.payload,redirectTo:'/home'}
     }
-    case 'ERROR_MSG': {
-      return {...state,msg:action.msg}
-    }
     default:
       return state
   }
 }
 
 
-export function errorMSG(msg) {
-  return {
-    msg,
-    type: ERROR_MSG
-  }
-}
+
 function authSuccess(obj) {
   return {
     type: AUTH_SUCCESS,
     payload: obj,
   }
 }
-export function login({username, password}) {
-  if(!username||!password) {
-    return errorMSG('用户密码必须输入')
-  }
+export function login({username, password},cb) {
   return dispatch => {
     request.get( config.api.base + config.api.login, {username:username,password:password})
     .then(res=>{
-      console.log(res)
       if(res.success) {
         const resources = res.dataObject.resources
         localStorage.setItem('token', res.dataObject.account.token)
-        dispatch(authSuccess({account:res.dataObject.account,resources:resources}))
-      }else {
-        dispatch(errorMSG(res.msg))
+        const data = res.dataObject.resources.module.map(item=>item.resourceUrl)
+        dispatch(authSuccess({account:res.dataObject.account,resources:resources,authMenu:data}))
+        getMenu(res.dataObject.account.token)(dispatch)
+        cb()
+      }else{
+        message.error(res.msg)
       }
     })
   }
 }
 
 export function getInfo(token){ 
-  return dispatch => {
+  return (dispatch,getState) => {
     request.get(config.api.base + config.api.getInfo,{ token: token})
     .then(res=>{
       if(res.success) {
         const resources = res.dataObject.resources
-       // localStorage.setItem('token', res.dataObject.account.token)
-        dispatch(authSuccess({account:res.dataObject.account,resources:resources}))
+        localStorage.setItem('token', res.dataObject.account.token)
+        const data = res.dataObject.resources.module.map(item=>item.resourceUrl)
+        dispatch(authSuccess({account:res.dataObject.account,resources:resources,authMenu:data}))
       }else {
         window.location.replace("/login")
         localStorage.removeItem('token')
@@ -70,11 +61,24 @@ export function getInfo(token){
 }
 // 获取当前账号信息
 export function getAccountInfo() {
-  return (dispatch,getState)=>{
-    const user = getState().user
+  return (dispatch)=>{
     request.get(config.api.base + config.api.getAccountInfo,{ token: token,id:user.account.id})
     .then(res=>{
       console.log(res)
+    })
+  }
+}
+
+// 
+export function getMenu(token) {
+  return (dispatch)=>{
+    request.get(config.api.base + config.api.getMenu,{ token: token})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        
+        dispatch(authSuccess({authMenuData:res.dataObject}))
+      }
     })
   }
 }

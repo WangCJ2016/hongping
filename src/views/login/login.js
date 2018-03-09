@@ -1,33 +1,29 @@
 import React from 'react'
-import { Form, Icon, Input, Button, message } from 'antd';
-import { Redirect } from 'react-router-dom'
+import { Form, Icon, Input, Button } from 'antd';
 import { connect } from 'react-redux'
 import './login.scss'
-import { login, errorMSG } from '../../redux/user.redux'
+import { login,getMenu } from '../../redux/user.redux'
 const FormItem = Form.Item;
 
 @connect(
   state=>state.user,
-  {login, errorMSG}
+  {login,getMenu}
 )
 class Login extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
-    const info = this.props.form.getFieldsValue()
-    this.props.login({username: info.userName, password: info.password})
-    //this.props.history.push('/home')
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.props.login({username: values.userName, password: values.password},()=>this.props.history.push('home'))
+      }
+    });
+   
   }
-  componentDidUpdate() {
-    if(this.props.msg) {
-      message.error(this.props.msg);
-      this.props.errorMSG('')
-    }
-  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className='login-page'>
-      {this.props.redirectTo?<Redirect to={this.props.redirectTo}></Redirect>:null}   
       <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">
           <h4 className='title'>五系统一中心平台</h4>
           <FormItem>

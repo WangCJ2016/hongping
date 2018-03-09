@@ -27,10 +27,15 @@ const { Header, Content, Sider } = Layout;
 )
 
 class Frame extends React.Component {
-  state = {
-    collapsed:false,
-    siderActiveIndex: -1
+  constructor() {
+    super()
+    this.state = {
+      collapsed:false,
+      siderActiveIndex: -1,
+      height:document.body.clientHeight-69
+    }
   }
+
   componentDidMount() {
    this.props.alarmCount()
    this.timer = setInterval(()=>{
@@ -70,7 +75,7 @@ class Frame extends React.Component {
       {class: 'history',title: '历史分析',link:'/history'},
       {class: 'usercenter',title: '个人设置',link:'/userCenter'},
       {class: 'setting',title: '系统配置',link:'/setting'}
-  ]
+  ].filter(nav=> this.props.user.authMenu.indexOf(nav.class)>-1)
    return navArray.map(item=>(
       <NavLink className='navtoplink' key={item.title} to={item.link}  activeClassName="selected">
         <span className='navtop_title'>{item.title}</span>
@@ -122,7 +127,7 @@ class Frame extends React.Component {
               collapsible
               collapsed={true}
               collapsedWidth={60}
-              style={{height: document.body.clientHeight+'px'}}
+              style={{height: this.state.height+'px'}}
             > 
             {this.navRender()}
            

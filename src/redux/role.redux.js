@@ -1,5 +1,5 @@
 import { request, config} from '../config'
-
+import { message } from 'antd'
 const token = localStorage.getItem('token')
 const initialState = {
   roles: [],
@@ -16,9 +16,13 @@ const PEOPLELIST_SUCCESS = 'PEOPLELIST_SUCCESS'
 const  CREATEPEOPLE_SUCCESS = 'CREATEPEOPLE_SUCCESS'
 const MODIFYPEOPLE_SUCCESS = 'MODIFYPEOPLE_SUCCESS'
 const DELETEACCOUNT_SUCCESS = 'DELETEACCOUNT_SUCCESS'
+const DATASUCCESS = '[role] DATASUCCESS'
 
 export  function role(state=initialState,action) {
   switch (action.type) {
+    case DATASUCCESS: {
+      return {...state,...action.payload}
+    }
     case GETROLES: {
       return {...state,roles: action.payload}
     }
@@ -68,6 +72,12 @@ export  function role(state=initialState,action) {
   }
 } 
 
+export function dataSuccess(data) {
+  return {
+    type: DATASUCCESS,
+    payload: data
+  }
+}
 function getRole(roles) {
   return {
     type:GETROLES,
@@ -123,13 +133,14 @@ export function createRole(info) {
         ...info
       })
     .then(res=>{
-      console.log(res)
       if(res.success) {
         const role = {
           name: res.dataObject.roleName,
           id: res.dataObject.id
         }
         dispatch(createSuccess(role))
+      }else{
+        message.error(res.msg)
       }
     })
  }
@@ -156,7 +167,6 @@ export function modifyRole(info) {
         ...info
        })
       .then(res=>{
-        console.log(res)
         if(res.success) {
          if(info.roleName) {
            info.roleName = decodeURI(info.roleName)
@@ -165,6 +175,8 @@ export function modifyRole(info) {
          if(info.isDelete===1) {
            dispatch(deletefn(info.id))
          }
+        }else{
+          message.error(res.msg)
         }
       })
   }
@@ -184,12 +196,12 @@ export function role_roleInfo(info) {
         ...info
       })
       .then(res=>{
-        console.log(res)
         if(res.success) {
           const info = {
             id: res.dataObject.id,
             name: res.dataObject.roleName,
-            roleAreaId: res.dataObject.roleAreas?res.dataObject.roleAreas.map(area => (area.areaId)):[]
+            roleAreaId: res.dataObject.roleAreas?res.dataObject.roleAreas.map(area => (area.areaId)):[],
+            roleResources: res.dataObject.roleResources?res.dataObject.roleResources.map(resource => resource.resourceId):null
           }
           dispatch(roleInfoSuccess(info))
         }
@@ -210,7 +222,6 @@ export function accountList(info) {
         ...info
       })
       .then(res=>{
-        console.log(res)
         if(res.success) {
           const people = res.result.map(person => ({
             id: person.id,
@@ -242,7 +253,6 @@ export function createAccount(info) {
         ...info
       })
       .then(res=>{
-        console.log(res)
         if(res.success) {
          const data = {
           id: res.dataObject.id,
@@ -254,6 +264,8 @@ export function createAccount(info) {
           telephone: res.dataObject.telephone
          }
          dispatch(createAccountSucces(data))
+        }else{
+          message.error(res.msg)
         }
       })
   }
@@ -280,7 +292,6 @@ export function modifyAccount(info) {
         ...info
       })
       .then(res=>{
-        console.log(res)
         if(res.success) {
           if(info.isDelete) {
             dispatch(deleteAccountSuccess(res.dataObject.id))
@@ -296,6 +307,8 @@ export function modifyAccount(info) {
              }
              dispatch(modifyAccountSucces(data))
           }
+        }else{
+          message.error(res.msg)
         }
       })
   }

@@ -1,5 +1,5 @@
 import { request, config} from '../config'
-
+import { message } from 'antd'
 const token = localStorage.getItem('token')
 const initialState = {
   commHosts: [],
@@ -196,7 +196,6 @@ export function modifyHost(info) {
       ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           if(info.isDelete) {
             dispatch(delHost(res.dataObject.id))
@@ -219,6 +218,8 @@ export function modifyHost(info) {
             dispatch(modifySuccess(list))
           }
          
+        }else{
+          message.error(res.msg)
         }
       })
   }
@@ -270,7 +271,6 @@ export function createDevice(info) {
       ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           const host = res.dataObject
           const list = {
@@ -281,6 +281,8 @@ export function createDevice(info) {
             icon: host.icon
           }
           dispatch(createDeviceSuccess(list))
+        }else{
+          message.error(res.msg)
         }
       })
   }
@@ -307,7 +309,6 @@ export function modifyDevice(info) {
       ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           if(info.isDelete) {
             dispatch(delDevice(res.dataObject.id))
@@ -322,6 +323,8 @@ export function modifyDevice(info) {
             dispatch(modifyDeviceSuccess(list))
           }
          
+        }else{
+          message.error(res.msg)
         }
       })
   }
@@ -382,7 +385,6 @@ export function createProperty(info) {
       ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           const host = res.dataObject
           const list = {
@@ -394,6 +396,8 @@ export function createProperty(info) {
             icon: host.icon
           }
           dispatch(createPropertySuccess(list))
+        }else{
+          message.error(res.msg)
         }
       })
   }
@@ -421,7 +425,6 @@ export function modifyProperty(info) {
       ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           if(info.isDelete) {
             dispatch(delProperty(res.dataObject.id))
@@ -438,6 +441,8 @@ export function modifyProperty(info) {
             dispatch(modifyPropertySuccess(list))
           }
          
+        }else{
+          message.error(res.msg)
         }
       })
   }

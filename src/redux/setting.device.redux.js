@@ -214,11 +214,13 @@ export function addDevices(info) {
       ...info
     })
     .then(res=>{
-      console.log(res)
       if(res.success) {
         areaDevices1({areaId:info.areaId})(dispatch)
         message.success('保存成功！')
       }
+      else{
+          message.error(res.msg)
+        }
     })
 }
 }
@@ -234,9 +236,10 @@ export function createSysInstallPlace(info) {
       ...info
     })
     .then(res=>{
-      console.log(res)
       if(res.success) {
         message.success('保存成功！')
+      }else{
+        message.error(res.msg)
       }
     })
  }
@@ -270,7 +273,6 @@ export function querySysInstallPlaces(info) {
 
 // 删除设备
 export function delMapDevice(del) {
-  console.log(del)
   return (dispatch,getState) => {
      const user = getState().user
     request.get(config.api.base + config.api.delInstatllPlace,{
@@ -322,7 +324,6 @@ export function searchChannel(info) {
       ...info
     })
     .then(res => {
-     console.log(res)
      if(res.success) {
        dispatch(searchDeviceSuccess(res))
      }
@@ -338,7 +339,6 @@ export function searchBroadcast(info) {
       ...info
     })
     .then(res => {
-     console.log(res)
      if(res.success) {
        dispatch(searchDeviceSuccess(res))
      }
