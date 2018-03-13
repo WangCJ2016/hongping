@@ -84,99 +84,25 @@ class HomeTableList extends React.Component {
   }
   render() {
     const alarmInfo = this.props.alarm.alarmInfo
-    const columns = [{
-      title: '名称',
-      dataIndex: 'name',
-     }, {
-      title: '操作',
-      dataIndex: 'action',
-      key:'action',
-      render: (text, record) => (
-        <span>
-          <a onClick={()=>this.props.videoPlay(record)}>预览</a>
-        </span>
-      ),
-    }];
-    const columns1 = [{
-      title: '名称',
-      dataIndex: 'name',
-     }, {
-      title: '操作',
-      dataIndex: 'action',
-      key:'action',
-      render: (text, record) => (
-        <span>
-          <Button size='small' type='primary' onClick={()=>this.props.voiceBroadcast([record.index])}>语音播报</Button>
-          <Button size='small' type='primary' onClick={()=>this.props.broadcastFile([record.index])}>文件播报</Button>
-        </span>
-      ),
-    }];
-    const columns2 = [{
-      title: '名称',
-      dataIndex: 'name',
-     }, {
-      title: '操作',
-      dataIndex: 'action',
-      key:'action',
-      render: (text, record) => (
-        <span>
-          <a onClick={()=>this.props.open(record)}>开门</a>
-        </span>
-      ),
-    }];
-    const dataChannels = alarmInfo.channels
-    const broadcastDevices = this.props.alarm.broadcastDevices
-    const gateDevices = this.props.alarm.gateDevices
+    console.log(alarmInfo)
     return (
       <div className="list">
         {this.alarmlistRender()}
         <Modal title="报警" 
         visible={this.state.visible}
         onOk={this.props.handleOk} 
-        width='50%'
         onCancel={()=>this.setState({visible: false})}
         className='home-warm-modal'
         footer={null}
       >
         <div className="home-warm-content">
-          <div className="first-content clearfix">
-            <div style={{float:'left',width:'30%'}}>
+          <div className="first-content">
               <p className="title">详情</p>
               <p>时间：{alarmInfo?alarmInfo.gmtCreate:''}</p>
               <p>类型： {alarmInfo?alarmType(alarmInfo.type):''}</p>
               <p>程度：{alarmInfo?alarmDegree(alarmInfo.degree).degree:''}</p>
               <p>设备：{alarmInfo?alarmInfo.device:''}</p>
-              <p>位置：{alarmInfo?alarmInfo.place:''}</p>
-            </div>
-            <div style={{float:'right',width:'60%'}}>
-              <p className="title">联动</p>
-              <Tabs defaultActiveKey="1">
-                <TabPane tab="摄像头" key="1">
-                  <Table 
-                  columns={columns} 
-                  rowKey={(record)=>record.id}
-                  dataSource={dataChannels}
-                  pagination={false}
-                  size='small' />
-                </TabPane>
-                <TabPane tab="广播" key="2">
-                  <Table 
-                    columns={columns1} 
-                    rowKey={(record)=>record.id}
-                    dataSource={broadcastDevices}
-                    pagination={false}
-                    size='small' />
-                </TabPane>
-                <TabPane tab="门禁" key="3">
-                <Table 
-                  columns={columns2} 
-                  rowKey={(record)=>record.id}
-                  dataSource={gateDevices}
-                  pagination={false}
-                  size='small' />
-                </TabPane>
-              </Tabs>
-            </div>
+              <p>位置：{alarmInfo?alarmInfo.place:''}<a ><img src={require('../../assets/imgs/loc_icon.png')} alt=""/></a></p>    
           </div>
          
           </div>

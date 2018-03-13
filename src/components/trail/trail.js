@@ -15,20 +15,16 @@ class Trail extends React.Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    console.log(this.props.peo.picture===nextProps.peo.picture)
     if(!this.props.peo.picture===nextProps.peo.picture) {
-      const canvas = this.canvas
-      canvas.width=this.outDiv.clientWidth - 1
-      canvas.height=this.outDiv.clientHeight - 1
-      
+      this.canvasRender()
     }
   }
   canvasRender() {
     const canvas = this.canvas
     canvas.width=this.outDiv.clientWidth
     canvas.height=this.outDiv.clientHeight
-   
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext("2d")
+    context.clearRect(0,0,1000,1000)
     this.context = context
     const trails = this.props.peo.traildetail
      //设置样式

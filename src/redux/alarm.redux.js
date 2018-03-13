@@ -78,8 +78,6 @@ export function getAlarmInfo(info) {
       console.log(res)
       if(res.success) {
         dispatch(dataSuccess({alarmInfo: res.dataObject}))
-        alarmLinkDevices({areaId: res.dataObject.install.areaId,type:'broadcast'})(dispatch)
-        alarmLinkDevices({areaId: res.dataObject.install.areaId,type:'gate'})(dispatch)
       }
     })
   }

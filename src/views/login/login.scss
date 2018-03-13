@@ -11,9 +11,11 @@
     background: url('../../assets/imgs/login_from_bg.png') no-repeat;
     background-size: 660px 500px;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%)
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right:0;
+    margin: auto;
   }
   .title{
     text-align: center;
