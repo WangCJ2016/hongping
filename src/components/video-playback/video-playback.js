@@ -39,6 +39,7 @@ class VideoPlayBack extends React.Component {
                 style={{width:'100%',height:'100%'}}
                 className='playScreen'
                 >
+                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="" download>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
               <VideoCtrlBtns 
                 play={this.play}/>

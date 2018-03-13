@@ -1,5 +1,5 @@
 import { request, config} from '../config'
-import { alarmDegree, alarmType } from '../utils'
+import { alarmType } from '../utils'
 
 const token = localStorage.getItem('token')
 const intialState = {

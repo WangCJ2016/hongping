@@ -272,6 +272,7 @@ class Home extends React.Component {
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
         <HomeWarmPanel 
+        right={this.props.sidebar.offsetLeft}
         dragSelect={()=>this.setState({dragSelectEnbled:true})}
         goParentArea={this.goParentArea} />
         <div className='area-Map'>
@@ -307,6 +308,7 @@ class Home extends React.Component {
                 align='center' 
                 style={{width:'100%'}}
                 >
+                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="" download>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
             </div>
             <div className="float-right"  style={{width:'30%'}}>
@@ -337,6 +339,7 @@ class Home extends React.Component {
                 align='center' 
                 style={{width:'100%'}}
                 >
+                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="" download>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
               <VideoCtrlBtns 
               play={this.playback}/>
@@ -369,6 +372,7 @@ class Home extends React.Component {
                 align='center' 
                 style={{visibility:'hidden'}}
                 >
+                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="" download>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
             <div className='float-left'>
               <Table columns={columns} dataSource={this.props.deivces.videoPicArr} scroll={{x:400,y:400}}/>

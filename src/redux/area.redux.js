@@ -447,12 +447,12 @@ function areaInfoSuccess(info) {
     payload: info
   }
 }
-function load() {
-  return {
-    type: LOADCHANGE,
-    payload: ''
-  }
-}
+// function load() {
+//   return {
+//     type: LOADCHANGE,
+//     payload: ''
+//   }
+// }
 export function areaInfo(info) {
   return (dispatch)=>{
      // dispatch(load())

@@ -119,7 +119,7 @@ class VideoCtrl extends React.Component {
               codebase="./XzVideoWebClient.cab#version=1.0.0.1"
               style={{width:'100%',height:'100%',visibility:this.props.video.modalVisiable?'hidden':'visible'}}
               >
-              <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="" download>请点击此处下载插件,安装时请关闭浏览器</a>
+              <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.0.149:8080/TEST.jpg" download>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
           <VideoCtrlBtn
             style={{marginTop:'30px'}} 

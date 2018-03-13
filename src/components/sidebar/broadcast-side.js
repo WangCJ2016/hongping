@@ -1,5 +1,5 @@
 import React from 'react'
-import {Icon,Input,Checkbox,message} from 'antd'
+import {Icon,Input,Checkbox} from 'antd'
 import { unquie } from '../../utils'
 import TableBroadcast from '../areaTree/tableBroadcast'
 import { connect } from 'react-redux'
@@ -96,6 +96,7 @@ class BroadcastSider extends React.Component {
                 height={0}
                 style={{visibility:'hidden'}}
                 >
+                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="" download>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
       </div>
     )

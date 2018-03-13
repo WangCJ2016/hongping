@@ -58,6 +58,7 @@ class DaozhaSider extends React.Component {
         className='playScreen'
         
         >
+        <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="" download>请点击此处下载插件,安装时请关闭浏览器</a>
       </object>
       </div>
     )

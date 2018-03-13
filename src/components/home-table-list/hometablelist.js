@@ -1,16 +1,18 @@
 import React from 'react'
-import { Table,Modal, Tabs, Button } from 'antd';
+import { Table,Modal, Button, message,Row,Col } from 'antd';
 import {connect} from 'react-redux'
 import { alarmPages,modifyAlarm,getAlarmInfo } from '../../redux/alarm.redux'
+import { areaInfo } from '../../redux/area.redux'
+import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import './home-table-list.scss'
 import { alarmDegree, alarmType } from '../../utils'
 import broadcastHoc from '../broadcastHoc/broadcastHoc'
-const TabPane = Tabs.TabPane
+
 
 
 @connect(
   state => ({alarm:state.alarm,user:state.user}),
-  {alarmPages,modifyAlarm,getAlarmInfo}
+  {alarmPages,modifyAlarm,getAlarmInfo,areaInfo,querySysInstallPlaces}
 )
 @broadcastHoc
 class HomeTableList extends React.Component {
@@ -82,9 +84,17 @@ class HomeTableList extends React.Component {
   handleChange(e){
     this.setState({suggest:e.target.value})
   }
+  goLoc() {
+    const alarmInfo = this.props.alarm.alarmInfo
+    if(alarmInfo.install) {
+      this.props.areaInfo({id:alarmInfo.install.areaId})
+      this.props.querySysInstallPlaces({areaId:alarmInfo.install.areaId})
+    }else{
+      message.error('设备没有绑定区域')
+    }
+  }
   render() {
     const alarmInfo = this.props.alarm.alarmInfo
-    console.log(alarmInfo)
     return (
       <div className="list">
         {this.alarmlistRender()}
@@ -97,12 +107,14 @@ class HomeTableList extends React.Component {
       >
         <div className="home-warm-content">
           <div className="first-content">
-              <p className="title">详情</p>
-              <p>时间：{alarmInfo?alarmInfo.gmtCreate:''}</p>
-              <p>类型： {alarmInfo?alarmType(alarmInfo.type):''}</p>
-              <p>程度：{alarmInfo?alarmDegree(alarmInfo.degree).degree:''}</p>
-              <p>设备：{alarmInfo?alarmInfo.device:''}</p>
-              <p>位置：{alarmInfo?alarmInfo.place:''}<a ><img src={require('../../assets/imgs/loc_icon.png')} alt=""/></a></p>    
+          <Row>
+            <Col span={12}><span className="title">详情</span></Col>
+            <Col span={12}><span>时间：{alarmInfo?alarmInfo.gmtCreate:''}</span></Col>
+            <Col span={12}><span>类型： {alarmInfo?alarmType(alarmInfo.type):''}</span></Col>
+            <Col span={12}><span>程度：{alarmInfo?alarmDegree(alarmInfo.degree).degree:''}</span></Col>
+            <Col span={12}><span>设备：{alarmInfo?alarmInfo.device:''}</span></Col>
+            <span>位置：{alarmInfo?alarmInfo.place:''}<a onClick={this.goLoc.bind(this)}><img src={require('../../assets/imgs/loc_icon.png')} alt=""/></a></span>    
+          </Row>
           </div>
          
           </div>
