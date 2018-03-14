@@ -164,37 +164,41 @@ submit() {
             </span>
             <Button type='primary' className='float-right' onClick={this.submit.bind(this)}>保存</Button>
           </div>
-          <div className='map-area'>
-          <Collapse defaultActiveKey={['1']}>
-              <Panel header="区域" key="1">
-                <AreaTree select={this.selectArea} />
-              </Panel>
-          </Collapse>
-         </div>
-       <div className="device-area">
-          <Collapse defaultActiveKey={['1','2']}>
-            <Panel header="设备" key="1">
-                {this.props.deivces.areaToDevices?this.deviceRender():null}
-            </Panel>
-            <Panel header="下级区域" key="2">
-                {this.props.deivces.nextAreas?this.nextAreaRender():null}
-            </Panel>
-        </Collapse>
-       </div>
-       <div
-       ref={(div)=>this.div=div}
-        onDrop={this.drop.bind(this)} 
-        onDragOver={this.dragOver.bind(this)}
-        style={{textAlign:'center',overflow:'auto'}}
-        >
-        <div style={{display:'inline-block',position:'relative',zIndex:0,maxWidth:'100%',maxHeight:'600px',overflow:'auto'}}>
-          {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
-          <img id='img' src={areaInfo.picture}  alt="" />}
-          {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
+          <div className='map-wrap'>  
+            <div className='map-area'>
+              <Collapse defaultActiveKey={['1']}>
+                  <Panel header="区域" key="1">
+                    <AreaTree select={this.selectArea} />
+                  </Panel>
+              </Collapse>
+            </div>
+            <div
+              ref={(div)=>this.div=div}
+              onDrop={this.drop.bind(this)} 
+              onDragOver={this.dragOver.bind(this)}
+              className='map_img'
+              style={{textAlign:'center',overflow:'auto'}}
+              >
+              <div style={{display:'inline-block',position:'relative',zIndex:0,maxWidth:'100%',maxHeight:'600px',overflow:'auto'}}>
+                {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
+                <img id='img' src={areaInfo.picture}  alt="" />}
+                {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
+                
+                {this.props.area.load?null:this.mapDeviceRender()}
+              </div>
+            </div>
+            <div className="device-area">
+                <Collapse defaultActiveKey={['1','2']}>
+                  <Panel header="设备" key="1">
+                      {this.props.deivces.areaToDevices?this.deviceRender():null}
+                  </Panel>
+                  <Panel header="下级区域" key="2">
+                      {this.props.deivces.nextAreas?this.nextAreaRender():null}
+                  </Panel>
+              </Collapse>
+            </div>
+          </div>
           
-          {this.props.area.load?null:this.mapDeviceRender()}
-        </div>
-       </div>
        
           
     </div>

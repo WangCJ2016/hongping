@@ -46,6 +46,7 @@ class Home extends React.Component {
   }
   
   componentDidMount() {
+    console.log(<Home />)
     if(this.props.area.firstAreaId) {
       this.props.querySysInstallPlaces({areaId: this.props.area.firstAreaId})
       this.props.selectAreaIdSuccess(this.props.area.firstAreaId)
@@ -140,6 +141,7 @@ class Home extends React.Component {
           </div> 
         ) 
        }
+       return null
     })
   }
 

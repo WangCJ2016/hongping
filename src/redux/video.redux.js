@@ -74,6 +74,7 @@ export function video(state=intialState,action) {
       if(action.payload[0].type === 2) {
         return {...state,hongwaiDevices:action.payload}
       }
+      return {...state}
     }
     case REMOTEPRESETS: {
       return {...state,presets:action.payload}

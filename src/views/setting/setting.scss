@@ -113,6 +113,9 @@
 }
 
 // 上传地图
+.map-wrap{
+  display: flex;
+}
 .setting-map{
   min-height: 500px;
   position: relative;
@@ -139,13 +142,16 @@
   }
   .map-area{
     width: 200px;
-    position: absolute;
+   // position: absolute;
     left: 15px;
     z-index: 1
   }
+  .map_img{
+    flex:1
+  }
   .device-area{
     width: 200px;
-    position: absolute;
+   // position: absolute;
     right: 15px;
     z-index: 1
   }
