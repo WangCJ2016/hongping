@@ -64,7 +64,7 @@ class SettingMap extends React.Component {
   mapDeviceRender() {
     const devices = this.props.deivces.mapToDevices
     return devices.map((device,index) => {
-     return (<div key={device.id||index} data-id={JSON.stringify(device)}  style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
+     return (<div key={device.id||index} data-id={JSON.stringify(device)}  style={{position:'absolute',left:device.x+'px',top:device.y+'px'}} className="dragebel-device user-select" draggable onDragStart={this.dragStart.bind(this,device)} onDragEnd={this.dragend.bind(this)}>
         <Tag key={device.id||index} onClose={this.delDevice.bind(this,device)} closable={true} >
           {device.type===1?<img draggable='false' className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
           {device.type===2?<img draggable='false' className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}

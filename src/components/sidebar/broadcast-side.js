@@ -91,7 +91,7 @@ class BroadcastSider extends React.Component {
         <object
                 ref={(screen)=>this.play=screen}
                 classID="clsid:1D3667C2-A790-4CCB-B3F2-3E2AE54BCFAA"
-                codebase="./XzVideoWebClient.cab#version=1.0.0.1"
+                codebase="./SetupOCX.exe#version=1.0.0.1"
                 width={0}
                 height={0}
                 style={{visibility:'hidden'}}

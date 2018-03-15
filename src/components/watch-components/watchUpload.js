@@ -117,7 +117,7 @@ class WatchUpload1 extends React.Component {
         <object
           ref={(screen)=>this.play=screen}
           classid="clsid:330B9C94-354F-45C1-B100-C2502CF22EA3"
-	        codebase="./XzVideoWebClient.cab#version=1.0.0.1"
+	        codebase="./SetupOCX.exe#version=1.0.0.1"
           width={0}
           height={0}
           align='center' 
