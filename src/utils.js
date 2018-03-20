@@ -80,3 +80,29 @@ export function weekFormate(day) {
         return ''
   }
 }
+
+// 根据length计算分屏数量
+export function getScreenLength(num) {
+    switch (num) {
+        case num === 1 :{
+            return 1
+        }
+        case num > 1&& num<= 4 :{
+            return 4
+        }
+        case num > 4&& num<= 6 :{
+            return 6
+        }
+        case num > 6&& num<= 8 :{
+            return 8
+        }
+        case num === 9 :{
+            return 9
+        }
+        case num > 9&& num<= 13 :{
+            return 13
+        }
+        default:
+           return 16
+    }
+}

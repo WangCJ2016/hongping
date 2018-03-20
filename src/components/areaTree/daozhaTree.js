@@ -33,7 +33,6 @@ export default class DaozhaTree extends React.Component {
       }
     }
     onChange(checked) {
-      console.log(checked,this.props.play)
       if(checked) {
         this.props.play.XzVideo_RemoteControl_Barriergate(1,1,5,0)
       }else{

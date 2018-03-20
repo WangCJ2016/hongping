@@ -343,7 +343,6 @@ export function modifyChannel(info) {
               index: channel.index,
               type: channel.type,
               remark: channel.remark,
-              icon: channel.icon,
               key:channel.id
             }
             dispatch(modifyChannelSuccess(list))

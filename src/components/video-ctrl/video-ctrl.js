@@ -50,7 +50,7 @@ class VideoCtrl extends React.Component {
   }
   // 录像
   saveRealData() {
-   
+     const path = this.play.GetLocallPath(1)
     if(this.props.video.saveVideoIf){
       const a = this.play.XzVideo_StopSaveRealData(0)
       if(a) {
@@ -59,7 +59,7 @@ class VideoCtrl extends React.Component {
         message.error('暂停录像失败，请重试')
       }
     }else{
-      const a=this.play.XzVideo_SaveRealData(0, `D:\\data/test${new Date().getTime()}.mp4`)
+      const a=this.play.XzVideo_SaveRealData(0, path+`/${new Date().getTime()}.mp4`)
        if(a) {
         message.info('已开启录像')
       }else{
@@ -70,7 +70,8 @@ class VideoCtrl extends React.Component {
   }
   // 抓图
   realCapPicture() {
-    const a = this.play.XzVideo_RealCapPicture(0,`D:\\data/test${new Date().getTime()}.bmp`)
+    const path = this.play.GetLocallPath(2)
+    const a = this.play.XzVideo_RealCapPicture(0,path+`/${new Date().getTime()}.bmp`)
     if(a) {
       message.info('抓图成功')
     }else{
@@ -79,7 +80,7 @@ class VideoCtrl extends React.Component {
   }
   // 关闭通道
   stopPlay() {
-    this.play.XzVideo_PreSet(0)
+    this.play.XzVideo_RealPlayStop(0)
   }
   // 道闸控制
   remoteCtrl(num) {

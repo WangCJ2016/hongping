@@ -2,8 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import classname from 'classnames'
 import { Icon, Modal, Form, Input,Collapse,Popconfirm,Checkbox } from 'antd'
-import {videoAreaDevices, createPreviewGroup, remotePreviewGroupList,modifyPreviewGroup,modifySysRemotePreview,getDevInfo,modalVisiable} from '../../redux/video.redux'
+import {videoAreaDevices, createPreviewGroup, remotePreviewGroupList,modifyPreviewGroup,modifySysRemotePreview,modalVisiable} from '../../redux/video.redux'
+import { getDevInfo} from '../../redux/setting.device.redux'
 import TableAreaTree from '../areaTree/tableAreaTree'
+import { getScreenLength } from '../../utils'
 const FormItem = Form.Item
 const Panel = Collapse.Panel;
 const CheckboxGroup = Checkbox.Group;
@@ -11,7 +13,7 @@ const CheckboxGroup = Checkbox.Group;
 @connect(
   state=>({video: state.video}),
   {
-    videoAreaDevices, createPreviewGroup, remotePreviewGroupList,modifyPreviewGroup,modifySysRemotePreview,getDevInfo,modalVisiable
+    getDevInfo,videoAreaDevices, createPreviewGroup, remotePreviewGroupList,modifyPreviewGroup,modifySysRemotePreview,modalVisiable
    }
 )
 class VideoCtrlYuzhizu1 extends React.Component {
@@ -23,21 +25,20 @@ class VideoCtrlYuzhizu1 extends React.Component {
       editPreviewVisible:false,
       selectPreview: null,
       targetKeys:[],
-      previewSelectId:-1
+      previewSelectId:-1,
+      previewChecked:[]
      }
-     this.realPlay = this.realPlay.bind(this)
+    
      this.transferClick = this.transferClick.bind(this)
      this.checkboxChange = this.checkboxChange.bind(this)
      this.previewsGroupClick = this.previewsGroupClick.bind(this)
+     this.collapseChange = this.collapseChange.bind(this)
   }
   
    componentDidMount() {
      this.props.remotePreviewGroupList({devType:1})
    }
-   // 播放
-   realPlay(devId) {
-     this.props.getDevInfo(devId,this.props.play)
-   }
+ 
 
   createSubmit() {
     this.props.form.validateFields(['name'],(err, values)=> {
@@ -79,9 +80,9 @@ class VideoCtrlYuzhizu1 extends React.Component {
   previewsGroupRender() {
     const lists =  this.props.video.previewGroup
     return (
-      <Collapse bordered={false} >
+      <Collapse bordered={false} accordion onChange={this.collapseChange}>
       {lists.map((list,index) => (
-        <Panel header={list.title} key={index}>
+        <Panel header={list.title} key={list.id}>
           <div className='abosulte1' >
             <Icon type='plus' onClick={()=> this.previewsGroupClick(list)}/>
             <Icon type='edit' onClick={()=>{this.setState({selectPreview:list,editvisible:true});this.props.modalVisiable()}} />
@@ -94,37 +95,45 @@ class VideoCtrlYuzhizu1 extends React.Component {
               preview:true,
               active: this.state.previewSelectId === preview.id
             })
-           return <div key={preview.id} className={style} onClick={()=>this.realPlay(preview.devId)}>{preview.devName}</div>
+           return <div key={preview.id} className={style} >{preview.devName}</div>
           })}
         </Panel>
       ))}
       </Collapse>
     )
   }
+  collapseChange(e,a) {
+    const group =  this.props.video.previewGroup.filter(group => group.id===e)
+    if(group[0].previews) {
+      const length = group[0].previews.length
+      const screenLength = getScreenLength(length)
+      this.play.XzVideo_SetRealPlayScreen(screenLength)
+      group[0].previews.forEach((device,index) => {
+        this.props.getDevInfo({devId: device.devId,type:device.devType},'play',this.props.play,index)
+      })
+    }
+
+  }
   transferKeyChange(selectedRowKeys, selectedRows) {
     this.setState({selectedRows:selectedRows})
   }
   transferClick(type) {
     if(type === 'left') {
-      const newDevIdArr = []
-      this.state.targetKeys.forEach(id=>{
-        if(this.state.previewChecked.indexOf(id)===-1)
-        newDevIdArr.push(id)
-      })
-      this.setState({options:this.state.options.filter(id=>newDevIdArr.indexOf(id.value)>-1)})
+     
+      this.setState({options:this.state.options.filter(id=>this.state.previewChecked.indexOf(id.value)===-1)})
     }
     if(type==='right') {
-      const arr = this.state.selectedRows.filter(row => row.type>0).map(item=>({label:item.name,value:item.id}))
-      let realArr = []
+      let arr = this.state.selectedRows.filter(row => row.type>0).map(item=>item.id)
       arr.forEach(item=>{
-        let has = false
         this.state.options.forEach(option=>{
-          has = option.value === item.value? true: false
+           if(arr.indexOf(option.value) > -1) {
+            arr = arr.filter(value => value!==option.value)
+           }
         })
-        realArr = has?realArr:[...realArr,item]
       })
+      const addArr = this.state.selectedRows.filter(row => arr.indexOf(row.id)>-1).map(item=>({label:item.name,value:item.id}))
       this.setState({
-        options:[...this.state.options,...realArr]
+        options:[...this.state.options,...addArr]
       })
     }
   }
@@ -137,7 +146,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
         <div className='yuzhiwei'>
-            <div className="add-group" onClick={()=>{this.setState({createvisible:true});this.props.modalVisiable()}}>
+            <div style={{ cursor: 'pointer'}} onClick={()=>{this.setState({createvisible:true});this.props.modalVisiable()}}>
               <Icon type='plus'/>添加预览组
             </div>
             {this.previewsGroupRender()}
@@ -151,9 +160,9 @@ class VideoCtrlYuzhizu1 extends React.Component {
               onCancel={()=>{this.setState({createvisible:false});this.props.modalVisiable()}}
               >
               <Form layout='inline'>
-                <FormItem label="预置位名称">
+                <FormItem label="预览组名称">
                   {getFieldDecorator('name',{
-                    rules: [{ required: true,message: '请输入预置位名称'}],
+                    rules: [{ required: true,message: '请输入预览组名称'}],
                   })(<Input type="text" />)}
                 </FormItem>
               </Form>
@@ -170,9 +179,9 @@ class VideoCtrlYuzhizu1 extends React.Component {
               onCancel={()=>{this.setState({editvisible:false});this.props.modalVisiable()}}
               >
               <Form layout='inline'>
-                <FormItem label="预置位名称">
+                <FormItem label="预览组名称">
                   {getFieldDecorator('editname',{
-                    rules: [{ required: true,message: '请输入预置位名称'}],
+                    rules: [{ required: true,message: '请输入预览组名称'}],
                      initialValue: this.state.selectPreview?this.state.selectPreview.title:''
                   })(<Input type="text" />)}
                 </FormItem>
@@ -199,7 +208,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
                 </div>
                 <div className="device area">
                   <div className="title">设备</div>
-                  <CheckboxGroup options={this.state.options}  onChange={this.checkboxChange}/>
+                  <CheckboxGroup defaultValue={[]} options={this.state.options}  onChange={this.checkboxChange}/>
               </div>
             </div>
           </Modal>

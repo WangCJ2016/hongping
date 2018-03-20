@@ -73,7 +73,7 @@ class Frame extends React.Component {
       {class: 'watch',title: '巡更管理',link:'/watch'},
       {class: 'status',title: '实时状态',link:'/status'},
       {class: 'history',title: '历史分析',link:'/history'},
-      {class: 'usercenter',title: '个人设置',link:'/userCenter'},
+      {class: "userCenter",title: '个人设置',link:'/userCenter'},
       {class: 'setting',title: '系统配置',link:'/setting'}
   ].filter(nav=> this.props.user.authMenu.indexOf(nav.class)>-1)
    return navArray.map(item=>(

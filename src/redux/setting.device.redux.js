@@ -359,7 +359,7 @@ function devinfoSuccess(info) {
     payload: data
   }
 }
-export function getDevInfo(info,type,play) {
+export function getDevInfo(info,type,play,index) {
   return (dispatch,getState) => {
     const user = getState().user
     request.get(config.api.base + config.api.getDevInfo,{
@@ -373,7 +373,7 @@ export function getDevInfo(info,type,play) {
        const model = device.host.model === 1?'HikHC-14':'DHNET-03'
        dispatch(devinfoSuccess(res.dataObject))
        if(type==='play') {
-        play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+        play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,index?index:0);
        }
        
      }

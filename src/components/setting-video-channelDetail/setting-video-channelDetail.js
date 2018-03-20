@@ -50,15 +50,7 @@ class SettingVideoChannelDetail1 extends React.Component {
     this.props.modifyChannel({id: id, isDelete:1})
   }
   render() {
-    const columns = [ {
-              title: 'tip',
-              dataIndex: 'icon',
-              width: '20%',
-              key: 'icon',
-              render: (text,record) => (
-                record.icon?<img src={require(`../../assets/imgs/${record.icon}.png`)} alt=""/>:null
-              )
-            },{
+    const columns = [{
               title: '通道名称',
               dataIndex: 'name',
               width: '60%',
@@ -123,17 +115,6 @@ class SettingVideoChannelDetail1 extends React.Component {
                   </Select>
                 )}
               </FormItem>
-              {/* <FormItem label="图标">
-                {getFieldDecorator('icon',{
-                  rules: [{ required: true,message: '请填写图标'}],
-                  initialValue: 'ipc'
-                })(
-                  <Select>
-                  <Option value='ipc'><img src={require('../../assets/imgs/ipc.png')} alt=""/></Option>
-                  <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
-                   </Select>
-                )}
-              </FormItem> */}
               <FormItem label="备注">
                 {getFieldDecorator('remark',{
                   initialValue: ''

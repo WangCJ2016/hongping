@@ -1,5 +1,5 @@
 import React from 'react'
-import {Tooltip,Switch,Icon,Modal,Form,Input,Popconfirm} from 'antd'
+import {Tooltip,Switch,Icon,Modal,Form,Input,Popconfirm,message} from 'antd'
 const FormItem = Form.Item
 
 class VideoCtrlBtn1 extends React.Component {
@@ -30,6 +30,13 @@ class VideoCtrlBtn1 extends React.Component {
       this.props.remoteCtrl(0)
     }
   }
+  addModalVisible() {
+    if(this.props.presets.presets.channelId) {
+      this.setState({visible:true});this.props.modalVisiable()
+    }else{
+      message.error("请先选择通道")
+    }
+  }
   submit(){
     this.props.form.validateFields((errors, values)=>{
       if(!errors) {
@@ -38,13 +45,17 @@ class VideoCtrlBtn1 extends React.Component {
           channelId:this.props.presets.channelId,
           presetId: this.props.presets.presets.length + 1
         })
+        this.play.XzVideo_PreSet(8,this.props.presets.presets.length + 1,0)
+        this.setState({
+          visible: false
+        })
       }
     })
   }
   presetsRender() {
     const presets = this.props.presets.presets
     return presets.map(preset=> (
-      <li key={preset.id}>{preset.presetName}
+      <li key={preset.id} onClick={()=>this.play.XzVideo_PreSet(39,preset.presetId,0)}>{preset.presetName}
         <Popconfirm title="确认删除?" onConfirm={()=>this.props.delPreset({id:preset.id,isDelete:1,presetId:preset.presetId,channelId:preset.channelId})} okText="确定" cancelText="取消">
         <Icon type='delete'/>
         </Popconfirm>
@@ -52,7 +63,6 @@ class VideoCtrlBtn1 extends React.Component {
     ))
   }
   render() {
-    
     const { getFieldDecorator } = this.props.form
     return (
       <div className="controls clearfix">
@@ -79,7 +89,7 @@ class VideoCtrlBtn1 extends React.Component {
                 <img src={require('../../assets/imgs/video_full.png')} onClick={this.props.fullscreen} alt=""/>
               </Tooltip>
               <div className="controls-btn"><Icon type="poweroff" onClick={this.props.stopPlay}/>关闭通道</div>
-              <div  onClick={()=>{this.setState({visible:true});this.props.modalVisiable()}} className="controls-btn"><Icon type="plus" />添加预置位</div>
+              <div  onClick={this.addModalVisible.bind(this)} className="controls-btn"><Icon type="plus" />添加预置位</div>
               <div style={{position:'relative',display:'inline-block'}}>
                 <div className="controls-btn" onClick={()=>this.setState({yuzhiweiVisible:!this.state.yuzhiweiVisible})}>调用预置位 {this.state.yuzhiweiVisible?<Icon type='down'/>:<Icon type='up'/>}
                 </div>
