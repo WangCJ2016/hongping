@@ -36,8 +36,9 @@ class WatchUpload1 extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         let watchData = []
-        console.log(this.play)
-        const count = this.play.hcPTcomm(values.chuankou,values.boud)
+       
+        const count = this.play.hcPTcomm(10,1)
+        console.log(count)
         for(let i=0;i<count;i++) {
           const a = this.play.hcPTrecord(i)
           const dataStr = a.slice(0,8)
@@ -114,15 +115,12 @@ class WatchUpload1 extends React.Component {
           columns={columns}
           dataSource={this.state.watchData}
         ></Table>
-        <object
-          ref={(screen)=>this.play=screen}
-          classid="clsid:330B9C94-354F-45C1-B100-C2502CF22EA3"
-	        codebase="./SetupOCX.exe#version=1.0.0.1"
-          width={0}
-          height={0}
-          align='center' 
-          >
-          <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="" download>请点击此处下载插件,安装时请关闭浏览器</a>
+        <object ref={(screen)=>this.play=screen} 
+            classID="clsid:330B9C94-354F-45C1-B100-C2502CF22EA3"
+            codebase="./SetupOCX.exe#version=1.0.0.1"
+            width={0}
+            height={0}  
+        >
         </object>
       </div>
     )
@@ -130,3 +128,4 @@ class WatchUpload1 extends React.Component {
 }
 const WatchUpload = Form.create()(WatchUpload1)
 export default WatchUpload
+
