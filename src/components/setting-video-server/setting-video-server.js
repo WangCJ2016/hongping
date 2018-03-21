@@ -41,7 +41,6 @@ class SettingVideoServer1 extends React.Component {
   // 新增
   createSubmit() {
     this.props.form.validateFields(['createInnerIp','createMaxConn','createName','createOuterIp','createPort','createRemark','createTimeout','createType'],(err,values)=>{
-      console.log(err,values)
       if(!err) {
         this.props.createServer({
           name:encodeURI(values.createName),

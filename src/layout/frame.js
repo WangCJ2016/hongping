@@ -13,6 +13,7 @@ import UserCenter from '../views/userCenter/userCenter'
 import Status from '../views/status/status'
 import History from '../views/history/history'
 import Watch from '../views/watch/watch'
+import Document from '../views/document/document'
 import { changeSidebar } from '../redux/sidebar.redux'
 import { alarmCount } from '../redux/alarm.redux'
 import { dataSuccess } from '../redux/sidebar.redux'
@@ -73,6 +74,7 @@ class Frame extends React.Component {
       {class: 'watch',title: '巡更管理',link:'/watch'},
       {class: 'status',title: '实时状态',link:'/status'},
       {class: 'history',title: '历史分析',link:'/history'},
+      {class: "document",title: '文档管理',link:'/document'},
       {class: "userCenter",title: '个人设置',link:'/userCenter'},
       {class: 'setting',title: '系统配置',link:'/setting'}
   ].filter(nav=> this.props.user.authMenu.indexOf(nav.class)>-1)
@@ -146,6 +148,7 @@ class Frame extends React.Component {
                 <Route exact path='/trail' component={Trail}></Route>
                 <Route exact path='/watch' component={Watch}></Route>
                 <Route exact path='/userCenter' component={UserCenter}></Route>
+                <Route exact path='/document' component={Document}></Route>
               </Switch>
           </Content>
         </Layout>     

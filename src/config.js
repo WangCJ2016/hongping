@@ -113,6 +113,13 @@ export const config = {
     getTaskDefaultTime: '/patrol_getPatrolTaskTime',
     setTaskTime: '/patrol_setPatrolTaskTime',
     watchPointsUpload:'/patrol_createPatrolHistorys',
+    // 文档管理
+    levelTopCategorys: '/category_queryCategorys',
+    addCategorys:'/category_createCategorys',
+  
+    filesList: '/category_queryCategoryFiles',
+    uploadFile: '/category_createCategoryFile',
+    delFile: '/category_modifyCategoryFile'
   }
 }
 //get/post请求

@@ -505,7 +505,7 @@ export function uploadImg(info) {
     formData.append('accountId', user.account.id);
     formData.append('id', info.id);
     formData.append('picture', info.picture);
-    fetch('http://47.100.123.83/hp/manage/area_uploadAreaImg',{
+    fetch(config.api.base + config.api.uploadAreaImg,{
       method: 'POST',
       mode: 'cors',
       body : formData  
