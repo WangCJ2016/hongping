@@ -45,6 +45,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
       if(!err) {
         this.props.createPreviewGroup({title: encodeURI(values.name),devType:1})
         this.setState({createvisible: false})
+        this.props.modalVisiable()
       }
     })
   }
@@ -107,7 +108,8 @@ class VideoCtrlYuzhizu1 extends React.Component {
     if(group[0].previews) {
       const length = group[0].previews.length
       const screenLength = getScreenLength(length)
-      this.play.XzVideo_SetRealPlayScreen(screenLength)
+      console.log(length,screenLength)
+      this.props.play.XzVideo_SetRealPlayScreen(screenLength)
       group[0].previews.forEach((device,index) => {
         this.props.getDevInfo({devId: device.devId,type:device.devType},'play',this.props.play,index)
       })

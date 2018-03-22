@@ -31,7 +31,7 @@ class VideoCtrlBtn1 extends React.Component {
     }
   }
   addModalVisible() {
-    if(this.props.presets.presets.channelId) {
+    if(this.props.presets.channelId) {
       this.setState({visible:true});this.props.modalVisiable()
     }else{
       message.error("请先选择通道")
@@ -45,17 +45,18 @@ class VideoCtrlBtn1 extends React.Component {
           channelId:this.props.presets.channelId,
           presetId: this.props.presets.presets.length + 1
         })
-        this.play.XzVideo_PreSet(8,this.props.presets.presets.length + 1,0)
+        this.props.play.XzVideo_PreSet(8,this.props.presets.presets.length + 1,0)
         this.setState({
           visible: false
         })
+        this.props.modalVisiable()
       }
     })
   }
   presetsRender() {
     const presets = this.props.presets.presets
     return presets.map(preset=> (
-      <li key={preset.id} onClick={()=>this.play.XzVideo_PreSet(39,preset.presetId,0)}>{preset.presetName}
+      <li key={preset.id} onClick={()=>this.props.play.XzVideo_PreSet(39,preset.presetId,0)}>{preset.presetName}
         <Popconfirm title="确认删除?" onConfirm={()=>this.props.delPreset({id:preset.id,isDelete:1,presetId:preset.presetId,channelId:preset.channelId})} okText="确定" cancelText="取消">
         <Icon type='delete'/>
         </Popconfirm>
@@ -63,9 +64,10 @@ class VideoCtrlBtn1 extends React.Component {
     ))
   }
   render() {
+   
     const { getFieldDecorator } = this.props.form
     return (
-      <div className="controls clearfix">
+      <div className="controls clearfix" style={{marginTop:this.state.yuzhiweiVisible?'120px':'30px'}}>
           <div className='float-left'>
               {this.props.videoProps.hasSoundIf? 
                 <Tooltip title="关闭声音">
@@ -88,7 +90,7 @@ class VideoCtrlBtn1 extends React.Component {
               <Tooltip title="全屏">
                 <img src={require('../../assets/imgs/video_full.png')} onClick={this.props.fullscreen} alt=""/>
               </Tooltip>
-              <div className="controls-btn"><Icon type="poweroff" onClick={this.props.stopPlay}/>关闭通道</div>
+              <div className="controls-btn" onClick={this.props.stopPlay}><Icon type="poweroff" />关闭通道</div>
               <div  onClick={this.addModalVisible.bind(this)} className="controls-btn"><Icon type="plus" />添加预置位</div>
               <div style={{position:'relative',display:'inline-block'}}>
                 <div className="controls-btn" onClick={()=>this.setState({yuzhiweiVisible:!this.state.yuzhiweiVisible})}>调用预置位 {this.state.yuzhiweiVisible?<Icon type='down'/>:<Icon type='up'/>}

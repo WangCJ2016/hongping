@@ -30,7 +30,9 @@ class VideoCtrl extends React.Component {
   }
   state = {  }
   componentDidMount() {
-   // this.play.XzVideo_RealPlay(1,"admin","",0,"192.168.11.9",6000,1,"192.168.0.233",8000,"admin","12345","HikHC-14",1,0);
+    this.setState({
+      play: this.play
+    })
   }
   
   // 选择屏幕
@@ -41,10 +43,10 @@ class VideoCtrl extends React.Component {
   soundCtrl() {
     
     if(this.props.video.hasSoundIf) {
-     this.play.XzVideo_RealPlaySound('关闭',0)
+     this.play.XzVideo_RealPlaySound(false,0)
      
     }else{
-      this.play.XzVideo_RealPlaySound('打开',0)
+      this.play.XzVideo_RealPlaySound(true,0)
     }
     this.props.changeSoundIf()
   }
@@ -80,7 +82,7 @@ class VideoCtrl extends React.Component {
   }
   // 关闭通道
   stopPlay() {
-    this.play.XzVideo_RealPlayStop(0)
+   this.play.XzVideo_RealPlayStop(0)
   }
   // 道闸控制
   remoteCtrl(num) {
@@ -101,12 +103,7 @@ class VideoCtrl extends React.Component {
   }
   // 全屏
   fullscreen() {
-     const a = this.play.XzVideo_FullScreen(0)
-     if(a) {
-       message.success('关闭成功')
-     }else{
-       message.error('关闭失败')
-     }
+     const a = this.play.XzVideo_FullScreen(1)
   }
 
 
@@ -123,6 +120,7 @@ class VideoCtrl extends React.Component {
               <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.0.149:8080/TEST.jpg" download>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
           <VideoCtrlBtn
+            play={this.state.play}
             style={{marginTop:'30px'}} 
             modalVisiable={this.props.modalVisiable}
             fullscreen={this.fullscreen}
@@ -140,21 +138,21 @@ class VideoCtrl extends React.Component {
       <div className="ctrl-right float-right">
         <Tabs defaultActiveKey="1" type="card">
           <TabPane tab="设备" key="1">
-           <VideoCtrlTree play={this.play} />
+           <VideoCtrlTree play={this.state.play} />
           </TabPane>
           <TabPane tab="预览组" key="2">
          
-            <VideoCtrlYuzhizu play={this.play} />
+            <VideoCtrlYuzhizu play={this.state.play} />
           </TabPane>
         </Tabs>
         <Tabs defaultActiveKey="1" type="card">
           <TabPane tab="云台" key="1">
             <VideoCtrlYuntai  
-              play={this.play}/>
+              play={this.state.play}/>
           </TabPane>
           <TabPane tab="参数" key="2">
             <VideoCtrlParam 
-              play={this.play}
+              play={this.state.play}
              />
           </TabPane>
         </Tabs>

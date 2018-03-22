@@ -33,22 +33,26 @@ class WatchUpload1 extends React.Component {
   }
   submit(e) {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        let watchData = []
+    const a = document.getElementById('play')
+    console.log(a)
+    a.hcPTcomm(10, 1)
+    // e.preventDefault();
+    // this.props.form.validateFields((err, values) => {
+    //   if (!err) {
+    //     let watchData = []
        
-        const count = this.play.hcPTcomm(10,1)
-        console.log(count)
-        for(let i=0;i<count;i++) {
-          const a = this.play.hcPTrecord(i)
-          const dataStr = a.slice(0,8)
-          watchData.push({time:dataStr.slice(-2)+'-'+dataStr.slice(4,6)+'-'+dataStr.slice(2,4)+'-'+dataStr.slice(0,2),point:a.slice(8)})
-        }
-        this.setState({
-          watchData: watchData
-        })
-      }
-    });
+    //     const count = this.play.hcPTcomm(10,1)
+    //     console.log(count)
+    //     for(let i=0;i<count;i++) {
+    //       const a = this.play.hcPTrecord(i)
+    //       const dataStr = a.slice(0,8)
+    //       watchData.push({time:dataStr.slice(-2)+'-'+dataStr.slice(4,6)+'-'+dataStr.slice(2,4)+'-'+dataStr.slice(0,2),point:a.slice(8)})
+    //     }
+    //     this.setState({
+    //       watchData: watchData
+    //     })
+    //   }
+    // });
   }
   upload() {
    // if(this.state.watchData.length===0) {return}
@@ -64,6 +68,13 @@ class WatchUpload1 extends React.Component {
     const {getFieldDecorator} = this.props.form 
     return (
       <div>
+        <object ref={(screen)=>this.play=screen}   id="play"
+              classID="clsid:330B9C94-354F-45C1-B100-C2502CF22EA3"
+              codebase="./SetupOCX.exe#version=1.0.0.1"
+              width={800}
+              height={600}
+          >
+          </object>
         <Form layout="inline" onSubmit={this.submit}>
           <Row>
             <Col span={6}>
@@ -115,13 +126,7 @@ class WatchUpload1 extends React.Component {
           columns={columns}
           dataSource={this.state.watchData}
         ></Table>
-        <object ref={(screen)=>this.play=screen} 
-            classID="clsid:330B9C94-354F-45C1-B100-C2502CF22EA3"
-            codebase="./SetupOCX.exe#version=1.0.0.1"
-            width={0}
-            height={0}  
-        >
-        </object>
+         
       </div>
     )
   }
