@@ -5,11 +5,13 @@ import { carPages } from '../../redux/alarm.redux'
 import './home-table.scss'
 import HomeTableList from '../home-table-list/hometablelist'
 import CarsTable from './cars-table'
+import { alarmPages,alarmCount} from '../../redux/alarm.redux'
+import { config } from '../../config'
 const TabPane = Tabs.TabPane;
 
 @connect(
-  state => ({alarm:state.alarm}),
-  {carPages}
+  state => ({alarm:state.alarm,user:state.user}),
+  {carPages,alarmPages,alarmCount}
 )
 class HomeTable extends React.Component {
   constructor() {
@@ -30,6 +32,24 @@ class HomeTable extends React.Component {
   componentWillUnmount() {
     document.removeEventListener('mousemove',this.mouseMove) 
     document.removeEventListener('mouseup',this.mouseUp)
+    if(this.webSocket) {
+      this.webSocket.close()
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.user.account&&nextProps.user.account.id&&!this.webSocket) {
+      this.webSocket = new WebSocket(`ws://${config.api.ip}/hp/wsServlet.ws?accountId=${nextProps.user.account.id}`)
+      this.webSocket.onopen = function() {
+        console.log('websocket已连接')
+      }
+      this.webSocket.onerror = function(e) {
+        console.log(e)
+      }
+      this.webSocket.onmessage = (e)=>{
+        this.props.alarmPages({pageNo:1})
+        this.props.alarmCount()
+      }
+    }
   }
   onTabClick(e) {
     if(e==='3') {

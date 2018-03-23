@@ -10,6 +10,7 @@ export const config = {
     }
   },
   api: {
+    ip:'192.168.0.149:8080',
     base: 'http://192.168.0.149:8080/hp/manage', // http://192.168.0.149:8080/hp/manage
     login: '/do_login', // 登录
 
@@ -116,7 +117,7 @@ export const config = {
     // 文档管理
     levelTopCategorys: '/category_queryCategorys',
     addCategorys:'/category_createCategorys',
-  
+    modifyCategory: '/category_modifyCategorys',
     filesList: '/category_queryCategoryFiles',
     uploadFile: '/category_createCategoryFile',
     delFile: '/category_modifyCategoryFile'

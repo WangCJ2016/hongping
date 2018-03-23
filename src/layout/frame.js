@@ -39,12 +39,6 @@ class Frame extends React.Component {
 
   componentDidMount() {
    this.props.alarmCount()
-   this.timer = setInterval(()=>{
-      this.props.alarmCount()
-    },600000)
-  }
-  componentWillUnmount() {
-    clearInterval(this.timer)
   }
   navRender() {
     const navArray = [

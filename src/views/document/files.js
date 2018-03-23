@@ -41,7 +41,13 @@ class FilesList1 extends React.Component {
       title: 'title',
       dataIndex: 'title',
       key: 'title',
-      width:'50%'
+      width:'50%',
+      render:(text,record)=>(
+        <span>
+          <Icon type="file" />
+          <span style={{marginLeft:'5px'}}>{record.title}</span>
+        </span>
+      )
      },{
       title: 'action',
       dataIndex: 'action',

@@ -3,7 +3,7 @@ import { message} from 'antd'
 
 const token = localStorage.getItem('token')
 const initialState = {
-  levelTopCategorys:[],
+  categorysTree:[],
   filesList: []
 }
 const DATASUCCESS = '[document] DATASUCCESS'
@@ -38,7 +38,9 @@ export function levelTopCategorys() {
       .then(res =>{ 
         console.log(res)
         if(res.success) {
-           dispatch(dataSuccess({levelTopCategorys: res.dataObject}))
+          const toplevel = res.dataObject.filter(category => category.level===0)
+          console.log(fullTree(toplevel,res.dataObject))
+           dispatch(dataSuccess({categorysTree: fullTree(toplevel,res.dataObject)}))
         }
       })
   }
@@ -57,20 +59,30 @@ export function addCategorys(info) {
         token: token,
       })
       .then(res =>{ 
-        console.log(res)
         if(res.success) {
-            if(res.dataObject.parentId) {
-              dispatch(addNextCategorys([res.dataObject]))
-            }else{
-              levelTopCategorys()(dispatch)
-            }
+          levelTopCategorys()(dispatch)
         }else{
           message.error(res.msg)
         }
       })
   }
 }
-
+export function modifyCategory(info) {
+  return (dispatch) => {
+    request.get(config.api.base + config.api.modifyCategory,
+      {
+        ...info,
+        token: token,
+      })
+      .then(res =>{ 
+        if(res.success) {
+          levelTopCategorys()(dispatch)
+        }else{
+          message.error(res.msg)
+        }
+      })
+  }
+}
 
 export  function filesList(info) {
   return (dispatch) => {
@@ -129,3 +141,24 @@ export function delFile(info) {
 }
 // reducer handle
 
+function fullTree(levelTopArr, allAreas) {
+  return levelTopArr.map((level1,inde)=>{
+    return {...level1,children: toTree(level1.id, allAreas)}
+  })
+}
+function toTree(id, allAreas) {
+  const childArr = childrenArr(id, allAreas)
+  if(childArr.length>0) {
+    return childArr.map((child,index)=>{
+      return {...child,children:toTree(child.id,allAreas)}
+    })
+  }
+}
+function childrenArr(id, array) {
+  var newArry = []
+  for (var i in array) {
+      if (array[i].parentId === id)
+          newArry.push(array[i]);
+  }
+  return newArry;
+}

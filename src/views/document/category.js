@@ -1,14 +1,14 @@
 import React from 'react'
-import { Icon,Tree,Modal,Form,Input } from 'antd'
+import { Icon,Tree,Modal,Form,Input,Popconfirm } from 'antd'
 import { connect } from 'react-redux'
-import { levelTopCategorys,addCategorys,dataSuccess,filesList } from '../../redux/document.redux'
+import { levelTopCategorys,addCategorys,dataSuccess,filesList,modifyCategory } from '../../redux/document.redux'
 const TreeNode = Tree.TreeNode;
 const FormItem = Form.Item
 
 @connect(
   state=> ({document: state.document}),
   {
-    levelTopCategorys,addCategorys,dataSuccess,filesList
+    levelTopCategorys,addCategorys,dataSuccess,filesList,modifyCategory
   }
 )
 class Category1 extends React.Component {
@@ -17,45 +17,47 @@ class Category1 extends React.Component {
     this.state = {
       addVisible: false,
       levelTopIf: false,
-      selectedKeys: []
+      selectedKeys: [],
+      selectCategoryName:'',
+      editVisible: false
     }
     this.addSubmit = this.addSubmit.bind(this)
     this.treeSelect = this.treeSelect.bind(this)
+    this.editSubmit = this.editSubmit.bind(this)
   }
   componentDidMount() {
     this.props.levelTopCategorys()
   }
   treeSelect(selectedKeys, e) {
-    
     if(e.selected) {
+      this.props.dataSuccess({selectCategoryId: selectedKeys[0]})
+      this.props.filesList({categoryId: selectedKeys[0]})
       this.setState({
-        selectedKeys: [selectedKeys[selectedKeys.length-1]]
-      },()=>{
-        this.props.dataSuccess({selectCategoryId: this.state.selectedKeys[0]})
-        this.props.filesList({categoryId: this.state.selectedKeys[0]})
+        selectCategoryId: selectedKeys[0]
       })
     }
   }
   treeRender() {
-    const levelTopCategorys = this.props.document.levelTopCategorys
+    const categorysTree = this.props.document.categorysTree
     return (
       <Tree
-      checkable={true}
-      multiple={true}
-      checkStrictly={true}
-      selectedKeys={this.state.selectedKeys}
-      onSelect={this.treeSelect}
-      >
+        multiple={false}
+        onSelect={this.treeSelect}
+        >
          {
-          levelTopCategorys.map(treenode=>(
+          categorysTree.map(treenode=>(
             <TreeNode title={<span>
-              {treenode.category} 
+              <Icon style={{marginRight:'5px'}} type="folder" />
+              {treenode.category}
               <span style={{float:'right'}}>
-                <a style={{marginLeft:'100px'}}><Icon type='edit'/>编辑</a>
-                <a style={{marginLeft:'10px'}}><Icon type='plus'/>添加下级目录</a>
-                <a style={{marginLeft:'10px'}}><Icon type='delete'/>删除</a> 
+                <a style={{marginLeft:'100px'}} onClick={()=>this.setState({editVisible:true,selectCategoryName:treenode.category})} ><Icon type='edit'/>编辑</a>
+                <a style={{marginLeft:'10px'}}  onClick={()=>this.setState({addVisible:true,parentId:treenode.id,levelTopIf:false,level:treenode.level})}><Icon type='plus'/>添加下级目录</a>
+                <Popconfirm onConfirm={this.delHandle.bind(this,treenode.id)} title="确定删除？"  okText="确定" cancelText="取消">
+                  <a style={{marginLeft:'10px'}}><Icon type='delete'/>删除</a> 
+                </Popconfirm> 
               </span>   
               </span>} key={treenode.id}>
+              {this.toTree(treenode.children)}
             </TreeNode>
           ))
          }
@@ -66,29 +68,45 @@ class Category1 extends React.Component {
     if(treenode&&treenode.length>0) {
       return treenode.map(Tchildren => (
         <TreeNode title={<span>
-          {!Tchildren.type?<img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
-          :<img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>}
-          {Tchildren.name}
-          {
-            Tchildren.type?<a onClick={this.goLoc.bind(this,Tchildren.parentId)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>:
-           null
-          }
-          
-          </span>} key={Tchildren.type?Tchildren.index:Tchildren.id}>
+            <Icon type="folder" />
+          {Tchildren.category}
+          <span style={{float:'right'}}>
+            <a style={{marginLeft:'100px'}} onClick={()=>this.setState({editVisible:true,selectCategoryName:Tchildren.category})}><Icon type='edit'/>编辑</a>
+            <a style={{marginLeft:'10px'}} onClick={()=>this.setState({addVisible:true,parentId:Tchildren.id,levelTopIf:false,level:Tchildren.level})}><Icon type='plus'/>添加下级目录</a>
+            <Popconfirm onConfirm={this.delHandle.bind(this,Tchildren.id)} title="确定删除？"  okText="确定" cancelText="取消">
+              <a style={{marginLeft:'10px'}}><Icon type='delete'/>删除</a> 
+            </Popconfirm> 
+          </span>   
+          </span>} key={Tchildren.id}>
           {this.toTree(Tchildren.children)}
         </TreeNode>
       ))
     }
+  }
+  delHandle(id) {
+     this.props.modifyCategory({id:id,isDelete:1})
   }
   addSubmit() {
     this.props.form.validateFields(['addName'],(err,values)=>{
       if(!err) {
         if(this.state.levelTopIf) {
           this.props.addCategorys({category: encodeURI(values.addName)})
-          this.setState({
-            addVisible: false
-          })
+        }else{
+          this.props.addCategorys({category: encodeURI(values.addName),parentId: this.state.parentId,level:this.state.level+1})
         }
+        this.setState({
+          addVisible: false
+        })
+      }
+    })
+  }
+  editSubmit() {
+    this.props.form.validateFields(['editName'],(err,values)=>{
+      if(!err) {
+        this.props.modifyCategory({category: encodeURI(values.editName),id:  this.state.selectCategoryId})
+        this.setState({
+          editVisible: false
+        })
       }
     })
   }
@@ -114,6 +132,26 @@ class Category1 extends React.Component {
           <Form layout='inline'>
             <FormItem label="名称">
               {getFieldDecorator('addName',{
+                rules: [{ required: true,message: '请填写名称'  }],
+              })(<Input type="text" />)}
+            </FormItem>
+          </Form>
+        </Modal>
+
+        <Modal
+          title="编辑目录" 
+          visible={this.state.editVisible}
+          style={{ top: 200 }}
+          width='50%'
+          okText='确定'
+          cancelText='取消'
+          onOk={this.editSubmit.bind(this)}
+          onCancel={()=>this.setState({editVisible:false})}
+          >
+          <Form layout='inline'>
+            <FormItem label="名称">
+              {getFieldDecorator('editName',{
+                initialValue: this.state.selectCategoryName?this.state.selectCategoryName:'',
                 rules: [{ required: true,message: '请填写名称'  }],
               })(<Input type="text" />)}
             </FormItem>
