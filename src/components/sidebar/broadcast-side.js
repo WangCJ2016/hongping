@@ -21,12 +21,17 @@ class BroadcastSider extends React.Component {
       voiceBroadcastStart: false,
       fileBroadcastStart: false,
       selectIndexArr: [],
-      fileModalVisible:false
+      fileModalVisible:false,
+      documentHeight:10000
     }
     this.voiceBroadcast = this.voiceBroadcast.bind(this)
     this.fileBroadcast = this.fileBroadcast.bind(this)
   }
-  
+  componentDidMount() {
+    this.setState({
+      documentHeight:document.body.clientHeight
+    }) 
+  }
   onChange(index,e) {
     if(e.target.checked) {
       this.props.selectBroIndex(unquie([...this.props.broadcast.selectBroIndex,index]))
@@ -53,7 +58,7 @@ class BroadcastSider extends React.Component {
   }
   // 文件播报
   fileBroadcast() {
-    this.props.fileBroadcast(this.state.selectIndexArr)
+    this.props.broadcastFile(this.state.selectIndexArr)
   }
   treeSelectIndex(keys) {
     this.setState({
@@ -81,11 +86,11 @@ class BroadcastSider extends React.Component {
         </div>
         {
           this.props.sidebar.broadcast_sidebar?
-          <div className="fix-bottom">
-          <span>已选择<strong style={{color: '#17b89f'}}>{this.state.selectIndexArr.length}</strong></span>
-          <span onClick={this.voiceBroadcast}><Icon type="notification" style={{color:this.state.voiceBroadcastStart?'#006f6b':''}} /></span>
-          <span onClick={this.fileBroadcast}><Icon type="folder" style={{color:this.state.fileBroadcastStart?'#006f6b':''}} /></span>
-        </div>:null
+          <div className="fix-bottom" style={{top: this.state.documentHeight-50+'px'}}>
+            <span>已选择<strong style={{color: '#17b89f'}}>{this.state.selectIndexArr.length}</strong></span>
+            <span onClick={this.voiceBroadcast}><Icon type="notification" style={{color:this.state.voiceBroadcastStart?'#006f6b':''}} /></span>
+            <span onClick={this.fileBroadcast}><Icon type="folder" style={{color:this.state.fileBroadcastStart?'#006f6b':''}} /></span>
+          </div>:null
         }
         
         <object
