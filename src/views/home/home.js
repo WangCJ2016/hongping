@@ -53,6 +53,11 @@ class Home extends React.Component {
       this.props.getAreaInfo({id: this.props.area.firstAreaId})
     }
   }
+  componentWillUnMount(){
+    if(this.timer){
+      clearInterval(this.timer)
+    }
+  }
   hide() {
     this.setState({
       visible: false,
@@ -166,7 +171,7 @@ class Home extends React.Component {
       deviceType: device.type
     },()=>{
       setTimeout(()=>{
-        this.props.getDevInfo({devId:device.id,type:device.type},'play',this.play)
+        this.props.getDevInfo({devId:device.devId,type:device.type},'play',this.play)
         this.setState({
           aa:''
         })
@@ -187,7 +192,7 @@ class Home extends React.Component {
       videoBackVisible:true
     },()=>{
       setTimeout(()=>{
-        this.props.getDevInfo({devId:device.id,type:device.type},'playback')
+        this.props.getDevInfo({devId:device.devId,type:device.type},'playback',this.play)
         this.setState({
           aa:''
         })
@@ -200,7 +205,7 @@ class Home extends React.Component {
       videoPicVisible:true
     },()=>{
       setTimeout(()=>{
-        this.props.getDevInfo({devId:device.id,type:device.type},'pic')
+        this.props.getDevInfo({devId:device.devId,type:device.type},'pic',this.play)
         this.setState({
           aa:''
         })
@@ -212,10 +217,10 @@ class Home extends React.Component {
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
     const a = this.playback.XzVideo_RecordPlayByTime(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,startTime,endTime,0)
     if(a) {
-      const timer=setInterval(()=>{
+      this.timer=setInterval(()=>{
         const a = this.playback.XzVideo_GetRecordPlayPosEx(0)
         if(a===100){
-          clearInterval(timer)
+          clearInterval(this.timer)
         }
         console.log(a)
         this.props.videoProgress(a)
@@ -225,8 +230,8 @@ class Home extends React.Component {
   playPicSeach(startTime,endTime) {
     const device = this.props.deivces.devinfo
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
-    const a = this.videoPic.XzVideo_FindDevicePicture(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,startTime,endTime,'0xff',"","",0)
-        this.props.videoPic(a)
+    const a = this.videoPic.XzVideo_FindDevicePicture(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,startTime,endTime,'0xff',"","",0) 
+    this.props.videoPic(a)
   }
   mouseUp(left,top,right,bottom) {
     let rectInDevice = []
@@ -245,27 +250,27 @@ class Home extends React.Component {
  
   render() {
     const columns = [{
-        title: 'Name',
+        title: '名称',
         dataIndex: 'name',
         key: 'name',
       },{
-        title: 'size',
+        title: '大小',
         dataIndex: 'size',
         key: 'size',
       },{
-        title: 'BDateTime',
+        title: '时间',
         dataIndex: 'BDateTime',
         key: 'BDateTime',
       },{
-        title: 'CardNum',
+        title: '车牌',
         dataIndex: 'CardNum',
         key: 'CardNum',
       },{
-        title: 'License',
+        title: '证件',
         dataIndex: 'License',
         key: 'License',
       },{
-        title: 'RecogResul',
+        title: '车型',
         dataIndex: 'RecogResul',
         key: 'RecogResul',
     }]

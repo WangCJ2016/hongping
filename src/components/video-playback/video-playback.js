@@ -21,12 +21,12 @@ class VideoPlayBack extends React.Component {
     this.state = {}
   }
   componentDidMount() {
-    // const a = this.play.GetLocallPath(1)
-    // const b = this.play.GetLocallPath(2)
-    // this.props.pathDownload({videoPath: a})
-    // this.props.pathDownload({picPath: b})
-    // const c = this.play.GetLocallFile(1)
-    // this.props.palybacklist(JSON.stringify(c).slice(1,-2).split(',').map(item=>({name: item,key:item})))
+    const a = this.play.GetLocallPath(1)
+    const b = this.play.GetLocallPath(2)
+    this.props.pathDownload({videoPath: a})
+    this.props.pathDownload({picPath: b})
+    const c = this.play.GetLocallFile(1)
+    this.props.palybacklist(JSON.stringify(c).slice(1,-2).split(',').map(item=>({name: item,key:item})))
   }
   render() {
     return (
