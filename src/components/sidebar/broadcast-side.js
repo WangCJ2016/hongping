@@ -49,11 +49,11 @@ class BroadcastSider extends React.Component {
   }
   // 语音播报
   voiceBroadcast() {
-    this.props.voiceBroadcast(this.state.selectIndexArr)
+    this.play.voiceBroadcast(this.state.selectIndexArr)
   }
   // 文件播报
   fileBroadcast() {
-    this.props.fileBroadcast(this.state.selectIndexArr)
+    this.play.fileBroadcast(this.state.selectIndexArr)
   }
   treeSelectIndex(keys) {
     this.setState({
