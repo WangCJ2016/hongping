@@ -85,7 +85,7 @@ class SettingMap extends React.Component {
     this.props.delMapDevice(delDevice)
   }
   dragStart(device,e){
-   e.dataTransfer.setData("data",e.target.dataset.id);
+   e.dataTransfer.setData("text",e.target.dataset.id);
    if(e.target.style.left) {
      this.setState({
        ifOnImg: true
@@ -99,11 +99,13 @@ class SettingMap extends React.Component {
     e.preventDefault();
   }
   drop(ev) {
+    ev.preventDefault()
     if(ev.target.id === 'img') {
       const imgData = document.getElementById('img').getBoundingClientRect()
       const x = ev.clientX - imgData.left
       const y = ev.clientY - imgData.top
-      const data=JSON.parse(ev.dataTransfer.getData("data"))
+      const data=JSON.parse(ev.dataTransfer.getData("text"))
+
       if(!data){
         return
       }

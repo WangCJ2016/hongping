@@ -112,6 +112,7 @@ class Status extends React.Component {
     }
   }
   render() {
+    console.log('fdsf'+JSON.stringify(videoHosts))
     const { servers, videoHosts,videoChannel,broadcastChannel,position} = this.props.status
     const {authMenu} = this.props.user
     return (

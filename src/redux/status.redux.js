@@ -50,7 +50,7 @@ export function getVideoHostStatus() {
        const arr = res.dataObject.map((data,index) => ({
             ...data,
             key:index,
-            status:data.status==='1'?'正常':'失败'   
+            status:data.status===1?'正常':'失败'   
         }))
         dispatch(dataSuccess({'videoHosts':arr}))
       }
@@ -67,6 +67,7 @@ export function getVideChannelStatus() {
           const arr = res.dataObject.map((data,index) => ({
             ...data,
             key:data.id, 
+            status:data.status===1?'正常':'失败'
         }))
         dispatch(dataSuccess({'videoChannel':arr}))
       }
@@ -100,7 +101,7 @@ export function getBroadcastChannelStatus() {
           const arr = res.dataObject.map((data,index) => ({
             ...data,
             key:index, 
-            status:data.status==='1'?'正常':'失败'  
+            status:data.status===1?'正常':'失败'  
         }))
         dispatch(dataSuccess({'broadcastChannel':arr}))
       }

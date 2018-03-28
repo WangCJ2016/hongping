@@ -370,6 +370,7 @@ export function getDevInfo(info,type,play,index) {
     
      if(res.success) {
        const device = res.dataObject
+       console.log(JSON.stringify(res))
        const model = device.host.model === 1?'HikHC-14':'DHNET-03'
        dispatch(devinfoSuccess(res.dataObject))
        if(type==='play') {

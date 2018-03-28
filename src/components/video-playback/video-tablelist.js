@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tabs, Table, Icon } from 'antd'
 import { connect } from 'react-redux'
-import { downloadCreate,downloadModify,selectVideo } from '../../redux/video.redux'
+import { downloadCreate,downloadModify,selectVideo,videoProgress } from '../../redux/video.redux'
 const TabPane = Tabs.TabPane;
 
 
@@ -33,7 +33,7 @@ const columns = [{
 
 @connect(
   state=>({video: state.video,user:state.user}),
-  {downloadCreate,downloadModify,selectVideo}
+  {downloadCreate,downloadModify,selectVideo,videoProgress}
 )
 class VideoTableList extends React.Component {
   constructor() {
@@ -41,16 +41,20 @@ class VideoTableList extends React.Component {
     this.onRowClick = this.onRowClick.bind(this)
     this.download = this.download.bind(this)
   }
+  componentWillUnMount(){
+    if(this.timer){
+      clearInterval(this.timer)
+    }
+  }
   onRowClick(record,index) {
-    console.log(index)
     const device = this.props.video.playbackSelectDevice
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
     this.props.play.XzVideo_RecordPlayByName(
       1,
       this.props.user.account.name,
-      "",
+      '',
       0,
-      device.host.vid,
+      1,
       device.host.url,
       device.host.port,
       device.host.username,
@@ -58,15 +62,17 @@ class VideoTableList extends React.Component {
       model,
       device.index,
       record.name,
-      '2018-01-11 09:30:00','2018-01-11 12:00:00',0)
+      record.startime,record.endtime,0)
       this.props.selectVideo(record)
-      // const a = this.props.play.GetLocallFile(0)
-      // alert(a)
-      // setInterval(()=>{
-      //   let pos = '50'
-      //   const a = this.props.play.GetLocallFile(0)
-      //   console.log(a)
-      // },1000)
+  
+     this.timer =  setInterval(()=>{
+        const a = this.props.play.XzVideo_GetRecordPlayPosEx(0)
+        if(a<=100){
+          this.props.videoProgress(a)
+        }else{
+          clearInterval(this.timer)
+        }
+      },1000)
   }
   download(record) {
     const device = this.props.video.playbackSelectDevice
@@ -83,7 +89,6 @@ class VideoTableList extends React.Component {
       record.name,
       this.props.video.videoPath+record.name
     )
-    console.log(record.name)
     if(a!==-1) {
       const data = {
         key: record.name,
