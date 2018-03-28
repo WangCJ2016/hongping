@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tabs, Table, Icon } from 'antd'
 import { connect } from 'react-redux'
-import { downloadCreate,downloadModify,selectVideo } from '../../redux/video.redux'
+import { downloadCreate,downloadModify,selectVideo,videoProgress } from '../../redux/video.redux'
 const TabPane = Tabs.TabPane;
 
 
@@ -33,13 +33,18 @@ const columns = [{
 
 @connect(
   state=>({video: state.video,user:state.user}),
-  {downloadCreate,downloadModify,selectVideo}
+  {downloadCreate,downloadModify,selectVideo,videoProgress}
 )
 class VideoTableList extends React.Component {
   constructor() {
     super()
     this.onRowClick = this.onRowClick.bind(this)
     this.download = this.download.bind(this)
+  }
+  componentWillUnMount(){
+    if(this.timer){
+      clearInterval(this.timer)
+    }
   }
   onRowClick(record,index) {
     const device = this.props.video.playbackSelectDevice
@@ -59,18 +64,15 @@ class VideoTableList extends React.Component {
       record.name,
       record.startime,record.endtime,0)
       this.props.selectVideo(record)
-     
-      //const b = this.props.play.GetLastErrMesg()
-     setTimeout(()=>{
-       console.log(this.props.play)
-      const a = this.props.play.XzVideo_GetRecordPlayPosEx(0)
-      alert(a)
-     },2000)
-      // setInterval(()=>{
-      //   let pos = '50'
-      //   const a = this.props.play.GetLocallFile(0)
-      //   console.log(a)
-      // },1000)
+  
+     this.timer =  setInterval(()=>{
+        const a = this.props.play.XzVideo_GetRecordPlayPosEx(0)
+        if(a<=100){
+          this.props.videoProgress(a)
+        }else{
+          clearInterval(this.timer)
+        }
+      },1000)
   }
   download(record) {
     const device = this.props.video.playbackSelectDevice

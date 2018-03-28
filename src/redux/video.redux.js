@@ -25,6 +25,7 @@ const intialState = {
   videoProgress: 0
 }
 
+const DATASUCCESS = '[video] DATASUCCESS'
 const CHANGESAVEVIDEO = '[video] CHANGESAVEVIDEO'
 const CHANGESOUND = '[video] CHANGESOUND'
 const CHANGEBACKVIDEO = '[video] CHANGEBACKVIDEO'
@@ -49,6 +50,9 @@ const VIDEOPROGRESS = '[video] VIDEOPROGRESS'
 
 export function video(state=intialState,action) {
   switch (action.type) {
+    case DATASUCCESS:{
+      return {...state,...action.payload}
+    }
     case CHANGESAVEVIDEO: {
       return {...state,saveVideoIf:!state.saveVideoIf}
     }
@@ -162,6 +166,12 @@ export function video(state=intialState,action) {
   }
 }
 
+export function dataSuccess(data){
+  return {
+    type: DATASUCCESS,
+    payload: data
+  }
+}
 // 录像状态
 export function changeSaveVideoIf() {
   return {
