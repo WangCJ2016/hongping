@@ -64,11 +64,7 @@ class FilesList1 extends React.Component {
       width:'50%',
       render: (text, record) => (
         <span>
-<<<<<<< HEAD
             <a href={record.content} download={record.title} onClick={this.downloadFile(record.title,record.content)}><Icon type='download'></Icon>下载</a>
-=======
-            <a href='http://aijuke.oss-cn-shanghai.aliyuncs.com/images/18327044556737.png' download={record.title}><Icon type='download'></Icon>下载</a>
->>>>>>> origin/master
             <Popconfirm onConfirm={this.delHandle.bind(this,record.id)} title="确定删除？"  okText="确定" cancelText="取消">
               <a style={{marginLeft:'15px'}}><Icon type='delete'></Icon>删除</a>
             </Popconfirm>
