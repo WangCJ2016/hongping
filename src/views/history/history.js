@@ -59,14 +59,14 @@ class History1 extends React.Component {
         if(values.type==='0') {
           this.props.historyFstatistics({
             place: encodeURI(values.place),
-            startTime: values.startTime.format('YYYY-MM-DD'),
-            endTime:values.endTime.format('YYYY-MM-DD'),
+            startTime: values.startTime.format('YYYY-MM-DD HH:mm:ss'),
+            endTime:values.endTime.format('YYYY-MM-DD HH:mm:ss'),
           })
         }else{
           this.props.historyFstatistics({
             ...values,
-            startTime: values.startTime.format('YYYY-MM-DD'),
-            endTime:values.endTime.format('YYYY-MM-DD'),
+            startTime: values.startTime.format('YYYY-MM-DD HH:mm:ss'),
+            endTime:values.endTime.format('YYYY-MM-DD HH:mm:ss'),
           })
         }
       }
@@ -97,18 +97,18 @@ class History1 extends React.Component {
             <Col span={5} >
             <FormItem {...formItemLayout} label={'起始时间'}>
               {getFieldDecorator('startTime',{
-                initialValue: moment(new Date(), 'YYYY-MM-DD')
+                initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss')
               })(
-                <DatePicker format='YYYY-MM-DD' placeholder="请选择日期" />
+                <DatePicker format='YYYY-MM-DD HH:mm:ss' placeholder="请选择日期" />
               )}
             </FormItem>
           </Col>
             <Col span={5} >
             <FormItem {...formItemLayout} label={'结束日期'}>
               {getFieldDecorator('endTime',{
-                initialValue: moment(new Date(), 'YYYY-MM-DD')
+                initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss')
               })(
-                <DatePicker format='YYYY-MM-DD' placeholder="请选择日期" />
+                <DatePicker format='YYYY-MM-DD HH:mm:ss' placeholder="请选择日期" />
               )}
             </FormItem>
           </Col>
