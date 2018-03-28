@@ -99,7 +99,7 @@ class History1 extends React.Component {
               {getFieldDecorator('startTime',{
                 initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss')
               })(
-                <DatePicker format='YYYY-MM-DD HH:mm:ss' placeholder="请选择日期" />
+                <DatePicker showTime format='YYYY-MM-DD HH:mm:ss' placeholder="请选择日期" />
               )}
             </FormItem>
           </Col>
@@ -108,7 +108,7 @@ class History1 extends React.Component {
               {getFieldDecorator('endTime',{
                 initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss')
               })(
-                <DatePicker format='YYYY-MM-DD HH:mm:ss' placeholder="请选择日期" />
+                <DatePicker showTime format='YYYY-MM-DD HH:mm:ss' placeholder="请选择日期" />
               )}
             </FormItem>
           </Col>

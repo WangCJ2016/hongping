@@ -58,6 +58,16 @@ class HomeTableList extends React.Component {
         key:'device'
       },
       {
+        title: '定位',
+        dataIndex: 'icon',
+        key:'icon',
+        render:(text,record)=>(
+          <a onClick={this.goLoc.bind(this,record)}>
+            <img src={require('../../assets/imgs/loc_icon.png')} alt='' />
+          </a>
+        )
+      },
+      {
         title: '操作',
         render:(text,record)=>{
           return <Button onClick={this.alarmClick.bind(this,record)} type='primary'>处理</Button>
@@ -84,8 +94,8 @@ class HomeTableList extends React.Component {
   handleChange(e){
     this.setState({suggest:e.target.value})
   }
-  goLoc() {
-    const alarmInfo = this.props.alarm.alarmInfo
+  goLoc(record) {
+    const alarmInfo = record
     if(alarmInfo.install) {
       this.props.areaInfo({id:alarmInfo.install.areaId})
       this.props.querySysInstallPlaces({areaId:alarmInfo.install.areaId})
@@ -113,7 +123,6 @@ class HomeTableList extends React.Component {
             <Col span={12}><span>类型： {alarmInfo?alarmType(alarmInfo.type):''}</span></Col>
             <Col span={12}><span>程度：{alarmInfo?alarmDegree(alarmInfo.degree).degree:''}</span></Col>
             <Col span={12}><span>设备：{alarmInfo?alarmInfo.device:''}</span></Col>
-            <span>位置：{alarmInfo?alarmInfo.place:''}<a onClick={this.goLoc.bind(this)}><img src={require('../../assets/imgs/loc_icon.png')} alt=""/></a></span>    
           </Row>
           </div>
          
