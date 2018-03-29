@@ -1,9 +1,9 @@
 import { request, config} from '../config'
 import { alarmType } from '../utils'
 
-const token = localStorage.getItem('token')
 const intialState = {
-  GetSoftServer:[]
+  GetSoftServer:[],
+  historyStatisticsChartList:[]
 }
 
 const DATASUCCESS = '[status] datasuccess'
@@ -27,6 +27,7 @@ function dataSuccess(data) {
 
 export function getServerStatus(){ 
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getStatus,{ token: token,funNo:'GetSoftServer'})
     .then(res=>{
       console.log(res)
@@ -43,6 +44,7 @@ export function getServerStatus(){
 }
 export function getVideoHostStatus() {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getStatus,{ token: token,funNo:'HBRemoteHost'})
     .then(res=>{
       console.log(res)
@@ -60,6 +62,7 @@ export function getVideoHostStatus() {
 
 export function getVideChannelStatus() {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getStatus,{ token: token,funNo:'HBRemoteChannel'})
     .then(res=>{
       console.log(res)
@@ -77,6 +80,7 @@ export function getVideChannelStatus() {
 
 export function postion() {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.position,{ token: token})
     .then(res=>{
       console.log(res)
@@ -94,6 +98,7 @@ export function postion() {
 
 export function getBroadcastChannelStatus() {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getStatus,{ token: token,funNo:'HBBroadcastHosts'})
     .then(res=>{
       console.log(res)
@@ -112,6 +117,7 @@ export function getBroadcastChannelStatus() {
 // 历史分析
 export function historyFstatistics(info) {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.historyFstatistics,{ token: token,...info})
     .then(res=>{
       console.log(res)
@@ -122,6 +128,19 @@ export function historyFstatistics(info) {
             type:alarmType(data.type)
         }))
         dispatch(dataSuccess({'historyFstatistics':arr}))
+      }
+    })
+  }
+}
+
+export function historyStatisticsChart(info) {
+  return dispatch => {
+    const token = localStorage.getItem('token')
+    request.get(config.api.base + config.api.historyStatisticsChart,{ token: token,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success&&res.dataObject) {
+        dispatch(dataSuccess({'historyStatisticsChartList':res.dataObject}))
       }
     })
   }

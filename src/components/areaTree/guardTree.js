@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table } from 'antd';
+import { Table,Button } from 'antd';
 import { connect } from 'react-redux'
 import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,guardAreaDevices} from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
@@ -49,7 +49,11 @@ export default class GuardTree extends React.Component {
               <span>{record.name}</span>
               {record.type!=='10003'?
                 null
-                :<a onClick={this.goLoc.bind(this,record.parentId)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>}
+                :<a onClick={this.goLoc.bind(this,record.parentId)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>
+              }
+              {
+                record.type==='10003'?<Button type='primary' size='small'>开门</Button>:null
+              }
             </span>
           )
         }]

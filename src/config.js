@@ -103,6 +103,7 @@ export const config = {
     position:'/slv_queryPositionPage',
     // 历史分析
     historyFstatistics: '/home_queryAlarmsFStatistics',
+    historyStatisticsChart:'/home_queryAlarmsStatisticsChart',
     // 巡更
     getWatchTasks: '/patrol_queryPatrolTasks',
     addTask:'/patrol_createPatrolTasks',

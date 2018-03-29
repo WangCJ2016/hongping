@@ -1,6 +1,5 @@
 import { request, config} from '../config'
 
-const token = localStorage.getItem('token')
 
 const intialState = {
   searchVideoList:[],
@@ -29,6 +28,7 @@ function searchVideoSuccess(data) {
 }
 export function searchVideo(info) {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.searchChannel,{ token: token,...info})
     .then(res=>{
       console.log(res)
@@ -48,6 +48,7 @@ function searchHongwaiVideoSuccess(data) {
 }
 export function searchHongwaiVideo(info) {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.searchChannel,{ token: token,...info})
     .then(res=>{
       console.log(res)

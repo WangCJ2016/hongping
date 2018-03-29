@@ -1,7 +1,6 @@
 import { request, config} from '../config'
 import { message } from 'antd'
 
-const token = localStorage.getItem('token')
 const initialState = {
   serverList: []
 }
@@ -47,6 +46,7 @@ function serverlistSuccess(list) {
 }
 export function serverlist() {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.serverlist, {
       token: token,
       pageNo:1,
@@ -87,6 +87,7 @@ function deleteServerSuccess(id) {
 export function modifyServer(info) {
   return (dispatch,getState) => {
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifyServer, {
       token: token,
       accountId: user.account.id,
@@ -129,6 +130,7 @@ function createServerSuccess(server) {
 export function createServer(info) {
   return (dispatch,getState) => {
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.createServer, {
       token: token,
       accountId: user.account.id,

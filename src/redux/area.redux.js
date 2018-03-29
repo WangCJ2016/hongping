@@ -1,7 +1,5 @@
 import { request, config} from '../config'
 
-const token = localStorage.getItem('token')
-
 const DATASUCCESS = '[area] DATASUCCESS'
 const FIRSTAREAID = '[area] FIRSTAREAID'
 const ALLREAS_SUCCESS = '[area] ALLREAS_SUCCESS'
@@ -228,6 +226,7 @@ function leavlTopAreas(data) {
 }
 export function areaList(info) {
   return dispatch=>{
+      const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.areaLists,{token:token,pageNo:1,pageSize:1000, ...info})
       .then(res=>{
         if(res.success) {
@@ -263,6 +262,7 @@ function addAreaDevice(data) {
 }
 export function videoAreaDevices(info) {
   return (dispatch)=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.videoAreaDevices,{
       token: token,
       ...info
@@ -287,6 +287,7 @@ function broadcastAreaDevicesSuccess(devices) {
 // 广播区域展开
 export function broadcastAreaDevices(info) {
   return (dispatch)=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.videoAreaDevices,{
       token: token,
       ...info
@@ -312,6 +313,7 @@ function broadcastAreaDevicesKeySuccess(keys) {
 }
 export function broadcastAreaDevicesKey(info) {
   return (dispatch)=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.videoAreaDevices,{
       token: token,
       ...info
@@ -337,6 +339,7 @@ function hongwaiAreaDevicesSuccess(devices) {
 }
 export function hongwaiAreaDevices(info) {
   return (dispatch)=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.videoAreaDevices,{
       token: token,
       ...info
@@ -360,6 +363,7 @@ function daozhaAreaDevicesSuccess(devices) {
 }
 export function daozhaAreaDevices(info) {
   return (dispatch)=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.videoAreaDevices,{
       token: token,
       ...info
@@ -383,6 +387,7 @@ function guardAreaDevicesSuccess(devices) {
 }
 export function guardAreaDevices(info) {
   return (dispatch)=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.videoAreaDevices,{
       token: token,
       ...info
@@ -410,9 +415,10 @@ export function selectAreaIdSuccess(id) {
 export function createArea(info) {
   return (dispatch,getState)=>{
       const user = getState().user
+      const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.createAreas,
         {
-          token:user.account.token, 
+          token:token, 
           accountId: user.account.id,
           ...info
         })
@@ -428,9 +434,10 @@ export function createArea(info) {
 export function modifyArea(info) {
   return (dispatch,getState)=>{
       const user = getState().user
+      const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.modifyArea,
         {
-          token:user.account.token, 
+          token:token, 
           accountId: user.account.id,
           ...info
         })
@@ -455,7 +462,7 @@ function areaInfoSuccess(info) {
 // }
 export function areaInfo(info) {
   return (dispatch)=>{
-     // dispatch(load())
+    const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.picByarea,
                   {
                     token:token, 
@@ -477,6 +484,7 @@ export function areaInfo(info) {
 }
 export function getAreaInfo(info) {
   return (dispatch)=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.areaInfo,{
       token: token,
       ...info
@@ -498,6 +506,7 @@ function upload() {
 }
 export function uploadImg(info) {
   return (dispatch,getState)=>{
+    const token = localStorage.getItem('token')
     dispatch(upload())
     const user = getState().user
     let formData = new FormData()

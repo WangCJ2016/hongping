@@ -1,6 +1,6 @@
 import { request, config} from '../config'
 import { message } from 'antd'
-const token = localStorage.getItem('token')
+
 const initialState = {
   roles: [],
   roleInfo: {},
@@ -87,6 +87,7 @@ function getRole(roles) {
 // 角色list
 export function rolesList() {
   return dispatch=>{
+      const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.rolesList,{
         token:token,
         pageNo: 1,
@@ -107,6 +108,7 @@ export function rolesList() {
 // 权限管理列表
 export function authorityList() {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.authorityList, {token: token})
       .then(res => {
         console.log(res)
@@ -126,9 +128,10 @@ function createSuccess(role) {
 export function createRole(info) {
   return (dispatch,getState)=>{
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.createRole,
       {
-        token:user.account.token,
+        token:token,
         accountId: user.account.id,
         ...info
       })
@@ -161,8 +164,9 @@ function deletefn(id) {
 export function modifyRole(info) {
   return (dispatch,getState)=>{
       const user = getState().user
+      const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.modifyRole,{
-        token:user.account.token,
+        token:token,
         accountId: user.account.id,
         ...info
        })
@@ -190,9 +194,9 @@ function roleInfoSuccess(info) {
 }
 export function role_roleInfo(info) {
   return (dispatch,getState)=>{
-      const user = getState().user
+      const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.roleInfo,{
-        token:user.account.token,
+        token:token,
         ...info
       })
       .then(res=>{
@@ -217,6 +221,7 @@ function accountLisSuccess(data) {
 }
 export function accountList(info) {
   return (dispatch)=>{
+      const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.peopleList,{
         token:token,
         ...info
@@ -247,6 +252,7 @@ function createAccountSucces(data) {
 export function createAccount(info) {
   return (dispatch,getState)=>{
     const user = getState().user
+    const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.createAccount,{
         token:token,
         accountId: user.account.id,
@@ -286,6 +292,7 @@ function deleteAccountSuccess(id) {
 export function modifyAccount(info) {
   return (dispatch,getState)=>{
     const user = getState().user
+    const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.modifyAccount,{
         token:token,
         accountId: user.account.id,

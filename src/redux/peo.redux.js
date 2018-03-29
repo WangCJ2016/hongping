@@ -1,7 +1,5 @@
 import { request, config} from '../config'
 
-const token = localStorage.getItem('token')
-
 const initialState = {
   peoList: [],
   trails:[],
@@ -37,10 +35,11 @@ function getAllpeoSuccess(data) {
   }
 }
 export function getAllpeo(token){ 
+  
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getAllpeo,{ token: token})
     .then(res=>{
-      console.log(res)
       if(res.success&&res.dataObject) {
         dispatch(getAllpeoSuccess({peoList:res.dataObject}))
       }
@@ -56,6 +55,7 @@ export function getAllpeo(token){
 }
 export function peoTrail(info) {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.peoTrail,{ token: token,...info})
     .then(res=>{
       console.log(res)
@@ -75,6 +75,7 @@ function TrailDetailSuccess(data) {
 }
 export function trailDetail(info) {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.trailDetail,{ token: token,...info})
     .then(res=>{
       console.log(res)
@@ -93,6 +94,7 @@ function searchPeoSuccess(data) {
 }
 export function searchPeo(info) {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.searchPeo,{ token: token,...info})
     .then(res=>{
       console.log(res)
@@ -120,6 +122,7 @@ function areaInfoSuccess(info) {
 export function areaImg(info) {
   return (dispatch)=>{
       //dispatch(load())
+      const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.picByarea,
                   {
                     token:token, 

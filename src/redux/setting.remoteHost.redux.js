@@ -1,6 +1,6 @@
 import { request, config} from '../config'
 import { message } from 'antd'
-const token = localStorage.getItem('token')
+
 const initialState = {
   remoteHosts: [],
   selectHost: null,
@@ -91,6 +91,7 @@ function hostListsSuccess(list) {
 }
 export function hostLists() {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.remoteHosts, {
       token: token,
       pageNo:1,
@@ -134,6 +135,7 @@ function sysServersSuccess(list) {
 }
 export function sysServerslist() {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.SysServerslist, {
       token: token
     })
@@ -160,6 +162,7 @@ function createSuccess(host) {
 export function createHost(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.createRemoteHost, {
       token: token,
       accountId: user.account.id,
@@ -208,6 +211,7 @@ function delHost(id) {
 export function modifyHost(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifyRemoteHost, {
       token: token,
       accountId: user.account.id,
@@ -255,6 +259,7 @@ function channelsSuccess(channels) {
 }
 export function channels(info) {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.remoteChannels, {
       token: token,
      ...info
@@ -285,6 +290,7 @@ function createChannelSuccess(host) {
 export function createChannel(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.remoteChannelsAdd, {
       token: token,
       accountId: user.account.id,
@@ -326,6 +332,7 @@ function delChannel(id) {
 export function modifyChannel(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifyRemoteChannel, {
       token: token,
       accountId: user.account.id,

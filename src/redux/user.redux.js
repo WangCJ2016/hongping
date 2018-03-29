@@ -1,7 +1,7 @@
 import { request, config} from '../config'
 import { message } from 'antd'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
-const token = localStorage.getItem('token')
+
 const intialState = {
   redirectTo:'',
   authMenu:[]
@@ -62,6 +62,7 @@ export function getInfo(token){
 // 获取当前账号信息
 export function getAccountInfo() {
   return (dispatch)=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getAccountInfo,{ token: token,id:user.account.id})
     .then(res=>{
       console.log(res)
