@@ -7,19 +7,59 @@ import HongwaiSider from '../../components/sidebar/hongwai-side'
 import GuardSider from '../../components/sidebar/guard.side'
 import DaozhaSider from '../../components/sidebar/daozha-side'
 import './sidebar.scss'
+import { connect } from 'react-redux'
 
+@connect(
+  state=>({sidebar:state.sidebar}),
+)
 class SideBar extends React.Component {
-  state = {  }
   render() {
+    const {
+      area_sidebar,
+      video_sidebar,
+      broadcast_sidebar,
+      people_sidebar,
+      hongwia_sidebar,
+      guard_sidebar,
+      daozha_sidebar,
+    } = this.props.sidebar
     return (
       <div>
-      <AreaSideBar />
-      <VideoSide />
-      <BroadcastSider />
-      <PeoSider />
-      <HongwaiSider />
-      <GuardSider />
-      <DaozhaSider />
+      {
+        area_sidebar?
+        <AreaSideBar />
+        :null
+      }
+      {
+        video_sidebar?
+        <VideoSide />
+        :null
+      }
+      {
+        broadcast_sidebar?
+        <BroadcastSider />
+        :null
+      }
+      {
+        people_sidebar?
+        <PeoSider />
+        :null
+      }
+      {
+        hongwia_sidebar?
+        <HongwaiSider />
+        :null
+      } 
+      {
+        guard_sidebar?
+        <GuardSider />
+        :null
+      }    
+      {
+        daozha_sidebar?
+        <DaozhaSider />
+        :null
+      }
       </div>
     )
   }

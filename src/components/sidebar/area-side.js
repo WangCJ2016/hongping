@@ -23,6 +23,9 @@ class AreaSideBar extends React.Component {
     this.props.getAreaInfo({id: areaId})
   }
   render() {
+    if(!this.props.sidebar.area_sidebar) {
+      return null
+    }
     return (
       <div className='submeun' style={{width:this.props.sidebar.area_sidebar?'300px':'0'}}>
         <div className='siderbar-wrap'> 

@@ -5,16 +5,19 @@ const initialState = {
   trails:[],
   traildetail:[],
   searchPeoList:[],
-  picture:''
+  picture:'',
+  departmentList:[]
 }
 const GETALLPEO = '[peo] GETALLPEO'
 const GETTRAIL = '[peo] GETTRAIL'
 const TRAILDetail = '[peo] TRAILDetail'
 const SEARCHPEO = '[peo] SEARCHPEO'
 const AREAIMG = '[peo] AREAIMG'
+const DATASUCCESS = '[peo] DATASUCCESS'
 
 export function peo(state = initialState, action ) {
   switch (action.type) {
+    case DATASUCCESS:
     case GETALLPEO:
     case GETTRAIL:
     case TRAILDetail:
@@ -26,7 +29,12 @@ export function peo(state = initialState, action ) {
       return state
   }
 }
-
+function dataSuccess(data) {
+  return {
+    type: DATASUCCESS,
+    payload: data
+  }
+}
 // 获取全部人员动态
 function getAllpeoSuccess(data) {
   return {
@@ -35,13 +43,24 @@ function getAllpeoSuccess(data) {
   }
 }
 export function getAllpeo(token){ 
-  
   return dispatch => {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getAllpeo,{ token: token})
     .then(res=>{
       if(res.success&&res.dataObject) {
         dispatch(getAllpeoSuccess({peoList:res.dataObject}))
+      }
+    })
+  }
+}
+// 获取部门list
+export function departmentList(info) {
+  return dispatch => {
+    const token = localStorage.getItem('token')
+    request.get(config.api.base + config.api.departmentList,{ token: token})
+    .then(res=>{
+      if(res.success&&res.dataObject) {
+        dispatch(dataSuccess({departmentList:res.dataObject}))
       }
     })
   }
@@ -53,6 +72,7 @@ export function getAllpeo(token){
     payload: data
   }
 }
+// 历史
 export function peoTrail(info) {
   return dispatch => {
     const token = localStorage.getItem('token')
@@ -66,13 +86,6 @@ export function peoTrail(info) {
   }
 }
 // 轨迹详情
-function TrailDetailSuccess(data) {
-  console.log(data)
-  return {
-    type:TRAILDetail,
-    payload: data
-  }
-}
 export function trailDetail(info) {
   return dispatch => {
     const token = localStorage.getItem('token')
@@ -80,7 +93,33 @@ export function trailDetail(info) {
     .then(res=>{
       console.log(res)
       if(res.success) {
-       dispatch(TrailDetailSuccess({traildetail:res.dataObject}))
+       dispatch(dataSuccess({traildetail:res.dataObject}))
+      }
+    })
+  }
+}
+// 实时
+export function realtimeTrajectory(info) {
+  return dispatch => {
+    const token = localStorage.getItem('token')
+    request.get(config.api.base + config.api.realtimeTrajectory,{ token: token,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        dispatch(dataSuccess({trails:res.dataObject}))
+      }
+    })
+  }
+}
+// 轨迹详情
+export function realtimeTrajectoryDetail(info) {
+  return dispatch => {
+    const token = localStorage.getItem('token')
+    request.get(config.api.base + config.api.realtimeTrajectoryDetail,{ token: token,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+       dispatch(dataSuccess({traildetail:res.dataObject}))
       }
     })
   }

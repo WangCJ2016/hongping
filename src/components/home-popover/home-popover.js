@@ -31,11 +31,11 @@ export function HomeCamera({device,videoPlay,videoPlayBack,videoPic}) {
     </div>
   )
 }
-export function HomeGuard({device}) {
+export function HomeGuard({device,openDoor}) {
   return (
     <div className="home-popover">
       <ButtonGroup className='clearfix'>
-      <Button  type="primary" onClick={()=>this.props.openDoor()}>
+      <Button  type="primary" onClick={()=>openDoor()}>
         开门
       </Button>  
   </ButtonGroup>

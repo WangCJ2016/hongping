@@ -38,8 +38,8 @@ class FilesList1 extends React.Component {
     this.props.delFile({id: id,categoryId:this.props.document.selectCategoryId,})
   }
   downloadFile(fileName, content){
-    var file = new File([content], fileName, {type: "text/plain;charset=utf-8"});
-    FileSaver.saveAs(file);
+    var file = new Blob([content]);
+    FileSaver.saveAs(file,fileName);
  }
   render() {
     const columns = [{

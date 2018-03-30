@@ -10,8 +10,8 @@ export const config = {
     }
   },
   api: {
-    ip:'192.168.0.149:8080',
-    base: 'http://192.168.0.149:8080/hp/manage', // http://192.168.0.149:8080/hp/manage
+    ip:'192.168.0.141:8080',
+    base: 'http://192.168.0.141:8080/hp/manage', // http://192.168.0.149:8080/hp/manage
     login: '/do_login', // 登录
 
     areaLists: '/area_queryAreasPage', //区域列表
@@ -81,6 +81,7 @@ export const config = {
     searchChannel: '/rhost_querySysRemoteChannelsPage', //搜索摄像头
     searchBroadcast: '/bhost_querySysBroadcastChannelsPage', //搜索广播
     carPages: '/home_queryCarsPage', // 车辆信息
+    guardCtrl:'/home_ctrlEntranceGuard',
     // 视频
     videoAreaDevices: '/home_queryAreaDevices', //视频／红外通道
     remotePresets: '/rhost_querySysRemotePresets', // 预置位列表
@@ -94,9 +95,12 @@ export const config = {
 
     // 人员动态
     getAllpeo: '/slv_queryPersonnelDynamics', // 全部人员动态
-    peoTrail:'/slv_queryPersonnelTrajectory', // 人员轨迹
-    trailDetail: '/slv_queryTrajectoryDetail', // 轨迹详情 
+    peoTrail:'/slv_queryPersonnelTrajectory', // 历史人员轨迹
+    trailDetail: '/slv_queryTrajectoryDetail', // 历史轨迹详情 
     searchPeo: '/slv_queryPeopleByKeyword', // 关键字搜索人员
+    departmentList: '/slv_queryDepartments', // 部门人员
+    realtimeTrajectory:'/slv_queryRealtimeTrajectory', // 实时轨迹
+    realtimeTrajectoryDetail:'/slv_queryRealtimeTrajectoryDetail', // 实时轨迹详情
     // 广播
     // 实时状态
     getStatus:'/home_syncServerDatas',

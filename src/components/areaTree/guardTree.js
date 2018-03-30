@@ -2,14 +2,12 @@ import React from 'react'
 import { Table,Button } from 'antd';
 import { connect } from 'react-redux'
 import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,guardAreaDevices} from '../../redux/area.redux'
-import { querySysInstallPlaces } from '../../redux/setting.device.redux'
-
-
+import { querySysInstallPlaces,guardCtrl } from '../../redux/setting.device.redux'
 
 @connect(
     state=>({video:state.video,area:state.area}),
     {
-      areaList, uploadImg,areaInfo,selectAreaIdSuccess,guardAreaDevices,querySysInstallPlaces
+      areaList, uploadImg,areaInfo,selectAreaIdSuccess,guardAreaDevices,querySysInstallPlaces,guardCtrl
      }
 )
 export default class GuardTree extends React.Component {
@@ -35,6 +33,15 @@ export default class GuardTree extends React.Component {
       this.props.areaInfo({id:parentId})
       this.props.querySysInstallPlaces({areaId:parentId})
     }
+    openDoor(device) {
+      const token = localStorage.getItem('token')
+      this.props.guardCtrl({
+        token: token,
+        vid:device.vid,
+        deviceType: device.type,
+        controlValue: 1
+      })
+    }
     render() {
         const columns = [{
           title: 'Name',
@@ -52,7 +59,7 @@ export default class GuardTree extends React.Component {
                 :<a onClick={this.goLoc.bind(this,record.parentId)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>
               }
               {
-                record.type==='10003'?<Button type='primary' size='small'>开门</Button>:null
+                record.type==='10003'?<Button type='primary' size='small' onClick={this.openDoor.bind(this,record)}>开门</Button>:null
               }
             </span>
           )

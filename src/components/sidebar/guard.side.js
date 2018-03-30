@@ -34,6 +34,9 @@ class GuardSider extends React.Component {
     })
   }
   render() {
+    if(!this.props.sidebar.guard_sidebar) {
+      return null
+    }
     return (
       <div className='submeun' style={{width:this.props.sidebar.guard_sidebar?'300px':'0'}}>
         <div className='siderbar-wrap'> 

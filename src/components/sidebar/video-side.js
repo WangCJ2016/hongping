@@ -34,6 +34,9 @@ class VideoSide extends React.Component {
     })
   }
   render() {
+    if(!this.props.sidebar.video_sidebar) {
+      return null
+    }
     return (
       <div className='submeun' style={{width:this.props.sidebar.video_sidebar?'300px':'0'}}>
         <div className='siderbar-wrap'> 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tabs,Table } from 'antd'
 import { connect } from 'react-redux'
-import { getServerStatus,getVideoHostStatus,getVideChannelStatus,postion,getBroadcastChannelStatus } from '../../redux/status.redux'
+import { getServerStatus,getVideoHostStatus,getVideChannelStatus,postion,getBroadcastChannelStatus,getGuardStatus } from '../../redux/status.redux'
 
 const TabPane = Tabs.TabPane
 
@@ -85,11 +85,23 @@ const columns5 = [{
   title: '状态',
   dataIndex: 'status',
   key: 'status',
-  }]
+}]
+const columns6 = [{
+  title: '名称',
+  dataIndex: 'name',
+  key: 'name',
+  },{
+  title: '状态',
+  dataIndex: 'status',
+  key: 'status',
+  render: (text,span)=> (
+    <span>{text===1?'开':'关'}</span>
+  )
+}]
 @connect(
   state => ({status: state.status,user:state.user}),
   {
-    getServerStatus,getVideoHostStatus,getVideChannelStatus,postion,getBroadcastChannelStatus
+    getServerStatus,getVideoHostStatus,getVideChannelStatus,postion,getBroadcastChannelStatus,getGuardStatus
   }
 )
 class Status extends React.Component {
@@ -98,22 +110,25 @@ class Status extends React.Component {
     this.props.getServerStatus()
   }
   onChange(e) {
-    if(e==='status-host') {
+    const { videoHosts,videoChannel,broadcastChannel,position,guardList} = this.props.status
+    if(e==='status-host'&&!videoHosts) {
       this.props.getVideoHostStatus()
     }
-    if(e==='status-channel') {
+    if(e==='status-channel'&&!videoChannel) {
       this.props.getVideChannelStatus()
     }
-    if(e==='status-station') {
+    if(e==='status-station'&&!position) {
       this.props.postion()
     }
-    if(e==='status-broadcast') {
+    if(e==='status-broadcast'&&!broadcastChannel) {
       this.props.getBroadcastChannelStatus()
+    }
+    if(e==='status-guard'&&!guardList) {
+      this.props.getGuardStatus()
     }
   }
   render() {
-    console.log('fdsf'+JSON.stringify(videoHosts))
-    const { servers, videoHosts,videoChannel,broadcastChannel,position} = this.props.status
+    const { servers, videoHosts,videoChannel,broadcastChannel,position,guardList} = this.props.status
     const {authMenu} = this.props.user
     return (
       <div style={{padding:'20px'}}>
@@ -164,7 +179,15 @@ class Status extends React.Component {
               dataSource={broadcastChannel}></Table>
             </TabPane>:null
           }
-          
+          {/*
+          */}
+          <TabPane tab="门禁" key="status-guard">
+              <Table 
+              loading={guardList?false:true}
+                columns={columns6} 
+                rowKey={(record,index)=>index}
+                dataSource={guardList}></Table>
+            </TabPane>
         </Tabs>
       </div>
     )

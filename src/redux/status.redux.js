@@ -113,7 +113,18 @@ export function getBroadcastChannelStatus() {
     })
   }
 }
-
+export function getGuardStatus() {
+  return dispatch => {
+    const token = localStorage.getItem('token')
+    request.get(config.api.base + config.api.getStatus,{ token: token,funNo:'HBAuxiliaryDevice'})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        dispatch(dataSuccess({'guardList':res.dataObject}))
+      }
+    })
+  }
+}
 // 历史分析
 export function historyFstatistics(info) {
   return dispatch => {

@@ -379,13 +379,30 @@ export function getDevInfo(info,type,play,index) {
     
      if(res.success) {
        const device = res.dataObject
-       console.log(JSON.stringify(res))
        const model = device.host.model === 1?'HikHC-14':'DHNET-03'
        dispatch(devinfoSuccess(res.dataObject))
        if(type==='play') {
         play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,index?index:0);
        }
-       
+       if(type==='guard') {
+        guardCtrl({token:token,vid:device.vid,deviceType:device.type,controlValue:1})(dispatch)
+       }
+     }
+    })
+  }
+}
+
+// home guadctrl
+export function guardCtrl(info) {
+  return (dispatch) => {
+    const token = localStorage.getItem('token')
+    request.get(config.api.base + config.api.guardCtrl,{
+      token:token,
+      ...info
+    })
+    .then(res => {
+     if(res.success) {
+      message.info('已开门')
      }
     })
   }
