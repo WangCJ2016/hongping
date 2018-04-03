@@ -31,7 +31,6 @@ class Selection extends React.Component {
     window.document.addEventListener('mouseup', this._onMouseUp);
   }
   _onMouseMove(e) {
-    console.log(this.props.offsetLeft)
     var ev = e || window.event
     this.setState({
       endPoint:{x:ev.clientX-this.props.offsetLeft,y:ev.clientY-70},

@@ -125,6 +125,7 @@ class SettingUserRole1 extends React.Component {
     this.setState({roleSetVisible:false})
   }
   tabRender(defaultCheckedKeys) {
+    defaultCheckedKeys=defaultCheckedKeys?defaultCheckedKeys:[]
     return  <Tabs tabPosition='left' defaultActiveKey="1" >
     <TabPane tab="功能" key="1">
     <Tree
@@ -162,6 +163,7 @@ class SettingUserRole1 extends React.Component {
   </Tabs>
   }
   render() {
+    console.log(this.props)
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="setting-user-role float-left">
@@ -221,7 +223,7 @@ class SettingUserRole1 extends React.Component {
             onCancel={this.Cancel.bind(this)}
             >
             {
-              this.state.roleSetVisible&&this.props.role.roleInfo.roleResources?
+              this.state.roleSetVisible&&(this.props.role.roleInfo.roleResources||this.props.role.roleInfo.roleResources===null)?
               this.tabRender(this.props.role.roleInfo.roleResources)
               :null
             }

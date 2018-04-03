@@ -3,7 +3,14 @@ import { request, config} from '../config'
 
 const intialState = {
   searchVideoList:[],
-  searchHongwaiList: []
+  searchHongwaiList: [],
+  searchListType1: [],
+  searchListType2: [],
+  searchListType3: [],
+  searchListType4: [],
+  searchListType5: [],
+  searchListType6: [],
+  searchListType7: []
 }
 const SEARCHVIDEO = '[videoside] SEARCHVIDEO'
 const SEARCHHONGWAI = '[videoside] SEARCHHONGWAI'
@@ -53,7 +60,7 @@ export function searchHongwaiVideo(info) {
     .then(res=>{
       console.log(res)
       if(res.success) {
-       dispatch(searchHongwaiVideoSuccess({searchHongwaiList:res.result}))
+       dispatch(searchHongwaiVideoSuccess({['searchListType'+info.type]:res.result}))
       }
     })
   }

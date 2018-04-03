@@ -1,11 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {Icon,Input} from 'antd'
+import {Icon,Input,Switch} from 'antd'
 import DaozhaTree from '../areaTree/daozhaTree'
 import {changeSidebar} from '../../redux/sidebar.redux'
 import { searchHongwaiVideo } from '../../redux/video.sider.redux'
+
 import className from 'classnames'
+
 const Search = Input.Search
+
 
 @connect(
   state=>({sidebar:state.sidebar,videSider: state.videSider}),
@@ -17,9 +20,10 @@ class DaozhaSider extends React.Component {
     this.state = {
       selectVideo: ''
     }
+    this.onChange = this.onChange.bind(this)
   }
   searchVideoRender() {
-    const searchHongwaiList = this.props.videSider.searchHongwaiList
+    const searchHongwaiList = this.props.videSider.searchListType3
     return searchHongwaiList.map(video=>{
       const styles = className({
         'bro-search-item': true,
@@ -29,8 +33,16 @@ class DaozhaSider extends React.Component {
      return <div className={styles}  key={video.id} onDoubleClick={()=>this.setState({selectVideo:video.id})}>
               {video.type===3?<img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
               {video.name}
+              <Switch defaultChecked={false} onChange={this.onChange} />
           </div>
     })
+  }
+  onChange(checked) {
+    if(checked) {
+      this.play.XzVideo_RemoteControl_Barriergate(1,1,5,0)
+    }else{
+      this.play.XzVideo_RemoteControl_Barriergate(0,1,5,0)
+    }
   }
   render() {
     if(!this.props.sidebar.daozha_sidebar) {

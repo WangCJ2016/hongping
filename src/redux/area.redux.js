@@ -462,6 +462,7 @@ function areaInfoSuccess(info) {
 // }
 export function areaInfo(info) {
   return (dispatch)=>{
+    dispatch(areaInfoSuccess({picture:''}))
     const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.picByarea,
                   {

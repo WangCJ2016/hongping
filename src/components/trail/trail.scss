@@ -17,4 +17,14 @@
   background-color: #17b89f;
   border: 2px solid #fff;
   position: absolute;
+  &.active{
+    border: 2px solid red;
+  }
+}
+.activeTrail{
+  position: absolute;
+  z-index:0;
+  i{
+    color: #17b89f;
+  }
 }

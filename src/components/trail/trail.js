@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Tooltip,Button } from 'antd'
+import { Tooltip,Button,Icon,Spin } from 'antd'
 import './trail.scss'
 
 @connect(
@@ -11,51 +11,49 @@ class Trail extends React.Component {
     super()
     this.state = {
       animation:true,
-      time:100
+      count:0,
+      time: 100
     }
+    this.start = this.start.bind(this)
+    this.end = this.end.bind(this)
+    this.faster = this.faster.bind(this)
   }
   componentWillReceiveProps(nextProps) {
-    if(!this.props.peo.picture===nextProps.peo.picture) {
-      this.canvasRender()
+    if(nextProps.peo.picture) {
+      setTimeout(()=>{
+        this.canvasRender()
+      })
     }
   }
+ 
   canvasRender() {
     const canvas = this.canvas
-    canvas.width=this.outDiv.clientWidth
-    canvas.height=this.outDiv.clientHeight
-    const context = canvas.getContext("2d")
-    context.clearRect(0,0,1000,1000)
-    this.context = context
+    canvas.width=this.outDiv.getBoundingClientRect().width
+    canvas.height=this.outDiv.getBoundingClientRect().height
+    const context = canvas.getContext("2d");
+    context.clearRect(0,0,canvas.width,canvas.height)
     const trails = this.props.peo.traildetail
-     //设置样式
-     context.lineWidth = 2;
-     context.strokeStyle = "#17b89f";
     //设置对象起始点和终点
-    // context.beginPath()
-    // context.lineTo(10,10)
-    // context.lineTo(20,20)
-    // context.stroke()
-    // context.beginPath()
-    // context.lineTo(100,100)
-    // context.stroke()
-    // context.beginPath()
-    // context.lineTo(100,200)
-    // context.stroke()
-    const that = this
-    for(let i=0;i<trails.length;i=i+2) {
-      (function() {
-        setTimeout(()=>{
-          context.beginPath()
-          context.lineTo(trails[i].locationX/10,trails[i].locationY/10)
-          context.lineTo(trails[i+1].locationX/10,trails[i+1].locationY/10)
-          context.closePath()
-          context.stroke()
-        },that.state.time*i)
-      })()
-    }
-   
+    trails.forEach(trail => {
+      context.lineTo(trail.locationX/10,trail.locationY/10);
+    }) 
+   //设置样式
+    context.lineWidth = 2;
+    context.strokeStyle = "#17b89f";
     //绘制
-    
+    context.stroke();
+    this.setState({
+      trail: trails[0]
+    })
+  }
+  changeTrailRender(trail) {
+    return (
+      <Tooltip  title={trail.reportTime}>
+        <div className='activeTrail' style={{left:trail.locationX/10-5,top:trail.locationY/10-20}}>
+          <Icon type="user" />
+        </div>
+      </Tooltip>
+    )
   }
   peoTipRender() {
     const trails = this.props.peo.traildetail
@@ -66,29 +64,60 @@ class Trail extends React.Component {
         peoTipArr.push(
           <Tooltip key={index} title={trail.reportTime}>
             <div className="tipPeo" style={{left:trail.locationX/10-5,top:trail.locationY/10-5}}></div>
-      </Tooltip>
+          </Tooltip>
         )
       }
     }) 
     return peoTipArr
   }
-  onClick() {
-    this.canvasRender()
+  start() {
+    const trails = this.props.peo.traildetail
+    const length = trails.length
+   this.timer = setInterval(()=>{
+      if(this.state.count < length) {
+        this.setState({
+          trail: trails[this.state.count],
+          count: this.state.count+1 
+        })
+      }else {
+        clearInterval(this.timer)
+      }
+    },this.state.time)
+  }
+  end() {
+    return this.timer?clearInterval(this.timer):null
+  }
+  faster() {
+    if(this.timer&&this.state.time/2 >= 10) {
+      clearInterval(this.timer)
+      this.setState({time: this.state.time/2},()=>{
+        this.start()
+      })
+    }
   }
   render() {
     return (
       <div>
         <div style={{textAlign:'center'}}>
-        <Button type='primary' onClick={this.onClick.bind(this)}>开始绘制</Button>
-        <Button type='primary' onClick={()=>this.setState({time:10})}>快进</Button></div>
-        
-        <div className='peo-trail' style={{left:this.props.sidebar.homeLeftIf?'360px':'0'}} ref={(outDiv)=>this.outDiv=outDiv} >
-          <canvas ref={(canvas)=>this.canvas=canvas} className='canvas' >
-            你的浏览器还不支持canvas
-          </canvas>
-          <img id='img' src={this.props.peo.picture}  alt="" />
-          {this.peoTipRender()}
-        </div>
+        <Button type='primary' onClick={this.start}>开始绘制</Button>
+        <Button type='primary' onClick={this.end}>暂停</Button>
+        <Button type='primary' onClick={this.faster}>快进</Button>
+        </div>    
+          {
+            this.props.peo.picture?
+            <div className='peo-trail' style={{left:this.props.sidebar.homeLeftIf?'360px':'0'}} ref={(outDiv)=>this.outDiv=outDiv} >
+              <canvas ref={(canvas)=>this.canvas=canvas} className='canvas' >
+                你的浏览器还不支持canvas
+              </canvas>
+              <img id='img' src={this.props.peo.picture}  alt="" />
+              {this.state.trail?this.changeTrailRender(this.state.trail):null}
+              {this.peoTipRender()}
+            </div>
+            :
+            <div style={{width: '100%',height:'100%',textAlign:'center'}}>
+              <Spin size="large" style={{marginTop: '200px'}} />
+            </div>       
+          }        
       </div>
     )
   }

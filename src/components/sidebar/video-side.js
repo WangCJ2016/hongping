@@ -4,12 +4,16 @@ import {Icon,Input} from 'antd'
 import TableAreaTree from '../areaTree/tableAreaTree'
 import {changeSidebar} from '../../redux/sidebar.redux'
 import { searchVideo } from '../../redux/video.sider.redux'
+import { areaInfo } from '../../redux/area.redux'
+import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import className from 'classnames'
+import { withRouter } from 'react-router-dom'
 const Search = Input.Search
 
+@withRouter
 @connect(
   state=>({sidebar:state.sidebar,videSider: state.videSider}),
-  {changeSidebar,searchVideo}
+  {changeSidebar,searchVideo,areaInfo,querySysInstallPlaces}
 )
 class VideoSide extends React.Component {
   constructor() {
@@ -30,8 +34,18 @@ class VideoSide extends React.Component {
               {video.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
               {video.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
               {video.name}
+              <a onClick={this.goLoc.bind(this,video.installPlace.areaId)} style={{float:'right'}}>
+                <img  className='type-icon' src={require('../../assets/imgs/loc_icon.png')} alt=""/>
+              </a>
           </div>
     })
+  }
+  goLoc(parentId) {
+    if(this.props.location.pathname !== '/home') {
+      this.props.history.push('home')
+    } 
+    this.props.areaInfo({id:parentId})
+    this.props.querySysInstallPlaces({areaId:parentId})
   }
   render() {
     if(!this.props.sidebar.video_sidebar) {

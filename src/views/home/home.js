@@ -282,16 +282,22 @@ class Home extends React.Component {
         right={this.props.sidebar.offsetLeft}
         dragSelect={()=>this.setState({dragSelectEnbled:true})}
         goParentArea={this.goParentArea} />
-        <div className='area-Map'>
-          <div style={{display:'inline-block',position:'relative',zIndex:0}}>
-          {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
-          <img id='img' draggable='false' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
-          {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
-          <Selection offsetLeft={this.props.sidebar.offsetLeft}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
-          {this.props.area.load?null:this.mapDeviceRender()}
-          </Selection>
+        {
+          areaInfo.picture?  
+          <div className='area-Map'>
+            <div style={{display:'inline-block',position:'relative',zIndex:0}}>
+            <img id='img' draggable='false' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
+            <Selection offsetLeft={this.props.sidebar.offsetLeft}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
+            {this.props.area.load?null:this.mapDeviceRender()}
+            </Selection>
+            </div>
           </div>
-        </div>
+          :
+          <div style={{width: '100%',height:'100%',textAlign:'center'}}>
+           <Spin size="large" style={{marginTop: '200px'}} />
+          </div>        
+        }
+       
        
         <HomeTable videoPlay={this.videoPlay} openDoor={this.openDoor} />
       
