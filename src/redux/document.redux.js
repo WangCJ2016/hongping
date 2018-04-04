@@ -1,7 +1,6 @@
 import { request, config} from '../config'
 import { message} from 'antd'
 
-const token = localStorage.getItem('token')
 const initialState = {
   categorysTree:[],
   filesList: []
@@ -31,6 +30,7 @@ export function dataSuccess(data) {
 
 export function levelTopCategorys() {
   return (dispatch) => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.levelTopCategorys,
       {
         token: token,
@@ -53,6 +53,7 @@ export function addNextCategorys(data) {
 }
 export function addCategorys(info) {
   return (dispatch,getState) => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.addCategorys,
       {
         ...info,
@@ -69,6 +70,7 @@ export function addCategorys(info) {
 }
 export function modifyCategory(info) {
   return (dispatch) => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifyCategory,
       {
         ...info,
@@ -86,6 +88,7 @@ export function modifyCategory(info) {
 
 export  function filesList(info) {
   return (dispatch) => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.filesList,
       {
         ...info,
@@ -102,6 +105,7 @@ export  function filesList(info) {
 
 export function uploadFile(info) {
   return (dispatch) => {
+    const token = localStorage.getItem('token')
     let formData = new FormData()
     formData.append('token', token);
     formData.append('title', info.title);
@@ -126,6 +130,7 @@ export function uploadFile(info) {
 
 export function delFile(info) {
   return (dispatch) => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.delFile,
       {
         ...info,

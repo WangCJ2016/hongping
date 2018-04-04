@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import {Icon,Input} from 'antd'
 import GuardTree from '../areaTree/guardTree'
 import {changeSidebar} from '../../redux/sidebar.redux'
-import { searchVideo } from '../../redux/video.sider.redux'
+import { searchHongwaiVideo } from '../../redux/video.sider.redux'
 import className from 'classnames'
 const Search = Input.Search
 
 @connect(
   state=>({sidebar:state.sidebar,videSider: state.videSider}),
-  {changeSidebar,searchVideo}
+  {changeSidebar,searchHongwaiVideo}
 )
 class GuardSider extends React.Component {
   constructor() {
@@ -19,7 +19,7 @@ class GuardSider extends React.Component {
     }
   }
   searchVideoRender() {
-    const searchVideoList = this.props.videSider.searchVideoList
+    const searchVideoList = this.props.videSider.searchListType5
     return searchVideoList.map(video=>{
       const styles = className({
         'bro-search-item': true,
@@ -34,6 +34,9 @@ class GuardSider extends React.Component {
     })
   }
   render() {
+    if(!this.props.sidebar.guard_sidebar) {
+      return null
+    }
     return (
       <div className='submeun' style={{width:this.props.sidebar.guard_sidebar?'300px':'0'}}>
         <div className='siderbar-wrap'> 
@@ -43,7 +46,7 @@ class GuardSider extends React.Component {
             <Search
             placeholder="请输入关键字"
             style={{ width: 220 }}
-            onSearch={value => this.props.searchVideo({name:encodeURI(value)})} />
+            onSearch={value => this.props.searchHongwaiVideo({name:encodeURI(value),type: 5})} />
             <div style={{marginTop:'15px'}}><GuardTree select={this.select} defaultExpandAllRows={true}/></div>
             <div className="title" style={{textAlign:'left',marginTop:'15px'}}>
               <span>门禁搜索结果</span>

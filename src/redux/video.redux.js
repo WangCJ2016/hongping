@@ -1,5 +1,5 @@
 import { request, config} from '../config'
-const token = localStorage.getItem('token')
+
 const intialState = {
   saveVideoIf:false,
   hasSoundIf:true,
@@ -216,6 +216,7 @@ function videoAreaDevicesSuccess(data) {
 }
 export function videoAreaDevices(info) {
   return dispatch=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.videoAreaDevices,{
       token: token,
       ...info
@@ -242,6 +243,7 @@ function remotePresetsSuccess(data) {
 }
 export function remotePresets(info) {
   return dispatch=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.remotePresets,{
       token: token,
       ...info
@@ -268,6 +270,7 @@ function createRemotePresetsSuccess(data) {
 export function createRemotePresets(info) {
   return (dispatch,getState)=>{
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.createRemotePreset,{
       token: token,
       accountId: user.account.id,
@@ -293,6 +296,7 @@ function modifyRemotePresetsSuccess(data) {
 export function modifyRemotePresets(info) {
   return (dispatch,getState)=>{
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifyRemotePresets,{
       token: token,
       accountId: user.account.id,
@@ -317,6 +321,7 @@ function remotePreviewGroupListSuccess(data) {
 }
 export function remotePreviewGroupList(info) {
   return (dispatch)=>{ 
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.remotePreviewGroupList,{
       token: token,
       ...info
@@ -335,6 +340,7 @@ export function remotePreviewGroupList(info) {
 
 export function createPreviewGroup(info) {
   return (dispatch)=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.createPreviewGroup,{
       token: token,
       ...info
@@ -351,6 +357,7 @@ export function createPreviewGroup(info) {
 // 修改／删除预览组
 export function modifyPreviewGroup(info) {
   return (dispatch)=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifyPreviewGroup,{
       token: token,
       ...info
@@ -367,6 +374,7 @@ export function modifyPreviewGroup(info) {
 export function modifySysRemotePreview(info) {
   return (dispatch,getState)=>{
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifySysRemotePreview,{
       token: token,
       accountId: user.account.id,

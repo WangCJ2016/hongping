@@ -22,6 +22,7 @@ class DragSelectModal extends React.Component {
     this.props.onCancel()
   }
   render() {
+    console.log(this.props)
     const columnsVideo = [{
       title: '名称',
       dataIndex: 'devName',
@@ -63,7 +64,7 @@ class DragSelectModal extends React.Component {
       dataIndex: 'devName',
       key: 'devName',
       render: (text, record) => {
-        if(record.type===3){
+        if(record.type===5){
           return (
             <div>
             <img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>

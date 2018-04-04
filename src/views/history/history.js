@@ -1,47 +1,49 @@
 import React from 'react'
-import { Input,Col,DatePicker,Select,Form,Row,Button,Table } from 'antd'
+import { Input,Col,DatePicker,Select,Form,Row,Button,Table,Tabs } from 'antd'
 import { connect } from 'react-redux'
 import { historyFstatistics } from '../../redux/status.redux'
+import HistoryGraph  from './historyGraph'
 import moment from 'moment'
 const Option = Select.Option
 const FormItem = Form.Item
+const TabPane = Tabs.TabPane
 
 
 const columns = [{
-  title: '等级',
-  dataIndex: 'degree',
-  key: 'degree',
-  render:(text,record)=>{
-    if(text===0) {
-      return <span>正常</span>
+    title: '等级',
+    dataIndex: 'degree',
+    key: 'degree',
+    render:(text,record)=>{
+      if(text===0) {
+        return <span>正常</span>
+      }
+      if(text===1) {
+        return <span>非紧急</span>
+      }
+      if(text===2) {
+        return <span>紧急</span>
+      }
     }
-    if(text===1) {
-      return <span>非紧急</span>
-    }
-    if(text===2) {
-      return <span>紧急</span>
-    }
-  }
-},{
-  title: '地点',
-  dataIndex: 'place',
-  key: 'place',
-},{
-  title: '时间',
-  dataIndex: 'time',
-  key: 'time',
-},{
-  title: '设备',
-  dataIndex: 'device',
-  key: 'device',
-},{
-  title: '设备类型',
-  dataIndex: 'deviceType',
-  key: 'deviceType',
-},{
-  title: '报警类型',
-  dataIndex: 'type',
-  key: 'type',
+  },{
+    title: '地点',
+    dataIndex: 'place',
+    key: 'place',
+  },{
+    title: '时间',
+    dataIndex: 'time',
+    key: 'time',
+  },{
+    title: '设备',
+    dataIndex: 'device',
+    key: 'device',
+  },{
+    title: '设备类型',
+    dataIndex: 'deviceType',
+    key: 'deviceType',
+  },{
+    title: '报警类型',
+    dataIndex: 'type',
+    key: 'type',
 }]
 
 @connect(
@@ -80,66 +82,75 @@ class History1 extends React.Component {
     };
     return (
       <div style={{padding:'20px'}}>
-      <Form
-          className="ant-advanced-search-form"
-          onSubmit={this.handleSearch.bind(this)}
-        >
-          <Row gutter={40}>
-            <Col span={5} >
-              <FormItem {...formItemLayout} label={'地点'}>
-                {getFieldDecorator('place',{
-                  initialValue:''
-                })(
-                  <Input placeholder="请输入地址" />
-                )}
-              </FormItem>
-            </Col>
-            <Col span={5} >
-            <FormItem {...formItemLayout} label={'起始时间'}>
-              {getFieldDecorator('startTime',{
-                initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss')
-              })(
-                <DatePicker format='YYYY-MM-DD HH:mm:ss' placeholder="请选择日期" />
-              )}
-            </FormItem>
-          </Col>
-            <Col span={5} >
-            <FormItem {...formItemLayout} label={'结束日期'}>
-              {getFieldDecorator('endTime',{
-                initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss')
-              })(
-                <DatePicker format='YYYY-MM-DD HH:mm:ss' placeholder="请选择日期" />
-              )}
-            </FormItem>
-          </Col>
-          <Col span={5} >
-            <FormItem {...formItemLayout} label={'类型'}>
-              {getFieldDecorator('type',{
-                initialValue:"0"
-              })(
-                <Select  >
-                  <Option value="0">全部</Option>
-                  <Option value="1">消防报警</Option>
-                  <Option value="2">红外报警</Option>
-                  <Option value="3" >移动侦测报警</Option>
-                  <Option value="4">紧急呼叫</Option>
-                  <Option value="5">巡更报警</Option>
-              </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col span={4} >
-            <FormItem {...formItemLayout} >
-             
-                <Button type='primary' htmlType="submit">搜索</Button>
+        <Tabs defaultActiveKey="2" >
+          <TabPane tab="列表" key="1">
+            <div>
+              <Form
+                className="ant-advanced-search-form"
+                onSubmit={this.handleSearch.bind(this)}
+                >
+                <Row gutter={40}>
+                <Col span={5} >
+                  <FormItem {...formItemLayout} label={'地点'}>
+                    {getFieldDecorator('place',{
+                      initialValue:''
+                    })(
+                      <Input placeholder="请输入地址" />
+                    )}
+                  </FormItem>
+                 </Col>
+                 <Col span={5} >
+                 <FormItem {...formItemLayout} label={'起始时间'}>
+                  {getFieldDecorator('startTime',{
+                    initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss')
+                  })(
+                    <DatePicker showTime format='YYYY-MM-DD HH:mm:ss' placeholder="请选择日期" />
+                  )}
+                 </FormItem>
+                </Col>
+                <Col span={5} >
+                <FormItem {...formItemLayout} label={'结束日期'}>
+                  {getFieldDecorator('endTime',{
+                    initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss')
+                  })(
+                    <DatePicker showTime format='YYYY-MM-DD HH:mm:ss' placeholder="请选择日期" />
+                  )}
+                </FormItem>
+               </Col>
+               <Col span={5} >
+                <FormItem {...formItemLayout} label={'类型'}>
+                  {getFieldDecorator('type',{
+                    initialValue:"0"
+                  })(
+                    <Select  >
+                      <Option value="0">全部</Option>
+                      <Option value="1">消防报警</Option>
+                      <Option value="2">红外报警</Option>
+                      <Option value="3" >移动侦测报警</Option>
+                      <Option value="4">紧急呼叫</Option>
+                      <Option value="5">巡更报警</Option>
+                  </Select>
+                  )}
+                </FormItem>
+               </Col>
+               <Col span={4} >
+                <FormItem {...formItemLayout} >
+                  
+                    <Button type='primary' htmlType="submit">搜索</Button>
+                  
+                </FormItem>
+               </Col>
+               </Row>
               
-            </FormItem>
-          </Col>
-          </Row>
-          
-        </Form>
-        <Table columns={columns} dataSource={this.props.status.historyFstatistics}></Table>
-      </div>
+              </Form>
+              <Table columns={columns} dataSource={this.props.status.historyFstatistics}></Table>
+            </div>
+          </TabPane>
+          <TabPane tab="统计图" key="2">
+            <HistoryGraph></HistoryGraph>
+          </TabPane>
+        </Tabs>
+      </div>  
     )
   }
 }

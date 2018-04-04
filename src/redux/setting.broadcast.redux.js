@@ -1,7 +1,6 @@
 import { request, config} from '../config'
 import { message } from 'antd'
 
-const token = localStorage.getItem('token')
 const initialState = {
   broadcastHosts: [],
   selectHost: null,
@@ -92,6 +91,7 @@ function hostListsSuccess(list) {
 }
 export function hostLists() {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.BroadcastHosts, {
       token: token,
       pageNo:1,
@@ -129,6 +129,7 @@ function createSuccess(host) {
 export function createHost(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.createBroadcastHost, {
       token: token,
       accountId: user.account.id,
@@ -170,6 +171,7 @@ function delHost(id) {
 export function modifyHost(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifyBroadcastHost, {
       token: token,
       accountId: user.account.id,
@@ -210,6 +212,7 @@ function channelsSuccess(channels) {
 }
 export function channels(info) {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.BroadcastChannels, {
       token: token,
      ...info
@@ -242,6 +245,7 @@ function createChannelSuccess(host) {
 export function createChannel(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.BroadcastChannelsAdd, {
       token: token,
       accountId: user.account.id,
@@ -283,6 +287,7 @@ function delChannel(id) {
 export function modifyChannel(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifyBroadcastChannel, {
       token: token,
       accountId: user.account.id,

@@ -1,7 +1,6 @@
 import { request, config} from '../config'
 import { message} from 'antd'
 
-const token = localStorage.getItem('token')
 const initialState = {
   alarmlist: [],
   alarmInfo: {},
@@ -53,7 +52,8 @@ function alarmPagesSuccess(list) {
   }
 }
 export function alarmPages(info) {
-  return dispatch => {
+  return (dispatch) => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.alertmPages,{
       token: token,
       ...info,
@@ -70,6 +70,7 @@ export function alarmPages(info) {
 // 报警详情
 export function getAlarmInfo(info) {
   return (dispatch) => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getAlarmInfo,{
       token: token,
       ...info
@@ -93,7 +94,7 @@ export function modifyAlarm(info) {
   return (dispatch,getState) => {
     const user = getState().user
     request.get(config.api.base + config.api.modifyAlarm,{
-      token: token,
+      token: user.account.token,
       accountId:user.account.id,
       ...info
     })
@@ -109,7 +110,8 @@ export function modifyAlarm(info) {
 }
 // 警报相关设备
 export function alarmLinkDevices(info) {
-  return (dispatch) => {
+  return (dispatch,getState) => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.alarmLinkDevices,{
       token: token,
       ...info
@@ -130,7 +132,8 @@ function carPagesSuccess(info) {
   }
 }
 export function carPages() {
-  return (dispatch) => {
+  return (dispatch,getState) => {
+    const token = getState().user.account.token
     request.get(config.api.base + config.api.carPages,{
       token: token,
       pageSize: 10
@@ -147,7 +150,8 @@ export function carPages() {
 
 // 首页报警数量
 export function alarmCount() {
-  return (dispatch) => {
+  return (dispatch,getState) => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.alarmCount,{
       token: token
     })

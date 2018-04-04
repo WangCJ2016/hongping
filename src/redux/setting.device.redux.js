@@ -1,6 +1,6 @@
 import { request, config} from '../config'
 import { message } from 'antd'
-const token = localStorage.getItem('token')
+
 
 const initalState = {
   areaToDevices: [],
@@ -116,6 +116,7 @@ function allDeviceSuccess(devices) {
 }
 export function allDevices(info) {
   return dispatch=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.allDevices,{
       token:token,
       ...info,
@@ -139,6 +140,7 @@ function areaDeviceSuccess(devices) {
 }
 export function areaDevices(info) {
   return dispatch=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.areaDevices,{
       token:token,
       ...info,
@@ -157,6 +159,7 @@ export function areaDevices(info) {
 // 区域下级区域列表
 export function nextArea(info) {
   return dispatch=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.nextArea,{
       token:token,
       ...info,
@@ -183,6 +186,7 @@ function areaDeviceSuccess1(devices) {
 }
 export function areaDevices1(info) {
   return dispatch=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.areaDevices1,{
       token:token,
       ...info,
@@ -208,6 +212,7 @@ export function areaDevices1(info) {
 export function addDevices(info) {
   return (dispatch,getState)=>{
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.createDeviceArea,{
       token:token,
       accountId: user.account.id,
@@ -230,6 +235,7 @@ export function addDevices(info) {
 export function createSysInstallPlace(info) {
   return (dispatch,getState)=>{
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.createSysInstallPlace,{
       token:token,
       accountId: user.account.id,
@@ -253,6 +259,7 @@ function querySysInstallPlacesSuccess(data) {
 }
 export function querySysInstallPlaces(info) {
   return (dispatch)=>{
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.querySysInstallPlaces,{
       token:token,
       ...info
@@ -275,6 +282,7 @@ export function querySysInstallPlaces(info) {
 export function delMapDevice(del) {
   return (dispatch,getState) => {
      const user = getState().user
+     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.delInstatllPlace,{
       token:token,
       accountId: user.account.id,
@@ -318,7 +326,7 @@ export function changeMapDevice(device) {
 }
 export function searchChannel(info) {
   return (dispatch) => {
-     
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.searchChannel,{
       token:token,
       ...info
@@ -333,7 +341,7 @@ export function searchChannel(info) {
 
 export function searchBroadcast(info) {
   return (dispatch) => {
-     
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.searchBroadcast,{
       token:token,
       ...info
@@ -362,6 +370,7 @@ function devinfoSuccess(info) {
 export function getDevInfo(info,type,play,index) {
   return (dispatch,getState) => {
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getDevInfo,{
       token:token,
       ...info
@@ -370,13 +379,30 @@ export function getDevInfo(info,type,play,index) {
     
      if(res.success) {
        const device = res.dataObject
-       console.log(JSON.stringify(res))
        const model = device.host.model === 1?'HikHC-14':'DHNET-03'
        dispatch(devinfoSuccess(res.dataObject))
        if(type==='play') {
         play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,index?index:0);
        }
-       
+       if(type==='guard') {
+        guardCtrl({token:token,vid:device.vid,deviceType:device.type,controlValue:1})(dispatch)
+       }
+     }
+    })
+  }
+}
+
+// home guadctrl
+export function guardCtrl(info) {
+  return (dispatch) => {
+    const token = localStorage.getItem('token')
+    request.get(config.api.base + config.api.guardCtrl,{
+      token:token,
+      ...info
+    })
+    .then(res => {
+     if(res.success) {
+      message.info('已开门')
      }
     })
   }

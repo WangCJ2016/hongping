@@ -5,11 +5,15 @@ import HongwaiTree from '../areaTree/hongwaiTree'
 import {changeSidebar} from '../../redux/sidebar.redux'
 import { searchHongwaiVideo } from '../../redux/video.sider.redux'
 import className from 'classnames'
+import { withRouter } from 'react-router-dom'
+import { areaInfo } from '../../redux/area.redux'
+import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 const Search = Input.Search
 
+@withRouter
 @connect(
   state=>({sidebar:state.sidebar,videSider: state.videSider}),
-  {changeSidebar,searchHongwaiVideo}
+  {changeSidebar,searchHongwaiVideo,areaInfo,querySysInstallPlaces}
 )
 class HongwaiSider extends React.Component {
   constructor() {
@@ -29,10 +33,23 @@ class HongwaiSider extends React.Component {
      return <div className={styles}  key={video.id} onDoubleClick={()=>this.setState({selectVideo:video.id})}>
               {video.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
               {video.name}
+              <a onClick={this.goLoc.bind(this,video.installPlace.areaId)} style={{float:'right'}}>
+              <img  className='type-icon' src={require('../../assets/imgs/loc_icon.png')} alt=""/>
+            </a>
           </div>
     })
   }
+  goLoc(parentId) {
+    if(this.props.location.pathname !== '/home') {
+      this.props.history.push('home')
+    } 
+    this.props.areaInfo({id:parentId})
+    this.props.querySysInstallPlaces({areaId:parentId})
+  }
   render() {
+    if(!this.props.sidebar.hongwia_sidebar) {
+      return null
+    }
     return (
       <div className='submeun' style={{width:this.props.sidebar.hongwia_sidebar?'300px':'0'}}>
         <div className='siderbar-wrap'> 

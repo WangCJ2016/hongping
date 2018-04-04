@@ -1,7 +1,5 @@
 import { request, config} from '../config'
 
-const token = localStorage.getItem('token')
-
 const intialState = {
   selectBroIndex: [],
   searchBroList: []
@@ -38,6 +36,7 @@ function searchBroadcastSuccess(data) {
 }
 export function searchBroadcast(info) {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.searchBroadcast,{ token: token,...info})
     .then(res=>{
       console.log(res)

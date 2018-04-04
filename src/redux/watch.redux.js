@@ -2,7 +2,6 @@ import { request, config} from '../config'
 import { weekFormate } from '../utils'
 import { message } from 'antd'
 
-const token = localStorage.getItem('token')
 const intialState = {
   
 }
@@ -47,6 +46,7 @@ export function dataSuccess(data) {
 
 export function getWatchTasks() {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.getWatchTasks, {token:token})
     .then(res=>{
       console.log(res)
@@ -72,6 +72,7 @@ function addTaskSuccess(data) {
 export function addTask(info) {
   return (dispatch,getState) => {
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.addTask, {token:token,accountId:user.account.id,...info})
     .then(res=>{
       console.log(res)
@@ -103,6 +104,7 @@ function deleteTaskSuccess(data) {
 export function editTask(info) {
   return (dispatch,getState) => {
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.editTask, {token:token,accountId:user.account.id,...info})
     .then(res=>{
       console.log(res)
@@ -126,6 +128,7 @@ export function editTask(info) {
 
 export function TaskPoints(info) {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.taskPoints, {token:token,...info})
     .then(res=>{
       console.log(res)
@@ -143,6 +146,7 @@ export function TaskPoints(info) {
 export function addPoint(info) {
   return (dispatch,getState) => {
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.addPoint, {token:token,accountId:user.account.id,...info})
     .then(res=>{
       console.log(res)
@@ -156,6 +160,7 @@ export function addPoint(info) {
 export function editPoint(info) {
   return (dispatch,getState) => {
     const user = getState().user
+    const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.editPoint, {token:token,accountId:user.account.id,...info})
     .then(res=>{
       console.log(res)
@@ -168,6 +173,7 @@ export function editPoint(info) {
 
 export function watchHistoryPage(info) {
   return (dispatch) => {
+    const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.watchHistoryPage, {token:token,...info})
     .then(res=>{
       console.log(res)
@@ -184,6 +190,7 @@ export function watchHistoryPage(info) {
 
 export function getTaskDefaultTime() {
   return (dispatch) => {
+    const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.getTaskDefaultTime, {token:token})
     .then(res=>{
       console.log(res)
@@ -197,6 +204,7 @@ export function getTaskDefaultTime() {
 
 export function setTaskTime(info) {
   return (dispatch) => {
+    const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.setTaskTime, {token:token,...info})
     .then(res=>{
       console.log(res)
@@ -210,6 +218,7 @@ export function setTaskTime(info) {
 
 export function watchPointsUpload(info) {
   return (dispatch) => {
+    const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.watchPointsUpload, {token:token,...info})
     .then(res=>{
       console.log(res)

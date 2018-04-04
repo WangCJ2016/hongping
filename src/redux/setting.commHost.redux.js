@@ -1,6 +1,6 @@
 import { request, config} from '../config'
 import { message } from 'antd'
-const token = localStorage.getItem('token')
+
 const initialState = {
   commHosts: [],
   commDevices: [],
@@ -106,6 +106,7 @@ function hostListsSuccess(list) {
 }
 export function hostLists() {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.commHosts, {
       token: token,
       pageNo:1,
@@ -146,6 +147,7 @@ function createSuccess(host) {
 export function createHost(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.createCommHost, {
       token: token,
       accountId: user.account.id,
@@ -190,6 +192,7 @@ function delHost(id) {
 export function modifyHost(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifyCommHost, {
       token: token,
       accountId: user.account.id,
@@ -234,6 +237,7 @@ function deviceListsSuccess(list) {
 }
 export function deviceLists(info) {
   return (dispatch,getState) => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.commDevice, {
       token: token,
       ...info,
@@ -265,6 +269,7 @@ function createDeviceSuccess(host) {
 export function createDevice(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.createCommDevice, {
       token: token,
       accountId: user.account.id,
@@ -303,6 +308,7 @@ function delDevice(id) {
 export function modifyDevice(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifyCommDevice, {
       token: token,
       accountId: user.account.id,
@@ -347,6 +353,7 @@ function propertyListsSuccess(list) {
 }
 export function propertyLists(info) {
   return dispatch => {
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.CommProperties, {
       token: token,
       ...info,
@@ -379,6 +386,7 @@ function createPropertySuccess(host) {
 export function createProperty(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.propertyAdd, {
       token: token,
       accountId: user.account.id,
@@ -419,6 +427,7 @@ function delProperty(id) {
 export function modifyProperty(info) {
   return (dispatch,getState) => {
     const user=getState().user
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.modifyProperty, {
       token: token,
       accountId: user.account.id,

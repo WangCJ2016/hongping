@@ -69,7 +69,6 @@ export default class HongwaiTree extends React.Component {
                     dataSource={data}
                     onExpand={this.onExpand}
                     onRowClick={this.onRowClick.bind(this)}
-                    defaultExpandAllRows={true}
                     size='small' /> 
                  </div>   
         )

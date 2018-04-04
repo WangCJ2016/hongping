@@ -14,9 +14,9 @@ import Status from '../views/status/status'
 import History from '../views/history/history'
 import Watch from '../views/watch/watch'
 import Document from '../views/document/document'
-import { changeSidebar } from '../redux/sidebar.redux'
+import { changeSidebar,dataSuccess } from '../redux/sidebar.redux'
 import { alarmCount } from '../redux/alarm.redux'
-import { dataSuccess } from '../redux/sidebar.redux'
+import { areaList } from '../redux/area.redux'
 import './frame.scss'
 
 
@@ -24,7 +24,7 @@ const { Header, Content, Sider } = Layout;
 
 @connect(
   state=>({user:state.user,alarm:state.alarm,sidebar:state.sidebar}),
-  {changeSidebar,alarmCount,dataSuccess}
+  {changeSidebar,alarmCount,dataSuccess,areaList}
 )
 
 class Frame extends React.Component {
@@ -39,6 +39,7 @@ class Frame extends React.Component {
 
   componentDidMount() {
    this.props.alarmCount()
+   this.props.areaList()
   }
   navRender() {
     const navArray = [
@@ -91,6 +92,7 @@ class Frame extends React.Component {
     }
   }
   render() {
+    
     return (
       <Layout className='mylayout'>
       <Header className="header">

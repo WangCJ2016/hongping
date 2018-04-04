@@ -1,19 +1,23 @@
 import React from 'react'
-import { Icon,Input,Collapse,DatePicker,Button,Timeline } from 'antd'
+import { Icon,Input,DatePicker,Button,Timeline,Tabs } from 'antd'
 import className from 'classnames'
 import { withRouter } from 'react-router-dom'
 import { changeSidebar } from '../../redux/sidebar.redux'
-import { getAllpeo, peoTrail, trailDetail,searchPeo,areaImg,peoTrailSuccess } from '../../redux/peo.redux'
+import { getAllpeo, peoTrail, trailDetail,searchPeo,areaImg,peoTrailSuccess,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail } from '../../redux/peo.redux'
 import { locale } from '../../config'
 import { connect } from 'react-redux'
+import DepartmentCom from '../peoSiderCom/departmentCom'
+import PeoCom from '../peoSiderCom/peoCom'
+
 const Search = Input.Search
-const Panel = Collapse.Panel
+
+const TabPane = Tabs.TabPane
 
 @withRouter
 @connect(
   state=>({sidebar:state.sidebar, peo: state.peo}),
   {
-    changeSidebar,getAllpeo,peoTrail,trailDetail,searchPeo,areaImg,peoTrailSuccess
+    changeSidebar,getAllpeo,peoTrail,trailDetail,searchPeo,areaImg,peoTrailSuccess,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail
   }
 )
 class PeoSider extends React.Component {
@@ -25,34 +29,25 @@ class PeoSider extends React.Component {
       peoTrailPage: false,
       selectTrail: -1,
       startTime:'',
-      endTime:''
+      endTime:'',
+      tab:'1'
     }
     this.trailSubmit = this.trailSubmit.bind(this)
     this.trailSelect = this.trailSelect.bind(this)
     this.startTime = this.startTime.bind(this)
     this.endTime = this.endTime.bind(this)
+    this.changeMenu = this.changeMenu.bind(this)
   }
   componentDidMount() {
     this.props.getAllpeo()
+    this.props.departmentList()
   }
-  peoRender() {
-    const peolist = this.props.peo.peoList
-    console.log(peolist)
-    return peolist.map((area,index) => (
-      <Panel header={area.regionName} key={index}>
-        {area.postions?area.postions.map(peo=>{
-          const styles = className({
-            'peo-item': true,
-            itemActive: peo.peopleIdEx === this.state.peopleIdExSelect
-          })
-         return <div className={styles} key={peo.peopleIdEx} onClick={()=>{this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true});this.props.peoTrailSuccess({trails:[]})}}>
-            <div>{peo.people.peopleName}</div>
-            <div>{peo.people.phone}</div>
-            <div>{peo.people.department.deptName}</div>
-          </div>
-        }):null}
-      </Panel>
-    ))
+  changeMenu(id) {
+    this.setState({
+      peoTrailPage: !this.state.peoTrailPage,
+      peopleIdExSelect:id
+    })
+    this.props.peoTrailSuccess({trails:[]})
   }
   searchPeoRender() {
     const searchPeoList = this.props.peo.searchPeoList
@@ -88,12 +83,22 @@ class PeoSider extends React.Component {
     this.setState({
       selectTrail: trail
     })
-    this.props.trailDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:'',endTime:''})
+    if(this.state.tab === '2') {
+      this.props.trailDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:trail.startTime,endTime:trail.endTime})
+    }
+    if(this.state.tab === '1') {
+      this.props.realtimeTrajectoryDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:trail.startTime,endTime:trail.endTime})
+    }
     this.props.areaImg({id:trail.areaId})
     this.props.history.push('/trail')
   }
   trailSubmit() {
-    this.props.peoTrail({peopleIdEx:this.state.peopleIdExSelect,startTime:this.state.startTime,endTime:this.state.endTime})   
+    if(this.state.tab === '2') {
+      this.props.peoTrail({peopleIdEx:this.state.peopleIdExSelect,startTime:this.state.startTime,endTime:this.state.endTime})   
+    }
+    if(this.state.tab === '1') {
+      this.props.realtimeTrajectory({peopleIdEx:this.state.peopleIdExSelect,startTime:this.state.startTime,endTime:this.state.endTime})
+    }
   }
   startTime(value,dateString) {
     this.setState({startTime: dateString})
@@ -102,6 +107,10 @@ class PeoSider extends React.Component {
     this.setState({endTime: dateString})
   }
   render() {
+    console.log(this.props.sidebar)
+    if(!this.props.sidebar.people_sidebar) {
+      return null
+    }
     const pageChangeStyle = className({
       'siderbar-wrap': true,
       active: this.state.peoTrailPage
@@ -116,18 +125,26 @@ class PeoSider extends React.Component {
           <div className="title clearfix">
           <span className='float-left'>人员</span>
           <span className='float-right'><Icon type='close' onClick={()=>this.props.changeSidebar('people_sidebar')}></Icon></span></div>
-        <Search
-          placeholder="请输入关键字"
-          style={{ width: 220 }}
-          onSearch={value => this.props.searchPeo({name:encodeURI(value)})} />
-          <Collapse bordered={false} className='collapse'>
-           {this.peoRender()}
-          </Collapse>
-          
+          <Search
+              placeholder="请输入关键字"
+              style={{ width: 220 }}
+              onSearch={value => this.props.searchPeo({name:encodeURI(value)})} 
+            />
+          <Tabs defaultActiveKey="1" onChange={(e)=>this.setState({tab: e})}>
+            <TabPane tab="人员动态" key="1">
+               <PeoCom changeMenu={this.changeMenu} peoList={this.props.peo.peoList} ></PeoCom>
+            </TabPane>
+            <TabPane tab="部门" key="2">
+              <DepartmentCom changeMenu={this.changeMenu} departmentList={this.props.peo.departmentList} ></DepartmentCom>
+            </TabPane>
+          </Tabs>
+       
           <div className="title" style={{textAlign:'left',marginTop:'15px'}}>
               <span>人员搜索结果</span>
           </div>
           {this.searchPeoRender()}
+          
+         
         </div>
         <div className={pageChangeStyle2} >
           <div style={{height:'30%'}}>

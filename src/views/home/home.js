@@ -7,7 +7,7 @@ import { HomePerson, HomeCamera, HomeBroadcast,HomeGuard } from '../../component
 import HomeWarmPanel from '../../components/home-warm-panel/home-warm-panel'
 import './home.scss'
 import {areaInfo,selectAreaIdSuccess,getAreaInfo} from '../../redux/area.redux'
-import { querySysInstallPlaces,getDevInfo,videoPic } from '../../redux/setting.device.redux'
+import { querySysInstallPlaces,getDevInfo,videoPic,guardCtrl } from '../../redux/setting.device.redux'
 import {videoProgress} from '../../redux/video.redux'
 import VideoCtrlYuntai from '../../components/video-ctrl/video-ctrl-yuntai'
 import VideoPlayBackByTime from '../../components/video-playback/video-playback-bytime'
@@ -18,7 +18,7 @@ import DragSelectModal from '../../components/home-modals/dragSelectModal'
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar}),
-  {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo}
+  {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl}
 )
 class Home extends React.Component {
   constructor() {
@@ -45,13 +45,13 @@ class Home extends React.Component {
     this.daozhaCtrl = this.daozhaCtrl.bind(this)
   }
   
-  componentDidMount() {
-    console.log(<Home />)
-    if(this.props.area.firstAreaId) {
-      this.props.querySysInstallPlaces({areaId: this.props.area.firstAreaId})
-      this.props.selectAreaIdSuccess(this.props.area.firstAreaId)
-      this.props.areaInfo({id:this.props.area.firstAreaId})
-      this.props.getAreaInfo({id: this.props.area.firstAreaId})
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.area.firstAreaId&&!this.props.area.firstAreaId) {
+      this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
+      this.props.selectAreaIdSuccess(nextProps.area.firstAreaId)
+      this.props.areaInfo({id:nextProps.area.firstAreaId})
+      this.props.getAreaInfo({id: nextProps.area.firstAreaId})
     }
   }
   componentWillUnMount(){
@@ -120,7 +120,7 @@ class Home extends React.Component {
               </Popover>
       }
       if(device.type === 5) {
-        return <Popover content={<HomeGuard device={device} openDoor={this.openDoor}/>}  key={device.id+index} >
+        return <Popover content={<HomeGuard device={device} openDoor={this.openDoor.bind(this,device)}/>}  key={device.id+index} >
                  <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>
@@ -180,8 +180,8 @@ class Home extends React.Component {
     })
   }
   // 门禁开门
-  openDoor() {
-
+  openDoor(device) {
+    this.props.getDevInfo({devId:device.devId,type:device.type},'guard')
   }
   // 道闸控制
   daozhaCtrl(e) {
@@ -282,16 +282,22 @@ class Home extends React.Component {
         right={this.props.sidebar.offsetLeft}
         dragSelect={()=>this.setState({dragSelectEnbled:true})}
         goParentArea={this.goParentArea} />
-        <div className='area-Map'>
-          <div style={{display:'inline-block',position:'relative',zIndex:0}}>
-          {this.props.area.load?<Spin className='spin-pos'  spinning={this.props.area.load} tip="正在加载图片..." />:
-          <img id='img' draggable='false' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
-          {this.props.area.upload?<Spin className='spin-pos'   spinning={this.props.area.upload} tip="正在上传图片..." />:''}
-          <Selection offsetLeft={this.props.sidebar.offsetLeft}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
-          {this.props.area.load?null:this.mapDeviceRender()}
-          </Selection>
+        {
+          areaInfo.picture?  
+          <div className='area-Map'>
+            <div style={{display:'inline-block',position:'relative',zIndex:0}}>
+            <img id='img' draggable='false' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
+            <Selection offsetLeft={this.props.sidebar.offsetLeft}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
+            {this.props.area.load?null:this.mapDeviceRender()}
+            </Selection>
+            </div>
           </div>
-        </div>
+          :
+          <div style={{width: '100%',height:'100%',textAlign:'center'}}>
+           <Spin size="large" style={{marginTop: '200px'}} />
+          </div>        
+        }
+       
        
         <HomeTable videoPlay={this.videoPlay} openDoor={this.openDoor} />
       
