@@ -294,7 +294,6 @@ export function broadcastAreaDevices(info) {
     })
    .then(res=>{
      if(res.success) {
-       console.log(res)
        if(res.dataObject){
         dispatch(dataSuccess({broadcastIp:res.dataObject[0].host.ip}))
         const extra =  res.dataObject.map(device=>({...device,parentId:info.areaId,key:device.key}))
@@ -491,7 +490,6 @@ export function getAreaInfo(info) {
       ...info
     })
    .then(res=>{
-     console.log(res)
      if(res.success) {
        dispatch(dataSuccess({areaParentId:res.dataObject.parentId}))
      }
@@ -522,7 +520,6 @@ export function uploadImg(info) {
     })
     .then(res=>res.json())
     .then(res=>{
-      console.log(res)
       dispatch(upload())
       if(res.success){
         dispatch(areaInfoSuccess({picture:info.picture}))

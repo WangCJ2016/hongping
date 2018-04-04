@@ -6,7 +6,7 @@ import Device from './device'
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const Ipreg = /^(([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5]).){3}([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5])/
 @connect(
   state => state.commHost,
   {hostLists, createHost, modifyHost, selectHost,deviceLists, createDevice}
@@ -86,7 +86,6 @@ class Hosts1 extends React.Component {
       'editstopbit'
       ],(err, values) => {
       if(!err) {
-        console.log(values)
         const info = {
            id: this.props.commHosts[this.state.selectIndex].id,
           'name':values.editname,
@@ -141,7 +140,7 @@ class Hosts1 extends React.Component {
               </FormItem>
               <FormItem label="ip">
                 {getFieldDecorator('ip',{
-                  rules: [{ required: true,message: '请填写ip'  }],
+                  rules: [{ required: true,message: '请填写ip'},{pattern:Ipreg,message: '请填写正确的ip'}],
                 })(<Input type="text" />)}
               </FormItem>
               <FormItem label="端口">
@@ -152,7 +151,7 @@ class Hosts1 extends React.Component {
               <FormItem label="COM序号">
                 {getFieldDecorator('comIndex',{
                   rules: [{ required: true,message: '请填写COM序号',maxLength:5  }],
-                })(<Input type="text" />)}
+                })(<Input type="number" />)}
               </FormItem>
               <FormItem label="设备类型">
                 {getFieldDecorator('devType',{
@@ -268,7 +267,7 @@ class Hosts1 extends React.Component {
                 </FormItem>
                 <FormItem label="ip">
                   {getFieldDecorator('editip',{
-                    rules: [{ required: true,message: '请填写ip'  }],
+                    rules: [{ required: true,message: '请填写ip'  },{pattern:Ipreg,message: '请填写正确的ip'}],
                     initialValue:selectHost?selectHost.ip:'',
                   })(<Input type="text" />)}
                 </FormItem>
@@ -282,7 +281,7 @@ class Hosts1 extends React.Component {
                   {getFieldDecorator('editcomIndex',{
                     rules: [{ required: true,message: '请填写COM序号'  }],
                     initialValue:selectHost?selectHost.comIndex:''
-                  })(<Input type="text" />)}
+                  })(<Input type="number" />)}
                 </FormItem>
                 <FormItem label="设备类型">
                   {getFieldDecorator('editdevType',{

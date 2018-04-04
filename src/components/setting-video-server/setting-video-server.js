@@ -5,7 +5,7 @@ import { serverlist, modifyServer, createServer} from '../../redux/setting-serve
 
 const FormItem = Form.Item
 const Option = Select.Option;
-
+const Ipreg = /^(([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5]).){3}([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5])/
 @connect(
   state => state.settingServer,
   {serverlist,modifyServer,createServer}
@@ -111,19 +111,19 @@ class SettingVideoServer1 extends React.Component {
           
           <FormItem label="名称">
             {getFieldDecorator('name',{
-              rules: [{ required: true,message: '请填写服务器名字'  }],
+              rules: [{ required: true,message: '请填写服务器名字'}],
               initialValue: selectServer?selectServer.name:''
             })(<Input type="text" />)}
           </FormItem>
           <FormItem label="内网IP">
             {getFieldDecorator('innerIp',{
-              rules: [{ required: true,message: '请填写内网IP'  }],
+              rules: [{ required: true,message: '请填写内网IP'},{pattern:Ipreg,message: '请填写正确的ip'}],
               initialValue: selectServer?selectServer.innerIp:''
-            })(<Input type="text" />)}
+            })(<Input type="number" />)}
           </FormItem>
           <FormItem label="外网IP">
             {getFieldDecorator('outerIp',{
-              rules: [{ required: true,message: '请填写外网IP'  }],
+              rules: [{ required: true,message: '请填写外网IP'},{pattern:Ipreg,message: '请填写正确的ip'}],
               initialValue: selectServer?selectServer.outerIp:''
             })(<Input type="text" />)}
           </FormItem>
@@ -131,13 +131,13 @@ class SettingVideoServer1 extends React.Component {
             {getFieldDecorator('port',{
               initialValue: selectServer?selectServer.port:'',
               rules: [{ required: true,message: '请填写端口'  }],
-            })(<Input type="text" />)}
+            })(<Input type="number" />)}
           </FormItem>
           <FormItem label="最大连接数">
             {getFieldDecorator('maxConn',{
               rules: [{ required: true,message: '请填写最大连接数'  }],
               initialValue: selectServer?selectServer.maxConn:''
-            })(<Input type="text" />)}
+            })(<Input type="number" />)}
           </FormItem>
           <FormItem label="类型">
             {getFieldDecorator('type',{
@@ -163,7 +163,7 @@ class SettingVideoServer1 extends React.Component {
           </FormItem>
           <FormItem label="备注">
             {getFieldDecorator('remark',{
-              initialValue: selectServer?selectServer.remark:''
+              initialValue: selectServer&&selectServer.remark?selectServer.remark:''
             })(<Input type="text" />)}
           </FormItem>
        </Form>
@@ -185,23 +185,23 @@ class SettingVideoServer1 extends React.Component {
           </FormItem>
           <FormItem label="内网IP">
             {getFieldDecorator('createInnerIp',{
-              rules: [{ required: true,message: '请填写内网IP'  }],
+              rules: [{ required: true,message: '请填写内网IP'  },{pattern:Ipreg,message: '请填写正确的ip'}],
             })(<Input type="text" />)}
           </FormItem>
           <FormItem label="外网IP">
             {getFieldDecorator('createOuterIp',{
-              rules: [{ required: true,message: '请填写外网IP'  }],
+              rules: [{ required: true,message: '请填写外网IP'},{pattern:Ipreg,message: '请填写正确的ip'}],
             })(<Input type="text" />)}
           </FormItem>
           <FormItem label="端口">
             {getFieldDecorator('createPort',{
               rules: [{ required: true,message: '请填写端口'  }],
-            })(<Input type="text" />)}
+            })(<Input type="number" />)}
           </FormItem>
           <FormItem label="最大连接数">
             {getFieldDecorator('createMaxConn',{
               rules: [{ required: true,message: '请填写最大连接数' }],
-            })(<Input type="text" />)}
+            })(<Input type="number" />)}
           </FormItem>
           <FormItem label="类型">
             {getFieldDecorator('createType',{

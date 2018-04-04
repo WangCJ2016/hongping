@@ -28,7 +28,6 @@ class Devices1 extends React.Component {
     })
   }
   rowClick(record, index) {
-    console.log(record, index)
     this.props.propertyLists({devHostId: record.id})
     this.props.setDevice(record)
   }

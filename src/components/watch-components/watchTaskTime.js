@@ -22,7 +22,6 @@ class WatchTaskTime1 extends React.Component {
   }
   setTime() {
     this.props.form.validateFields((err,values)=>{
-      console.log(values.time.format('h:mm'))
       if(!err) {
         if(this.props.watch.taskTime) {
           this.props.setTaskTime({time:values.time.format('h:mm'),type:'modify '})

@@ -124,7 +124,6 @@ export function allDevices(info) {
       pageSize: 100,
   })
     .then(res=>{
-      console.log(res)
       if(res.success) {
         dispatch(allDeviceSuccess({data:res.dataObject[info.type],type:info.type}))
       }
@@ -148,7 +147,6 @@ export function areaDevices(info) {
       pageSize: 100,
   })
     .then(res=>{
-      console.log(res)
       if(res.success) {
        
         dispatch(areaDeviceSuccess(res.dataObject))
@@ -165,7 +163,6 @@ export function nextArea(info) {
       ...info,
   })
     .then(res=>{
-      console.log(res)
       if(res.success) {
         const data = res.dataObject.map(area => ({
           name: area.name,
@@ -194,7 +191,6 @@ export function areaDevices1(info) {
       pageSize: 100,
   })
     .then(res=>{
-      console.log(res)
       if(res.success) {
         const arr = res.dataObject.map(device => ({
           ...device,

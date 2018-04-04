@@ -13,9 +13,6 @@ export function document(state=initialState,action) {
     case DATASUCCESS:{
       return {...state,...action.payload}
     }
-    case ADDNEXTCATEGORYS: {
-
-    }
     default:
       return state
   }
@@ -36,10 +33,8 @@ export function levelTopCategorys() {
         token: token,
       })
       .then(res =>{ 
-        console.log(res)
         if(res.success) {
           const toplevel = res.dataObject.filter(category => category.level===0)
-          console.log(fullTree(toplevel,res.dataObject))
            dispatch(dataSuccess({categorysTree: fullTree(toplevel,res.dataObject)}))
         }
       })
@@ -95,7 +90,6 @@ export  function filesList(info) {
         token: token,
       })
       .then(res =>{ 
-        console.log(res)
         if(res.success) {
            dispatch(dataSuccess({filesList: res.dataObject}))
         }
@@ -118,7 +112,6 @@ export function uploadFile(info) {
     })
     .then(res=>res.json())
     .then(res=>{
-      console.log(res)
       if(res.success){
          filesList({categoryId:info.categoryId})(dispatch)
       }else{
@@ -137,7 +130,6 @@ export function delFile(info) {
         token: token,
       })
       .then(res =>{ 
-        console.log(res)
         if(res.success) {
           filesList({categoryId:info.categoryId})(dispatch)
         }

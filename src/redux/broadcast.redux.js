@@ -39,7 +39,6 @@ export function searchBroadcast(info) {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.searchBroadcast,{ token: token,...info})
     .then(res=>{
-      console.log(res)
       if(res.success) {
        dispatch(searchBroadcastSuccess({searchBroList:res.result}))
       }

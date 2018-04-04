@@ -65,7 +65,6 @@ export function getAccountInfo() {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getAccountInfo,{ token: token,id:user.account.id})
     .then(res=>{
-      console.log(res)
     })
   }
 }
@@ -75,7 +74,6 @@ export function getMenu(token) {
   return (dispatch)=>{
     request.get(config.api.base + config.api.getMenu,{ token: token})
     .then(res=>{
-      console.log(res)
       if(res.success) {
         
         dispatch(authSuccess({authMenuData:res.dataObject}))

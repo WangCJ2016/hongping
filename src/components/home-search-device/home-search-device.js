@@ -26,7 +26,6 @@ class HomeSearchCamera extends React.Component {
     }
   }
   render() {
-    console.log(this.props)
     return (
       <div className="home-search-camera">
         {this.props.searchDevice&&this.props.searchDevice.result?this.deivceRender():null}

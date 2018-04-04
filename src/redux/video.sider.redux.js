@@ -10,7 +10,8 @@ const intialState = {
   searchListType4: [],
   searchListType5: [],
   searchListType6: [],
-  searchListType7: []
+  searchListType7: [],
+  searchGuardList:[]
 }
 const SEARCHVIDEO = '[videoside] SEARCHVIDEO'
 const SEARCHHONGWAI = '[videoside] SEARCHHONGWAI'
@@ -38,7 +39,6 @@ export function searchVideo(info) {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.searchChannel,{ token: token,...info})
     .then(res=>{
-      console.log(res)
       if(res.success) {
        dispatch(searchVideoSuccess({searchVideoList:res.result}))
       }
@@ -58,9 +58,20 @@ export function searchHongwaiVideo(info) {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.searchChannel,{ token: token,...info})
     .then(res=>{
-      console.log(res)
       if(res.success) {
        dispatch(searchHongwaiVideoSuccess({['searchListType'+info.type]:res.result}))
+      }
+    })
+  }
+}
+
+export function searchGuard(info) {
+  return dispatch => {
+    const token = localStorage.getItem('token')
+    request.get(config.api.base + config.api.searchGuard,{ token: token,...info})
+    .then(res=>{
+      if(res.success) {
+       dispatch(searchHongwaiVideoSuccess({searchGuardList:res.dataObject}))
       }
     })
   }

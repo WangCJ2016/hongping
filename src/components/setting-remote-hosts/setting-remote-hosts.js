@@ -6,7 +6,7 @@ import { hostLists, sysServerslist, createHost, modifyHost,setSelect,channels } 
 import SettingVideoChannelDetail from '../setting-video-channelDetail/setting-video-channelDetail'
 const FormItem = Form.Item
 const Option = Select.Option;
-
+const Ipreg = /^(([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5]).){3}([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5])/
 @connect(
   state => state.remoteHost,
   {hostLists, sysServerslist,createHost,modifyHost,channels,setSelect}
@@ -64,7 +64,6 @@ class SettingRemoteHosts1 extends React.Component {
    createSubmit() {
      this.props.form.validateFields(['type','name','connectMode','url','port','productor','model','username','psw','channels','mediaServer1Id','mediaServer2Id','mediaServer3Id','remark'],(err, values) => {
         if(!err) {
-          console.log(values)
           values.remark = encodeURI(values.remark)
           values.name = encodeURI(values.name)
           this.props.createHost(values)
@@ -75,7 +74,6 @@ class SettingRemoteHosts1 extends React.Component {
    editSubmit() {
     this.props.form.validateFields(['edittype','editname','editconnectMode','editurl','editport','editproductor','editmodel','editusername','editpsw','editchannels','editmediaServer1Id','editmediaServer2Id','editmediaServer3Id','editremark'],(err, values) => {
       if(!err) {
-        console.log(values)
         const info = {
           id: this.props.remoteHosts[this.state.selectIndex].id,
           'type': values.edittype,
@@ -165,7 +163,7 @@ class SettingRemoteHosts1 extends React.Component {
                 </FormItem>
                 <FormItem label="IP(域名)">
                   {getFieldDecorator('url',{
-                    rules: [{ required: true,message: '请填写主机IP(域名)'  }],
+                    rules: [{ required: true,message: '请填写主机IP(域名)'},{pattern:Ipreg,message: '请填写正确的ip'}],
                   })(<Input type="text" />)}
                 </FormItem>
                 <FormItem label="端口">
@@ -181,7 +179,7 @@ class SettingRemoteHosts1 extends React.Component {
                 <FormItem label="密码">
                   {getFieldDecorator('psw',{
                     rules: [{ required: true,message: '请填写密码'  }],
-                  })(<Input type="password" />)}
+                  })(<Input type="text" />)}
                 </FormItem>
                 <FormItem label="通道数量">
                   {getFieldDecorator('channels',{
@@ -269,7 +267,7 @@ class SettingRemoteHosts1 extends React.Component {
                 </FormItem>
                 <FormItem label="IP(域名)">
                   {getFieldDecorator('editurl',{
-                    rules: [{ required: true,message: '请填写主机IP(域名)'  }],
+                    rules: [{ required: true,message: '请填写主机IP(域名)'},{pattern:Ipreg,message: '请填写正确的ip'}],
                     initialValue: selectHost?selectHost.url:'',
                   })(<Input type="text" />)}
                 </FormItem>
@@ -289,7 +287,7 @@ class SettingRemoteHosts1 extends React.Component {
                   {getFieldDecorator('editpsw',{
                     rules: [{ required: true,message: '请填写密码'  }],
                     initialValue: selectHost?selectHost.psw:'',
-                  })(<Input type="password" />)}
+                  })(<Input type="texts" />)}
                 </FormItem>
                 <FormItem label="通道数量">
                   {getFieldDecorator('editchannels',{

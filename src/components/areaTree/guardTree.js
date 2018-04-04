@@ -18,7 +18,6 @@ export default class GuardTree extends React.Component {
     componentDidMount(){
         this.props.areaList()
     }
- 
     onExpand(expanded, record) {
       if(expanded) {
         this.props.guardAreaDevices({areaId:record.id,type:5})

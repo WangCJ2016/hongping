@@ -94,7 +94,6 @@ export function rolesList() {
         pageSize: 100,
     })
       .then(res=>{
-        console.log(res)
         if(res.success) {
           const data = res.result.map(role => ({
             name: role.roleName,
@@ -111,10 +110,7 @@ export function authorityList() {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.authorityList, {token: token})
       .then(res => {
-        console.log(res)
-        // if(res.success) {
-        //   res.dataObject.map(level1 => )
-        // }
+       
       })
   }
 }

@@ -6,7 +6,7 @@ import { hostLists, sysServerslist, createHost, modifyHost,setSelect,channels } 
 import SettingVideoBroadcastChannelDetail from './setting-video-broadcastChannel'
 const FormItem = Form.Item
 const Option = Select.Option;
-
+const Ipreg = /^(([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5]).){3}([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5])/
 @connect(
   state => state.broadcastHost,
   {hostLists, sysServerslist,createHost,modifyHost,channels,setSelect}
@@ -55,7 +55,6 @@ class SettingVideoBroadcast1 extends React.Component {
    createSubmit() {
      this.props.form.validateFields(['name','port','ip','productor','username','psw','remark'],(err, values) => {
         if(!err) {
-          console.log(values)
           values.remark = encodeURI(values.remark)
           values.name = encodeURI(values.name)
           this.props.createHost(values)
@@ -118,7 +117,7 @@ class SettingVideoBroadcast1 extends React.Component {
                 </FormItem>
                 <FormItem label="IP(域名)">
                   {getFieldDecorator('ip',{
-                    rules: [{ required: true,message: '请填写主机IP(域名)'  }],
+                    rules: [{ required: true,message: '请填写主机IP(域名)'},{pattern:Ipreg,message: '请填写正确的ip'}],
                   })(<Input type="text" />)}
                 </FormItem>
                 <FormItem label="端口">
@@ -134,7 +133,7 @@ class SettingVideoBroadcast1 extends React.Component {
                 <FormItem label="密码">
                   {getFieldDecorator('psw',{
                     rules: [{ required: true,message: '请填写密码'  }],
-                  })(<Input type="password" />)}
+                  })(<Input type="text" />)}
                 </FormItem>
                 <FormItem label="备注">
                 {getFieldDecorator('remark',{
@@ -172,7 +171,7 @@ class SettingVideoBroadcast1 extends React.Component {
                 </FormItem>
                 <FormItem label="IP(域名)">
                   {getFieldDecorator('editip',{
-                    rules: [{ required: true,message: '请填写主机IP(域名)'  }],
+                    rules: [{ required: true,message: '请填写主机IP(域名)'  },{pattern:Ipreg,message: '请填写正确的ip'}],
                     initialValue: selectHost?selectHost.ip:'',
                   })(<Input type="text" />)}
                 </FormItem>
@@ -192,7 +191,7 @@ class SettingVideoBroadcast1 extends React.Component {
                   {getFieldDecorator('editpsw',{
                     rules: [{ required: true,message: '请填写密码'  }],
                     initialValue: selectHost?selectHost.psw:'',
-                  })(<Input type="password" />)}
+                  })(<Input type="text" />)}
                 </FormItem>
                 <FormItem label="备注">
                 {getFieldDecorator('editremark',{

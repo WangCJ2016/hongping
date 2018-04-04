@@ -14,11 +14,11 @@ import VideoPlayBackByTime from '../../components/video-playback/video-playback-
 import VideoCtrlBtns from '../../components/video-playback/video-ctrlbtn'
 import Selection from '../../components/react-drag-select/selection'
 import DragSelectModal from '../../components/home-modals/dragSelectModal'
-
+import { areaList } from '../../redux/area.redux'
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar}),
-  {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl}
+  {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList}
 )
 class Home extends React.Component {
   constructor() {
@@ -45,7 +45,9 @@ class Home extends React.Component {
     this.daozhaCtrl = this.daozhaCtrl.bind(this)
   }
   
-
+  componentDidMount() {
+    this.props.areaList()
+  }
   componentWillReceiveProps(nextProps) {
     if(nextProps.area.firstAreaId&&!this.props.area.firstAreaId) {
       this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
@@ -223,7 +225,6 @@ class Home extends React.Component {
         if(a===100){
           clearInterval(this.timer)
         }
-        console.log(a)
         this.props.videoProgress(a)
       },1000)
     }

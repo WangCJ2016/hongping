@@ -222,7 +222,6 @@ export function videoAreaDevices(info) {
       ...info
     })
    .then(res=>{
-     console.log(res)
      if(res.success) {
        if(res.dataObject) {
         dispatch(videoAreaDevicesSuccess(res.dataObject))
@@ -249,7 +248,6 @@ export function remotePresets(info) {
       ...info
     })
    .then(res=>{
-     console.log(res)
      if(res.success) {
        if(res.dataObject) {
         dispatch(remotePresetsSuccess({presets:res.dataObject,channelId:info.channelId}))
@@ -277,7 +275,6 @@ export function createRemotePresets(info) {
       ...info
     })
    .then(res=>{
-     console.log(res)
      if(res.success) {
        if(res.dataObject) {
         dispatch(createRemotePresetsSuccess(res.dataObject))
@@ -303,7 +300,6 @@ export function modifyRemotePresets(info) {
       ...info
     })
    .then(res=>{
-     console.log(res)
      if(res.success) {
        if(res.dataObject) {
         dispatch(modifyRemotePresetsSuccess(res.dataObject))
@@ -327,7 +323,6 @@ export function remotePreviewGroupList(info) {
       ...info
     })
    .then(res=>{
-     console.log(res)
      if(res.success) {
        if(res.dataObject) {
         dispatch(remotePreviewGroupListSuccess(res.dataObject))
@@ -346,7 +341,6 @@ export function createPreviewGroup(info) {
       ...info
     })
    .then(res=>{
-     console.log(res)
      if(res.success) {
       remotePreviewGroupList({devType:1})(dispatch)
      }
@@ -364,7 +358,6 @@ export function modifyPreviewGroup(info) {
     })
    .then(res=>{
      if(res.success) {
-       //console.log(remotePreviewGroupList)
       remotePreviewGroupList({devType:1})(dispatch)
      }
    })
@@ -381,7 +374,6 @@ export function modifySysRemotePreview(info) {
       ...info
     })
    .then(res=>{
-     console.log(res)
      if(res.success){
       remotePreviewGroupList({devType:1})(dispatch)
      }

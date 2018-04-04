@@ -46,7 +46,6 @@ class HomeTable extends React.Component {
         console.log(e)
       }
       this.webSocket.onmessage = (e)=>{
-        console.log(e)
         if(e.data==='ALARM') {
           this.props.alarmPages({pageNo:1})
           this.props.alarmCount()

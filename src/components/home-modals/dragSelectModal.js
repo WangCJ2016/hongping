@@ -22,7 +22,6 @@ class DragSelectModal extends React.Component {
     this.props.onCancel()
   }
   render() {
-    console.log(this.props)
     const columnsVideo = [{
       title: '名称',
       dataIndex: 'devName',

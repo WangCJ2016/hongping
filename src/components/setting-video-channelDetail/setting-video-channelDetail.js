@@ -73,7 +73,6 @@ class SettingVideoChannelDetail1 extends React.Component {
       const { getFieldDecorator } = this.props.form;
       const channelsList = this.props.channelsList
       const selectChannel = this.state.selectChannel
-      console.log(selectChannel)
     return (
       <div className="setting-user-role float-right" style={{width:'65%'}}>
         <div className="title role">通道<div className='abosulte' onClick={()=>this.setState({createVisible:true})}><Icon type='plus'/></div></div>

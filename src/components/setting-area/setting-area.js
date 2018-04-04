@@ -25,13 +25,11 @@ class SettingArea1 extends React.Component {
   // 添加
   createSubmit() {
     const name = this.props.form.getFieldValue('createName')
-    console.log(this.state)
     this.props.createArea({...this.state.createInfo,name: encodeURI(name)})
     this.setState({createVisible:false})
   }
   // 编辑
   editSubmit() {
-    console.log(this.state.selectArea)
     const name = this.props.form.getFieldValue('editName')
     this.props.modifyArea({...this.state.selectArea,name: encodeURI(name)})
     this.setState({editVisible:false})

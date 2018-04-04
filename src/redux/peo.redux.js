@@ -78,7 +78,6 @@ export function peoTrail(info) {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.peoTrail,{ token: token,...info})
     .then(res=>{
-      console.log(res)
       if(res.success) {
         dispatch(peoTrailSuccess({trails:res.dataObject}))
       }
@@ -91,7 +90,6 @@ export function trailDetail(info) {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.trailDetail,{ token: token,...info})
     .then(res=>{
-      console.log(res)
       if(res.success) {
        dispatch(dataSuccess({traildetail:res.dataObject}))
       }
@@ -104,7 +102,6 @@ export function realtimeTrajectory(info) {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.realtimeTrajectory,{ token: token,...info})
     .then(res=>{
-      console.log(res)
       if(res.success) {
         dispatch(dataSuccess({trails:res.dataObject}))
       }
@@ -117,7 +114,6 @@ export function realtimeTrajectoryDetail(info) {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.realtimeTrajectoryDetail,{ token: token,...info})
     .then(res=>{
-      console.log(res)
       if(res.success) {
        dispatch(dataSuccess({traildetail:res.dataObject}))
       }
@@ -136,7 +132,6 @@ export function searchPeo(info) {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.searchPeo,{ token: token,...info})
     .then(res=>{
-      console.log(res)
       if(res.success) {
        dispatch(searchPeoSuccess({searchPeoList:res.dataObject}))
       }

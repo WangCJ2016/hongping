@@ -140,7 +140,6 @@ export function sysServerslist() {
       token: token
     })
       .then(res => {
-        console.log(res)
         if(res.success&&res.dataObject) {
           const list = res.dataObject.map(server => ({
             id: server.id,

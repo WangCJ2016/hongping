@@ -110,17 +110,6 @@ class Property1 extends React.Component {
                   rules: [{ required: true,message: '请填写地址编号'}], 
                 })(<Input type="text" />)}
               </FormItem>
-              <FormItem label="图标">
-              {/* {getFieldDecorator('icon',{
-                rules: [{ required: true,message: '请填写图标'}],
-                initialValue: 'ipc'
-              })(
-                <Select>
-                  <Option value='ipc'><img src={require('../../assets/imgs/ipc.png')} alt=""/></Option>
-                  <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
-                </Select>
-              )} */}
-            </FormItem>
               <FormItem label="类型">
                 {getFieldDecorator('type',{
                   rules: [{ required: true,message: '请填写类型'}], 
@@ -161,15 +150,7 @@ class Property1 extends React.Component {
                   })(<Input type="text" />)}
                 </FormItem>
                 <FormItem label="图标">
-                {/* {getFieldDecorator('editicon',{
-                  rules: [{ required: true,message: '请填写图标'}],
-                  initialValue: selectProperty?selectProperty.icon:''
-                })(
-                  <Select>
-                    <Option value='ipc'><img src={require('../../assets/imgs/ipc.png')} alt=""/></Option>
-                    <Option value='nvr'><img src={require('../../assets/imgs/nvr.png')} alt=""/></Option>
-                  </Select>
-                )} */}
+               
               </FormItem>
                 <FormItem label="类型">
                   {getFieldDecorator('edittype',{

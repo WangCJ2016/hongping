@@ -16,7 +16,7 @@ import Watch from '../views/watch/watch'
 import Document from '../views/document/document'
 import { changeSidebar,dataSuccess } from '../redux/sidebar.redux'
 import { alarmCount } from '../redux/alarm.redux'
-import { areaList } from '../redux/area.redux'
+
 import './frame.scss'
 
 
@@ -24,7 +24,7 @@ const { Header, Content, Sider } = Layout;
 
 @connect(
   state=>({user:state.user,alarm:state.alarm,sidebar:state.sidebar}),
-  {changeSidebar,alarmCount,dataSuccess,areaList}
+  {changeSidebar,alarmCount,dataSuccess}
 )
 
 class Frame extends React.Component {
@@ -39,7 +39,6 @@ class Frame extends React.Component {
 
   componentDidMount() {
    this.props.alarmCount()
-   this.props.areaList()
   }
   navRender() {
     const navArray = [

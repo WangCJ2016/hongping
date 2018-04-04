@@ -219,19 +219,13 @@ class SettingVideoAreatoDevice extends React.Component {
           {this.state.addVisible?
           <Tabs defaultActiveKey="remote" onTabClick={this.tabClick.bind(this)}>
             <TabPane tab="视频、红外、道闸设备" key="remote" >
-
               {this.props.deivces.remoteDevices.length>0?this.remoteRender(defaultSelectKeys):null}
-
             </TabPane>
-            <TabPane tab="门禁、消防设备" key="comm">
-           
+            <TabPane tab="门禁、消防设备" key="comm">    
             {this.props.deivces.commDevices.length>0?this.commRender(defaultSelectKeys):null}
-           
             </TabPane>
-            <TabPane tab="广播设备" key="broadcast">
-           
+            <TabPane tab="广播设备" key="broadcast">          
             {this.props.deivces.broadcastDevices.length>0?this.broadcastRender(defaultSelectKeys):null}
-           
             </TabPane>
           </Tabs>:null}
         </Modal>

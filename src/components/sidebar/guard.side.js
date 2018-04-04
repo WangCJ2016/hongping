@@ -1,15 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {Icon,Input} from 'antd'
+import {Icon,Input, Button} from 'antd'
 import GuardTree from '../areaTree/guardTree'
 import {changeSidebar} from '../../redux/sidebar.redux'
-import { searchHongwaiVideo } from '../../redux/video.sider.redux'
+import { searchGuard } from '../../redux/video.sider.redux'
+import {guardCtrl } from '../../redux/setting.device.redux'
 import className from 'classnames'
 const Search = Input.Search
 
 @connect(
   state=>({sidebar:state.sidebar,videSider: state.videSider}),
-  {changeSidebar,searchHongwaiVideo}
+  {changeSidebar,searchGuard,guardCtrl}
 )
 class GuardSider extends React.Component {
   constructor() {
@@ -18,8 +19,17 @@ class GuardSider extends React.Component {
       selectVideo: ''
     }
   }
+  openDoor(device) {
+    const token = localStorage.getItem('token')
+    this.props.guardCtrl({
+      token: token,
+      vid:device.vid,
+      deviceType: device.type,
+      controlValue: 1
+    })
+  }
   searchVideoRender() {
-    const searchVideoList = this.props.videSider.searchListType5
+    const searchVideoList = this.props.videSider.searchGuardList
     return searchVideoList.map(video=>{
       const styles = className({
         'bro-search-item': true,
@@ -30,6 +40,7 @@ class GuardSider extends React.Component {
               {video.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
               {video.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
               {video.name}
+              <Button style={{float:'right',marginTop:'10px'}} type='primary' size='small' onClick={this.openDoor.bind(this,video)}>开门</Button>
           </div>
     })
   }
@@ -46,7 +57,7 @@ class GuardSider extends React.Component {
             <Search
             placeholder="请输入关键字"
             style={{ width: 220 }}
-            onSearch={value => this.props.searchHongwaiVideo({name:encodeURI(value),type: 5})} />
+            onSearch={value => this.props.searchGuard({name:encodeURI(value)})} />
             <div style={{marginTop:'15px'}}><GuardTree select={this.select} defaultExpandAllRows={true}/></div>
             <div className="title" style={{textAlign:'left',marginTop:'15px'}}>
               <span>门禁搜索结果</span>

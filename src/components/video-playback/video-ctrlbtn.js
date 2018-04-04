@@ -60,10 +60,8 @@ class VideoCtrlBtns extends React.Component {
    }
   }
   playProgress(e) {
-   
     this.props.videoProgress(e)
-    const a=this.props.play.XzVideo_SetRecordPlayPos(e,0)
-    console.log(a,e)
+    this.props.play.XzVideo_SetRecordPlayPos(e,0)
   }
   render() {
     return (

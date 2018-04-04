@@ -103,7 +103,7 @@ class VideoCtrl extends React.Component {
   }
   // 全屏
   fullscreen() {
-     const a = this.play.XzVideo_FullScreen(1)
+    this.play.XzVideo_FullScreen(1)
   }
 
 

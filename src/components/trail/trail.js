@@ -99,10 +99,12 @@ class Trail extends React.Component {
     return (
       <div>
         <div style={{textAlign:'center'}}>
-        <Button type='primary' onClick={this.start}>开始绘制</Button>
-        <Button type='primary' onClick={this.end}>暂停</Button>
-        <Button type='primary' onClick={this.faster}>快进</Button>
-        </div>    
+          <Button.Group >
+            <Button type='primary' onClick={this.start}>开始</Button>
+            <Button type='primary' onClick={this.end}>暂停</Button>
+            <Button type='primary' onClick={this.faster}>快进</Button>
+          </Button.Group>    
+        </div>
           {
             this.props.peo.picture?
             <div className='peo-trail' style={{left:this.props.sidebar.homeLeftIf?'360px':'0'}} ref={(outDiv)=>this.outDiv=outDiv} >

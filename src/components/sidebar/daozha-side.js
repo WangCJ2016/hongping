@@ -33,7 +33,7 @@ class DaozhaSider extends React.Component {
      return <div className={styles}  key={video.id} onDoubleClick={()=>this.setState({selectVideo:video.id})}>
               {video.type===3?<img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
               {video.name}
-              <Switch defaultChecked={false} onChange={this.onChange} />
+              <Switch style={{float: 'right',marginTop:'10px'}} defaultChecked={false} onChange={this.onChange} />
           </div>
     })
   }

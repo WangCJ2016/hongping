@@ -96,7 +96,7 @@ export function getScreenLength(num) {
         if(num > 6&& num<= 8) {
             return 8
         }
-        if(num == 9) {
+        if(num === 9) {
             return 9
         }
         if(num > 9&& num<= 13) {

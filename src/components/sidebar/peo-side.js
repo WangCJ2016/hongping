@@ -56,10 +56,13 @@ class PeoSider extends React.Component {
         'peo-item': true,
         itemActive: peo.peopleIdEx === this.state.peopleIdExSelect1
       })
-     return <div className={styles} key={peo.peopleIdEx} onClick={()=>{this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true});this.props.peoTrailSuccess({trails:[]})}}>
+     return <div className={styles} key={peo.peopleIdEx} >
             <div>{peo.peopleName}</div>
             <div>{peo.phone}</div>
             <div>{peo.department.deptName}</div>
+            <span onClick={()=>{this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true});this.props.peoTrailSuccess({trails:[]})}}  style={{padding:'10px',position:'absolute',right:'10px',top:'20%'}} >
+              <img src={require('../../assets/imgs/trail_icon.png')} alt=""/>
+            </span>
           </div>
     })
   }
@@ -107,7 +110,6 @@ class PeoSider extends React.Component {
     this.setState({endTime: dateString})
   }
   render() {
-    console.log(this.props.sidebar)
     if(!this.props.sidebar.people_sidebar) {
       return null
     }

@@ -44,7 +44,6 @@ class HomeSearch extends React.Component {
     }
   }
   render() {
-    console.log(this.props)
     return (
       <div className="home-search">
        <div className='home-search-btn'>

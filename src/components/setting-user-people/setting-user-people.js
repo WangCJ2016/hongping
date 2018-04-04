@@ -33,7 +33,6 @@ class SettingUserPeople1 extends React.Component {
     })
   }
   listRender() {
-   console.log(this.props.role.roleInfo)
    const peopleList = this.props.role.peopleList
    return peopleList.map((people,index) => {
     const style = classnames({
@@ -44,13 +43,13 @@ class SettingUserPeople1 extends React.Component {
       <div className={style} style={{textAlign:'left',padding:'0 30px'}} key={people.id}>
         {people.name}
         <div className='abosulte'>
-          <span onClick={()=>this.setState({peopleEditVisible: true})}>
-             <Icon type='edit'/>
+          <a onClick={()=>this.setState({peopleEditVisible: true})}>
+             <Icon style={{color:'#006f6b'}} type='edit'/>
              <span className='action'>编辑</span>
-          </span> 
+          </a> 
           
           <Popconfirm onConfirm={this.delete.bind(this)} title="确定删除？"  okText="确定" cancelText="取消">
-            <Icon type='delete'/><span className='action'>删除</span>  
+            <a><Icon style={{color:'#006f6b'}} type='delete'/><span className='action'>删除</span>  </a>
           </Popconfirm>
             
          
@@ -127,13 +126,13 @@ class SettingUserPeople1 extends React.Component {
               </FormItem>
               <FormItem label="姓名">
                 {getFieldDecorator('editname',{
-                  rules: [{ required: true,message: '请填写姓名'  }],
-                  initialValue: selectedPeople?selectedPeople.name:''
+                  rules: [{ required: true,message: '请填写姓名'  },{pattern:/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/,message: '请填写正确的姓名'}],
+                  initialValue: selectedPeople?selectedPeople.name:'',
                 })(<Input type="text" />)}
               </FormItem>
               <FormItem label="手机号">
                 {getFieldDecorator('edittelephone',{
-                  rules: [{ required: true,message: '请填写电话'  }],
+                  rules: [{ required: true,message: '请填写电话'},{pattern:/^1[34578]\d{9}$/,message: '请填写正确手机号码'}],
                   initialValue: selectedPeople?selectedPeople.telephone:''
                 })(<Input type="number" />)}
               </FormItem>
@@ -188,12 +187,12 @@ class SettingUserPeople1 extends React.Component {
            </FormItem>
              <FormItem label="姓名">
                {getFieldDecorator('createName',{
-                rules: [{ required: true,message: '请填写姓名' }]
+                rules: [{ required: true,message: '请填写姓名' },{pattern:/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/,message: '请填写正确的姓名'}]
                })(<Input type="text" />)}
              </FormItem>
              <FormItem label="手机号">
                {getFieldDecorator('createTelephone',{
-                rules: [{ required: true,message: '请填写手机号' }]
+                rules: [{ required: true,message: '请填写手机号' },{pattern:/^1[34578]\d{9}$/,message: '请填写正确手机号码'}]
                })(<Input type="number" />)}
              </FormItem>
              <FormItem label="部门">

@@ -46,7 +46,6 @@ class VideoCtrlYuntai extends React.PureComponent {
      this.props.play.XzVideo_RealPlayControl(12,!state,this.props.video.vv,5,0)
    }
   render() {
-    console.log(this.props.play)
     return (
       <div className='yuntai'>
         <div className="outround">

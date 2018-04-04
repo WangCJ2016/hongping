@@ -154,7 +154,6 @@ export function createHost(info) {
       ...info
     })
       .then(res => {
-        console.log(res)
         if(res.success) {
           const host = res.dataObject
           const list = {

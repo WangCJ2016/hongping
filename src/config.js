@@ -80,6 +80,7 @@ export const config = {
     alarmCount: '/home_getAlarmsCount',
     searchChannel: '/rhost_querySysRemoteChannelsPage', //搜索摄像头
     searchBroadcast: '/bhost_querySysBroadcastChannelsPage', //搜索广播
+    searchGuard:'/chost_querySysCommPropertiesByKeyword', // 搜索门禁
     carPages: '/home_queryCarsPage', // 车辆信息
     guardCtrl:'/home_ctrlEntranceGuard',
     // 视频

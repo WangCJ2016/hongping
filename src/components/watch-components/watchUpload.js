@@ -33,8 +33,6 @@ class WatchUpload1 extends React.Component {
   }
   submit(e) {
     e.preventDefault();
-    const a = document.getElementById('play')
-    e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         let watchData = []

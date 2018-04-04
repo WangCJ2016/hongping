@@ -23,7 +23,7 @@ class HongwaiSider extends React.Component {
     }
   }
   searchVideoRender() {
-    const searchHongwaiList = this.props.videSider.searchHongwaiList
+    const searchHongwaiList = this.props.videSider.searchListType2
     return searchHongwaiList.map(video=>{
       const styles = className({
         'bro-search-item': true,

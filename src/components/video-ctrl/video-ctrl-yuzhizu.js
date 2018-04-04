@@ -108,7 +108,6 @@ class VideoCtrlYuzhizu1 extends React.Component {
     if(group[0].previews) {
       const length = group[0].previews.length
       const screenLength = getScreenLength(length)
-      console.log(length,screenLength)
       this.props.play.XzVideo_SetRealPlayScreen(screenLength)
       group[0].previews.forEach((device,index) => {
         this.props.getDevInfo({devId: device.devId,type:device.devType},'play',this.props.play,index)

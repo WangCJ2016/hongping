@@ -76,7 +76,6 @@ export function getAlarmInfo(info) {
       ...info
     })
     .then(res => {
-      console.log(res)
       if(res.success) {
         dispatch(dataSuccess({alarmInfo: res.dataObject}))
       }
@@ -117,7 +116,6 @@ export function alarmLinkDevices(info) {
       ...info
     })
    .then(res=>{
-     console.log(res)
      if(res.success) {
       dispatch(dataSuccess({[info.type+'Devices']: res.dataObject}))
      }
@@ -139,7 +137,6 @@ export function carPages() {
       pageSize: 10
     })
    .then(res=>{
-     console.log(res)
      if(res.success) {
        const cars = res.result.map(car => ({...car,key:car.id}))
         dispatch(carPagesSuccess({...res,result:cars}))
@@ -156,7 +153,6 @@ export function alarmCount() {
       token: token
     })
    .then(res=>{
-     console.log(res)
      if(res.success) {
       dispatch(dataSuccess({alarmCount:res.dataObject.total,alarmUndo:res.dataObject.undo}))
      }

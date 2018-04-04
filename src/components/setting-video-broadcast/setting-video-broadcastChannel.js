@@ -101,7 +101,7 @@ class SettingVideoBroadcastChannelDetail1 extends React.Component {
               <FormItem label="序号">
                 {getFieldDecorator('index',{
                   rules: [{ required: true,message: '请填写地址编号'}],
-                })(<Input type="text" />)}
+                })(<Input type="number" />)}
               </FormItem>
               <FormItem label="通道类型">
                 {getFieldDecorator('type',{
@@ -141,7 +141,7 @@ class SettingVideoBroadcastChannelDetail1 extends React.Component {
                 {getFieldDecorator('editindex',{
                   rules: [{ required: true,message: '请填写地址编号'}],
                   initialValue:selectChannel?selectChannel.index:''
-                })(<Input type="text" />)}
+                })(<Input type="number" />)}
               </FormItem>
               <FormItem label="通道类型">
                 {getFieldDecorator('edittype',{
