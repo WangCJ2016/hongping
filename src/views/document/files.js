@@ -2,6 +2,7 @@ import React from 'react'
 import { Icon,Modal,Form,Input,Table,Popconfirm } from 'antd'
 import { connect } from 'react-redux'
 import { uploadFile,delFile } from '../../redux/document.redux'
+import FileSaver from 'file-saver'
 const FormItem = Form.Item
 
 @connect(
@@ -37,13 +38,8 @@ class FilesList1 extends React.Component {
     this.props.delFile({id: id,categoryId:this.props.document.selectCategoryId,})
   }
   downloadFile(fileName, content){
-    var aLink = document.createElement('a');
-    var blob = new Blob([content]);
-    var evt = document.createEvent("HTMLEvents");
-    evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
-    aLink.download = fileName;
-    aLink.href = URL.createObjectURL(blob);
-    aLink.dispatchEvent(evt);
+    var file = new Blob([content]);
+    FileSaver.saveAs(file,fileName);
  }
   render() {
     const columns = [{
@@ -64,7 +60,7 @@ class FilesList1 extends React.Component {
       width:'50%',
       render: (text, record) => (
         <span>
-            <a href={record.content} download={record.title} onClick={this.downloadFile(record.title,record.content)}><Icon type='download'></Icon>下载</a>
+            <a href={record.content} onClick={()=>this.downloadFile(record.title,record.content)}><Icon type='download'></Icon>下载</a>
             <Popconfirm onConfirm={this.delHandle.bind(this,record.id)} title="确定删除？"  okText="确定" cancelText="取消">
               <a style={{marginLeft:'15px'}}><Icon type='delete'></Icon>删除</a>
             </Popconfirm>
@@ -117,3 +113,5 @@ class FilesList1 extends React.Component {
 
 const FilesList = Form.create()(FilesList1)
 export default FilesList
+
+
