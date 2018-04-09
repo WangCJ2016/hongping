@@ -86,22 +86,12 @@ class PeoSider extends React.Component {
     this.setState({
       selectTrail: trail
     })
-    if(this.state.tab === '2') {
-      this.props.trailDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:trail.startTime,endTime:trail.endTime})
-    }
-    if(this.state.tab === '1') {
-      this.props.realtimeTrajectoryDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:trail.startTime,endTime:trail.endTime})
-    }
+    this.props.trailDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:trail.startTime,endTime:trail.endTime})  
     this.props.areaImg({id:trail.areaId})
     this.props.history.push('/trail')
   }
   trailSubmit() {
-    if(this.state.tab === '2') {
       this.props.peoTrail({peopleIdEx:this.state.peopleIdExSelect,startTime:this.state.startTime,endTime:this.state.endTime})   
-    }
-    if(this.state.tab === '1') {
-      this.props.realtimeTrajectory({peopleIdEx:this.state.peopleIdExSelect,startTime:this.state.startTime,endTime:this.state.endTime})
-    }
   }
   startTime(value,dateString) {
     this.setState({startTime: dateString})

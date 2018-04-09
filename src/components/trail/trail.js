@@ -17,6 +17,7 @@ class Trail extends React.Component {
     this.start = this.start.bind(this)
     this.end = this.end.bind(this)
     this.faster = this.faster.bind(this)
+    this.back = this.back.bind(this)
   }
   componentWillReceiveProps(nextProps) {
     if(nextProps.peo.picture) {
@@ -25,7 +26,13 @@ class Trail extends React.Component {
       })
     }
   }
- 
+  componentDidMount() {
+    if(this.props.peo.picture) {
+      setTimeout(()=>{
+        this.canvasRender()
+      })
+    }
+  }
   canvasRender() {
     const canvas = this.canvas
     canvas.width=this.outDiv.getBoundingClientRect().width
@@ -73,7 +80,7 @@ class Trail extends React.Component {
   start() {
     const trails = this.props.peo.traildetail
     const length = trails.length
-   this.timer = setInterval(()=>{
+    this.timer = setInterval(()=>{
       if(this.state.count < length) {
         this.setState({
           trail: trails[this.state.count],
@@ -81,11 +88,15 @@ class Trail extends React.Component {
         })
       }else {
         clearInterval(this.timer)
+        this.timer = null
       }
     },this.state.time)
   }
   end() {
-    return this.timer?clearInterval(this.timer):null
+    if(this.timer) {
+      clearInterval(this.timer)
+      this.timer = null
+    }
   }
   faster() {
     if(this.timer&&this.state.time/2 >= 10) {
@@ -95,14 +106,25 @@ class Trail extends React.Component {
       })
     }
   }
+  back() {
+    if(!this.timer) {
+      this.setState({
+        time: 100,
+        count: 0
+      },()=>{
+        this.start()
+      })
+    }
+  }
   render() {
     return (
       <div>
-        <div style={{textAlign:'center'}}>
+        <div style={{position:'absolute',left:'50%'}}>
           <Button.Group >
             <Button type='primary' onClick={this.start}>开始</Button>
             <Button type='primary' onClick={this.end}>暂停</Button>
             <Button type='primary' onClick={this.faster}>快进</Button>
+            <Button type='primary' onClick={this.back}>回放</Button>
           </Button.Group>    
         </div>
           {

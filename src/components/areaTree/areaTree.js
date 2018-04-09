@@ -21,7 +21,6 @@ export default class AreaTree extends React.Component {
         this.props.select({areaId:this.props.area.areas[0].id,type:1})
         this.firstRenderIf = true
       }
-     
     }
     select(e) {
       if(e.length>0) {

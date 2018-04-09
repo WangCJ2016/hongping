@@ -100,15 +100,14 @@ class SettingMap extends React.Component {
   }
   drop(ev) {
     ev.preventDefault()
+    if(!ev.dataTransfer.getData("text")){
+      return
+    }
     if(ev.target.id === 'img') {
       const imgData = document.getElementById('img').getBoundingClientRect()
       const x = ev.clientX - imgData.left
       const y = ev.clientY - imgData.top
       const data=JSON.parse(ev.dataTransfer.getData("text"))
-
-      if(!data){
-        return
-      }
       if(this.state.ifOnImg) {
         this.props.changeMapDevice({
           ...data,

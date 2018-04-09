@@ -1,17 +1,16 @@
 import React from 'react'
 import {Tabs} from 'antd'
 import {connect} from 'react-redux'
-import { carPages } from '../../redux/alarm.redux'
+import { carPages,alarmPages,alarmCount,dataSuccess } from '../../redux/alarm.redux'
 import './home-table.scss'
 import HomeTableList from '../home-table-list/hometablelist'
 import CarsTable from './cars-table'
-import { alarmPages,alarmCount} from '../../redux/alarm.redux'
 import { config } from '../../config'
 const TabPane = Tabs.TabPane;
 
 @connect(
   state => ({alarm:state.alarm,user:state.user}),
-  {carPages,alarmPages,alarmCount}
+  {carPages,alarmPages,alarmCount,dataSuccess}
 )
 class HomeTable extends React.Component {
   constructor() {
@@ -62,6 +61,7 @@ class HomeTable extends React.Component {
     ev = ev || window.event;
     ev.preventDefault()
     this.moveIf = true
+    this.props.dataSuccess({warmTableTop: ev.pageY})
   }
   mouseUp(ev) {
     ev.preventDefault()

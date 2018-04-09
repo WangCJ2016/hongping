@@ -1,6 +1,7 @@
 import React from 'react'
 import { Popover,Spin,Tag,Modal,Table,Switch } from 'antd'
 import { connect } from 'react-redux'
+import className from 'classnames'
 
 import HomeTable from '../../components/home-table/home-table'
 import { HomePerson, HomeCamera, HomeBroadcast,HomeGuard } from '../../components/home-popover/home-popover'
@@ -17,7 +18,7 @@ import DragSelectModal from '../../components/home-modals/dragSelectModal'
 import { areaList } from '../../redux/area.redux'
 
 @connect(
-  state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar}),
+  state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,alarm: state.alarm}),
   {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList}
 )
 class Home extends React.Component {
@@ -43,6 +44,7 @@ class Home extends React.Component {
     this.goParentArea = this.goParentArea.bind(this)
     this.openDoor = this.openDoor.bind(this)
     this.daozhaCtrl = this.daozhaCtrl.bind(this)
+    this.goLocImgRender = this.goLocImgRender.bind(this)
   }
   
   componentDidMount() {
@@ -55,11 +57,44 @@ class Home extends React.Component {
       this.props.areaInfo({id:nextProps.area.firstAreaId})
       this.props.getAreaInfo({id: nextProps.area.firstAreaId})
     }
+    if(this.props.area.areaImgSlider!==nextProps.area.areaImgSlider) {
+      this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
+    }
   }
   componentWillUnMount(){
     if(this.timer){
       clearInterval(this.timer)
     }
+  }
+  componentDidUpdate(nextProps,nextState) {
+    if(this.props.area.areaInfo.picture&&!this.state.imgWidth) {
+      setTimeout(()=>{     
+        this.setState({
+          imgWidth: this.img.width
+        })
+      })
+    }
+    if(this.props.area.goLocDeviceId&&this.props.area.areaInfo.picture){
+      this.goLocImgRender(this.props.area.goLocDeviceId)
+    }
+  }
+  goLocImgRender(id) {
+    const width = window.innerWidth - (this.props.sidebar.homeLeftIf?360:60)
+    const height = window.innerHeight - 70 - this.props.alarm.warmTableTop
+    const devices = this.props.deivces.mapToDevices
+    devices.forEach((device)=>{
+      if(device.devId === id ) {
+        const left =  device.x - width
+        const top = device.y - height
+        if(left>-50) {
+          this.imgWrap.style.left = (-left - 100 ) + 'px'
+        }
+        if(top > -50) {
+          this.imgWrap.style.top = (-top - 100 ) + 'px'
+        }
+      }
+    })
+    
   }
   hide() {
     this.setState({
@@ -81,16 +116,21 @@ class Home extends React.Component {
     });
   }
   mapDeviceRender() {
+    const  goLocDeviceId = this.props.area.goLocDeviceId
     const devices = this.props.deivces.mapToDevices
     const slider = this.props.area.areaImgSlider
     return devices.map((device,index) => {
+      const styles = className({
+        'user-select': true,
+        deviceSelect: device.devId === goLocDeviceId? true: false
+      })
       if(device.type === 1 || device.type === 2) {
         return  <Popover 
                   key={device.id+index}
                   content={HomeCamera({device:device,videoPlay:this.videoPlay,videoPlayBack:this.videoPlayBack})}
                  
                     >
-                  <div className='user-select'  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+                  <div className={styles}  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                     <Tag >
                     {device.type === 1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:
                     <img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>
@@ -105,7 +145,7 @@ class Home extends React.Component {
                   key={device.id+index}
                   content={HomeCamera({device:device,videoPlay:this.videoPlay,videoPlayBack:this.videoPlayBack,videoPic:this.videoPic})}
                     >
-                  <div  className='user-select'  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+                  <div  className={styles}  style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                     <Tag >
                     <img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>
                     {device.name||device.devName}</Tag>
@@ -114,7 +154,7 @@ class Home extends React.Component {
       }
       if(device.type === 4) {
        return <Popover content={<HomeBroadcast IndexArr={[device.index]}  />}  key={device.id+index} >
-                <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+                <div  className={styles} key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                   <Tag >
                   <img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>
                   {device.name||device.devName}</Tag>
@@ -123,7 +163,7 @@ class Home extends React.Component {
       }
       if(device.type === 5) {
         return <Popover content={<HomeGuard device={device} openDoor={this.openDoor.bind(this,device)}/>}  key={device.id+index} >
-                 <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+                 <div  className={styles} key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/guard-icon.png')} alt=""/>
                    {device.name||device.devName}</Tag>
@@ -132,7 +172,7 @@ class Home extends React.Component {
        }
       if(device.type === 6) {
         return <Popover content={HomePerson(device)}  key={device.id+index} >
-                 <div  className='user-select' key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+                 <div  className={styles} key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>
                    {device.name||device.devName}</Tag>
@@ -141,7 +181,7 @@ class Home extends React.Component {
        }
        if(device.type === 10) {
         return (
-          <div  className='user-select' key={device.id+index} onClick={()=>this.goNextArea(device)} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+          <div  className={styles} key={device.id+index} onClick={()=>this.goNextArea(device)} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
             <Tag >
             <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
             {device.name||device.devName}</Tag>
@@ -286,8 +326,8 @@ class Home extends React.Component {
         {
           areaInfo.picture?  
           <div className='area-Map'>
-            <div style={{display:'inline-block',position:'relative',zIndex:0}}>
-            <img id='img' draggable='false' style={{width: this.props.area.areaImgSlider*100+'%'}} src={areaInfo.picture}  alt="" />}
+            <div style={{display:'inline-block',position:'relative',zIndex:0}} ref={(img)=>this.imgWrap=img} >
+            <img id='img' draggable='false' ref={(img)=>this.img=img} style={{width: this.props.area.areaImgSlider* this.state.imgWidth+'px'}}  src={areaInfo.picture}  alt="" />}
             <Selection offsetLeft={this.props.sidebar.offsetLeft}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
             {this.props.area.load?null:this.mapDeviceRender()}
             </Selection>

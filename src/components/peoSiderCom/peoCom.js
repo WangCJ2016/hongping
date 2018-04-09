@@ -4,9 +4,10 @@ import className from 'classnames'
 import {areaInfo} from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import { connect } from 'react-redux'
-
+import { withRouter } from 'react-router-dom'
 const Panel = Collapse.Panel
 
+@withRouter
 @connect(
   null,
   {
@@ -23,13 +24,16 @@ class PeoCom extends React.Component {
   goLoc(parentId,e) {
     e.preventDefault()
     e.stopPropagation()
+    if(this.props.location.pathname !== '/home') {
+      this.props.history.push('home')
+    } 
     this.props.areaInfo({id:parentId})
     this.props.querySysInstallPlaces({areaId:parentId})
   }
   peoRender() {
     const peolist = this.props.peoList
     return peolist.map((area,index) => (
-      <Panel header={area.regionName} key={index}>
+      <Panel header={area.regionName+'('+(area.postions?area.postions.length:0)+')'} key={index}>
         {area.postions?area.postions.map(peo=>{
           const styles = className({
             'peo-item': true,
@@ -39,10 +43,10 @@ class PeoCom extends React.Component {
             <div>{peo.people.peopleName}</div>
             <div>{peo.people.phone}</div>
             <div>{peo.people.department.deptName}</div>
-            <span  style={{padding:'10px',position:'absolute',right:'40px',top:'20%'}} onClick={this.goLoc.bind(this,area.areaId)}>
+            <span  style={{padding:'10px',position:'absolute',right:'40px',top:'20%',cursor:'pointer'}} onClick={this.goLoc.bind(this,area.areaId)}>
               <img src={require('../../assets/imgs/loc_icon.png')} alt=""/>
             </span>
-            <span  style={{padding:'10px',position:'absolute',right:'10px',top:'20%'}} onClick={()=>{this.props.changeMenu(peo.peopleIdEx)}}>
+            <span  style={{padding:'10px',position:'absolute',right:'10px',top:'20%',cursor:'pointer'}} onClick={()=>{this.props.changeMenu(peo.peopleIdEx)}}>
               <img src={require('../../assets/imgs/trail_icon.png')} alt=""/>
             </span>
           </div>

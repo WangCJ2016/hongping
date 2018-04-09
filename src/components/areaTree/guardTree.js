@@ -1,13 +1,13 @@
 import React from 'react'
 import { Table,Button } from 'antd';
 import { connect } from 'react-redux'
-import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,guardAreaDevices} from '../../redux/area.redux'
+import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,guardAreaDevices,dataSuccess} from '../../redux/area.redux'
 import { querySysInstallPlaces,guardCtrl } from '../../redux/setting.device.redux'
 
 @connect(
     state=>({video:state.video,area:state.area}),
     {
-      areaList, uploadImg,areaInfo,selectAreaIdSuccess,guardAreaDevices,querySysInstallPlaces,guardCtrl
+      areaList, uploadImg,areaInfo,selectAreaIdSuccess,guardAreaDevices,querySysInstallPlaces,guardCtrl,dataSuccess
      }
 )
 export default class GuardTree extends React.Component {
@@ -28,9 +28,10 @@ export default class GuardTree extends React.Component {
         this.props.deviceSelect(record)
       }
     }
-    goLoc(parentId) {
-      this.props.areaInfo({id:parentId})
-      this.props.querySysInstallPlaces({areaId:parentId})
+    goLoc(device) {
+      this.props.dataSuccess({goLocDeviceId: device.id})
+      this.props.areaInfo({id:device.parentId})
+      this.props.querySysInstallPlaces({areaId:device.parentId})
     }
     openDoor(device) {
       const token = localStorage.getItem('token')
@@ -55,7 +56,7 @@ export default class GuardTree extends React.Component {
               <span>{record.name}</span>
               {record.type!=='10003'?
                 null
-                :<a onClick={this.goLoc.bind(this,record.parentId)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>
+                :<a onClick={this.goLoc.bind(this,record)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>
               }
               {
                 record.type==='10003'?<Button type='primary' size='small' onClick={this.openDoor.bind(this,record)}>开门</Button>:null

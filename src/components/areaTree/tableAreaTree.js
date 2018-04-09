@@ -2,13 +2,13 @@ import React from 'react'
 import { Table } from 'antd';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,videoAreaDevices} from '../../redux/area.redux'
+import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,videoAreaDevices,dataSuccess} from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 
 @connect(
     state=>({video:state.video,area:state.area}),
     {
-      areaList, uploadImg,areaInfo,selectAreaIdSuccess,videoAreaDevices,querySysInstallPlaces
+      areaList, uploadImg,areaInfo,selectAreaIdSuccess,videoAreaDevices,querySysInstallPlaces,dataSuccess
      }
 )
 @withRouter
@@ -32,12 +32,13 @@ export default class TableAreaTree extends React.Component {
         this.props.deviceSelect(record)
       }
     }
-    goLoc(parentId) {
+    goLoc(device) {
+      this.props.dataSuccess({goLocDeviceId: device.id})
       if(this.props.location.pathname !== '/home') {
         this.props.history.push('home')
       } 
-      this.props.areaInfo({id:parentId})
-      this.props.querySysInstallPlaces({areaId:parentId})
+      this.props.areaInfo({id:device.parentId})
+      this.props.querySysInstallPlaces({areaId:device.parentId})
     }
     render() {
         const columns = [{
@@ -54,7 +55,7 @@ export default class TableAreaTree extends React.Component {
               <span>{record.name}</span>
               {record.type!==1&&record.type!==2?
                 null
-                :<a onClick={this.goLoc.bind(this,record.parentId)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>}
+                :<a onClick={this.goLoc.bind(this,record)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>}
             </span>
           )
         }]

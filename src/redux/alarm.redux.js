@@ -4,7 +4,8 @@ import { message} from 'antd'
 const initialState = {
   alarmlist: [],
   alarmInfo: {},
-  carPages:{}
+  carPages:{},
+  warmTableTop: 370
 }
 
 const DATASUCCESS = '[alarm] DATASUCCESS'
@@ -37,7 +38,7 @@ export function alarm(state=initialState,action) {
       return state
   }
 }
-function dataSuccess(data) {
+export function dataSuccess(data) {
   return {
     type: DATASUCCESS,
     payload: data
