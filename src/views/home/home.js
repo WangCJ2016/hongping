@@ -95,10 +95,10 @@ class Home extends React.Component {
         const left =  device.x - width
         const top = device.y - height
         if(left>-50) {
-          this.imgWrap.style.left = (-left - 100 ) + 'px'
+           this.imgScoll.scrollLeft = - (-left - 100 ) 
         }
         if(top > -50) {
-          this.imgWrap.style.top = (-top - 100 ) + 'px'
+           this.imgScoll.scrollTop = -(-top - 100 ) 
         }
       }
     })
@@ -335,7 +335,7 @@ class Home extends React.Component {
         {
           areaInfo.picture?  
           <div className='area-Map' ref={(img)=>this.imgScoll=img} style={{height:window.innerHeight*0.6+'px'}}>
-            <div style={{display:'inline-block',position:'relative',zIndex:0}} ref={(img)=>this.imgWrap=img} >
+            <div style={{display:'inline-block',position:'relative',zIndex:0}}  >
             <img id='img' draggable='false' ref={(img)=>this.img=img}   src={areaInfo.picture}  alt="" />
             <Selection offsetLeft={this.props.sidebar.offsetLeft}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
             {this.props.area.load?null:this.mapDeviceRender()}
