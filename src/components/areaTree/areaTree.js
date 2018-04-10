@@ -13,17 +13,16 @@ const TreeNode = Tree.TreeNode;
 )
 export default class AreaTree extends React.Component {
     firstRenderIf=false 
+    state = {
+      selectKey: []
+    }
     componentDidMount(){
         this.props.areaList()
     }
-    componentDidUpdate(prevProps, prevState) {
-      if(this.props.area.areas&&this.props.area.areas[0]&&!this.firstRenderIf) {
-        this.props.select({areaId:this.props.area.areas[0].id,type:1})
-        this.firstRenderIf = true
-      }
-    }
+ 
     select(e) {
       if(e.length>0) {
+        this.setState({selectKey: e})
         this.props.select({areaId:e[0],type:1})
       }
     }
@@ -36,11 +35,10 @@ export default class AreaTree extends React.Component {
     areaTreeRender() {
         const areas = this.props.area.areas
         const arealist = this.props.area.allAreas
-        
        return (
         <Tree
           checkable={this.props.checkable}
-          defaultSelectedKeys={[areas[0].id]}
+          selectedKeys={this.state.selectKey}
           onSelect={this.select.bind(this)}
           defaultExpandAll={this.props.defaultExpandAll}
           >

@@ -5,8 +5,9 @@ import { changeSidebar } from '../../redux/sidebar.redux'
 import {areaInfo,selectAreaIdSuccess,getAreaInfo} from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import AreaTree from '../areaTree/areaTree'
+import { withRouter } from 'react-router-dom'
 
-
+@withRouter
 @connect(
   state=>({sidebar:state.sidebar,area:state.area}),
   {areaInfo,selectAreaIdSuccess,querySysInstallPlaces,changeSidebar,getAreaInfo}
@@ -17,6 +18,9 @@ class AreaSideBar extends React.Component {
     this.select = this.select.bind(this)
   }
   select({areaId}) {
+    if(this.props.location.pathname !== '/home') {
+      this.props.history.push('home')
+    } 
     this.props.selectAreaIdSuccess(areaId)
     this.props.areaInfo({id:areaId})
     this.props.querySysInstallPlaces({areaId: areaId})

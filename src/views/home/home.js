@@ -67,15 +67,22 @@ class Home extends React.Component {
     }
   }
   componentDidUpdate(nextProps,nextState) {
-    if(this.props.area.areaInfo.picture&&!this.state.imgWidth) {
+    if(this.props.area.areaInfo.picture&&(this.props.area.areaInfo.picture!==nextProps.area.areaInfo.picture)) {
+      //style={{width: this.props.area.areaImgSlider* this.state.imgWidth+'px'}}
+    
       setTimeout(()=>{     
         this.setState({
           imgWidth: this.img.width
+        },()=>{
+          this.img.style.width = nextProps.area.areaImgSlider * this.state.imgWidth+'px'
         })
       })
     }
     if(this.props.area.goLocDeviceId&&this.props.area.areaInfo.picture){
       this.goLocImgRender(this.props.area.goLocDeviceId)
+    }
+    if(this.img&&this.props.area.areaImgSlider!==nextProps.area.areaImgSlider) {
+      this.img.style.width = this.props.area.areaImgSlider * this.state.imgWidth+'px'
     }
   }
   goLocImgRender(id) {
@@ -317,6 +324,7 @@ class Home extends React.Component {
         key: 'RecogResul',
     }]
     const areaInfo = this.props.area.areaInfo
+    
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
         <HomeWarmPanel 
@@ -325,9 +333,9 @@ class Home extends React.Component {
         goParentArea={this.goParentArea} />
         {
           areaInfo.picture?  
-          <div className='area-Map'>
+          <div className='area-Map' style={{height:window.innerHeight*0.6+'px'}}>
             <div style={{display:'inline-block',position:'relative',zIndex:0}} ref={(img)=>this.imgWrap=img} >
-            <img id='img' draggable='false' ref={(img)=>this.img=img} style={{width: this.props.area.areaImgSlider* this.state.imgWidth+'px'}}  src={areaInfo.picture}  alt="" />}
+            <img id='img' draggable='false' ref={(img)=>this.img=img}   src={areaInfo.picture}  alt="" />
             <Selection offsetLeft={this.props.sidebar.offsetLeft}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
             {this.props.area.load?null:this.mapDeviceRender()}
             </Selection>

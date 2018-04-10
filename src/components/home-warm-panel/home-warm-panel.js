@@ -32,9 +32,8 @@ class HomeWarmPanel extends React.Component {
       
   }
   render() {
-
     return (
-      <div className='home-warm-panel' style={{right:this.props.right-15}}>   
+      <div className='home-warm-panel' style={{left:(window.innerWidth- 420 - (this.props.right===360?300:60))+'px'}}>   
         <div className='float-right'>
           <div className='panel-title clearfix'>
             <div className='float-left' style={{cursor:'pointer',color:'#fff'}} onClick={()=>this.sliderChange('plus')}><img src={require('../../assets/imgs/ic_plus.png')} alt=""/>放大</div>

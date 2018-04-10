@@ -16,7 +16,7 @@ class HomeTable extends React.Component {
   constructor() {
     super()
     this.state={
-      top: window.innerHeight-370+'px'
+      top: window.innerHeight*0.6+'px'
     }
     this.moveIf = false 
     this.onTabClick = this.onTabClick.bind(this)
