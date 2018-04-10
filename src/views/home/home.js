@@ -78,7 +78,7 @@ class Home extends React.Component {
         })
       })
     }
-    if(this.props.area.goLocDeviceId&&this.props.area.areaInfo.picture){
+    if(this.props.area.goLocDeviceId&&(this.props.area.areaInfo.picture&&this.props.area.areaInfo.picture!==nextProps.area.areaInfo.picture)){
       this.goLocImgRender(this.props.area.goLocDeviceId)
     }
     if(this.img&&this.props.area.areaImgSlider!==nextProps.area.areaImgSlider) {
@@ -89,6 +89,7 @@ class Home extends React.Component {
     const width = window.innerWidth - (this.props.sidebar.homeLeftIf?360:60)
     const height = window.innerHeight - 70 - this.props.alarm.warmTableTop
     const devices = this.props.deivces.mapToDevices
+    this.imgScoll.scrollTo(0,0)
     devices.forEach((device)=>{
       if(device.devId === id ) {
         const left =  device.x - width
@@ -333,7 +334,7 @@ class Home extends React.Component {
         goParentArea={this.goParentArea} />
         {
           areaInfo.picture?  
-          <div className='area-Map' style={{height:window.innerHeight*0.6+'px'}}>
+          <div className='area-Map' ref={(img)=>this.imgScoll=img} style={{height:window.innerHeight*0.6+'px'}}>
             <div style={{display:'inline-block',position:'relative',zIndex:0}} ref={(img)=>this.imgWrap=img} >
             <img id='img' draggable='false' ref={(img)=>this.img=img}   src={areaInfo.picture}  alt="" />
             <Selection offsetLeft={this.props.sidebar.offsetLeft}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
