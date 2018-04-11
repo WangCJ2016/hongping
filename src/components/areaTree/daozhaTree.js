@@ -33,12 +33,9 @@ export default class DaozhaTree extends React.Component {
       }
     }
     onChange(checked) {
-      if(checked) {
-        this.props.play.XzVideo_RemoteControl_Barriergate(1,1,5,0)
-      }else{
-        this.props.play.XzVideo_RemoteControl_Barriergate(0,1,5,0)
-      }
+      this.props.switchChange(checked)
     }
+    
     render() {
         const data = this.props.area.areas_daozhaDevices
 
@@ -53,6 +50,10 @@ export default class DaozhaTree extends React.Component {
                 <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
                 :null}
               <span style={{marginRight:'20px'}}>{record.name}</span>
+              {record.type!==3?
+                null
+                :<a onClick={()=>this.props.goLoc(record.id,record.parentId)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>
+              }
               {record.type===3?<Switch defaultChecked={false} onChange={this.onChange} />:null}
             </span>
           )

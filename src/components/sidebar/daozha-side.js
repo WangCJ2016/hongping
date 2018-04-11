@@ -4,7 +4,8 @@ import {Icon,Input,Switch} from 'antd'
 import DaozhaTree from '../areaTree/daozhaTree'
 import {changeSidebar} from '../../redux/sidebar.redux'
 import { searchHongwaiVideo } from '../../redux/video.sider.redux'
-
+import {areaInfo,dataSuccess} from '../../redux/area.redux'
+import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import className from 'classnames'
 
 const Search = Input.Search
@@ -12,7 +13,7 @@ const Search = Input.Search
 
 @connect(
   state=>({sidebar:state.sidebar,videSider: state.videSider}),
-  {changeSidebar,searchHongwaiVideo}
+  {changeSidebar,searchHongwaiVideo,querySysInstallPlaces,areaInfo,dataSuccess}
 )
 class DaozhaSider extends React.Component {
   constructor() {
@@ -21,7 +22,9 @@ class DaozhaSider extends React.Component {
       selectVideo: ''
     }
     this.onChange = this.onChange.bind(this)
+    this.goLoc = this.goLoc.bind(this)
   }
+  
   searchVideoRender() {
     const searchHongwaiList = this.props.videSider.searchListType3
     return searchHongwaiList.map(video=>{
@@ -33,7 +36,10 @@ class DaozhaSider extends React.Component {
      return <div className={styles}  key={video.id} onDoubleClick={()=>this.setState({selectVideo:video.id})}>
               {video.type===3?<img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
               {video.name}
-              <Switch style={{float: 'right',marginTop:'10px'}} defaultChecked={false} onChange={this.onChange} />
+              <a onClick={this.goLoc.bind(this,video.id,video.installPlace.areaId)} style={{marginLeft:'20px'}}>
+                <img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' />
+              </a>
+              <Switch style={{marginLeft:'20px'}} defaultChecked={false} onChange={this.onChange} />
           </div>
     })
   }
@@ -43,6 +49,11 @@ class DaozhaSider extends React.Component {
     }else{
       this.play.XzVideo_RemoteControl_Barriergate(0,1,5,0)
     }
+  }
+  goLoc(devId,areaId) {
+    this.props.dataSuccess({goLocDeviceId: devId})
+    this.props.areaInfo({id:areaId})
+    this.props.querySysInstallPlaces({areaId:areaId})
   }
   render() {
     if(!this.props.sidebar.daozha_sidebar) {
@@ -55,10 +66,16 @@ class DaozhaSider extends React.Component {
           <span className='float-left'>道闸</span>
           <span className='float-right'><Icon type='close' onClick={()=>this.props.changeSidebar('daozha_sidebar')}></Icon></span></div>
             <Search
-            placeholder="请输入关键字"
-            style={{ width: 220 }}
-            onSearch={value => this.props.searchHongwaiVideo({name:encodeURI(value),type:3})} />
-            <div style={{marginTop:'15px'}}><DaozhaTree play={this.play} select={this.select} defaultExpandAllRows={true}/></div>
+              placeholder="请输入关键字"
+              style={{ width: 220 }}
+              onSearch={value => this.props.searchHongwaiVideo({name:encodeURI(value),type:3})} />
+            <div style={{marginTop:'15px'}}>
+              <DaozhaTree 
+                switchChange={this.onChange} 
+                goLoc={this.goLoc}
+                select={this.select} 
+                defaultExpandAllRows={true}/>
+            </div>
             <div className="title" style={{textAlign:'left',marginTop:'15px'}}>
               <span>道闸搜索结果</span>
            </div>

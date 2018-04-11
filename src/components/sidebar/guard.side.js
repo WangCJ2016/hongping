@@ -4,13 +4,15 @@ import {Icon,Input, Button} from 'antd'
 import GuardTree from '../areaTree/guardTree'
 import {changeSidebar} from '../../redux/sidebar.redux'
 import { searchGuard } from '../../redux/video.sider.redux'
-import {guardCtrl } from '../../redux/setting.device.redux'
+import {guardCtrl,querySysInstallPlaces } from '../../redux/setting.device.redux'
+import {areaInfo,dataSuccess} from '../../redux/area.redux'
+
 import className from 'classnames'
 const Search = Input.Search
 
 @connect(
   state=>({sidebar:state.sidebar,videSider: state.videSider}),
-  {changeSidebar,searchGuard,guardCtrl}
+  {changeSidebar,searchGuard,guardCtrl,querySysInstallPlaces,areaInfo,dataSuccess}
 )
 class GuardSider extends React.Component {
   constructor() {
@@ -40,9 +42,17 @@ class GuardSider extends React.Component {
               {video.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
               {video.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
               {video.name}
-              <Button style={{float:'right',marginTop:'10px'}} type='primary' size='small' onClick={this.openDoor.bind(this,video)}>开门</Button>
+              <a onClick={this.goLoc.bind(this,video)} style={{marginLeft:'20px'}}>
+                <img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' />
+              </a>
+              <Button  style={{marginLeft:'20px'}} type='primary' size='small' onClick={this.openDoor.bind(this,video)}>开门</Button>
           </div>
     })
+  }
+  goLoc(device) {
+    this.props.dataSuccess({goLocDeviceId: device.id})
+    this.props.areaInfo({id:device.parentId})
+    this.props.querySysInstallPlaces({areaId:device.parentId})
   }
   render() {
     if(!this.props.sidebar.guard_sidebar) {

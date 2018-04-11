@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal,Tabs,Table,Switch } from 'antd'
+import { Modal,Tabs,Table,Switch,Button } from 'antd'
 import broadcastHoc from '../../components/broadcastHoc/broadcastHoc'
 const TabPane = Tabs.TabPane
 
@@ -56,7 +56,11 @@ class DragSelectModal extends React.Component {
         title: '操作',
         dataIndex: 'action',
         key: 'action',
-        render: (text,record) => <a onClick={()=>this.props.videoPlay(record)}>预览</a>,
+        render: (text,record) => 
+          <span>
+           <Button size='small' type='primary' onClick={()=>this.props.videoPlay(record)}>预览</Button>
+           <Button size='small' type='primary' onClick={()=>this.props.videoPlayBack(record)}>回放</Button>
+          </span>
     }]
     const columnsGuard = [{
       title: '名称',
@@ -99,7 +103,6 @@ class DragSelectModal extends React.Component {
         render: (text,record) => (
           <span>
             <a onClick={()=>this.props.voiceBroadcast([record.index])}>语音播报</a>
-            <a onClick={()=>this.props.broadcastFile([record.index])}>文件播报</a>
           </span>
         ),
     }]

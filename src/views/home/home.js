@@ -1,5 +1,5 @@
 import React from 'react'
-import { Popover,Spin,Tag,Modal,Table,Switch } from 'antd'
+import { Popover,Spin,Tag,Modal,Table,Switch,message } from 'antd'
 import { connect } from 'react-redux'
 import className from 'classnames'
 
@@ -85,12 +85,27 @@ class Home extends React.Component {
       this.img.style.width = this.props.area.areaImgSlider * this.state.imgWidth+'px'
     }
   }
+  
   goLocImgRender(id) {
     const width = window.innerWidth - (this.props.sidebar.homeLeftIf?360:60)
     const height = window.innerHeight - 70 - this.props.alarm.warmTableTop
     const devices = this.props.deivces.mapToDevices
-    this.imgScoll.scrollTo(0,0)
+    this.imgScoll.scrollLeft =0
+    this.imgScoll.scrollTop =0
     devices.forEach((device)=>{
+      if(device.type === 6) {
+        if(device.peopleIdEx === id) {
+          const left =  device.x - width
+          const top = device.y - height
+          if(left>-50) {
+            this.imgScoll.scrollLeft = - (-left - 100 ) 
+          }
+          if(top > -50) {
+            this.imgScoll.scrollTop = -(-top - 100 ) 
+          }
+        }
+        return
+      }
       if(device.devId === id ) {
         const left =  device.x - width
         const top = device.y - height
@@ -102,13 +117,14 @@ class Home extends React.Component {
         }
       }
     })
-    
   }
+  
   hide() {
     this.setState({
       visible: false,
     });
   }
+  
   handleVisibleChange(visible) {
     this.setState({ visible });
   }
@@ -128,10 +144,16 @@ class Home extends React.Component {
     const devices = this.props.deivces.mapToDevices
     const slider = this.props.area.areaImgSlider
     return devices.map((device,index) => {
-      const styles = className({
+      let styles = className({
         'user-select': true,
         deviceSelect: device.devId === goLocDeviceId? true: false
       })
+      if(device.type === 6) {
+        styles = className({
+          'user-select': true,
+          deviceSelect: device.peopleIdEx === goLocDeviceId? true: false
+        })
+      }
       if(device.type === 1 || device.type === 2) {
         return  <Popover 
                   key={device.id+index}
@@ -330,7 +352,7 @@ class Home extends React.Component {
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
         <HomeWarmPanel 
         right={this.props.sidebar.offsetLeft}
-        dragSelect={()=>this.setState({dragSelectEnbled:true})}
+        dragSelect={()=>{this.setState({dragSelectEnbled:true});message.info('请开始框选')}}
         goParentArea={this.goParentArea} />
         {
           areaInfo.picture?  
@@ -447,7 +469,14 @@ class Home extends React.Component {
            
         </Modal>
 
-        <DragSelectModal visible={this.state.dragSelectVisible} daozhaCtrl={this.daozhaCtrl} videoPlay={this.videoPlay}  rectInDevice={this.state.rectInDevice} onCancel={()=>this.setState({dragSelectVisible:false})}></DragSelectModal>
+        <DragSelectModal 
+          visible={this.state.dragSelectVisible} 
+          daozhaCtrl={this.daozhaCtrl} 
+          videoPlay={this.videoPlay}  
+          videoPlayBack={this.videoPlayBack}
+          rectInDevice={this.state.rectInDevice} 
+          onCancel={()=>this.setState({dragSelectVisible:false})}
+          ></DragSelectModal>
       </div>
     )
   }
