@@ -42,17 +42,17 @@ class GuardSider extends React.Component {
               {video.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
               {video.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
               {video.name}
-              <a onClick={this.goLoc.bind(this,video)} style={{marginLeft:'20px'}}>
+              <a onClick={this.goLoc.bind(this,video.install.areaId,video.install.devId)} style={{marginLeft:'20px'}}>
                 <img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' />
               </a>
               <Button  style={{marginLeft:'20px'}} type='primary' size='small' onClick={this.openDoor.bind(this,video)}>开门</Button>
           </div>
     })
   }
-  goLoc(device) {
-    this.props.dataSuccess({goLocDeviceId: device.id})
-    this.props.areaInfo({id:device.parentId})
-    this.props.querySysInstallPlaces({areaId:device.parentId})
+  goLoc(areaId,id) {
+    this.props.dataSuccess({goLocDeviceId: id})
+    this.props.areaInfo({id:areaId})
+    this.props.querySysInstallPlaces({areaId:areaId})
   }
   render() {
     if(!this.props.sidebar.guard_sidebar) {

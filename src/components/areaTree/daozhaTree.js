@@ -32,8 +32,8 @@ export default class DaozhaTree extends React.Component {
         this.props.deviceSelect(record)
       }
     }
-    onChange(checked) {
-      this.props.switchChange(checked)
+    onChange(device,checked) {
+      this.props.switchChange(device,checked)
     }
     
     render() {
@@ -54,7 +54,7 @@ export default class DaozhaTree extends React.Component {
                 null
                 :<a onClick={()=>this.props.goLoc(record.id,record.parentId)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>
               }
-              {record.type===3?<Switch defaultChecked={false} onChange={this.onChange} />:null}
+              {record.type===3?<Switch defaultChecked={false} onChange={this.onChange.bind(this,record)} />:null}
             </span>
           )
         }];

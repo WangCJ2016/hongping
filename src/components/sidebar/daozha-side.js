@@ -12,7 +12,7 @@ const Search = Input.Search
 
 
 @connect(
-  state=>({sidebar:state.sidebar,videSider: state.videSider}),
+  state=>({sidebar:state.sidebar,videSider: state.videSider,user:state.user}),
   {changeSidebar,searchHongwaiVideo,querySysInstallPlaces,areaInfo,dataSuccess}
 )
 class DaozhaSider extends React.Component {
@@ -39,16 +39,13 @@ class DaozhaSider extends React.Component {
               <a onClick={this.goLoc.bind(this,video.id,video.installPlace.areaId)} style={{marginLeft:'20px'}}>
                 <img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' />
               </a>
-              <Switch style={{marginLeft:'20px'}} defaultChecked={false} onChange={this.onChange} />
+              <Switch style={{marginLeft:'20px'}} defaultChecked={false} onChange={(e)=>this.onChange(video,e)} />
           </div>
     })
   }
-  onChange(checked) {
-    if(checked) {
-      this.play.XzVideo_RemoteControl_Barriergate(1,1,5,0)
-    }else{
-      this.play.XzVideo_RemoteControl_Barriergate(0,1,5,0)
-    }
+  onChange(device,checked) {
+    const model = device.host.model === 1?'HikHC-14':'DHNET-03'   
+    this.play.XzVideo_RemoteControl_BarriergateEX(1,this.props.user.account.name,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,+checked,1,5)
   }
   goLoc(devId,areaId) {
     this.props.dataSuccess({goLocDeviceId: devId})

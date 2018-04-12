@@ -256,8 +256,9 @@ class Home extends React.Component {
     this.props.getDevInfo({devId:device.devId,type:device.type},'guard')
   }
   // 道闸控制
-  daozhaCtrl(e) {
-    this.play.XzVideo_RemoteControl_Barriergate(e?1:0,1,5,1)
+  daozhaCtrl(e,device) {
+    console.log(e,device)
+    //this.play.XzVideo_RemoteControl_Barriergate(e?1:0,1,5,1)
   }
   // 回放
   videoPlayBack(device) {

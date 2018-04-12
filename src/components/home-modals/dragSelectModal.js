@@ -124,7 +124,7 @@ class DragSelectModal extends React.Component {
         title: '操作',
         dataIndex: 'action',
         key: 'action',
-        render: (text,record) => <Switch onChange={(e)=>this.props.daozhaCtrl(e)}></Switch>
+        render: (text,record) => <Button size='small' type='primary' onClick={()=>this.props.videoPlay(record)}>预览</Button>
     }]
     const columnsPerson = [
       {

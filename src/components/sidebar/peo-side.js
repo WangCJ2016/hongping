@@ -60,11 +60,24 @@ class PeoSider extends React.Component {
             <div>{peo.peopleName}</div>
             <div>{peo.phone}</div>
             <div>{peo.department.deptName}</div>
-            <span onClick={()=>{this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true});this.props.peoTrailSuccess({trails:[]})}}  style={{padding:'10px',position:'absolute',marginLeft:'20px'}} >
+            <a onClick={()=>{this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true});this.props.peoTrailSuccess({trails:[]})}}  style={{padding:'10px',position:'absolute',marginLeft:'20px',right:'20px',top:'10px'}} >
               <img src={require('../../assets/imgs/trail_icon.png')} alt=""/>
-            </span>
+            </a>
+            <a onClick={()=>this.goLoc()}  style={{padding:'10px',position:'absolute',marginLeft:'20px',right:'60px',top:'10px'}} >
+              <img src={require('../../assets/imgs/loc_icon.png')} alt=""/>
+            </a>
           </div>
     })
+  }
+  goLoc(areaId,peopleIdEx,e) {
+    e.preventDefault()
+    e.stopPropagation()
+    if(this.props.location.pathname !== '/home') {
+      this.props.history.push('home')
+    } 
+    this.props.dataSuccess({goLocDeviceId: peopleIdEx})
+    this.props.areaInfo({id: areaId})
+    this.props.querySysInstallPlaces({areaId: areaId})
   }
   trailRender() {
     const trails = this.props.peo.trails
