@@ -89,7 +89,7 @@ class BroadcastSider extends React.Component {
         </div>
         {
           this.props.sidebar.broadcast_sidebar?
-          <div className="fix-bottom" style={{top: this.state.documentHeight-50+'px'}}>
+          <div className="fix-bottom">
             <span>已选择<strong style={{color: '#17b89f'}}>{this.state.selectIndexArr.length}</strong></span>
             <span onClick={this.voiceBroadcast}><Icon type="notification" style={{color:this.state.voiceBroadcastStart?'#006f6b':''}} /></span>
             <span onClick={this.fileBroadcast}><Icon type="folder" style={{color:this.state.fileBroadcastStart?'#006f6b':''}} /></span>
@@ -110,5 +110,5 @@ class BroadcastSider extends React.Component {
     )
   }
 }
-
+//style={{top: this.state.documentHeight-50+'px'}}
 export default BroadcastSider

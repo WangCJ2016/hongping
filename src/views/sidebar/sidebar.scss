@@ -2,12 +2,11 @@
   position: absolute;
   top: 69px;
   left: 60px;
-  height: 100%;
+  bottom: 0;
   background-color:#f6f6f6;
   transition: width .2s;
   z-index:9;
   text-align: center;
-  overflow: auto;
   -ms-scroll-chaining: chained;
   -ms-overflow-style: none;
   -ms-content-zooming: zoom;
@@ -17,10 +16,9 @@
   -ms-scroll-snap-type: proximity;
   -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
   -ms-overflow-style: none;
-  height: 100%;
   .fix-bottom{
-    position: fixed;
-    left: 60px;
+    position: absolute;
+    bottom: 0;
     width: 300px;
     line-height: 50px;
     border-top: 1px solid #ccc;
@@ -38,6 +36,7 @@
   .siderbar-wrap{
     padding: 30px 10px;
     height: 100%;
+    overflow: auto;
     &.active{
       display: none;
     }

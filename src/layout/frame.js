@@ -113,7 +113,7 @@ class Frame extends React.Component {
         </div>
         <span className='float-right user-name'>{this.props.user.account?this.props.user.account.name:''}</span>
         <Popconfirm title="确认退出?" onConfirm={this.confirm.bind(this)}  okText="确定" cancelText="取消">
-          <span className='float-right logout'><img  src={require('../assets/imgs/logout.png')} alt=""/></span>
+          <a className='float-right logout'><img  src={require('../assets/imgs/logout.png')} alt=""/></a>
         </Popconfirm>
       </Header>
       <Layout>
