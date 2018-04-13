@@ -157,6 +157,7 @@ function deletefn(id) {
     payload: id
   }
 }
+
 export function modifyRole(info) {
   return (dispatch,getState)=>{
       const user = getState().user

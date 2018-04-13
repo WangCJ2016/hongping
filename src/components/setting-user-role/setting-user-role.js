@@ -98,15 +98,21 @@ class SettingUserRole1 extends React.Component {
   // 修改角色名字
   editRoleSubmit() {
     const roles = this.props.role.roles
-    const roleName = this.props.form.getFieldValue('roleName')
-    this.props.modifyRole({id: roles[this.state.selectRoleIndex].id, roleName: encodeURI(roleName)})
-    this.setState({roleEditVisible: false})
+    this.props.form.validateFields(['roleName'],(err, values) => {
+      if (!err) {
+        this.props.modifyRole({id: roles[this.state.selectRoleIndex].id, roleName: encodeURI(values.roleName)})
+        this.setState({roleEditVisible: false})
+      }
+    })
   }
  // 新增信息
   createRoleSubmit() {
-    const roleName = this.props.form.getFieldValue('createName')
-    this.props.createRole({roleName: encodeURI(roleName)})
-    this.setState({createRoleVisible: false})
+    this.props.form.validateFields(['createName'],(err, values) => {
+      if (!err) {
+        this.props.createRole({roleName: encodeURI(values.createName)})
+        this.setState({createRoleVisible: false})
+      }
+    }); 
   }
 
   // 菜单权限设置
@@ -169,6 +175,7 @@ class SettingUserRole1 extends React.Component {
           <div className="title role">角色<div className='abosulte' onClick={()=>this.setState({createRoleVisible:true})}><Icon type='plus'/></div></div>
           {this.props.role.roles.length>0?this.roleRender():null}
           {/* 新建角色modal */} 
+
           <Modal title="新建角色" 
             visible={this.state.createRoleVisible}
             style={{ top: 200 }}
@@ -181,6 +188,7 @@ class SettingUserRole1 extends React.Component {
             ><Form>
             <FormItem>
               {getFieldDecorator('createName', {
+                rules: [{ required: true,message: '请填写名称'}],
                 initialValue:this.props.role.roles[this.state.selectRoleIndex]?this.props.role.roles[this.state.selectRoleIndex].name:''
               })(
                 <div><span className='title'>角色</span><Input className='input' placeholder='请填写角色名称'/></div>
@@ -189,6 +197,7 @@ class SettingUserRole1 extends React.Component {
             </Form>
             
           </Modal>
+
           <Modal title="修改名称" 
             visible={this.state.roleEditVisible}
             style={{ top: 200 }}
@@ -201,6 +210,7 @@ class SettingUserRole1 extends React.Component {
             <Form>
               <FormItem>
                 {getFieldDecorator('roleName', {
+                  rules: [{ required: true,message: '请填写名称'}],
                   initialValue:this.props.role.roles[this.state.selectRoleIndex]?this.props.role.roles[this.state.selectRoleIndex].name:''
                 })(
                   <Input  

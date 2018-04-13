@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal,Tabs,Table,Switch,Button } from 'antd'
+import { Modal,Tabs,Table,Button } from 'antd'
 import broadcastHoc from '../../components/broadcastHoc/broadcastHoc'
 const TabPane = Tabs.TabPane
 
