@@ -19,7 +19,7 @@ export function alarm(state=initialState,action) {
       return {...state,...action.payload}
     }
     case ALARMPAGE_SUCCESS: {
-      return {...state,alarmlist: action.payload,alarmUndo:state.alarmUndo-1}
+      return {...state,alarmlist: action.payload}
     }
     case ALARMMODIFY_SUCCESS: {
      const alarmlist = state.alarmlist.map(alarm => {
@@ -28,7 +28,7 @@ export function alarm(state=initialState,action) {
         }
           return alarm
        })
-       return {...state,alarmlist: alarmlist}
+       return {...state,alarmlist: alarmlist,alarmUndo:state.alarmUndo-1}
     }
    
     case CARPAGES_SUCCESS: {
@@ -58,7 +58,7 @@ export function alarmPages(info) {
     request.get(config.api.base + config.api.alertmPages,{
       token: token,
       ...info,
-      pageSize:7,
+      pageSize:4,
     })
     .then(res => {
       if(res.success) {
