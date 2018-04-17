@@ -127,7 +127,6 @@ class Frame extends React.Component {
               style={{height: this.state.height+'px'}}
             > 
             {this.navRender()}
-           
           </Sider>
         :null
       }

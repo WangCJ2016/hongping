@@ -2,17 +2,16 @@ import React from 'react'
 import { Table,Modal, Button, message,Row,Col } from 'antd';
 import {connect} from 'react-redux'
 import { alarmPages,modifyAlarm,getAlarmInfo } from '../../redux/alarm.redux'
-import { areaInfo } from '../../redux/area.redux'
+import { areaInfo,dataSuccess } from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import './home-table-list.scss'
 import { alarmDegree, alarmType } from '../../utils'
 import broadcastHoc from '../broadcastHoc/broadcastHoc'
 
 
-
 @connect(
   state => ({alarm:state.alarm,user:state.user}),
-  {alarmPages,modifyAlarm,getAlarmInfo,areaInfo,querySysInstallPlaces}
+  {alarmPages,modifyAlarm,getAlarmInfo,areaInfo,querySysInstallPlaces,dataSuccess}
 )
 @broadcastHoc
 class HomeTableList extends React.Component {
@@ -76,7 +75,7 @@ class HomeTableList extends React.Component {
     const list = this.props.alarm.alarmlist
     return <Table 
               pagination={{
-                pageSize:7,
+                pageSize:4,
                 onChange:(e)=>this.props.alarmPages({pageNo:e}),
                 total:this.props.alarm.alarmPageTotal
               }}  
@@ -97,6 +96,7 @@ class HomeTableList extends React.Component {
   goLoc(record) {
     const alarmInfo = record
     if(alarmInfo.install) {
+      this.props.dataSuccess({goLocDeviceId: alarmInfo.install.devId})
       this.props.areaInfo({id:alarmInfo.install.areaId})
       this.props.querySysInstallPlaces({areaId:alarmInfo.install.areaId})
     }else{

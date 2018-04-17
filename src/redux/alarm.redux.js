@@ -19,14 +19,14 @@ export function alarm(state=initialState,action) {
       return {...state,...action.payload}
     }
     case ALARMPAGE_SUCCESS: {
-      return {...state,alarmlist: action.payload}
+      return {...state,alarmlist: action.payload,alarmUndo:state.alarmUndo-1}
     }
     case ALARMMODIFY_SUCCESS: {
      const alarmlist = state.alarmlist.map(alarm => {
         if(alarm.id === action.payload.id) {
           return action.payload
         }
-        return alarm
+          return alarm
        })
        return {...state,alarmlist: alarmlist}
     }
