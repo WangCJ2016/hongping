@@ -165,7 +165,8 @@ export function modifyRole(info) {
       request.get(config.api.base + config.api.modifyRole,{
         token:token,
         accountId: user.account.id,
-        ...info
+        ...info,
+        time: Date.now()
        })
       .then(res=>{
         if(res.success) {
