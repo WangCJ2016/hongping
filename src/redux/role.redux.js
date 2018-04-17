@@ -166,7 +166,6 @@ export function modifyRole(info) {
         token:token,
         accountId: user.account.id,
         ...info,
-        time: Date.now()
        })
       .then(res=>{
         if(res.success) {

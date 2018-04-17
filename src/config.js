@@ -133,7 +133,7 @@ export const config = {
 export const request = {
   get(url,params) {
     if(params) {
-      url += '?' + queryString.stringify(params)
+      url += '?' + queryString.stringify({...params,time: Date.now()})
     }
     return fetch(url)
     .then((res)=>res.json())
