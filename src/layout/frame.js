@@ -4,20 +4,65 @@ import { Route, Switch,NavLink} from 'react-router-dom'
 import className from 'classnames'
 
 import { connect } from 'react-redux'
-import Home from '../views/home/home'
-import Video from '../views/video/video'
-import Setting from '../views/setting/setting'
-import Trail from '../components/trail/trail'
-import SideBar from '../views/sidebar/sidebar'
-import UserCenter from '../views/userCenter/userCenter'
-import Status from '../views/status/status'
-import History from '../views/history/history'
-import Watch from '../views/watch/watch'
-import Document from '../views/document/document'
+
 import { changeSidebar,dataSuccess } from '../redux/sidebar.redux'
 import { alarmCount } from '../redux/alarm.redux'
-
+import Loadable from 'react-loadable';
 import './frame.scss'
+
+function MyLoadingComponent() {
+  return <div>Loading...</div>;
+}
+
+const Home = Loadable({
+  loader: () => import('../views/home/home'),
+  loading: MyLoadingComponent,
+})
+
+const Video = Loadable({
+  loader: () => import('../views/video/video'),
+  loading: MyLoadingComponent,
+})
+
+const Setting = Loadable({
+  loader: () => import('../views/setting/setting'),
+  loading: MyLoadingComponent,
+})
+
+const Trail = Loadable({
+  loader: () => import('../components/trail/trail'),
+  loading: MyLoadingComponent,
+})
+
+const SideBar = Loadable({
+  loader: () => import('../views/sidebar/sidebar'),
+  loading: MyLoadingComponent,
+})
+
+const UserCenter = Loadable({
+  loader: () => import('../views/userCenter/userCenter'),
+  loading: MyLoadingComponent,
+})
+
+const Status = Loadable({
+  loader: () => import('../views/status/status'),
+  loading: MyLoadingComponent,
+})
+
+const History = Loadable({
+  loader: () => import('../views/history/history'),
+  loading: MyLoadingComponent,
+})
+
+const Watch = Loadable({
+  loader: () => import('../views/watch/watch'),
+  loading: MyLoadingComponent,
+})
+
+const Document = Loadable({
+  loader: () => import('../views/document/document'),
+  loading: MyLoadingComponent,
+})
 
 
 const { Header, Content, Sider } = Layout;
@@ -91,7 +136,7 @@ class Frame extends React.Component {
     }
   }
   render() {
-    
+    console.log(this.props)
     return (
       <Layout className='mylayout'>
       <Header className="header">
@@ -124,7 +169,7 @@ class Frame extends React.Component {
               collapsible
               collapsed={true}
               collapsedWidth={60}
-              style={{height: this.state.height+'px'}}
+              style={{height: this.state.height+'px',zIndex:1}}
             > 
             {this.navRender()}
           </Sider>
@@ -134,15 +179,15 @@ class Frame extends React.Component {
         <Layout style={{overflowX:'auto'}} onScroll={this.onScroll.bind(this)}>
           <Content style={{ background: '#fff', height:'100%',}}>
               <Switch>
-                <Route exact path='/home' component={Home}></Route>
-                <Route exact path='/video' component={Video}></Route>
-                <Route exact path='/status' component={Status}></Route>
-                <Route exact path='/history' component={History}></Route>
-                <Route exact path='/setting' component={Setting}></Route>
-                <Route exact path='/trail' component={Trail}></Route>
-                <Route exact path='/watch' component={Watch}></Route>
-                <Route exact path='/userCenter' component={UserCenter}></Route>
-                <Route exact path='/document' component={Document}></Route>
+                <Route  path='/home' component={Home}></Route>
+                <Route  path='/video' component={Video}></Route>
+                <Route  path='/status' component={Status}></Route>
+                <Route  path='/history' component={History}></Route>
+                <Route  path='/setting' component={Setting}></Route>
+                <Route  path='/trail' component={Trail}></Route>
+                <Route  path='/watch' component={Watch}></Route>
+                <Route  path='/userCenter' component={UserCenter}></Route>
+                <Route  path='/document' component={Document}></Route>
               </Switch>
           </Content>
         </Layout>     

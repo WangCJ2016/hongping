@@ -91,9 +91,14 @@
   padding: 5px;
   border-radius: 2px;
   .ant-tag-text{
-    color: #fff
+    color: #fff;
+  }
+  .ant-tag{
+    background-color: transparent;
+    border: none
   }
 }
+
 .deviceSelect{
   animation: light-spalsh 1s ease-in  5;
 }
