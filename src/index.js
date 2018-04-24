@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import test from './middleware/test.middleware'
 import './index.scss';
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
@@ -14,7 +16,7 @@ import reducers from './redux'
 
 
 //const reduxDeltools = window.devToolsExtension()
-const store = createStore(reducers, compose(applyMiddleware(thunk)))
+const store = createStore(reducers, compose(applyMiddleware(test,thunk)))
 
 ReactDOM.render(
   <Provider store={store}>

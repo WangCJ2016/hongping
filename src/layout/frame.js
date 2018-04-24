@@ -136,7 +136,7 @@ class Frame extends React.Component {
     }
   }
   render() {
-    console.log(this.props)
+    
     return (
       <Layout className='mylayout'>
       <Header className="header">

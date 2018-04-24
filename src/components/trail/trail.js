@@ -78,6 +78,7 @@ class Trail extends React.Component {
     return peoTipArr
   }
   start() {
+    if(this.timer) return
     const trails = this.props.peo.traildetail
     const length = trails.length
     this.timer = setInterval(()=>{

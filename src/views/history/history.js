@@ -44,6 +44,15 @@ const columns = [{
     title: '报警类型',
     dataIndex: 'type',
     key: 'type',
+},
+{
+  title: '处理意见',
+  dataIndex: 'suggest',
+  key: 'suggest',
+},{
+  title: '处理人',
+  dataIndex: 'accountId',
+  key: 'accountId',
 }]
 
 @connect(
@@ -82,7 +91,7 @@ class History1 extends React.Component {
     };
     return (
       <div style={{padding:'20px'}}>
-        <Tabs defaultActiveKey="2" >
+        <Tabs defaultActiveKey="1" >
           <TabPane tab="列表" key="1">
             <div>
               <Form
