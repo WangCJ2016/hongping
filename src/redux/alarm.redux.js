@@ -1,5 +1,6 @@
 import { request, config} from '../config'
 import { message} from 'antd'
+import { createAction } from 'redux-actions'
 
 const initialState = {
   alarmlist: [],
@@ -52,6 +53,7 @@ function alarmPagesSuccess(list) {
     payload: list
   }
 }
+
 export function alarmPages(info) {
   return (dispatch) => {
     const token = localStorage.getItem('token')

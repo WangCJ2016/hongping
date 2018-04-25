@@ -6,6 +6,7 @@ import SettingUser from '../../components/setting-user/setting-user'
 import SettingArea from '../../components/setting-area/setting-area'
 import SettingVideo from '../../components/setting-video/setting-video'
 import SettingMap from '../../components/setting-map/setting-map'
+import PromiseTest from '../../components/promiseTest/promise'
 const TabPane = Tabs.TabPane
 
 @connect(
@@ -40,6 +41,9 @@ class Setting extends React.Component {
             <SettingMap />
           </TabPane>:null
           }
+          <TabPane tab="promise" key="66">
+            <PromiseTest />
+          </TabPane>
           </Tabs>
         </div>
     )

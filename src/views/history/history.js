@@ -44,16 +44,16 @@ const columns = [{
     title: '报警类型',
     dataIndex: 'type',
     key: 'type',
-},
-{
-  title: '处理意见',
-  dataIndex: 'suggest',
-  key: 'suggest',
-},{
-  title: '处理人',
-  dataIndex: 'accountId',
-  key: 'accountId',
-}]
+  },
+  {
+    title: '处理意见',
+    dataIndex: 'suggest',
+    key: 'suggest',
+  },{
+    title: '处理人',
+    dataIndex: 'dealPerson',
+    key: 'dealPerson',
+  }]
 
 @connect(
   state => ({status: state.status}),

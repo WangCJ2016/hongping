@@ -135,7 +135,7 @@ class HomeTableList extends React.Component {
               <span>处理人:{this.props.user.account?this.props.user.account.name:''}</span>
               <span>状态:{alarmInfo?alarmInfo.status === 0?'未处理':'已处理':''}    
               </span>
-              <Button style={{float:'right'}} type="primary" disabled={alarmInfo?alarmInfo.status === 1:false} onClick={()=>this.props.modifyAlarm({id:alarmInfo.id,suggest:this.state.suggest})}>处理</Button>
+              <Button style={{float:'right'}} type="primary" disabled={alarmInfo?alarmInfo.status === 1:false} onClick={()=>this.props.modifyAlarm({id:alarmInfo.id,suggest:encodeURI(this.state.suggest)})}>处理</Button>
             </div>
           </div>
           </div>
