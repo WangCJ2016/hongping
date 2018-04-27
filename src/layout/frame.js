@@ -177,7 +177,7 @@ class Frame extends React.Component {
       }
        {this.props.location.pathname==='/home'||this.props.location.pathname==='/trail'?<SideBar />:null}
         <Layout style={{overflowX:'auto'}} onScroll={this.onScroll.bind(this)}>
-          <Content style={{ background: '#fff', height:'100%',}}>
+          <Content style={{ background: '#fff', height:'100%',position:'relative'}}>
               <Switch>
                 <Route  path='/home' component={Home}></Route>
                 <Route  path='/video' component={Video}></Route>

@@ -17,4 +17,5 @@ import { status } from './status.redux'
 import { watch } from './watch.redux'
 import { document } from './document.redux'
 
+
 export default combineReducers({user, document,role,watch, area,videSider, settingServer, remoteHost, commHost,broadcastHost,devices,alarm,video,sidebar,peo,broadcast,status})

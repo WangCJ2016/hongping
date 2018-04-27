@@ -1,6 +1,6 @@
 import { request, config} from '../config'
 import { message} from 'antd'
-import { createAction } from 'redux-actions'
+
 
 const initialState = {
   alarmlist: [],
