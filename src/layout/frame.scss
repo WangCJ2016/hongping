@@ -189,7 +189,8 @@
 //   height: calc(100% - 69px)
 // }
 .ant-layout-sider,.ant-layout-sider-children{
-  overflow: hidden
+  overflow: hidden;
+  min-height: 700px
 }
 .flex{
   display: flex;

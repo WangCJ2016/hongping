@@ -24,6 +24,8 @@ const broadcastHoc = (WrappedCom) => {
       this.broadcastFile = this.broadcastFile.bind(this)
     }
     voiceBroadcast(IndexArr) {
+      console.log(IndexArr)
+      if(!Array.isArray(IndexArr)) return
       if(!this.state.voiceBroadcastStart){
         const a =this.play.VoiceBroadcast(this.props.area.broadcastIp,IndexArr.join(','))
         if(a) {

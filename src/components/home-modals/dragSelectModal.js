@@ -138,6 +138,14 @@ class DragSelectModal extends React.Component {
       key: 'department',
      }
     ]
+    const rowSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        const arr = selectedRows.map(item => item.index)
+        this.setState({
+          broadcastIndexArr: arr
+        })
+      }
+    }
     return (
       <Modal
         title="框选结果" 
@@ -152,7 +160,10 @@ class DragSelectModal extends React.Component {
             <Table size='small' columns={columnsVideo} dataSource={this.props.rectInDevice.filter(device=>device.type===1||device.type===2).map(deive=>({...deive,key:deive.id}))} />
           </TabPane>
           <TabPane tab="广播" key="2">
-           <Table size='small' columns={columnsBroadCast} dataSource={this.dataType(4)} />
+            <div style={{direction:'rtl'}}>
+             <Button type='primary' onClick={()=>this.props.voiceBroadcast(this.state.broadcastIndexArr)}>语音播报</Button>
+            </div>
+           <Table size='small' rowSelection={rowSelection} columns={columnsBroadCast} dataSource={this.dataType(4)} />
           </TabPane>
           <TabPane tab="人员" key="4">
            <Table size='small' columns={columnsPerson} dataSource={this.dataType(6)} />

@@ -78,7 +78,7 @@ class Frame extends React.Component {
     this.state = {
       collapsed:false,
       siderActiveIndex: -1,
-      height:document.body.clientHeight-69
+      height:window.innerHeight-69
     }
   }
 
