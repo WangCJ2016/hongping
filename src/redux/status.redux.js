@@ -3,7 +3,8 @@ import { alarmType } from '../utils'
 
 const intialState = {
   GetSoftServer:[],
-  historyStatisticsChartList:[]
+  historyStatisticsChartList:[],
+  historyTotal:0
 }
 
 const DATASUCCESS = '[status] datasuccess'
@@ -123,15 +124,15 @@ export function getGuardStatus() {
 export function historyFstatistics(info) {
   return dispatch => {
     const token = localStorage.getItem('token')
-    request.get(config.api.base + config.api.historyFstatistics,{ token: token,...info})
+    request.get(config.api.base + config.api.historyFstatistics,{ token: token,...info, pageSize:10,})
     .then(res=>{
       if(res.success) {
           const arr = res.result.map((data,index) => ({
             ...data,
             key:index, 
-            type:alarmType(data.type)
+            type:alarmType(data.type),
         }))
-        dispatch(dataSuccess({'historyFstatistics':arr}))
+        dispatch(dataSuccess({'historyFstatistics':arr,historyTotal:res.records}))
       }
     })
   }

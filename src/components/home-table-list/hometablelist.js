@@ -71,7 +71,7 @@ class HomeTableList extends React.Component {
         render:(text,record)=>{
           return <Button onClick={this.alarmClick.bind(this,record)} type='primary'>处理</Button>
         }
-    }];
+    }]
     const list = this.props.alarm.alarmlist
     return <Table 
               pagination={{
@@ -109,37 +109,37 @@ class HomeTableList extends React.Component {
       <div className="list">
         {this.alarmlistRender()}
         <Modal title="报警" 
-        visible={this.state.visible}
-        onOk={this.props.handleOk} 
-        onCancel={()=>this.setState({visible: false})}
-        className='home-warm-modal'
-        footer={null}
-      >
-        <div className="home-warm-content">
-          <div className="first-content">
-          <Row>
-            <Col span={12}><span className="title">详情</span></Col>
-            <Col span={12}><span>时间：{alarmInfo?alarmInfo.gmtCreate:''}</span></Col>
-            <Col span={12}><span>类型： {alarmInfo?alarmType(alarmInfo.type):''}</span></Col>
-            <Col span={12}><span>程度：{alarmInfo?alarmDegree(alarmInfo.degree).degree:''}</span></Col>
-            <Col span={12}><span>设备：{alarmInfo?alarmInfo.device:''}</span></Col>
-          </Row>
-          </div>
-         
-          </div>
-          <div className="second-content">
-          <p className="title" >处理意见</p>
-          <textarea type="textarea"  rows="2" style={{width:'100%',border:'1px solid #e8e8e8'}} onChange={this.handleChange.bind(this)}></textarea>
-          <div style={{display:'table',width:'100%',marginTop:'10px'}}>
-            <div className='tr'>
-              <span>处理人:{this.props.user.account?this.props.user.account.name:''}</span>
-              <span>状态:{alarmInfo?alarmInfo.status === 0?'未处理':'已处理':''}    
-              </span>
-              <Button style={{float:'right'}} type="primary" disabled={alarmInfo?alarmInfo.status === 1:false} onClick={()=>this.props.modifyAlarm({id:alarmInfo.id,suggest:encodeURI(this.state.suggest)})}>处理</Button>
+          visible={this.state.visible}
+          onOk={this.props.handleOk} 
+          onCancel={()=>this.setState({visible: false})}
+          className='home-warm-modal'
+          footer={null}
+          >
+          <div className="home-warm-content">
+            <div className="first-content">
+            <Row>
+              <Col span={12}><span className="title">详情</span></Col>
+              <Col span={12}><span>时间：{alarmInfo?alarmInfo.gmtCreate:''}</span></Col>
+              <Col span={12}><span>类型： {alarmInfo?alarmType(alarmInfo.type):''}</span></Col>
+              <Col span={12}><span>程度：{alarmInfo?alarmDegree(alarmInfo.degree).degree:''}</span></Col>
+              <Col span={12}><span>设备：{alarmInfo?alarmInfo.device:''}</span></Col>
+            </Row>
             </div>
-          </div>
-          </div>
-      </Modal>
+          
+            </div>
+            <div className="second-content">
+            <p className="title" >处理意见</p>
+            <textarea type="textarea"  rows="2" style={{width:'100%',border:'1px solid #e8e8e8'}} onChange={this.handleChange.bind(this)}></textarea>
+            <div style={{display:'table',width:'100%',marginTop:'10px'}}>
+              <div className='tr'>
+                <span>处理人:{this.props.user.account?this.props.user.account.name:''}</span>
+                <span>状态:{alarmInfo?alarmInfo.status === 0?'未处理':'已处理':''}    
+                </span>
+                <Button style={{float:'right'}} type="primary" disabled={alarmInfo?alarmInfo.status === 1:false} onClick={()=>this.props.modifyAlarm({id:alarmInfo.id,suggest:encodeURI(this.state.suggest)})}>处理</Button>
+              </div>
+            </div>
+            </div>
+        </Modal>
       </div>
     )
   }

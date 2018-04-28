@@ -62,20 +62,24 @@ const columns = [{
   }
 )
 class History1 extends React.Component {
-  state = {  }
-  handleSearch(e) {
+  
+  handleSearch(pageNo,e) {
     this.props.form.validateFields((err, values) => {
-      e.preventDefault()
+      if(e) {
+        e.preventDefault()
+      }
       if (!err) {
         if(values.type==='0') {
           this.props.historyFstatistics({
             place: encodeURI(values.place),
+            pageNo:pageNo,
             startTime: values.startTime.format('YYYY-MM-DD HH:mm:ss'),
             endTime:values.endTime.format('YYYY-MM-DD HH:mm:ss'),
           })
         }else{
           this.props.historyFstatistics({
             ...values,
+            pageNo:pageNo,
             startTime: values.startTime.format('YYYY-MM-DD HH:mm:ss'),
             endTime:values.endTime.format('YYYY-MM-DD HH:mm:ss'),
           })
@@ -83,12 +87,15 @@ class History1 extends React.Component {
       }
     });
   }
+  pageChange = (e)=>{
+    this.handleSearch(e)
+  }
   render() {
     const { getFieldDecorator } = this.props.form
     const formItemLayout = {
       labelCol: { span: 5 },
       wrapperCol: { span: 19 },
-    };
+    }
     return (
       <div style={{padding:'20px'}}>
         <Tabs defaultActiveKey="1" >
@@ -96,7 +103,7 @@ class History1 extends React.Component {
             <div>
               <Form
                 className="ant-advanced-search-form"
-                onSubmit={this.handleSearch.bind(this)}
+                onSubmit={this.handleSearch.bind(this,0)}
                 >
                 <Row gutter={40}>
                 <Col span={5} >
@@ -152,7 +159,14 @@ class History1 extends React.Component {
                </Row>
               
               </Form>
-              <Table columns={columns} dataSource={this.props.status.historyFstatistics}></Table>
+              <Table 
+                columns={columns} 
+                dataSource={this.props.status.historyFstatistics}
+                pagination={{
+                  total: this.props.status.historyTotal,
+                  onChange: this.pageChange
+                }}
+                ></Table>
             </div>
           </TabPane>
           <TabPane tab="统计图" key="2">
