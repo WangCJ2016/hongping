@@ -125,7 +125,7 @@ class SettingVideoAreatoDevice extends React.Component {
     )
    
   }
-  onAreaCheck() {}
+  
   tabClick(e) {
       this.props.allDevices({type: e,areaId: this.state.selectAreaId})
   }
@@ -203,7 +203,7 @@ class SettingVideoAreatoDevice extends React.Component {
         </div>
         <div className="setting-user-role float-right" style={{width: '60%'}}>
             <div className="title role">设备
-            <div className='abosulte' onClick={()=>{this.setState({addVisible:true});this.remoteArr=[];this.commArr=[];this.broadcastArr=[];this.tabClick('remote')}}><Icon type='plus'/></div></div>
+            <div className='abosulte' onClick={()=>{this.setState({addVisible:true});this.remoteArr=[];this.commArr=[];this.broadcastArr=[];this.tabClick('remote');this.tabClick('comm');this.tabClick('broadcast')}}><Icon type='plus'/></div></div>
             {this.props.deivces.areaToDevices1.length>0?
               <Table columns={columns} dataSource={this.props.deivces.areaToDevices1} size='small' showHeader={false}/>:null}
         </div>
@@ -217,7 +217,7 @@ class SettingVideoAreatoDevice extends React.Component {
           onOk={this.addSubmit.bind(this)}
           onCancel={()=>this.setState({addVisible:false})}>
           {this.state.addVisible?
-          <Tabs defaultActiveKey="remote" onTabClick={this.tabClick.bind(this)}>
+          <Tabs defaultActiveKey="remote" >
             <TabPane tab="视频、红外、道闸设备" key="remote" >
               {this.props.deivces.remoteDevices.length>0?this.remoteRender(defaultSelectKeys):null}
             </TabPane>
