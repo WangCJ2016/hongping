@@ -75,10 +75,11 @@ class HomeTableList extends React.Component {
     const list = this.props.alarm.alarmlist
     return <Table 
               pagination={{
-                pageSize:4,
+                pageSize:50,
                 onChange:(e)=>this.props.alarmPages({pageNo:e}),
-                total:this.props.alarm.alarmPageTotal
+                total:this.props.alarm.alarmPageTotal,
               }}  
+              scroll={{ y:this.props.alarm.alarmHeight }}
               rowKey={(record)=>{return record.id}}
               columns={columns} 
               dataSource={list} 

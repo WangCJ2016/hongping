@@ -27,6 +27,7 @@ class HomeTable extends React.Component {
   componentDidMount() {
     document.addEventListener('mousemove',this.mouseMove) 
     document.addEventListener('mouseup',this.mouseUp)
+    this.props.dataSuccess({alarmHeight: window.innerHeight*0.4 - 230}) 
   }
   componentWillUnmount() {
     document.removeEventListener('mousemove',this.mouseMove) 
@@ -65,7 +66,11 @@ class HomeTable extends React.Component {
   }
   mouseUp(ev) {
     ev.preventDefault()
-    this.moveIf = false
+    if(this.moveIf)
+    {      
+      this.props.dataSuccess({alarmHeight: window.innerHeight - 70 - ev.pageY - 90})     
+    }
+    this.moveIf = false    
   }
   mouseMove(ev) {
     if(this.moveIf) {
@@ -78,7 +83,7 @@ class HomeTable extends React.Component {
       <div className='hometable' style={{top:this.state.top}}>
       <div className='pullUp-btn'>
       <img
-      onMouseDown={this.mouseDown}
+       onMouseDown={this.mouseDown}
        src={require('../../assets/imgs/pull-up.png')} alt=""/></div>
       <Tabs defaultActiveKey="1" onTabClick={this.onTabClick}>
         <TabPane tab="报警" key="1">
@@ -86,8 +91,10 @@ class HomeTable extends React.Component {
         </TabPane>
         <TabPane tab="车辆" key="2">
         <CarsTable 
-        carPages={this.props.alarm.carPages}
-        pageChange={this.props.carPages} />
+          alarmHeight={this.props.alarm.alarmHeight}
+          carPages={this.props.alarm.carPages}
+          pageChange={this.props.carPages} 
+        />
         </TabPane>
       </Tabs>
       </div>

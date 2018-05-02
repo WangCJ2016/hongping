@@ -45,9 +45,11 @@ class CarsTable extends React.Component {
       <Table 
         columns={columns} 
         pagination={{
+          pageSize:50,
           total: data.records,
           onChange: this.pageChange
         }}
+        scroll={{ y:this.props.alarmHeight }}
         rowKey={(record)=>record.id}
         size='small'
         dataSource={data.result}

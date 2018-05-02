@@ -60,7 +60,7 @@ export function alarmPages(info) {
     request.get(config.api.base + config.api.alertmPages,{
       token: token,
       ...info,
-      pageSize:4,
+      pageSize:50,
     })
     .then(res => {
       if(res.success) {
@@ -137,7 +137,7 @@ export function carPages() {
     const token = getState().user.account.token
     request.get(config.api.base + config.api.carPages,{
       token: token,
-      pageSize: 10
+      pageSize: 50
     })
    .then(res=>{
      if(res.success) {
