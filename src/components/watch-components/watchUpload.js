@@ -31,7 +31,8 @@ class WatchUpload1 extends React.Component {
         for(let i=0;i<count;i++) {
           const a = this.play.hcPTrecord(i)
           const dataStr = a.slice(0,8)
-          watchData.push({time:dataStr.slice(-2)+'-'+dataStr.slice(4,6)+'-'+dataStr.slice(2,4)+'-'+dataStr.slice(0,2),point:a.slice(8)})
+          const year = new Date().getFullYear()
+          watchData.push({time:year+dataStr.slice(-2)+'-'+dataStr.slice(4,6)+' '+dataStr.slice(2,4)+':'+dataStr.slice(0,2),point:a.slice(8)+':00'})
         }
         this.setState({
           watchData: watchData
@@ -56,11 +57,6 @@ class WatchUpload1 extends React.Component {
         title: '时间',
         dataIndex: 'time',
         key: 'time',
-        render: (text,record) => {
-          const timeArr = text.split('-')
-          const year = new Date().getFullYear()
-          return <span>{year+'-'+timeArr[0]+'-'+timeArr[1]+' '+timeArr[2]+':'+timeArr[3]+':00'}</span>
-        }
       },{
         title: '钮号',
         dataIndex: 'point',
