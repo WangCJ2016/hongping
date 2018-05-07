@@ -50,6 +50,9 @@ export function alarmType(type) {
         case 4:{
             return '紧急呼叫'
         }
+        case 5:{
+            return '巡更未完成报警'
+        }
         default:
             return ''
     }
