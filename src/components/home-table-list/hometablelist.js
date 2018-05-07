@@ -27,17 +27,20 @@ class HomeTableList extends React.Component {
         title: '状态',
         dataIndex: 'status',
         key:'status',
+        width:100,
         render:(text,record)=>{
           return <span>{record.status === 0?'未处理':'已处理'}</span>
         }
       }, {
         title: '时间',
+        width:100,
         dataIndex: 'time',
         key:'time'
       },
       {
         title: '类型',
         dataIndex: 'type',
+        width:100,
         key:'type',
         render:(text,record)=>{
           return <span>{alarmType(record.type)}</span>
@@ -46,6 +49,7 @@ class HomeTableList extends React.Component {
       {
         title: '等级',
         dataIndex: 'degree',
+        width:100,
         key:'degree',
         render:(text,record)=>{
           return <span>{alarmDegree(record.degree).degree}</span>
@@ -54,11 +58,13 @@ class HomeTableList extends React.Component {
       {
         title: '设备',
         dataIndex: 'device',
+        width:100,
         key:'device'
       },
       {
         title: '定位',
         dataIndex: 'icon',
+        width:100,
         key:'icon',
         render:(text,record)=>(
           <a onClick={this.goLoc.bind(this,record)}>
@@ -68,6 +74,7 @@ class HomeTableList extends React.Component {
       },
       {
         title: '操作',
+        width:100,
         render:(text,record)=>{
           return <Button onClick={this.alarmClick.bind(this,record)} type='primary'>处理</Button>
         }
