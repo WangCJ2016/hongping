@@ -29,7 +29,7 @@ class VideoDeviceBack extends React.Component {
         <div className='video-device-back'>
           <Tabs defaultActiveKey="1" type='card'>
             <TabPane tab="设备" key="1">
-            <TableAreaTree  rowSelection={{type:'radio',onChange:this.radioChange}}/>
+             <TableAreaTree  rowSelection={{type:'radio',onChange:this.radioChange}}/>
             </TabPane>
           </Tabs>
         </div>

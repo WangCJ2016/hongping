@@ -124,7 +124,7 @@ export function allDevices(info) {
       pageSize: 100,
   })
     .then(res=>{
-      if(res.success) {
+      if(res.success&&res.dataObject[info.type]) {
         dispatch(allDeviceSuccess({data:res.dataObject[info.type],type:info.type}))
       }
     })
@@ -191,7 +191,7 @@ export function areaDevices1(info) {
       pageSize: 100,
   })
     .then(res=>{
-      if(res.success) {
+      if(res.success&&res.dataObject&&res.dataObject.length>0) {
         const arr = res.dataObject.map(device => ({
           ...device,
           key:device.id
@@ -378,7 +378,10 @@ export function getDevInfo(info,type,play,index) {
        const model = device.host.model === 1?'HikHC-14':'DHNET-03'
        dispatch(devinfoSuccess(res.dataObject))
        if(type==='play') {
-        play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,index?index:0);
+        if(index!==undefined) {
+          play.XzVideo_SetSelRTVContext(index)
+        }
+        play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
        }
        if(type==='guard') {
         guardCtrl({token:token,vid:device.vid,deviceType:device.type,controlValue:1})(dispatch)

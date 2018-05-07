@@ -42,7 +42,7 @@ class Trail extends React.Component {
     const trails = this.props.peo.traildetail
     //设置对象起始点和终点
     trails.forEach(trail => {
-      context.lineTo(trail.locationX/10,trail.locationY/10);
+      context.lineTo(trail.locationX,trail.locationY);
     }) 
    //设置样式
     context.lineWidth = 2;
@@ -56,7 +56,7 @@ class Trail extends React.Component {
   changeTrailRender(trail) {
     return (
       <Tooltip  title={trail.reportTime}>
-        <div className='activeTrail' style={{left:trail.locationX/10-5,top:trail.locationY/10-20}}>
+        <div className='activeTrail' style={{left:trail.locationX-5,top:trail.locationY-20}}>
           <Icon type="user" />
         </div>
       </Tooltip>
@@ -70,7 +70,7 @@ class Trail extends React.Component {
       if(index%50===0) {
         peoTipArr.push(
           <Tooltip key={index} title={trail.reportTime}>
-            <div className="tipPeo" style={{left:trail.locationX/10-5,top:trail.locationY/10-5}}></div>
+            <div className="tipPeo" style={{left:trail.locationX-5,top:trail.locationY-5}}></div>
           </Tooltip>
         )
       }

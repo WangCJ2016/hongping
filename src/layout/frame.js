@@ -11,7 +11,7 @@ import Loadable from 'react-loadable';
 import './frame.scss'
 
 function MyLoadingComponent() {
-  return <div>Loading...</div>;
+  return <div></div>;
 }
 
 const Home = Loadable({

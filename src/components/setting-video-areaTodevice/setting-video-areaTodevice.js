@@ -199,7 +199,7 @@ class SettingVideoAreatoDevice extends React.Component {
       <div>
         <div className="setting-user-role float-left">
             <div className="title role">区域</div>
-            <AreaTree select={this.Treeselect} defaultExpandAll={true} checkable={true}/>
+            <AreaTree select={this.Treeselect} defaultExpandAll={true} />
         </div>
         <div className="setting-user-role float-right" style={{width: '60%'}}>
             <div className="title role">设备

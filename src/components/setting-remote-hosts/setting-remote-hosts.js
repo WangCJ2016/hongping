@@ -100,6 +100,7 @@ class SettingRemoteHosts1 extends React.Component {
     
     const selectHost = this.props.remoteHosts[this.state.selectIndex]
     const { getFieldDecorator } = this.props.form
+    console.log(selectHost)
     return (
       <div>
         <div className="setting-user-role setting-video-device  float-left">

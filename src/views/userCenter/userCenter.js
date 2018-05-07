@@ -112,7 +112,7 @@ class UserCenter1 extends React.Component {
           align='center' 
           style={{visibility:'hidden'}}
           >
-          <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="" download>请点击此处下载插件,安装时请关闭浏览器</a>
+          <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/hp/ocx" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
         </object>
         <object
             ref={(screen)=>this.broadcastPlay=screen}

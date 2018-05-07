@@ -209,8 +209,14 @@ export function setTaskTime(info) {
     .then(res=>{
       console.log(res)
       if(res.success) {
-        message.info('设置成功')
-        dispatch(dataSuccess({taskTime: info.time}))
+        if(info.type === 'modify'||info.type === 'set') {
+          message.info('设置成功')
+          dispatch(dataSuccess({taskTime: info.time}))
+        }
+        if(info.type === 'clear') {
+          message.info('已清除')
+          dispatch(dataSuccess({taskTime: null}))
+        }
       }
     })
   }

@@ -24,7 +24,7 @@ class WatchTaskTime1 extends React.Component {
     this.props.form.validateFields((err,values)=>{
       if(!err) {
         if(this.props.watch.taskTime) {
-          this.props.setTaskTime({time:values.time.format('h:mm'),type:'modify '})
+          this.props.setTaskTime({time:values.time.format('h:mm'),type:'modify'})
         }else{
           this.props.setTaskTime({time:values.time.format('h:mm'),type:'set'})
         }
@@ -36,6 +36,12 @@ class WatchTaskTime1 extends React.Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form
+    const timeProp = this.props.watch.taskTime?{
+      initialValue: moment(this.props.watch.taskTime,format),
+      rules: [{ required: true,message: '请填写任务时间'}],
+    }:{
+      rules: [{ required: true,message: '请填写任务时间'}],
+    }
     return (
       <div style={{marginBottom:'30px'}}>
       <Form layout="inline">
@@ -44,9 +50,7 @@ class WatchTaskTime1 extends React.Component {
             <FormItem
             label='设置任务时间'
             >
-              {getFieldDecorator('time', {
-                initialValue: moment(this.props.watch.taskTime?this.props.watch.taskTime:'00:00',format)
-              })(
+              {getFieldDecorator('time', timeProp)(
                 <TimePicker placeholder='请选择时间'  format={format} />
               )}
             </FormItem>

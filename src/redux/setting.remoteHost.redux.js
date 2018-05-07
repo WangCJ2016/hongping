@@ -239,6 +239,7 @@ export function modifyHost(info) {
               mediaServer2Id:host.mediaServer2Id,
               mediaServer3Id:host.mediaServer3Id
             }
+            message.info('修改成功')
             dispatch(modifySuccess(list))
           }
          

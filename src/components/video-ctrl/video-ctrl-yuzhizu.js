@@ -110,7 +110,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
       const screenLength = getScreenLength(length)
       this.props.play.XzVideo_SetRealPlayScreen(screenLength)
       group[0].previews.forEach((device,index) => {
-        this.props.getDevInfo({devId: device.devId,type:device.devType},'play',this.props.play,index)
+        this.props.getDevInfo({devId: device.devId,type:device.devType},'play',this.props.play,index+1)
       })
     }
 
@@ -120,7 +120,6 @@ class VideoCtrlYuzhizu1 extends React.Component {
   }
   transferClick(type) {
     if(type === 'left') {
-     
       this.setState({options:this.state.options.filter(id=>this.state.previewChecked.indexOf(id.value)===-1)})
     }
     if(type==='right') {
@@ -144,7 +143,8 @@ class VideoCtrlYuzhizu1 extends React.Component {
     })
   }
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator } = this.props.form
+    console.log(this.props.video.previewGroup)
     return (
         <div className='yuzhiwei'>
             <div style={{ cursor: 'pointer'}} onClick={()=>{this.setState({createvisible:true});this.props.modalVisiable()}}>

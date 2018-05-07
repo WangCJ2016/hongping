@@ -10,7 +10,7 @@ export const config = {
     }
   },
   api: {
-    ip:'192.168.0.141:8080',
+    ip:'192.168.1.51:8080',
     base: 'http://192.168.0.141:8080/hp/manage', // http://192.168.0.149:8080/hp/manage
     login: '/do_login', // 登录
 
@@ -136,7 +136,7 @@ export const request = {
       if(url.indexOf('area_queryPictureByAreaId')>-1) {
         url += '?' + queryString.stringify({...params})
       }else{
-        url += '?' + queryString.stringify({...params,time: Date.now()})
+        url += '?' + queryString.stringify({...params,_time: Date.now()})
       }
     }
     return fetch(url)
