@@ -32,7 +32,7 @@ class WatchUpload1 extends React.Component {
           const a = this.play.hcPTrecord(i)
           const dataStr = a.slice(0,8)
           const year = new Date().getFullYear()
-          watchData.push({time:year+dataStr.slice(-2)+'-'+dataStr.slice(4,6)+' '+dataStr.slice(2,4)+':'+dataStr.slice(0,2),point:a.slice(8)+':00'})
+          watchData.push({time:year+'-'+dataStr.slice(-2)+'-'+dataStr.slice(4,6)+' '+dataStr.slice(2,4)+':'+dataStr.slice(0,2)+':00',point:a.slice(8)})
         }
         this.setState({
           watchData: watchData
