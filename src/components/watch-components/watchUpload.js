@@ -4,17 +4,7 @@ import { connect } from 'react-redux'
 import { watchPointsUpload } from '../../redux/watch.redux'
 const FormItem = Form.Item
 const Option = Select.Option
-const columns = [
-  {
-    title: '时间',
-    dataIndex: 'time',
-    key: 'time',
-  },{
-    title: '钮号',
-    dataIndex: 'point',
-    key: 'point',
-  }
-]
+
 
 @connect(
   null,
@@ -61,6 +51,22 @@ class WatchUpload1 extends React.Component {
   }
   render() {
     const {getFieldDecorator} = this.props.form 
+    const columns = [
+      {
+        title: '时间',
+        dataIndex: 'time',
+        key: 'time',
+        render: (text,record) => {
+          const timeArr = text.split('-')
+          const year = new Date().getFullYear()
+          return <span>{year+'-'+timeArr[0]+'-'+timeArr[1]+' '+timeArr[2]+':'+timeArr[3]+':00'}</span>
+        }
+      },{
+        title: '钮号',
+        dataIndex: 'point',
+        key: 'point',
+      }
+    ]
     return (
       <div>
         <object ref={(screen)=>this.play=screen}   id="play"
@@ -77,7 +83,7 @@ class WatchUpload1 extends React.Component {
               label='串口'
               >
                 {getFieldDecorator('chuankou', {
-                  initialValue:1
+                  initialValue:3
                 })(
                   <Select  style={{ width: 120 }}>
                     <Option value="1">1</Option>
