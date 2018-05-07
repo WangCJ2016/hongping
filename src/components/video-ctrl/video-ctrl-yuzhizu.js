@@ -104,6 +104,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
     )
   }
   async collapseChange(e,a) {
+    if(!e) return
     const group =  this.props.video.previewGroup.filter(group => group.id===e)
     if(group[0].previews) {
       const length = group[0].previews.length
