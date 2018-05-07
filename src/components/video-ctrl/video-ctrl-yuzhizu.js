@@ -103,15 +103,15 @@ class VideoCtrlYuzhizu1 extends React.Component {
       </Collapse>
     )
   }
-  collapseChange(e,a) {
+  async collapseChange(e,a) {
     const group =  this.props.video.previewGroup.filter(group => group.id===e)
     if(group[0].previews) {
       const length = group[0].previews.length
       const screenLength = getScreenLength(length)
       this.props.play.XzVideo_SetRealPlayScreen(screenLength)
-      group[0].previews.forEach((device,index) => {
-        this.props.getDevInfo({devId: device.devId,type:device.devType},'play',this.props.play,index+1)
-      })
+      for(let i=0;i< group[0].previews.length;i++) {
+        await this.props.getDevInfo({devId: group[0].previews[i].devId,type:group[0].previews[i].devType},'play',this.props.play,i)
+      }
     }
 
   }
@@ -120,6 +120,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
   }
   transferClick(type) {
     if(type === 'left') {
+     
       this.setState({options:this.state.options.filter(id=>this.state.previewChecked.indexOf(id.value)===-1)})
     }
     if(type==='right') {
@@ -143,8 +144,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
     })
   }
   render() {
-    const { getFieldDecorator } = this.props.form
-    console.log(this.props.video.previewGroup)
+    const { getFieldDecorator } = this.props.form;
     return (
         <div className='yuzhiwei'>
             <div style={{ cursor: 'pointer'}} onClick={()=>{this.setState({createvisible:true});this.props.modalVisiable()}}>
