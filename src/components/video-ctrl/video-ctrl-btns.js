@@ -50,6 +50,7 @@ class VideoCtrlBtn1 extends React.Component {
           visible: false
         })
         this.props.modalVisiable()
+        this.props.form.resetFields();
       }
     })
   }
@@ -114,7 +115,7 @@ class VideoCtrlBtn1 extends React.Component {
               okText='保存'
               cancelText='取消'
               onOk={this.submit.bind(this)}
-              onCancel={()=>{this.setState({visible:false});this.props.modalVisiable()}}
+              onCancel={()=>{this.setState({visible:false});this.props.modalVisiable();this.props.form.resetFields();}}
               >
               <Form layout='inline'>
                 <FormItem label="预置位名称">

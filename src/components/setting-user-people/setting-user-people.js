@@ -76,6 +76,7 @@ class SettingUserPeople1 extends React.Component {
         }
         this.props.modifyAccount(data)
         this.setState({peopleEditVisible: false})
+        this.props.form.resetFields()
       }
     })
   }
@@ -94,6 +95,7 @@ class SettingUserPeople1 extends React.Component {
         }
         this.props.createAccount(data)
         this.setState({creatPeopleVisible: false})
+        this.props.form.resetFields()
       }
     })
   }
@@ -114,7 +116,7 @@ class SettingUserPeople1 extends React.Component {
             cancelText='取消'
             wrapClassName='peopleEditModal'
             onOk={this.peopleEditSubmit.bind(this)}
-            onCancel={()=>this.setState({peopleEditVisible:false})}
+            onCancel={()=>{this.setState({peopleEditVisible:false});this.props.form.resetFields()}}
             >
             <Form layout='inline'>
               <FormItem label="角色">
@@ -170,7 +172,7 @@ class SettingUserPeople1 extends React.Component {
            cancelText='取消'
            wrapClassName='peopleEditModal'
            onOk={this.peopleCreateSubmit.bind(this)}
-           onCancel={()=>this.setState({creatPeopleVisible:false})}
+           onCancel={()=>{this.setState({creatPeopleVisible:false});this.props.form.resetFields()}}
            >
            <Form layout='inline'>
              <FormItem label="角色">

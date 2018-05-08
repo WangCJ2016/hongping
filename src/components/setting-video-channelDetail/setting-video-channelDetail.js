@@ -24,6 +24,7 @@ class SettingVideoChannelDetail1 extends React.Component {
         this.setState({
           createVisible: false
         })
+        this.props.form.resetFields()
       }
     })
   }
@@ -43,6 +44,7 @@ class SettingVideoChannelDetail1 extends React.Component {
         this.setState({
           editVisible: false
         })
+        this.props.form.resetFields()
       }
     })
   }
@@ -89,7 +91,7 @@ class SettingVideoChannelDetail1 extends React.Component {
             okText='确定'
             cancelText='取消'
             onOk={this.createSubmit.bind(this)}
-            onCancel={()=>this.setState({createVisible:false})}
+            onCancel={()=>{this.setState({createVisible:false});this.props.form.resetFields()}}
             >
             <Form layout='inline'>
               <FormItem label="通道名称">
@@ -129,7 +131,7 @@ class SettingVideoChannelDetail1 extends React.Component {
             okText='确定'
             cancelText='取消'
             onOk={this.editSubmit.bind(this)}
-            onCancel={()=>this.setState({editVisible:false})}
+            onCancel={()=>{this.setState({editVisible:false});this.props.form.resetFields()}}
             >
             <Form layout='inline'>
               <FormItem label="通道名称">

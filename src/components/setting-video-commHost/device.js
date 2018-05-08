@@ -24,6 +24,7 @@ class Devices1 extends React.Component {
         this.setState({
           editVisible: false
         })
+        this.props.form.resetFields()
       }
     })
   }
@@ -71,7 +72,7 @@ class Devices1 extends React.Component {
             okText='确定'
             cancelText='取消'
             onOk={this.editDeviceSubmit.bind(this)}
-            onCancel={()=>this.setState({editVisible:false})}
+            onCancel={()=>{this.setState({editVisible:false});this.props.form.resetFields()}}
             >
             <Form layout='inline'>
               <FormItem label="设备名称">

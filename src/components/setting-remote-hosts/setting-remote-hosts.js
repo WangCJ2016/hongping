@@ -68,6 +68,7 @@ class SettingRemoteHosts1 extends React.Component {
           values.name = encodeURI(values.name)
           this.props.createHost(values)
           this.setState({createVisible:false})
+          this.props.form.resetFields()
         }
      })
    }
@@ -93,6 +94,7 @@ class SettingRemoteHosts1 extends React.Component {
         }
         this.props.modifyHost(info)
         this.setState({editVisible:false})
+        this.props.form.resetFields()
       }
    })
    }
@@ -100,7 +102,6 @@ class SettingRemoteHosts1 extends React.Component {
     
     const selectHost = this.props.remoteHosts[this.state.selectIndex]
     const { getFieldDecorator } = this.props.form
-    console.log(selectHost)
     return (
       <div>
         <div className="setting-user-role setting-video-device  float-left">
@@ -114,7 +115,7 @@ class SettingRemoteHosts1 extends React.Component {
               okText='确定'
               cancelText='取消'
               onOk={this.createSubmit.bind(this)}
-              onCancel={()=>this.setState({createVisible:false})}
+              onCancel={()=>{this.setState({createVisible:false});this.props.form.resetFields()}}
               >
               <Form layout='inline'>
                 <FormItem label="主机名称">
@@ -217,7 +218,7 @@ class SettingRemoteHosts1 extends React.Component {
               okText='确定'
               cancelText='取消'
               onOk={this.editSubmit.bind(this)}
-              onCancel={()=>this.setState({editVisible:false})}
+              onCancel={()=>{this.setState({editVisible:false});this.props.form.resetFields()}}
               >
               <Form layout='inline'>
                 <FormItem label="主机名称">

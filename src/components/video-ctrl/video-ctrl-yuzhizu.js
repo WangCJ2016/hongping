@@ -46,6 +46,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
         this.props.createPreviewGroup({title: encodeURI(values.name),devType:1})
         this.setState({createvisible: false})
         this.props.modalVisiable()
+        this.props.form.resetFields();
       }
     })
   }
@@ -54,6 +55,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
       if(!err) {
         this.props.modifyPreviewGroup({id:this.state.selectPreview.id,title: encodeURI(values.editname),devType:1})
         this.setState({editvisible: false})
+        this.props.form.resetFields();
       }
     })
   }
@@ -159,7 +161,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
               okText='保存'
               cancelText='取消'
               onOk={this.createSubmit.bind(this)}
-              onCancel={()=>{this.setState({createvisible:false});this.props.modalVisiable()}}
+              onCancel={()=>{this.setState({createvisible:false});this.props.modalVisiable();this.props.form.resetFields();}}
               >
               <Form layout='inline'>
                 <FormItem label="预览组名称">
@@ -178,7 +180,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
               className='yuzhiwimodal'
               cancelText='取消'
               onOk={this.editSubmit.bind(this)}
-              onCancel={()=>{this.setState({editvisible:false});this.props.modalVisiable()}}
+              onCancel={()=>{this.setState({editvisible:false});this.props.modalVisiable();this.props.form.resetFields();}}
               >
               <Form layout='inline'>
                 <FormItem label="预览组名称">
@@ -197,7 +199,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
               className='yuzhiwimodal'
               cancelText='取消'
               onOk={this.editPreviewSubmit.bind(this)}
-              onCancel={()=>{this.setState({editPreviewVisible:false});this.props.modalVisiable()}}
+              onCancel={()=>{this.setState({editPreviewVisible:false});this.props.modalVisiable();this.props.form.resetFields();}}
               >
               <div className='transfer'>
                 <div className="area">

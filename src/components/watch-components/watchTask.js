@@ -48,6 +48,7 @@ class WatchTask1 extends React.Component {
         }
         this.props.addTask(data)
         this.setState({newTaskVisible:false})
+        this.props.form.resetFields();
       }
     })
   }
@@ -63,6 +64,7 @@ class WatchTask1 extends React.Component {
         this.setState({
           editTaskVisible: false,
         })
+        this.props.form.resetFields();
       }
     })
   }
@@ -95,6 +97,7 @@ class WatchTask1 extends React.Component {
         }
         this.props.editPoint(data)
         this.setState({editPointVisible: false})
+        this.props.form.resetFields();
       }
     })
       
@@ -184,7 +187,7 @@ class WatchTask1 extends React.Component {
             visible={this.state.newTaskVisible}
             okText='确定'
             cancelText='取消'
-            onCancel={()=>this.setState({newTaskVisible:false})}
+            onCancel={()=>{this.setState({newTaskVisible:false});this.props.form.resetFields();}}
             onOk={this.addTask}
             >
               <Form layout='inline'>
@@ -217,7 +220,7 @@ class WatchTask1 extends React.Component {
           visible={this.state.editTaskVisible}
           okText='确定'
           cancelText='取消'
-          onCancel={()=>this.setState({editTaskVisible:false})}
+          onCancel={()=>{this.setState({editTaskVisible:false});this.props.form.resetFields();}}
           onOk={this.editTask}
           >
           <Form layout='inline'>
@@ -251,7 +254,7 @@ class WatchTask1 extends React.Component {
           visible={this.state.addPointVisible}
           okText='确定'
           cancelText='取消'
-          onCancel={()=>this.setState({addPointVisible:false})}
+          onCancel={()=>{this.setState({addPointVisible:false});this.props.form.resetFields();}}
           onOk={this.addPoint}
           >
           <Form layout='inline'>
@@ -282,7 +285,7 @@ class WatchTask1 extends React.Component {
           visible={this.state.editPointVisible}
           okText='确定'
           cancelText='取消'
-          onCancel={()=>this.setState({editPointVisible:false})}
+          onCancel={()=>{this.setState({editPointVisible:false});this.props.form.resetFields();}}
           onOk={this.editPoint}
           >
           <Form layout='inline'>

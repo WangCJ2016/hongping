@@ -97,6 +97,7 @@ class Category1 extends React.Component {
         this.setState({
           addVisible: false
         })
+        this.props.form.resetFields();
       }
     })
   }
@@ -107,6 +108,7 @@ class Category1 extends React.Component {
         this.setState({
           editVisible: false
         })
+        this.props.form.resetFields();
       }
     })
   }
@@ -127,7 +129,7 @@ class Category1 extends React.Component {
           okText='确定'
           cancelText='取消'
           onOk={this.addSubmit.bind(this)}
-          onCancel={()=>this.setState({addVisible:false})}
+          onCancel={()=>{this.setState({addVisible:false});this.props.form.resetFields();}}
           >
           <Form layout='inline'>
             <FormItem label="名称">
@@ -146,7 +148,7 @@ class Category1 extends React.Component {
           okText='确定'
           cancelText='取消'
           onOk={this.editSubmit.bind(this)}
-          onCancel={()=>this.setState({editVisible:false})}
+          onCancel={()=>{this.setState({editVisible:false});this.props.form.resetFields();}}
           >
           <Form layout='inline'>
             <FormItem label="名称">

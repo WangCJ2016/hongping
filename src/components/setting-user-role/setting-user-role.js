@@ -102,6 +102,7 @@ class SettingUserRole1 extends React.Component {
       if (!err) {
         this.props.modifyRole({id: roles[this.state.selectRoleIndex].id, roleName: encodeURI(values.roleName)})
         this.setState({roleEditVisible: false})
+        this.props.form.resetFields()
       }
     })
   }
@@ -111,6 +112,7 @@ class SettingUserRole1 extends React.Component {
       if (!err) {
         this.props.createRole({roleName: encodeURI(values.createName)})
         this.setState({createRoleVisible: false})
+        this.props.form.resetFields()
       }
     }); 
   }
@@ -184,7 +186,7 @@ class SettingUserRole1 extends React.Component {
             cancelText='取消'
             wrapClassName='createRoleModal'
             onOk={this.createRoleSubmit.bind(this)}
-            onCancel={()=>this.setState({createRoleVisible:false})}
+            onCancel={()=>{this.setState({createRoleVisible:false});this.props.form.resetFields()}}
             ><Form>
             <FormItem>
               {getFieldDecorator('createName', {
@@ -205,7 +207,7 @@ class SettingUserRole1 extends React.Component {
             okText='保存'
             cancelText='取消'
             onOk={this.editRoleSubmit.bind(this)}
-            onCancel={()=>this.setState({roleEditVisible:false})}
+            onCancel={()=>{this.setState({roleEditVisible:false});this.props.form.resetFields()}}
             >
             <Form>
               <FormItem>

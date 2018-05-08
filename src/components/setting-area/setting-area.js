@@ -27,12 +27,14 @@ class SettingArea1 extends React.Component {
     const name = this.props.form.getFieldValue('createName')
     this.props.createArea({...this.state.createInfo,name: encodeURI(name)})
     this.setState({createVisible:false})
+    this.props.form.resetFields()
   }
   // 编辑
   editSubmit() {
     const name = this.props.form.getFieldValue('editName')
     this.props.modifyArea({...this.state.selectArea,name: encodeURI(name)})
     this.setState({editVisible:false})
+    this.props.form.resetFields()
   }
   // 删除
   delete(area) {
@@ -87,7 +89,7 @@ class SettingArea1 extends React.Component {
           okText='确定'
           cancelText='取消'
           onOk={this.editSubmit.bind(this)}
-          onCancel={()=>this.setState({editVisible:false})}
+          onCancel={()=>{this.setState({editVisible:false});this.props.form.resetFields()}}
           >
           <Form>
           <FormItem>
@@ -106,7 +108,7 @@ class SettingArea1 extends React.Component {
           okText='确定'
           cancelText='取消'
           onOk={this.createSubmit.bind(this)}
-          onCancel={()=>this.setState({createVisible:false})}
+          onCancel={()=>{this.setState({createVisible:false});this.props.form.resetFields()}}
           ><Form>
           <FormItem>
             {getFieldDecorator('createName', {

@@ -62,14 +62,18 @@ class SettingVideoAreatoDevice extends React.Component {
     const devices = this.props.deivces.commDevices
     let keys = []
     devices.forEach(host=>{
-      host.devices.forEach(device => {
-        device.properties.forEach(property=>{
-          if(defaultSelectKeys.indexOf(property.id+'-'+toTypeStr(property.typeStr))>-1) {
-            this.commArr=[...this.commArr,property.id+'-'+toTypeStr(property.typeStr)]
-            keys.push(property.id+'-'+toTypeStr(property.typeStr))
+      if(host.devices) {
+        host.devices.forEach(device => {
+          if(device.properties) {
+            device.properties.forEach(property=>{
+              if(defaultSelectKeys.indexOf(property.id+'-'+toTypeStr(property.typeStr))>-1) {
+                this.commArr=[...this.commArr,property.id+'-'+toTypeStr(property.typeStr)]
+                keys.push(property.id+'-'+toTypeStr(property.typeStr))
+              }
+            })
           }
         })
-      })
+      }
     })
     return (
       <Tree
@@ -80,14 +84,14 @@ class SettingVideoAreatoDevice extends React.Component {
       onCheck={this.commOncheck.bind(this)}>
       { devices.map(host => (
         <TreeNode title={host.name} key={host.id} disabled>
-         {host.devices.map(device => (
+         {host.devices?host.devices.map(device => (
           <TreeNode title={device.name} key={device.id} disabled>
-          {device.properties.map(property => {
+          {device.properties?device.properties.map(property => {
            return (
             <TreeNode title={property.name} disabled={property.disabled!=='N'} key={property.id+'-'+toTypeStr(property.typeStr)} />
-           )})}
+           )}):null}
           </TreeNode>
-         ))}
+         )):null}
         </TreeNode>
       ))}
       </Tree>
