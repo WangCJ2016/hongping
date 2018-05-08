@@ -49,6 +49,11 @@ class Home extends React.Component {
   
   componentDidMount() {
     this.props.areaList()
+    if(this.img) {
+      this.setState({
+        imgWidth: this.img.width
+      })
+    }
   }
   componentWillReceiveProps(nextProps) {
     if(nextProps.area.firstAreaId&&!this.props.area.firstAreaId) {
@@ -68,8 +73,6 @@ class Home extends React.Component {
   }
   componentDidUpdate(nextProps,nextState) {
     if(this.props.area.areaInfo.picture&&(this.props.area.areaInfo.picture!==nextProps.area.areaInfo.picture)) {
-      //style={{width: this.props.area.areaImgSlider* this.state.imgWidth+'px'}}
-    
       setTimeout(()=>{     
         this.setState({
           imgWidth: this.img.width
@@ -257,8 +260,7 @@ class Home extends React.Component {
   }
   // 道闸控制
   daozhaCtrl(e,device) {
-    console.log(e,device)
-    //this.play.XzVideo_RemoteControl_Barriergate(e?1:0,1,5,1)
+    this.play.XzVideo_RemoteControl_Barriergate(e?1:0,1,5,1)
   }
   // 回放
   videoPlayBack(device) {
@@ -322,6 +324,7 @@ class Home extends React.Component {
   }
  
   render() {
+     console.log(this.state.imgWidth)
     const columns = [{
         title: '名称',
         dataIndex: 'name',
