@@ -380,7 +380,7 @@ export function getDevInfo(info,type,play,index) {
         if(index!==undefined) {
          const a = play.XzVideo_SetSelRTVContext(index)
         }
-        play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+        play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
        }
        if(type==='guard') {
         guardCtrl({token:token,vid:device.vid,deviceType:device.type,controlValue:1})(dispatch)
