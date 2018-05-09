@@ -102,7 +102,8 @@ class DragSelectModal extends React.Component {
         key: 'action',
         render: (text,record) => (
           <span>
-            <a onClick={()=>this.props.voiceBroadcast([record.index])}>语音播报</a>
+            <Button size='small' type='primary' onClick={()=>this.props.voiceBroadcast([record.index])}>语音播报</Button>
+            <Button size='small' type='primary' onClick={()=>this.props.voiceBroadcastEnd()}>关闭播报</Button>
           </span>
         ),
     }]
@@ -161,6 +162,7 @@ class DragSelectModal extends React.Component {
           </TabPane>
           <TabPane tab="广播" key="2">
             <div style={{direction:'rtl'}}>
+             <Button type='primary' onClick={()=>this.props.voiceBroadcastEnd()}>关闭播报</Button>
              <Button type='primary' onClick={()=>this.props.voiceBroadcast(this.state.broadcastIndexArr)}>语音播报</Button>
             </div>
            <Table size='small' rowSelection={rowSelection} columns={columnsBroadCast} dataSource={this.dataType(4)} />

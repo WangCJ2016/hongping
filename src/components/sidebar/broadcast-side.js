@@ -1,5 +1,5 @@
 import React from 'react'
-import {Icon,Input,Checkbox} from 'antd'
+import {Icon,Input,Checkbox,Button} from 'antd'
 import { unquie } from '../../utils'
 import TableBroadcast from '../areaTree/tableBroadcast'
 import { connect } from 'react-redux'
@@ -90,9 +90,15 @@ class BroadcastSider extends React.Component {
         {
           this.props.sidebar.broadcast_sidebar?
           <div className="fix-bottom">
-            <span>已选择<strong style={{color: '#17b89f'}}>{this.state.selectIndexArr.length}</strong></span>
-            <span onClick={this.voiceBroadcast}><Icon type="notification" style={{color:this.state.voiceBroadcastStart?'#006f6b':''}} /></span>
-            <span onClick={this.fileBroadcast}><Icon type="folder" style={{color:this.state.fileBroadcastStart?'#006f6b':''}} /></span>
+            <span><strong style={{color: '#17b89f'}}>{this.state.selectIndexArr.length}</strong></span>
+            <span >
+              <Button size='small' onClick={this.voiceBroadcast} type='primary'>语音播报</Button>
+              <Button size='small' onClick={this.props.voiceBroadcastEnd} type='primary'>关闭播报</Button>
+            </span>
+            <span>
+              <Button size='small' onClick={this.fileBroadcast} type='primary'>文件播报</Button>
+              <Button size='small' onClick={this.props.broadcastFileEnd} type='primary'>关闭播报</Button>
+            </span>
           </div>:null
         }
         

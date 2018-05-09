@@ -24,7 +24,6 @@ const broadcastHoc = (WrappedCom) => {
       this.broadcastFile = this.broadcastFile.bind(this)
     }
     voiceBroadcast(IndexArr) {
-      console.log(IndexArr)
       if(!Array.isArray(IndexArr)) return
       if(!this.state.voiceBroadcastStart){
         const a =this.play.VoiceBroadcast(this.props.area.broadcastIp,IndexArr.join(','))
@@ -44,6 +43,20 @@ const broadcastHoc = (WrappedCom) => {
         })
       }
     }
+    voiceBroadcastEnd() {
+      const a = this.play.EndVoiceBroadcast()
+      this.setState({
+        voiceBroadcastStart: false
+      })
+      a?message.success('已关闭'):message.error('关闭失败')
+    }
+    broadcastFileEnd() {
+      const a = this.play.EndFileBroadcast()
+      this.setState({
+        fileBroadcastStart: false
+      })
+      a?message.success('已关闭'):message.error('关闭失败')
+    }
     broadcastFile(IndexArr) {
       if(!this.state.fileBroadcastStart) {
         const a = this.play.GetLocallFile()
@@ -60,6 +73,9 @@ const broadcastHoc = (WrappedCom) => {
         const a = this.play.FileBroadcast(this.props.area.broadcastIp,this.state.selectIndexArr.join(','),this.state.selectedRowKeys.join(','))
         if(a) {
           message.success('开始播报文件语音')
+          this.setState({
+            voiceBroadcastStart: true
+          })
         } else {
           message.error('播报语音失败')
         }

@@ -20,12 +20,13 @@
     position: absolute;
     bottom: 0;
     width: 300px;
-    line-height: 50px;
+    line-height: 30px;
     border-top: 1px solid #ccc;
     text-align: left;
+    display: flex;
     >span{
-      margin-left: 25px;
-      margin-right: 40px;
+      margin-left: 20px;
+      margin-right: 20px;
       cursor: pointer;
     }
   }
