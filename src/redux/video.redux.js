@@ -105,14 +105,15 @@ export function video(state=intialState,action) {
     case PLAYBACKDATA:{ 
       const arr = action.payload.split('\n').map((doc,index) => {
         const docArr = doc.split(',')
+        const device = action.device
         return {
           key:docArr[0],
           id: index,
           name:docArr[0],
-          host: '测试主机',
-          ip: '192.168.0.100',
-          channelname: '测试通道',
-          channelindex:1,
+          host: device.host.name,
+          ip: device.hose.url,
+          channelname: device.name,
+          channelindex:device.index,
           startime: docArr[2],
           endtime: docArr[3],
           size:docArr[1]
@@ -388,10 +389,11 @@ export function palyBackSelectDevice(device) {
   }
 }
 // 根据DevID获取设备信息  视频播放信息
-export function playBackData(data) {
+export function playBackData(data,device) {
   return {
     type:PLAYBACKDATA,
-    payload: data
+    payload: data,
+    device: device
   }
 }
 

@@ -40,7 +40,7 @@ class PeoCom extends React.Component {
             'peo-item': true,
             itemActive: peo.peopleIdEx === this.state.peopleIdExSelect
           })
-         return <div className={styles} key={peo.peopleIdEx} >
+         return peo.people?<div className={styles} key={peo.peopleIdEx} >
             <div>{peo.people.peopleName}</div>
             <div>{peo.people.phone}</div>
             <div>{peo.people.department.deptName}</div>
@@ -50,7 +50,7 @@ class PeoCom extends React.Component {
             <span  style={{padding:'10px',position:'absolute',right:'10px',top:'20%',cursor:'pointer'}} onClick={()=>{this.props.changeMenu(peo.peopleIdEx)}}>
               <img src={require('../../assets/imgs/trail_icon.png')} alt=""/>
             </span>
-          </div>
+          </div>:null
         }):null}
       </Panel>
     ))

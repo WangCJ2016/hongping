@@ -48,14 +48,9 @@ export class HomeBroadcast extends React.Component {
   render() {
     return (
       <div className="home-popover">
-        <ButtonGroup className='clearfix'>
           <Button  type="primary" onClick={()=>this.props.voiceBroadcast(this.props.IndexArr)}>
             语音播报
           </Button>
-          <Button  type="primary" onClick={()=>this.props.broadcastFile(this.props.IndexArr)}>
-            文件播报
-          </Button>
-       </ButtonGroup>
       </div>
     )
   }
