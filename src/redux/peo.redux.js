@@ -175,3 +175,16 @@ export function areaImg(info) {
       })
   }
 }
+
+export function getUwbRegionMap(info) {
+  return dispatch => {
+    const token = localStorage.getItem('token')
+    request.get(config.api.base + config.api.getUwbRegionMap,{ token: token,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        dispatch(dataSuccess({areaRealWidth:res.dataObject.width}))
+      }
+    })
+  }
+}

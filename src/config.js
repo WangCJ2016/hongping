@@ -13,7 +13,7 @@ export const config = {
     ip:'192.168.1.51:8080',
     base: 'http://192.168.0.141:8080/hp/manage', // http://192.168.0.149:8080/hp/manage
     login: '/do_login', // 登录
-
+   
     areaLists: '/area_queryAreasPage', //区域列表
     juniorArea: '/area_queryAreas', // 获取下级区域
     createAreas: '/area_createAreas',  // 添加区域
@@ -21,6 +21,7 @@ export const config = {
     areaInfo: '/area_getAreasInfo', //  区域详情
     uploadAreaImg: '/area_uploadAreaImg', // 上传区域图片
     picByarea: '/area_queryPictureByAreaId', // 获取地图
+    getUwbRegionMap:'/slv_getUwbRegionMap',
   
     getInfo: '/do_getAccountInfo',  // (获取角色)
     getMenu: '/role_queryResources', // 获取菜单

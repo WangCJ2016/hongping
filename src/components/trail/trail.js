@@ -2,9 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Tooltip,Button,Icon,Spin } from 'antd'
 import './trail.scss'
+import { getUwbRegionMap } from '../../redux/peo.redux'
 
 @connect(
-  state=>({peo:state.peo,sidebar:state.sidebar})
+  state=>({peo:state.peo,sidebar:state.sidebar}),{
+    getUwbRegionMap
+  }
 )
 class Trail extends React.Component {
   constructor() {
@@ -32,6 +35,7 @@ class Trail extends React.Component {
         this.canvasRender()
       })
     }
+    this.props.getUwbRegionMap({name: encodeURI('主厂房发电机层')})
   }
   canvasRender() {
     const canvas = this.canvas
@@ -40,9 +44,11 @@ class Trail extends React.Component {
     const context = canvas.getContext("2d");
     context.clearRect(0,0,canvas.width,canvas.height)
     const trails = this.props.peo.traildetail
+    const ratio = canvas.width/this.props.peo.areaRealWidth * 0.1
+    console.log(ratio)
     //设置对象起始点和终点
     trails.forEach(trail => {
-      context.lineTo(trail.locationX,trail.locationY);
+      context.lineTo(ratio * trail.locationX,ratio * trail.locationY);
     }) 
    //设置样式
     context.lineWidth = 2;
@@ -67,7 +73,7 @@ class Trail extends React.Component {
     const peoTipArr = []
     //设置对象起始点和终点
     trails.forEach((trail,index) => {
-      if(index%50===0) {
+      if(index) {
         peoTipArr.push(
           <Tooltip key={index} title={trail.reportTime}>
             <div className="tipPeo" style={{left:trail.locationX-5,top:trail.locationY-5}}></div>
@@ -136,7 +142,7 @@ class Trail extends React.Component {
               </canvas>
               <img id='img' src={this.props.peo.picture}  alt="" />
               {this.state.trail?this.changeTrailRender(this.state.trail):null}
-              {this.peoTipRender()}
+              
             </div>
             :
             <div style={{width: '100%',height:'100%',textAlign:'center'}}>

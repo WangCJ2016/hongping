@@ -34,7 +34,7 @@ class PeoCom extends React.Component {
   peoRender() {
     const peolist = this.props.peoList
     return peolist.map((area,index) => (
-      <Panel header={area.regionName+'('+(area.postions?area.postions.length:0)+')'} key={index}>
+      <Panel header={area.regionName+'('+(area.personCount?area.personCount:0)+')'} key={index}>
         {area.postions?area.postions.map(peo=>{
           const styles = className({
             'peo-item': true,
@@ -43,7 +43,7 @@ class PeoCom extends React.Component {
          return peo.people?<div className={styles} key={peo.peopleIdEx} >
             <div>{peo.people.peopleName}</div>
             <div>{peo.people.phone}</div>
-            <div>{peo.people.department.deptName}</div>
+            <div>{peo.people.department?peo.people.department.deptName:''}</div>
             <span  style={{padding:'10px',position:'absolute',right:'40px',top:'20%',cursor:'pointer'}} onClick={this.goLoc.bind(this,area.areaId,peo.peopleIdEx)}>
               <img src={require('../../assets/imgs/loc_icon.png')} alt=""/>
             </span>

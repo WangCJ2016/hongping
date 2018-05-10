@@ -204,7 +204,7 @@ class Home extends React.Component {
                </Popover>
        }
       if(device.type === 6) {
-        return <Popover content={HomePerson(device)}  key={device.id+index} >
+        return <Popover content={HomePerson(device)}  key={index} >
                  <div  className={styles} key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>
@@ -214,7 +214,7 @@ class Home extends React.Component {
        }
        if(device.type === 10) {
         return (
-          <div  className={styles} key={device.id+index} onClick={()=>this.goNextArea(device)} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+          <div className={styles} key={device.id+index} onClick={()=>this.goNextArea(device)} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
             <Tag >
             <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
             {device.name||device.devName}</Tag>
