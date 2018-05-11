@@ -71,9 +71,9 @@ class Trail extends React.Component {
       </Tooltip>
     )
   }
-  peoTipRender() {
+  peoTipRender = () => {
     const canvas = this.canvas
-    const ratio = canvas.width/this.props.peo.areaRealWidth 
+    const ratio = canvas.width / this.props.peo.areaRealWidth 
     const trails = this.props.peo.traildetail
     const peoTipArr = []
     //设置对象起始点和终点
@@ -89,7 +89,6 @@ class Trail extends React.Component {
     return peoTipArr
   }
   start() {
-    console.log(this.timer)
     if(this.timer) return
     const trails = this.props.peo.traildetail
     const length = trails.length

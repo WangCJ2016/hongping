@@ -82,7 +82,7 @@ export function devices(state=initalState,action) {
       return {...state,devinfo:action.payload}
     }
     case VIDEOPIC: {
-      const arr = action.payload.split('\n').map((doc,index) => {
+      const arr = action.payload.split('\n').filter(doc=>doc).map((doc,index) => {
         const docArr = doc.split(',')
         return {
           key:docArr[0],

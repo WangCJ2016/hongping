@@ -101,7 +101,7 @@ class PeoSider extends React.Component {
     })
     this.props.trailDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:trail.startTime,endTime:trail.endTime})  
      //trail.areaId
-    this.props.history.push(`/trail?id=${trail.areaId}&name=${this.props.peo.selectAreaName}`)
+    this.props.history.push(`/trail?id=0b6d2ac417844ee3829833eccf931ff4&name=${this.props.peo.selectAreaName}`)
   }
   trailSubmit() {
       this.props.peoTrail({peopleIdEx:this.state.peopleIdExSelect,startTime:this.state.startTime,endTime:this.state.endTime})   
