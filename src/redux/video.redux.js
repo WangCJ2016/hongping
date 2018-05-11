@@ -111,7 +111,7 @@ export function video(state=intialState,action) {
           id: index,
           name:docArr[0],
           host: device.host.name,
-          ip: device.hose.url,
+          ip: device.host.url,
           channelname: device.name,
           channelindex:device.index,
           startime: docArr[2],
