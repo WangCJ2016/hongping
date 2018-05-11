@@ -136,7 +136,7 @@ class Frame extends React.Component {
     }
   }
   render() {
-    
+    console.log(this.props.location)
     return (
       <Layout className='mylayout'>
       <Header className="header">
@@ -163,7 +163,7 @@ class Frame extends React.Component {
       </Header>
       <Layout>
       {
-        this.props.location.pathname==='/home'||this.props.location.pathname==='/trail'?
+        this.props.location.pathname==='/home'||this.props.location.pathname.includes('trail')?
           <Sider
               trigger={null}
               collapsible
@@ -175,7 +175,7 @@ class Frame extends React.Component {
           </Sider>
         :null
       }
-       {this.props.location.pathname==='/home'||this.props.location.pathname==='/trail'?<SideBar />:null}
+       {this.props.location.pathname==='/home'||this.props.location.pathname.includes('trail')?<SideBar />:null}
         <Layout style={{overflowX:'auto'}} onScroll={this.onScroll.bind(this)}>
           <Content style={{ background: '#fff', height:'100%',position:'relative'}}>
               <Switch>

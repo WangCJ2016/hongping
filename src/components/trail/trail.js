@@ -2,11 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Tooltip,Button,Icon,Spin } from 'antd'
 import './trail.scss'
-import { getUwbRegionMap } from '../../redux/peo.redux'
+import { getUwbRegionMap,areaImg } from '../../redux/peo.redux'
 
 @connect(
   state=>({peo:state.peo,sidebar:state.sidebar}),{
-    getUwbRegionMap
+    getUwbRegionMap,areaImg
   }
 )
 class Trail extends React.Component {
@@ -30,12 +30,16 @@ class Trail extends React.Component {
     }
   }
   componentDidMount() {
+    const queryArr = this.props.location.search.slice(1).split('&')
+    const id = queryArr[0].split('=')[1]
+    const name = (queryArr[1].split('=')[1])
     if(this.props.peo.picture) {
       setTimeout(()=>{
         this.canvasRender()
       })
     }
-    this.props.getUwbRegionMap({name: encodeURI(this.props.peo.selectAreaName)})
+    this.props.areaImg({id:id})
+    this.props.getUwbRegionMap({name: name})
   }
   canvasRender() {
     const canvas = this.canvas
@@ -44,14 +48,15 @@ class Trail extends React.Component {
     const context = canvas.getContext("2d");
     context.clearRect(0,0,canvas.width,canvas.height)
     const trails = this.props.peo.traildetail
-    const ratio = canvas.width/this.props.peo.areaRealWidth * 0.1
+    const ratio = canvas.width/this.props.peo.areaRealWidth 
+    console.log(trails,ratio)
     //设置对象起始点和终点
     trails.forEach(trail => {
       context.lineTo(ratio * trail.locationX,ratio * trail.locationY);
     }) 
    //设置样式
     context.lineWidth = 2;
-    context.strokeStyle = "#17b89f";
+    context.strokeStyle = "#000";
     //绘制
     context.stroke();
     this.setState({
@@ -60,7 +65,7 @@ class Trail extends React.Component {
   }
   changeTrailRender(trail) {
     const canvas = this.canvas
-    const ratio = canvas.width/this.props.peo.areaRealWidth * 0.1
+    const ratio = canvas.width/this.props.peo.areaRealWidth 
     return (
       <Tooltip  title={trail.reportTime}>
         <div className='activeTrail' style={{left:ratio * trail.locationX-5,top:ratio * trail.locationY-20}}>
@@ -71,7 +76,7 @@ class Trail extends React.Component {
   }
   peoTipRender() {
     const canvas = this.canvas
-    const ratio = canvas.width/this.props.peo.areaRealWidth * 0.1
+    const ratio = canvas.width/this.props.peo.areaRealWidth 
     const trails = this.props.peo.traildetail
     const peoTipArr = []
     //设置对象起始点和终点
