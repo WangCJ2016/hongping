@@ -378,7 +378,7 @@ export function getDevInfo(info,type,play,index) {
        dispatch(devinfoSuccess(res.dataObject))
        if(type==='play') {
         if(index!==undefined) {
-         const a = play.XzVideo_SetSelRTVContext(index)
+           play.XzVideo_SetSelRTVContext(index)
         }
         play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
        }

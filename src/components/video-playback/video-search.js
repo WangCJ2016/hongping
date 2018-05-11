@@ -59,7 +59,7 @@ class VideoSearch extends React.PureComponent {
             placeholder="选择开始时间"
             onChange={this.startTime}
             locale={locale}
-            defaultValue={moment(new Date,'YYYY-MM-DD HH:mm:sss')}
+            defaultValue={moment(new Date(),'YYYY-MM-DD HH:mm:sss')}
           />
         </div>
         <div className='lable-item'>
@@ -70,7 +70,7 @@ class VideoSearch extends React.PureComponent {
             placeholder="选择结束时间"
             onChange={this.endTime}
             locale={locale}
-            defaultValue={moment(new Date,'YYYY-MM-DD HH:mm:sss')}
+            defaultValue={moment(new Date(),'YYYY-MM-DD HH:mm:sss')}
           />
         </div>
         <div  className='search-btn'>

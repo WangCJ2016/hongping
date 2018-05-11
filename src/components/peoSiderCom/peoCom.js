@@ -47,7 +47,7 @@ class PeoCom extends React.Component {
             <span  style={{padding:'10px',position:'absolute',right:'40px',top:'20%',cursor:'pointer'}} onClick={this.goLoc.bind(this,area.areaId,peo.peopleIdEx)}>
               <img src={require('../../assets/imgs/loc_icon.png')} alt=""/>
             </span>
-            <span  style={{padding:'10px',position:'absolute',right:'10px',top:'20%',cursor:'pointer'}} onClick={()=>{this.props.changeMenu(peo.peopleIdEx)}}>
+            <span  style={{padding:'10px',position:'absolute',right:'10px',top:'20%',cursor:'pointer'}} onClick={()=>{this.props.changeMenu(peo.peopleIdEx,area.regionName)}}>
               <img src={require('../../assets/imgs/trail_icon.png')} alt=""/>
             </span>
           </div>:null

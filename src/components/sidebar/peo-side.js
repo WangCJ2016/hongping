@@ -42,12 +42,12 @@ class PeoSider extends React.Component {
     this.props.getAllpeo()
     this.props.departmentList()
   }
-  changeMenu(id) {
+  changeMenu(id,areaName) {
     this.setState({
       peoTrailPage: !this.state.peoTrailPage,
       peopleIdExSelect:id
     })
-    this.props.peoTrailSuccess({trails:[]})
+    this.props.peoTrailSuccess({trails:[],selectAreaName: areaName})
   }
   searchPeoRender() {
     const searchPeoList = this.props.peo.searchPeoList
@@ -99,7 +99,6 @@ class PeoSider extends React.Component {
     this.setState({
       selectTrail: trail
     })
-    console.log(trail)
     this.props.trailDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:trail.startTime,endTime:trail.endTime})  
     this.props.areaImg({id:'0b6d2ac417844ee3829833eccf931ff4'}) //trail.areaId
     this.props.history.push('/trail')

@@ -35,7 +35,7 @@ class Trail extends React.Component {
         this.canvasRender()
       })
     }
-    this.props.getUwbRegionMap({name: encodeURI('主厂房发电机层')})
+    this.props.getUwbRegionMap({name: encodeURI(this.props.peo.selectAreaName)})
   }
   canvasRender() {
     const canvas = this.canvas
@@ -45,7 +45,6 @@ class Trail extends React.Component {
     context.clearRect(0,0,canvas.width,canvas.height)
     const trails = this.props.peo.traildetail
     const ratio = canvas.width/this.props.peo.areaRealWidth * 0.1
-    console.log(ratio)
     //设置对象起始点和终点
     trails.forEach(trail => {
       context.lineTo(ratio * trail.locationX,ratio * trail.locationY);
@@ -60,23 +59,27 @@ class Trail extends React.Component {
     })
   }
   changeTrailRender(trail) {
+    const canvas = this.canvas
+    const ratio = canvas.width/this.props.peo.areaRealWidth * 0.1
     return (
       <Tooltip  title={trail.reportTime}>
-        <div className='activeTrail' style={{left:trail.locationX-5,top:trail.locationY-20}}>
+        <div className='activeTrail' style={{left:ratio * trail.locationX-5,top:ratio * trail.locationY-20}}>
           <Icon type="user" />
         </div>
       </Tooltip>
     )
   }
   peoTipRender() {
+    const canvas = this.canvas
+    const ratio = canvas.width/this.props.peo.areaRealWidth * 0.1
     const trails = this.props.peo.traildetail
     const peoTipArr = []
     //设置对象起始点和终点
     trails.forEach((trail,index) => {
-      if(index) {
+      if(index%20===0) {
         peoTipArr.push(
           <Tooltip key={index} title={trail.reportTime}>
-            <div className="tipPeo" style={{left:trail.locationX-5,top:trail.locationY-5}}></div>
+            <div className="tipPeo" style={{left:ratio * trail.locationX-5,top:ratio * trail.locationY-5}}></div>
           </Tooltip>
         )
       }
