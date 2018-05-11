@@ -324,7 +324,6 @@ class Home extends React.Component {
   }
  
   render() {
-     console.log(this.state.imgWidth)
     const columns = [{
         title: '名称',
         dataIndex: 'name',

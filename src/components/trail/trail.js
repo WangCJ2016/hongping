@@ -21,9 +21,10 @@ class Trail extends React.Component {
     this.end = this.end.bind(this)
     this.faster = this.faster.bind(this)
     this.back = this.back.bind(this)
+
   }
   componentWillReceiveProps(nextProps) {
-    if(nextProps.peo.picture) {
+    if(nextProps.peo.picture&&nextProps.peo.areaRealWidth ) {
       setTimeout(()=>{
         this.canvasRender()
       })
@@ -33,43 +34,39 @@ class Trail extends React.Component {
     const queryArr = this.props.location.search.slice(1).split('&')
     const id = queryArr[0].split('=')[1]
     const name = (queryArr[1].split('=')[1])
-    if(this.props.peo.picture) {
-      setTimeout(()=>{
-        this.canvasRender()
-      })
-    }
     this.props.areaImg({id:id})
-    this.props.getUwbRegionMap({name: name})
+    this.props.getUwbRegionMap({name: encodeURI(decodeURI(name))})
   }
+
   canvasRender() {
     const canvas = this.canvas
-    canvas.width=this.outDiv.getBoundingClientRect().width
-    canvas.height=this.outDiv.getBoundingClientRect().height
+    canvas.width=this.outDiv.offsetWidth
+    canvas.height=this.outDiv.offsetHeight
     const context = canvas.getContext("2d");
     context.clearRect(0,0,canvas.width,canvas.height)
     const trails = this.props.peo.traildetail
     const ratio = canvas.width/this.props.peo.areaRealWidth 
-    console.log(trails,ratio)
+    
     //设置对象起始点和终点
     trails.forEach(trail => {
       context.lineTo(ratio * trail.locationX,ratio * trail.locationY);
     }) 
    //设置样式
-    context.lineWidth = 2;
-    context.strokeStyle = "#000";
+    context.lineWidth = 4;
+    context.strokeStyle = "red";
     //绘制
     context.stroke();
     this.setState({
       trail: trails[0]
     })
   }
-  changeTrailRender(trail) {
+  changeTrailRender = (trail) => {
     const canvas = this.canvas
-    const ratio = canvas.width/this.props.peo.areaRealWidth 
+    const ratio = canvas.width / this.props.peo.areaRealWidth 
     return (
       <Tooltip  title={trail.reportTime}>
         <div className='activeTrail' style={{left:ratio * trail.locationX-5,top:ratio * trail.locationY-20}}>
-          <Icon type="user" />
+          <Icon type="user" style={{color:'red'}} />
         </div>
       </Tooltip>
     )
@@ -92,11 +89,13 @@ class Trail extends React.Component {
     return peoTipArr
   }
   start() {
+    console.log(this.timer)
     if(this.timer) return
     const trails = this.props.peo.traildetail
     const length = trails.length
     this.timer = setInterval(()=>{
       if(this.state.count < length) {
+        
         this.setState({
           trail: trails[this.state.count],
           count: this.state.count+1 
@@ -114,8 +113,11 @@ class Trail extends React.Component {
     }
   }
   faster() {
-    if(this.timer&&this.state.time/2 >= 10) {
-      clearInterval(this.timer)
+    if(this.state.time/2 >= 10) {
+      if(this.timer) {
+        clearInterval(this.timer)
+        this.timer = null
+      }
       this.setState({time: this.state.time/2},()=>{
         this.start()
       })
@@ -143,7 +145,7 @@ class Trail extends React.Component {
           </Button.Group>    
         </div>
           {
-            this.props.peo.picture?
+            this.props.peo.picture&&this.props.peo.areaRealWidth?
             <div className='peo-trail' style={{left:this.props.sidebar.homeLeftIf?'300px':'0'}} ref={(outDiv)=>this.outDiv=outDiv} >
               <canvas ref={(canvas)=>this.canvas=canvas} className='canvas' >
                 你的浏览器还不支持canvas
