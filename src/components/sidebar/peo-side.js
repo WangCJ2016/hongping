@@ -100,7 +100,7 @@ class PeoSider extends React.Component {
       selectTrail: trail
     })
     this.props.trailDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:trail.startTime,endTime:trail.endTime})  
-    this.props.areaImg({id:'0b6d2ac417844ee3829833eccf931ff4'}) //trail.areaId
+    this.props.areaImg({id:trail.areaId}) //trail.areaId
     this.props.history.push('/trail')
   }
   trailSubmit() {
