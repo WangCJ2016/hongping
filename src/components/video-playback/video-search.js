@@ -16,8 +16,8 @@ class VideoSearch extends React.PureComponent {
     this.startTime = this.startTime.bind(this)
     this.endTime = this.endTime.bind(this)
     this.state = {
-      startTime: Date.now() - 86400000,
-      endTime:new Date()
+      startTime: moment(new Date(Date.now() - 86400000)).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
     }
   }
   handleSubmit(e) {
@@ -60,7 +60,7 @@ class VideoSearch extends React.PureComponent {
             placeholder="选择开始时间"
             onChange={this.startTime}
             locale={locale}
-            defaultValue={moment(this.state.startTime,'YYYY-MM-DD HH:mm:sss')}
+            defaultValue={moment(new Date(Date.now() - 86400000),'YYYY-MM-DD HH:mm:ss')}
           />
         </div>
         <div className='lable-item'>
@@ -71,7 +71,7 @@ class VideoSearch extends React.PureComponent {
             placeholder="选择结束时间"
             onChange={this.endTime}
             locale={locale}
-            defaultValue={moment(this.state.endTime,'YYYY-MM-DD HH:mm:sss')}
+            defaultValue={moment(new Date(),'YYYY-MM-DD HH:mm:ss')}
           />
         </div>
         <div  className='search-btn'>

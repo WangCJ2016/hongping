@@ -31,7 +31,7 @@ class VideoPlayBack extends React.Component {
   render() {
     return (
         <div className='video-play-back clearfix'>
-            <div className='float-left' style={{width:'70%',position:'relative',height:'600px'}}>
+            <div className='float-left' style={{width:'60%',position:'relative',height:'500px'}}>
              <object 
                 ref={(screen)=>this.play=screen}
                 classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
@@ -39,13 +39,13 @@ class VideoPlayBack extends React.Component {
                 style={{width:'100%',height:'100%'}}
                 className='playScreen'
                 >
-                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/hp/ocx" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
+                <a style={{display:'block',lineHeight:'560px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/hp/ocx" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
               <VideoCtrlBtns 
                 play={this.play}/>
               <VideoTableList play={this.play} />
           </div>
-          <div className="float-right" style={{width:'25%'}}>
+          <div className="float-right" style={{width:'30%'}}>
             <VideoDeviceBack play={this.play} />
             <VideoSearch play={this.play} />
           </div>

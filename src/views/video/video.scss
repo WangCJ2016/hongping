@@ -97,12 +97,14 @@
   .video-play-back{
     min-width: 1440px;
     max-width: 1920px;
+    display: flex;
+    flex-direction: 'column';
     .ant-form-item-control {
       padding-left: 10px;
     }
    
     .video-device-back{
-      height: 600px;
+      flex:1;
       border: 1px solid #e8e8e8;
       overflow: auto;
     }
