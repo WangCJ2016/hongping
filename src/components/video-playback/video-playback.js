@@ -21,12 +21,12 @@ class VideoPlayBack extends React.Component {
     this.state = {}
   }
   componentDidMount() {
-    // const a = this.play.GetLocallPath(1)
-    // const b = this.play.GetLocallPath(2)
-    // this.props.pathDownload({videoPath: a})
-    // this.props.pathDownload({picPath: b})
-    // const c = this.play.GetLocallFile(1)
-    // this.props.palybacklist(JSON.stringify(c).slice(1,-2).split(',').map(item=>({name: item,key:item})))
+    const a = this.play.GetLocallPath(1)
+    const b = this.play.GetLocallPath(2)
+    this.props.pathDownload({videoPath: a})
+    this.props.pathDownload({picPath: b})
+    const c = this.play.GetLocallFile(1)
+    this.props.palybacklist(JSON.stringify(c).slice(1,-2).split(',').map(item=>({name: item,key:item})))
   }
   render() {
     return (
@@ -45,7 +45,7 @@ class VideoPlayBack extends React.Component {
                 play={this.play}/>
               <VideoTableList play={this.play} />
           </div>
-          <div className="float-right" style={{width:'30%'}}>
+          <div className="right_search" style={{width:'30%'}}>
             <VideoDeviceBack play={this.play} />
             <VideoSearch play={this.play} />
           </div>

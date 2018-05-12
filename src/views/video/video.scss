@@ -94,7 +94,7 @@
     }
    
   }
-  .float-right{
+  .right_search{
     position: absolute;
     top: 0;
     bottom: 0;
@@ -106,6 +106,7 @@
     position: relative;
     min-width: 1440px;
     max-width: 1920px;
+    overflow: hidden;
     .ant-form-item-control {
       padding-left: 10px;
     }
