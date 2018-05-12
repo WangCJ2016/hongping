@@ -21,7 +21,7 @@ class Trail extends React.Component {
     this.end = this.end.bind(this)
     this.faster = this.faster.bind(this)
     this.back = this.back.bind(this)
-
+    this.changeTrailRender = this.changeTrailRender.bind(this)
   }
   componentWillReceiveProps(nextProps) {
     if(nextProps.peo.picture&&nextProps.peo.areaRealWidth ) {
@@ -42,7 +42,6 @@ class Trail extends React.Component {
   canvasRender() {
     if(!this.props.peo.trailWeather) return
     const canvas = this.canvas
-    console.log(this.outDiv)
     canvas.width=this.outDiv.offsetWidth
     canvas.height=this.outDiv.offsetHeight
     const context = canvas.getContext("2d");
@@ -65,6 +64,7 @@ class Trail extends React.Component {
     })
   }
   changeTrailRender = (trail) => {
+    if(!this.canvas) return
     const canvas = this.canvas
     const ratio = canvas.width / this.props.peo.areaRealWidth 
     return (
@@ -76,6 +76,7 @@ class Trail extends React.Component {
     )
   }
   peoTipRender = () => {
+    if(!this.canvas) return
     const canvas = this.canvas
     const ratio = canvas.width / this.props.peo.areaRealWidth 
     const trails = this.props.peo.traildetail
