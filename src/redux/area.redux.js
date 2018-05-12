@@ -1,4 +1,5 @@
 import { request, config} from '../config'
+import { getUwbRegionMap } from './peo.redux'
 
 const DATASUCCESS = '[area] DATASUCCESS'
 const FIRSTAREAID = '[area] FIRSTAREAID'
@@ -470,11 +471,12 @@ export function areaInfo(info) {
         })
       .then(res=>{
       //  dispatch(load())
+        console.log(res)
         if(res.success) {
           const info={
             picture: res.dataObject.picture?res.dataObject.picture:''
           }         
-
+         
           dispatch(areaInfoSuccess(info))
         }else{
           dispatch(areaInfoSuccess({picture:''}))
@@ -492,6 +494,7 @@ export function getAreaInfo(info) {
    .then(res=>{
      if(res.success) {
        dispatch(dataSuccess({areaParentId:res.dataObject.parentId}))
+       dispatch(getUwbRegionMap({name: encodeURI(res.dataObject.name)}))
      }
    })
   }

@@ -16,11 +16,12 @@ class VideoSearch extends React.PureComponent {
     this.startTime = this.startTime.bind(this)
     this.endTime = this.endTime.bind(this)
     this.state = {
-      startTime:'',
-      endTime:''
+      startTime: Date.now() - 86400000,
+      endTime:new Date()
     }
   }
   handleSubmit(e) {
+
     e.preventDefault();
     if(!this.props.video.playbackSelectDevice) {
       message.error('请先选择设备')
@@ -59,7 +60,7 @@ class VideoSearch extends React.PureComponent {
             placeholder="选择开始时间"
             onChange={this.startTime}
             locale={locale}
-            defaultValue={moment(new Date(),'YYYY-MM-DD HH:mm:sss')}
+            defaultValue={moment(this.state.startTime,'YYYY-MM-DD HH:mm:sss')}
           />
         </div>
         <div className='lable-item'>
@@ -70,7 +71,7 @@ class VideoSearch extends React.PureComponent {
             placeholder="选择结束时间"
             onChange={this.endTime}
             locale={locale}
-            defaultValue={moment(new Date(),'YYYY-MM-DD HH:mm:sss')}
+            defaultValue={moment(this.state.endTime,'YYYY-MM-DD HH:mm:sss')}
           />
         </div>
         <div  className='search-btn'>
