@@ -29,6 +29,7 @@ class Trail extends React.Component {
         this.canvasRender()
       })
     }
+
   }
   componentDidMount() {
     const queryArr = this.props.location.search.slice(1).split('&')
@@ -41,6 +42,7 @@ class Trail extends React.Component {
   canvasRender() {
     if(!this.props.peo.trailWeather) return
     const canvas = this.canvas
+    console.log(this.outDiv)
     canvas.width=this.outDiv.offsetWidth
     canvas.height=this.outDiv.offsetHeight
     const context = canvas.getContext("2d");
@@ -134,15 +136,21 @@ class Trail extends React.Component {
       })
     }
   }
+  clear=()=>{
+    const canvas = this.canvas
+    const context = canvas.getContext("2d");
+    context.clearRect(0,0,canvas.width,canvas.height)
+  }
   render() {
     return (
       <div>
-        <div style={{position:'absolute',left:'50%'}}>
+        <div style={{position:'absolute',left:'50%',zIndex:1}}>
           <Button.Group >
             <Button type='primary' onClick={this.start}>开始</Button>
             <Button type='primary' onClick={this.end}>暂停</Button>
             <Button type='primary' onClick={this.faster}>快进</Button>
             <Button type='primary' onClick={this.back}>回放</Button>
+            <Button onClick={this.clear}>清楚</Button>
           </Button.Group>    
         </div>
           {
