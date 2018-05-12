@@ -3,7 +3,7 @@ import { Icon,Input,DatePicker,Button,Timeline,Tabs } from 'antd'
 import className from 'classnames'
 import { withRouter } from 'react-router-dom'
 import { changeSidebar } from '../../redux/sidebar.redux'
-import { getAllpeo, peoTrail, trailDetail,searchPeo,peoTrailSuccess,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail } from '../../redux/peo.redux'
+import { getAllpeo, peoTrail, trailDetail,searchPeo,peoTrailSuccess,dataSuccess,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail } from '../../redux/peo.redux'
 import { locale } from '../../config'
 import { connect } from 'react-redux'
 import DepartmentCom from '../peoSiderCom/departmentCom'
@@ -17,7 +17,7 @@ const TabPane = Tabs.TabPane
 @connect(
   state=>({sidebar:state.sidebar, peo: state.peo}),
   {
-    changeSidebar,getAllpeo,peoTrail,trailDetail,searchPeo,peoTrailSuccess,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail
+    changeSidebar,getAllpeo,peoTrail,trailDetail,searchPeo,peoTrailSuccess,dataSuccess,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail
   }
 )
 class PeoSider extends React.Component {
@@ -100,6 +100,7 @@ class PeoSider extends React.Component {
       selectTrail: trail
     })
     this.props.trailDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:trail.startTime,endTime:trail.endTime})  
+    this.props.dataSuccess({trailWeather: true})
      //trail.areaId
     this.props.history.push(`/trail?id=0b6d2ac417844ee3829833eccf931ff4&name=${this.props.peo.selectAreaName}`)
   }

@@ -6,7 +6,8 @@ const initialState = {
   traildetail:[],
   searchPeoList:[],
   picture:'',
-  departmentList:[]
+  departmentList:[],
+  trailWeather: false
 }
 const GETALLPEO = '[peo] GETALLPEO'
 const GETTRAIL = '[peo] GETTRAIL'
@@ -29,7 +30,7 @@ export function peo(state = initialState, action ) {
       return state
   }
 }
-function dataSuccess(data) {
+export function dataSuccess(data) {
   return {
     type: DATASUCCESS,
     payload: data

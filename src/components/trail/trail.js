@@ -2,11 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Tooltip,Button,Icon,Spin } from 'antd'
 import './trail.scss'
-import { getUwbRegionMap,areaImg } from '../../redux/peo.redux'
+import { getUwbRegionMap,areaImg, dataSuccess } from '../../redux/peo.redux'
 
 @connect(
   state=>({peo:state.peo,sidebar:state.sidebar}),{
-    getUwbRegionMap,areaImg
+    getUwbRegionMap,areaImg,dataSuccess
   }
 )
 class Trail extends React.Component {
@@ -39,6 +39,7 @@ class Trail extends React.Component {
   }
 
   canvasRender() {
+    if(!this.props.peo.trailWeather) return
     const canvas = this.canvas
     canvas.width=this.outDiv.offsetWidth
     canvas.height=this.outDiv.offsetHeight
@@ -56,6 +57,7 @@ class Trail extends React.Component {
     context.strokeStyle = "red";
     //绘制
     context.stroke();
+    this.props.dataSuccess({trailWeather:false})
     this.setState({
       trail: trails[0]
     })
