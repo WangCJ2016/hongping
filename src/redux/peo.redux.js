@@ -189,3 +189,8 @@ export function getUwbRegionMap(info) {
     })
   }
 }
+
+
+// selector
+
+export const getAreaRealWidth = state => state.peo.areaRealWidth

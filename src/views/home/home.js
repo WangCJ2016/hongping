@@ -16,9 +16,10 @@ import VideoCtrlBtns from '../../components/video-playback/video-ctrlbtn'
 import Selection from '../../components/react-drag-select/selection'
 import DragSelectModal from '../../components/home-modals/dragSelectModal'
 import { areaList } from '../../redux/area.redux'
+import { getAreaRealWidth } from '../../redux/peo.redux'
 
 @connect(
-  state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,alarm: state.alarm}),
+  state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
   {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList}
 )
 class Home extends React.Component {
@@ -143,9 +144,11 @@ class Home extends React.Component {
     });
   }
   mapDeviceRender() {
+    if(this.state.imgWidth && this.props.areaRealWidth) {
     const  goLocDeviceId = this.props.area.goLocDeviceId
     const devices = this.props.deivces.mapToDevices
     const slider = this.props.area.areaImgSlider
+    const ratio =  this.state.imgWidth / this.props.areaRealWidth
     return devices.map((device,index) => {
       let styles = className({
         'user-select': true,
@@ -204,8 +207,9 @@ class Home extends React.Component {
                </Popover>
        }
       if(device.type === 6) {
+
         return <Popover content={HomePerson(device)}  key={index} >
-                 <div  className={styles} key={device.id+index} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+                 <div  className={styles} key={device.id+index} style={{position:'absolute',left:device.x*slider*ratio+'px',top:device.y*slider*ratio+'px'}} >
                    <Tag >
                    <img className='type-icon' src={require('../../assets/imgs/peo-icon.png')} alt=""/>
                    {device.name||device.devName}</Tag>
@@ -223,6 +227,7 @@ class Home extends React.Component {
        }
        return null
     })
+   }
   }
 
   // 下级区域
