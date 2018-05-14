@@ -470,8 +470,6 @@ export function areaInfo(info) {
                     ...info
         })
       .then(res=>{
-      //  dispatch(load())
-        console.log(res)
         if(res.success) {
           const info={
             picture: res.dataObject.picture?res.dataObject.picture:''

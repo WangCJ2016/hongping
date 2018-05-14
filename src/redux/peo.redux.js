@@ -182,7 +182,6 @@ export function getUwbRegionMap(info) {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getUwbRegionMap,{ token: token,...info})
     .then(res=>{
-      console.log(res)
       if(res.success&&res.dataObject) {
         dispatch(dataSuccess({areaRealWidth:res.dataObject.width}))
       }

@@ -49,7 +49,7 @@ export function getWatchTasks() {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.getWatchTasks, {token:token})
     .then(res=>{
-      console.log(res)
+      
       if(res.success) {
         const arr = res.dataObject.map(task => ({
           ...task,
@@ -75,7 +75,7 @@ export function addTask(info) {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.addTask, {token:token,accountId:user.account.id,...info})
     .then(res=>{
-      console.log(res)
+      
       if(res.success) {
         const data = {
           ...res.dataObject,
@@ -107,7 +107,7 @@ export function editTask(info) {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.editTask, {token:token,accountId:user.account.id,...info})
     .then(res=>{
-      console.log(res)
+      
       if(res.success) {
         if(info.isDelete) {
           dispatch(deleteTaskSuccess(info))
@@ -131,7 +131,7 @@ export function TaskPoints(info) {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.taskPoints, {token:token,...info})
     .then(res=>{
-      console.log(res)
+      
       if(res.success) {
         const arr = res.dataObject.map(point => ({
           ...point,
@@ -149,7 +149,7 @@ export function addPoint(info) {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.addPoint, {token:token,accountId:user.account.id,...info})
     .then(res=>{
-      console.log(res)
+      
       if(res.success) {
         TaskPoints({taskId:info.taskId})(dispatch)
       }
@@ -163,7 +163,7 @@ export function editPoint(info) {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.editPoint, {token:token,accountId:user.account.id,...info})
     .then(res=>{
-      console.log(res)
+      
       if(res.success) {
         TaskPoints({taskId:info.taskId})(dispatch)
       }
@@ -176,7 +176,7 @@ export function watchHistoryPage(info) {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.watchHistoryPage, {token:token,...info})
     .then(res=>{
-      console.log(res)
+      
       if(res.success&&res.result) {
         const arr = res.result.map(task => ({
           ...task,
@@ -193,7 +193,7 @@ export function getTaskDefaultTime() {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.getTaskDefaultTime, {token:token})
     .then(res=>{
-      console.log(res)
+      
       if(res.success) {
         const time = res.dataObject === '-'?'':res.dataObject
         dispatch(dataSuccess({taskTime: time}))
@@ -207,7 +207,7 @@ export function setTaskTime(info) {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.setTaskTime, {token:token,...info})
     .then(res=>{
-      console.log(res)
+      
       if(res.success) {
         if(info.type === 'modify'||info.type === 'set') {
           message.info('设置成功')
@@ -227,7 +227,7 @@ export function watchPointsUpload(info) {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.watchPointsUpload, {token:token,...info})
     .then(res=>{
-      console.log(res)
+      
       if(res.success) {
         message.info('上传成功')
       }

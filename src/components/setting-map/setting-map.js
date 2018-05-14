@@ -152,6 +152,7 @@ submit() {
   const types = deviceArr.map(device => device.type).join(',')
   const x = deviceArr.map(device => device.x).join(',')
   const y = deviceArr.map(device => device.y).join(',')
+  if(devIds) 
   this.props.createSysInstallPlace({areaId:this.props.area.selectAreaId,devIds:devIds,types:types,x:x,y:y})
 }
   render() {
@@ -184,12 +185,12 @@ submit() {
               {
                 areaInfo.picture?
                 <div style={{display:'inline-block',position:'relative',zIndex:0,maxWidth:'100%',maxHeight:'600px',overflow:'auto'}}>
-                  <img id='img' src={areaInfo.picture}  alt="" />}                
+                  <img id='img' src={areaInfo.picture}  alt="" />              
                   {this.props.area.load?null:this.mapDeviceRender()}
                 </div>
                 :<Spin size="large" />
               }
-            </div>:
+            </div>
             
             
             

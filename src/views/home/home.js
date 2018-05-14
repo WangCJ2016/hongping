@@ -7,7 +7,7 @@ import HomeTable from '../../components/home-table/home-table'
 import { HomePerson, HomeCamera, HomeBroadcast,HomeGuard } from '../../components/home-popover/home-popover'
 import HomeWarmPanel from '../../components/home-warm-panel/home-warm-panel'
 import './home.scss'
-import {areaInfo,selectAreaIdSuccess,getAreaInfo} from '../../redux/area.redux'
+import {areaInfo,selectAreaIdSuccess,getAreaInfo,dataSuccess} from '../../redux/area.redux'
 import { querySysInstallPlaces,getDevInfo,videoPic,guardCtrl } from '../../redux/setting.device.redux'
 import {videoProgress} from '../../redux/video.redux'
 import VideoCtrlYuntai from '../../components/video-ctrl/video-ctrl-yuntai'
@@ -20,7 +20,7 @@ import { getAreaRealWidth } from '../../redux/peo.redux'
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
-  {areaInfo,querySysInstallPlaces,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList}
+  {areaInfo,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList}
 )
 class Home extends React.Component {
   constructor() {
@@ -57,11 +57,12 @@ class Home extends React.Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    if(nextProps.area.firstAreaId&&!this.props.area.firstAreaId) {
+    if(nextProps.area.firstAreaId) {
       this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
       this.props.selectAreaIdSuccess(nextProps.area.firstAreaId)
       this.props.areaInfo({id:nextProps.area.firstAreaId})
       this.props.getAreaInfo({id: nextProps.area.firstAreaId})
+      this.props.dataSuccess({firstAreaId: ''})
     }
     if(this.props.area.areaImgSlider!==nextProps.area.areaImgSlider) {
       this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
@@ -402,7 +403,7 @@ class Home extends React.Component {
                 align='center' 
                 style={{width:'100%'}}
                 >
-                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
+                <a style={{display:'block',lineHeight:'400px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
             </div>
             <div className="float-right"  style={{width:'30%'}}>
@@ -433,7 +434,7 @@ class Home extends React.Component {
                 align='center' 
                 style={{width:'100%'}}
                 >
-                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
+                <a style={{display:'block',lineHeight:'400px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
               <VideoCtrlBtns 
               play={this.playback}/>
@@ -466,7 +467,7 @@ class Home extends React.Component {
                 align='center' 
                 style={{visibility:'hidden'}}
                 >
-                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
+                <a style={{display:'block',lineHeight:'400px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
             <div className='float-left'>
               <Table columns={columns} dataSource={this.props.deivces.videoPicArr} scroll={{x:400,y:400}}/>

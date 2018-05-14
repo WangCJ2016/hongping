@@ -87,7 +87,7 @@ class DaozhaSider extends React.Component {
         className='playScreen'
         
         >
-        <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
+        <a style={{display:'block',lineHeight:'400px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
       </object>
       </div>
     )

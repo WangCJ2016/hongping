@@ -1,11 +1,12 @@
 import React from 'react'
 import {DatePicker,Button} from 'antd'
 import { locale } from '../../config'
+import moment from 'moment'
 
 class VideoPlayBackByTime extends React.Component {
   state = { 
-    startTime:'2018-01-29 12:00:00',
-    endTime:'2018-01-29 12:10:00'
+    startTime: moment(new Date(Date.now() - 86400000)).format('YYYY-MM-DD HH:mm:ss'),
+    endTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
    }
   startTime(value,dateString) {
     this.setState({startTime: dateString})
@@ -24,6 +25,7 @@ class VideoPlayBackByTime extends React.Component {
             format="YYYY-MM-DD HH:mm:ss"
             placeholder="选择开始时间"
             onChange={this.startTime.bind(this)}
+            defaultValue={moment(new Date(Date.now() - 86400000),'YYYY-MM-DD HH:mm:ss')}
             locale={locale}
           />
         </div>
@@ -34,6 +36,7 @@ class VideoPlayBackByTime extends React.Component {
             format="YYYY-MM-DD HH:mm:ss"
             placeholder="选择结束时间"
             onChange={this.endTime.bind(this)}
+            defaultValue={moment(new Date(),'YYYY-MM-DD HH:mm:ss')}
             locale={locale}
           />
         </div>

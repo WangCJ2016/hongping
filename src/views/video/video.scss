@@ -120,76 +120,7 @@
   }
  
 }
-.ctrl-bnts{
-  margin-top: 0px;
-  transition: all 1s;
-  display: flex;
-  align-items: center;
-  .btn{
-    width: 40px;
-    height: 40px;
-    display: inline-block;
-    border-radius: 2px;
-  }
-  >span{
-    margin-left: 10px;
-  }
-  ._slide{
-    flex: 1;
-    margin-left: 20px;
-    background-color: #808080;
-    border-radius: 2px;
-    margin-top: 7px;
-  }
-  .v-stop{
-    background: url('../../assets/imgs/v-stop-on.png') no-repeat;
-    background-size: 100% 100%;
-  }
-  .v-start{
-    background: url('../../assets/imgs/v-start-on.png') no-repeat;
-    background-size: 100% 100%;
-  }
-  .v-pre{
-    background: url('../../assets/imgs/v-pre.png') no-repeat;
-    background-size: 100% 100%;
-  }
-  .v-pre:active{
-    background: url('../../assets/imgs/v-pre-on.png') no-repeat;
-    background-size: 100% 100%;
-  }
-  .v-back{
-    background: url('../../assets/imgs/v-back.png') no-repeat;
-    background-size: 100% 100%;
-  }
-  .v-back:active{
-    background: url('../../assets/imgs/v-back-on.png') no-repeat;
-    background-size: 100% 100%;
-  }
-  .v-fb{
-    background: url('../../assets/imgs/v-fb.png') no-repeat;
-    background-size: 100% 100%;
-  }
-  .v-fb:active{
-    background: url('../../assets/imgs/v-fb-on.png') no-repeat;
-    background-size: 100% 100%;
-  }
-  .v-ff{
-    background: url('../../assets/imgs/v-ff.png') no-repeat;
-    background-size: 100% 100%;
-  }
-  .v-ff:active{
-    background: url('../../assets/imgs/v-ff-on.png') no-repeat;
-    background-size: 100% 100%;
-  }
-  .v-next{
-    background: url('../../assets/imgs/v-next.png') no-repeat;
-    background-size: 100% 100%;
-  }
-  .v-next:active{
-    background: url('../../assets/imgs/v-next-on.png') no-repeat;
-    background-size: 100% 100%;
-  }
-}
+
 .transfer{
   text-align: center;
   margin-top: 10px;
