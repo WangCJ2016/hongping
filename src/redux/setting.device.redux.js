@@ -188,10 +188,10 @@ export function areaDevices1(info) {
       token:token,
       ...info,
       pageNo: 1,
-      pageSize: 100,
+      pageSize: 1000,
   })
     .then(res=>{
-      if(res.success&&res.dataObject&&res.dataObject.length>0) {
+      if(res.success&&res.dataObject) {
         const arr = res.dataObject.map(device => ({
           ...device,
           key:device.id
