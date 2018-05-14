@@ -151,7 +151,7 @@ class Trail extends React.Component {
             <Button type='primary' onClick={this.end}>暂停</Button>
             <Button type='primary' onClick={this.faster}>快进</Button>
             <Button type='primary' onClick={this.back}>回放</Button>
-            <Button onClick={this.clear}>清楚</Button>
+          
           </Button.Group>    
         </div>
           {

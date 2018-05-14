@@ -144,7 +144,7 @@ class Home extends React.Component {
     });
   }
   mapDeviceRender() {
-    if(this.state.imgWidth && this.props.areaRealWidth) {
+   // if(this.state.imgWidth && this.props.areaRealWidth) {
     const  goLocDeviceId = this.props.area.goLocDeviceId
     const devices = this.props.deivces.mapToDevices
     const slider = this.props.area.areaImgSlider
@@ -227,7 +227,7 @@ class Home extends React.Component {
        }
        return null
     })
-   }
+  // }
   }
 
   // 下级区域
@@ -296,8 +296,9 @@ class Home extends React.Component {
   playbackSearch(startTime,endTime) {
     const device = this.props.deivces.devinfo
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
-    const a = this.playback.XzVideo_RecordPlayByTime(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,startTime,endTime,0)
-    if(a) {
+    this.playback.XzVideo_RecordPlayControl(2,0)
+    this.playback.XzVideo_RecordPlayByTime(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,startTime,endTime,0)
+   /* if(a) {
       this.timer=setInterval(()=>{
         const a = this.playback.XzVideo_GetRecordPlayPosEx(0)
         if(a===100){
@@ -305,7 +306,7 @@ class Home extends React.Component {
         }
         this.props.videoProgress(a)
       },1000)
-    }
+    }*/
   }
   playPicSeach(startTime,endTime) {
     const device = this.props.deivces.devinfo
@@ -465,7 +466,7 @@ class Home extends React.Component {
                 align='center' 
                 style={{visibility:'hidden'}}
                 >
-                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/hp/ocx" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
+                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
             <div className='float-left'>
               <Table columns={columns} dataSource={this.props.deivces.videoPicArr} scroll={{x:400,y:400}}/>
@@ -489,5 +490,4 @@ class Home extends React.Component {
     )
   }
 }
-
 export default Home

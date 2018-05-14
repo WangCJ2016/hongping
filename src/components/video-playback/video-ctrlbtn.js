@@ -40,7 +40,9 @@ class VideoCtrlBtns extends React.Component {
    if(backvideoIndex!==-1) {
     const device = this.props.video.playbackSelectDevice
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
-    const a = this.props.play.XzVideo_RecordPlayByName(
+    debugger
+    this.props.play.XzVideo_RecordPlayControl(2,0)
+    /*const a = this.props.play.XzVideo_RecordPlayByName(
       1,
       this.props.user.account.name,
       "",
@@ -53,7 +55,19 @@ class VideoCtrlBtns extends React.Component {
       model,
       device.index,
       this.props.video.playback[backvideoIndex].name,
-      this.props.video.startTime,this.props.video.endTime,0)
+      this.props.video.startTime,this.props.video.endTime,0)*/
+      const a = this.props.play.XzVideo_RecordPlayByTime(
+        1,
+        device.host.vid,
+        device.host.url,
+        device.host.port,
+        device.host.username,
+        device.host.psw,
+        model,
+        device.index,
+        this.props.video.startTime,
+        this.props.video.endTime,
+        0)
       if(a) {
         this.props.selectVideo(this.props.video.playback[backvideoIndex])
       }

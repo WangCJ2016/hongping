@@ -40,7 +40,7 @@ export const config = {
     modifyServer: '/server_modifySysServers', // 修改／删除服务器
     createServer: '/server_createSysServers ', // 添加服务器
 
-    remoteHosts: '/rhost_querySysRemoteHostsPage', // 视频主机
+    remoteHosts: '/', // 视频主机
     SysServerslist: '/rhost_querySysServers', // 流媒体服务器
     createRemoteHost: '/rhost_createSysRemoteHosts', // 添加主机
     modifyRemoteHost:'/rhost_modifySysRemoteHosts', //修改／删除主机
@@ -58,7 +58,7 @@ export const config = {
     propertyAdd: '/chost_createSysCommProperty', // 添加属性
     modifyProperty: '/chost_modifySysCommProperty', // 修改属性
 
-    BroadcastHosts: '/bhost_querySysBroadcastHostsPage ', // 视频主机
+    BroadcastHosts: '/bhost_querySysBroadcast ', // 视频主机
     createBroadcastHost: '/bhost_createSysBroadcastHosts', // 添加主机
     modifyBroadcastHost:'/bhost_modifySysBroadcastHosts', //修改／删除主机
     BroadcastChannels: '/bhost_querySysBroadcastChannels', // 视频通道

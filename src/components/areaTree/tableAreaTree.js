@@ -60,6 +60,7 @@ export default class TableAreaTree extends React.Component {
           )
         }]
         const data = this.props.area.areas_devices
+        console.log(data)
         return ( 
                  <div className='tableAreaTree'>                    
                   <Table 

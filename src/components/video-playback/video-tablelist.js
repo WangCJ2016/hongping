@@ -49,7 +49,8 @@ class VideoTableList extends React.Component {
   onRowClick(record,index) {
     const device = this.props.video.playbackSelectDevice
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
-    this.props.play.XzVideo_RecordPlayByName(
+    this.props.play.XzVideo_RecordPlayControl(2,0)
+   /* this.props.play.XzVideo_RecordPlayByName(
       1,
       this.props.user.account.name,
       '',
@@ -63,8 +64,21 @@ class VideoTableList extends React.Component {
       device.index,
       record.name,
       record.startime,record.endtime,0)
-      this.props.selectVideo(record)
-  
+      */
+     this.props.play.XzVideo_RecordPlayByTime(
+        1,
+        device.host.vid,
+        device.host.url,
+        device.host.port,
+        device.host.username,
+        device.host.psw,
+        model,
+        device.index,
+        record.startime,
+        record.endtime,
+        0)
+        this.props.selectVideo(record)
+  /*
      this.timer =  setInterval(()=>{
         const a = this.props.play.XzVideo_GetRecordPlayPosEx(0)
         if(a<=100){
@@ -72,12 +86,12 @@ class VideoTableList extends React.Component {
         }else{
           clearInterval(this.timer)
         }
-      },1000)
+      },1000)*/
   }
   download(record) {
     const device = this.props.video.playbackSelectDevice
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
-    const a = this.props.play.XzVideo_DownLoadFileFromDVR(
+   /* const a = this.props.play.XzVideo_DownLoadFileFromDVR(
       1,
       device.host.vid,
       device.host.url,
@@ -88,7 +102,22 @@ class VideoTableList extends React.Component {
       device.index,
       record.name,
       this.props.video.videoPath+record.name
+    )*/
+
+    const a = this.props.play.XzVideo_DownLoadFileByTime(
+      1,
+      device.host.vid,
+      device.host.url,
+      device.host.port,
+      device.host.username,
+      device.host.psw,
+      model,
+      device.index,
+      record.startime,
+      record.endtime,
+      this.props.video.videoPath+record.name
     )
+
     if(a!==-1) {
       const data = {
         key: record.name,
@@ -161,7 +190,7 @@ class VideoTableList extends React.Component {
         <TabPane tab="回放文件列表" key="1">
            <Table 
              pagination={{
-               pageSize:5,
+               pageSize:2,
                total:this.props.video.playback.length
              }}
              size='small'

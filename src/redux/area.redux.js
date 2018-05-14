@@ -542,16 +542,18 @@ export function areaImgSlider(num) {
 
 // 生成整棵树
 function fullTree(levelTopArr, allAreas) {
-  return levelTopArr.map((level1,inde)=>{
-    return {...level1,children: toTree(level1.id, allAreas)}
+  return levelTopArr.map((level1,index)=>{
+    return {...level1,children: toTree(level1, allAreas)}
   })
 }
-function toTree(id, allAreas) {
-  const childArr = childrenArr(id, allAreas)
+function toTree(level1, allAreas) {
+  const childArr = childrenArr(level1.id, allAreas)
   if(childArr.length>0) {
     return childArr.map((child,index)=>{
-      return {...child,children:toTree(child.id,allAreas)}
+      return {...child,children:toTree(child,allAreas)}
     })
+  }else if(!level1.type) {
+    return []
   }
 }
 function childrenArr(id, array) {

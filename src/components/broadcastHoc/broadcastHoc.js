@@ -22,6 +22,8 @@ const broadcastHoc = (WrappedCom) => {
       this.onOk = this.onOk.bind(this)
       this.voiceBroadcast = this.voiceBroadcast.bind(this)
       this.broadcastFile = this.broadcastFile.bind(this)
+      this.voiceBroadcastEnd = this.voiceBroadcastEnd.bind(this)
+      this.broadcastFileEnd = this.broadcastFileEnd.bind(this)
     }
     voiceBroadcast(IndexArr) {
       if(!Array.isArray(IndexArr)) return
@@ -91,7 +93,12 @@ const broadcastHoc = (WrappedCom) => {
 
       return (
         <div >
-          <WrappedCom voiceBroadcast={this.voiceBroadcast} broadcastFile={this.broadcastFile} {...this.props}></WrappedCom>
+          <WrappedCom  
+            voiceBroadcast={this.voiceBroadcast} 
+            broadcastFile={this.broadcastFile} 
+            broadcastFileEnd={this.broadcastFileEnd}
+            voiceBroadcastEnd={this.voiceBroadcastEnd}
+            {...this.props}></WrappedCom>
           <Modal
             title='广播文件列表'
             visible={this.state.fileModalVisible}
