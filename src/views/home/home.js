@@ -402,7 +402,7 @@ class Home extends React.Component {
                 align='center' 
                 style={{width:'100%'}}
                 >
-                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/hp/ocx" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
+                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
             </div>
             <div className="float-right"  style={{width:'30%'}}>
@@ -433,7 +433,7 @@ class Home extends React.Component {
                 align='center' 
                 style={{width:'100%'}}
                 >
-                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/hp/ocx" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
+                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
               <VideoCtrlBtns 
               play={this.playback}/>
@@ -466,7 +466,7 @@ class Home extends React.Component {
                 align='center' 
                 style={{visibility:'hidden'}}
                 >
-                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
+                <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
             <div className='float-left'>
               <Table columns={columns} dataSource={this.props.deivces.videoPicArr} scroll={{x:400,y:400}}/>

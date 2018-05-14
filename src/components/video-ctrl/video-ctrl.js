@@ -117,7 +117,7 @@ class VideoCtrl extends React.Component {
               codebase="./SetupOCX.exe#version=1.0.0.1"
               style={{width:'100%',height:'100%',visibility:this.props.video.modalVisiable?'hidden':'visible'}}
               >
-              <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/hp/ocx" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
+              <a style={{display:'block',lineHeight:'660px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
           <VideoCtrlBtn
             play={this.state.play}
