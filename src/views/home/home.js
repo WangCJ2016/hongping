@@ -19,7 +19,7 @@ import { areaList } from '../../redux/area.redux'
 import { getAreaRealWidth } from '../../redux/peo.redux'
 
 @connect(
-  state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
+  state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,user: state.user,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
   {areaInfo,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList}
 )
 class Home extends React.Component {
@@ -266,7 +266,8 @@ class Home extends React.Component {
   }
   // 道闸控制
   daozhaCtrl(e,device) {
-    this.play.XzVideo_RemoteControl_Barriergate(e?1:0,1,5,1)
+    const model = device.host.model === 1?'HikHC-14':'DHNET-03'   
+    this.play.XzVideo_RemoteControl_BarriergateEX(1,this.props.user.account.name,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,+e,1,5)
   }
   // 回放
   videoPlayBack(device) {
