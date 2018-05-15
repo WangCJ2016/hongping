@@ -265,7 +265,8 @@ class Home extends React.Component {
     this.props.getDevInfo({devId:device.devId,type:device.type},'guard')
   }
   // 道闸控制
-  daozhaCtrl(e,device) {
+  daozhaCtrl(e) {
+    const device = this.props.deivces.devinfo
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'   
     this.play.XzVideo_RemoteControl_BarriergateEX(1,this.props.user.account.name,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,+e,1,5)
   }
@@ -358,7 +359,6 @@ class Home extends React.Component {
         key: 'RecogResul',
     }]
     const areaInfo = this.props.area.areaInfo
-    
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
         <HomeWarmPanel 
