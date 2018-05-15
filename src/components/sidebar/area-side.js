@@ -28,7 +28,7 @@ class AreaSideBar extends React.Component {
     clearInterval(this.timer)
     this.timer = setInterval(()=>{
       this.props.querySysInstallPlaces({areaId: areaId})
-    },5000)
+    },2000)
     this.props.getAreaInfo({id: areaId})
   }
   componentWillUnmount() {

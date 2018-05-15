@@ -323,10 +323,16 @@ class Home extends React.Component {
   }
   mouseUp(left,top,right,bottom) {
     let rectInDevice = []
+    const slider = this.props.area.areaImgSlider
     const devices = this.props.deivces.mapToDevices
+    const ratio =  this.state.imgWidth / this.props.areaRealWidth
     devices.forEach(device => {
-      if(device.x>left&&device.x<right&&device.y>top&&device.y<bottom) {
-        rectInDevice.push(device)
+      if(device.type === 6) {
+        if(device.x*slider*ratio>left&&device.x*slider*ratio<right&&device.y*slider*ratio>top&&device.y*slider*ratio<bottom) {}
+      }else{
+        if(device.x*slider>left&&device.x*slider<right&&device.y*slider>top&&device.y*slider<bottom) {
+          rectInDevice.push(device)
+        }
       }
     })
     this.setState({
