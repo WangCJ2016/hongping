@@ -57,12 +57,13 @@ class Home extends React.Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    if(nextProps.area.firstAreaId) {
+    //console.log(nextProps.area.firstAreaId)
+    if(nextProps.area.firstAreaId&&this.props.area.firstAreaId!==nextProps.area.firstAreaId) {
       this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
       this.props.selectAreaIdSuccess(nextProps.area.firstAreaId)
       this.props.areaInfo({id:nextProps.area.firstAreaId})
       this.props.getAreaInfo({id: nextProps.area.firstAreaId})
-      this.props.dataSuccess({firstAreaId: ''})
+      //this.props.dataSuccess({firstAreaId: ''})
     }
     if(this.props.area.areaImgSlider!==nextProps.area.areaImgSlider) {
       this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
