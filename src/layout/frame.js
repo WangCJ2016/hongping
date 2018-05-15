@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout,Popconfirm } from 'antd';
-import { Route, Switch,NavLink} from 'react-router-dom'
+import { Route, Switch,NavLink, Redirect} from 'react-router-dom'
 import className from 'classnames'
 
 import { connect } from 'react-redux'
@@ -138,6 +138,10 @@ class Frame extends React.Component {
   render() {
     return (
       <Layout className='mylayout'>
+      {
+        this.props.location.pathname === '/'?
+        <Redirect to={'/home'}></Redirect>:null
+      }
       <Header className="header">
         <img className='logo' src={require('../assets/imgs/logo.png')} alt=""/>
         <span className='header_title'>五系统一中心平台</span>

@@ -3,6 +3,7 @@ import { Icon,Modal,Form,Input,Table,Popconfirm } from 'antd'
 import { connect } from 'react-redux'
 import { uploadFile,delFile } from '../../redux/document.redux'
 import FileSaver from 'file-saver'
+
 const FormItem = Form.Item
 
 @connect(
@@ -60,7 +61,7 @@ class FilesList1 extends React.Component {
       width:'50%',
       render: (text, record) => (
         <span>
-            <a href={record.content} onClick={()=>this.downloadFile(record.title,record.content)}><Icon type='download'></Icon>下载</a>
+            <a href={record.content}  onClick={()=>this.downloadFile(record.title,record.content)}><Icon type='download'></Icon>下载</a>
             <Popconfirm onConfirm={this.delHandle.bind(this,record.id)} title="确定删除？"  okText="确定" cancelText="取消">
               <a style={{marginLeft:'15px'}}><Icon type='delete'></Icon>删除</a>
             </Popconfirm>
