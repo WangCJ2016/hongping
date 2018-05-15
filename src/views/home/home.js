@@ -57,13 +57,16 @@ class Home extends React.Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    //console.log(nextProps.area.firstAreaId)
     if(nextProps.area.firstAreaId&&this.props.area.firstAreaId!==nextProps.area.firstAreaId) {
-      this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
+
       this.props.selectAreaIdSuccess(nextProps.area.firstAreaId)
       this.props.areaInfo({id:nextProps.area.firstAreaId})
       this.props.getAreaInfo({id: nextProps.area.firstAreaId})
-      //this.props.dataSuccess({firstAreaId: ''})
+      this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
+      const timer = setInterval(()=>{
+        this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
+      },5000)
+      this.props.dataSuccess({installPlaceTimer: timer})
     }
     if(this.props.area.areaImgSlider!==nextProps.area.areaImgSlider) {
       this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
@@ -371,7 +374,7 @@ class Home extends React.Component {
           <div className='area-Map' ref={(img)=>this.imgScoll=img} style={{height:window.innerHeight*0.6+'px'}}>
             <div style={{display:'inline-block',position:'relative',zIndex:0}}  >
             <img id='img' draggable='false' ref={(img)=>this.img=img}   src={areaInfo.picture}  alt="" />
-            <Selection offsetLeft={this.props.sidebar.offsetLeft}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
+            <Selection offsetLeft={this.props.sidebar.offsetLeft} offsetTop={this.imgScoll?this.imgScoll.scrollTop:0}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
             {this.props.area.load?null:this.mapDeviceRender()}
             </Selection>
             </div>
