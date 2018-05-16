@@ -19,7 +19,7 @@ import { areaList } from '../../redux/area.redux'
 import { getAreaRealWidth } from '../../redux/peo.redux'
 
 @connect(
-  state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
+  state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,user: state.user,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
   {areaInfo,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList}
 )
 class Home extends React.Component {
@@ -57,12 +57,16 @@ class Home extends React.Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    if(nextProps.area.firstAreaId) {
-      this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
+    if(nextProps.area.firstAreaId&&this.props.area.firstAreaId!==nextProps.area.firstAreaId) {
+
       this.props.selectAreaIdSuccess(nextProps.area.firstAreaId)
       this.props.areaInfo({id:nextProps.area.firstAreaId})
       this.props.getAreaInfo({id: nextProps.area.firstAreaId})
-      this.props.dataSuccess({firstAreaId: ''})
+      this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
+      const timer = setInterval(()=>{
+        this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
+      },5000)
+      this.props.dataSuccess({installPlaceTimer: timer})
     }
     if(this.props.area.areaImgSlider!==nextProps.area.areaImgSlider) {
       this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
@@ -265,8 +269,10 @@ class Home extends React.Component {
     this.props.getDevInfo({devId:device.devId,type:device.type},'guard')
   }
   // 道闸控制
-  daozhaCtrl(e,device) {
-    this.play.XzVideo_RemoteControl_Barriergate(e?1:0,1,5,1)
+  daozhaCtrl(e) {
+    const device = this.props.deivces.devinfo
+    const model = device.host.model === 1?'HikHC-14':'DHNET-03'   
+    this.play.XzVideo_RemoteControl_BarriergateEX(1,this.props.user.account.name,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,+e,1,5)
   }
   // 回放
   videoPlayBack(device) {
@@ -317,10 +323,16 @@ class Home extends React.Component {
   }
   mouseUp(left,top,right,bottom) {
     let rectInDevice = []
+    const slider = this.props.area.areaImgSlider
     const devices = this.props.deivces.mapToDevices
+    const ratio =  this.state.imgWidth / this.props.areaRealWidth
     devices.forEach(device => {
-      if(device.x>left&&device.x<right&&device.y>top&&device.y<bottom) {
-        rectInDevice.push(device)
+      if(device.type === 6) {
+        if(device.x*slider*ratio>left&&device.x*slider*ratio<right&&device.y*slider*ratio>top&&device.y*slider*ratio<bottom) {}
+      }else{
+        if(device.x*slider>left&&device.x*slider<right&&device.y*slider>top&&device.y*slider<bottom) {
+          rectInDevice.push(device)
+        }
       }
     })
     this.setState({
@@ -357,7 +369,6 @@ class Home extends React.Component {
         key: 'RecogResul',
     }]
     const areaInfo = this.props.area.areaInfo
-    
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
         <HomeWarmPanel 
@@ -369,7 +380,7 @@ class Home extends React.Component {
           <div className='area-Map' ref={(img)=>this.imgScoll=img} style={{height:window.innerHeight*0.6+'px'}}>
             <div style={{display:'inline-block',position:'relative',zIndex:0}}  >
             <img id='img' draggable='false' ref={(img)=>this.img=img}   src={areaInfo.picture}  alt="" />
-            <Selection offsetLeft={this.props.sidebar.offsetLeft}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
+            <Selection offsetLeft={this.props.sidebar.offsetLeft} offsetTop={this.imgScoll?this.imgScoll.scrollTop:0}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
             {this.props.area.load?null:this.mapDeviceRender()}
             </Selection>
             </div>

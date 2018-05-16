@@ -125,7 +125,8 @@ class Frame extends React.Component {
   }
   confirm() {
     localStorage.removeItem('token')
-    window.location.replace("/login")
+    //window.location.replace("/login#/login")
+    this.props.history.push('login')
   }
 
   onScroll(e) {

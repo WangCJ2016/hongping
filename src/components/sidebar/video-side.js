@@ -33,6 +33,7 @@ class VideoSide extends React.Component {
      return <div className={styles}  key={video.id} onDoubleClick={()=>this.setState({selectVideo:video.id})}>
               {video.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
               {video.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
+              {video.type===3?<img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
               {video.name}
               <a onClick={this.goLoc.bind(this,video)} style={{float:'right'}}>
                 <img  className='type-icon' src={require('../../assets/imgs/loc_icon.png')} alt=""/>

@@ -25,6 +25,7 @@ export default class TableAreaTree extends React.Component {
       if(expanded) {
         this.props.videoAreaDevices({areaId:record.id,type:1})
         this.props.videoAreaDevices({areaId:record.id,type:2})
+        this.props.videoAreaDevices({areaId:record.id,type:3})
       }
     }
     onRowClick(record,index) {
@@ -49,11 +50,12 @@ export default class TableAreaTree extends React.Component {
             <span>
               {record.type===1?<img className='type-icon' src={require('../../assets/imgs/video-icon.png')} alt=""/>:null}
               {record.type===2?<img className='type-icon' src={require('../../assets/imgs/hongwai-icon.png')} alt=""/>:null}
-              {record.type!==1&&record.type!==2?
+              {record.type===3?<img className='type-icon' src={require('../../assets/imgs/daozha-icon.png')} alt=""/>:null}
+              {record.type!==1&&record.type!==2&&record.type!==3?
                 <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
                 :null}
               <span>{record.name}</span>
-              {record.type!==1&&record.type!==2?
+              {record.type!==1&&record.type!==2&&record.type!==3?
                 null
                 :<a onClick={this.goLoc.bind(this,record)} style={{marginLeft:'10px'}}><img width={15} src={require('../../assets/imgs/loc_icon.png')} alt='' /> </a>}
             </span>
