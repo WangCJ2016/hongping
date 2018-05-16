@@ -94,6 +94,7 @@ class WatchUpload1 extends React.Component {
             </Col>
             <Col span={6}>
               <FormItem
+              label='波特率'
               >
               {getFieldDecorator('boud', {
                 initialValue:'9600'
