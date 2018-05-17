@@ -32,7 +32,9 @@ class AreaSideBar extends React.Component {
     this.props.getAreaInfo({id: areaId})
   }
   componentWillUnmount() {
-    if(this.timer)  clearInterval(this.timer) 
+    if(this.timer)  {
+      clearInterval(this.timer) 
+    }
   }
   render() {
     if(!this.props.sidebar.area_sidebar) {

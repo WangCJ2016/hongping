@@ -104,9 +104,9 @@ class PeoSider extends React.Component {
     this.props.trailDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:trail.startTime,endTime:trail.endTime})  
     this.props.dataSuccess({trailWeather: true})
     this.props.areaImg({id:trail.areaId})
-    this.props.getUwbRegionMap({name: encodeURI(this.props.peo.selectAreaName)})
+    this.props.getUwbRegionMap({name: encodeURI(trail.regionName)})
      //trail.areaId
-    this.props.history.push(`/trail?id=${trail.areaId}&name=${this.props.peo.selectAreaName}`)
+    this.props.history.push(`/trail?id=${trail.areaId}&name=${trail.regionName}`)
   }
   trailSubmit() {
       this.props.peoTrail({peopleIdEx:this.state.peopleIdExSelect,startTime:this.state.startTime,endTime:this.state.endTime})   
