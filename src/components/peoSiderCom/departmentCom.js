@@ -14,7 +14,7 @@ class DepartmentCom extends React.Component {
   departmentRender() {
     const departmentList = this.props.departmentList
     return departmentList.map((area,index) => (
-      <Panel header={area.deptFullname+'('+area.peoples.length+')'} key={index}>
+      <Panel header={area.deptFullname+'('+area.peopleCount||0+')'} key={index}>
         {area.peoples?area.peoples.map(peo=>{
           const styles = className({
             'peo-item': true,
@@ -29,7 +29,6 @@ class DepartmentCom extends React.Component {
     ))
   }
   render() {
-   
     return (
       <div>
         <Collapse bordered={false} className='collapse'>

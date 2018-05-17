@@ -4,6 +4,8 @@ import className from 'classnames'
 import { withRouter } from 'react-router-dom'
 import { changeSidebar } from '../../redux/sidebar.redux'
 import { getAllpeo, peoTrail, trailDetail,searchPeo,peoTrailSuccess,dataSuccess,getUwbRegionMap,areaImg,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail } from '../../redux/peo.redux'
+import {areaInfo} from '../../redux/area.redux'
+import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import { locale } from '../../config'
 import { connect } from 'react-redux'
 import DepartmentCom from '../peoSiderCom/departmentCom'
@@ -17,7 +19,7 @@ const TabPane = Tabs.TabPane
 @connect(
   state=>({sidebar:state.sidebar, peo: state.peo}),
   {
-    changeSidebar,getAllpeo,peoTrail,trailDetail,searchPeo,peoTrailSuccess,dataSuccess,getUwbRegionMap,areaImg,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail
+    changeSidebar,areaInfo,querySysInstallPlaces,getAllpeo,peoTrail,trailDetail,searchPeo,peoTrailSuccess,dataSuccess,getUwbRegionMap,areaImg,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail
   }
 )
 class PeoSider extends React.Component {
@@ -63,7 +65,7 @@ class PeoSider extends React.Component {
             <a onClick={()=>{this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true});this.props.peoTrailSuccess({trails:[]})}}  style={{padding:'10px',position:'absolute',marginLeft:'20px',right:'20px',top:'10px'}} >
               <img src={require('../../assets/imgs/trail_icon.png')} alt=""/>
             </a>
-            <a onClick={()=>this.goLoc()}  style={{padding:'10px',position:'absolute',marginLeft:'20px',right:'60px',top:'10px'}} >
+            <a onClick={(e)=>this.goLoc(peo.areaId,peo.peopleIdEx,e )}  style={{padding:'10px',position:'absolute',marginLeft:'20px',right:'60px',top:'10px'}} >
               <img src={require('../../assets/imgs/loc_icon.png')} alt=""/>
             </a>
           </div>
