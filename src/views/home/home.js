@@ -17,10 +17,11 @@ import Selection from '../../components/react-drag-select/selection'
 import DragSelectModal from '../../components/home-modals/dragSelectModal'
 import { areaList } from '../../redux/area.redux'
 import { getAreaRealWidth } from '../../redux/peo.redux'
+import { carPages } from '../../redux/alarm.redux'
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,user: state.user,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
-  {areaInfo,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList}
+  {areaInfo,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList,carPages}
 )
 class Home extends React.Component {
   constructor() {
@@ -317,9 +318,7 @@ class Home extends React.Component {
   }
   playPicSeach(startTime,endTime) {
     const device = this.props.deivces.devinfo
-    const model = device.host.model === 1?'HikHC-14':'DHNET-03'
-    const a = this.videoPic.XzVideo_FindDevicePicture(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,startTime,endTime,'0xff',"","",0) 
-    this.props.videoPic(a)
+    this.props.carPages({deviceId: device.id,startTime: startTime, endTime: endTime,pageSize:1,pageNo:10})
   }
   mouseUp(left,top,right,bottom) {
     let rectInDevice = []
@@ -328,7 +327,9 @@ class Home extends React.Component {
     const ratio =  this.state.imgWidth / this.props.areaRealWidth
     devices.forEach(device => {
       if(device.type === 6) {
-        if(device.x*slider*ratio>left&&device.x*slider*ratio<right&&device.y*slider*ratio>top&&device.y*slider*ratio<bottom) {}
+        if(device.x*slider*ratio>left&&device.x*slider*ratio<right&&device.y*slider*ratio>top&&device.y*slider*ratio<bottom) {
+          rectInDevice.push(device)
+        }
       }else{
         if(device.x*slider>left&&device.x*slider<right&&device.y*slider>top&&device.y*slider<bottom) {
           rectInDevice.push(device)
@@ -341,33 +342,40 @@ class Home extends React.Component {
       dragSelectEnbled:false
     })
   }
- 
+  pageChange = (e) => {
+    this.props.carPages({pageSize:e})
+  }
+  picRowClick = (record) => {
+    this.setState({
+      selectPic: record.picture
+    })
+  }
   render() {
+    console.log(this.props.alarm)
     const columns = [{
-        title: '名称',
-        dataIndex: 'name',
-        key: 'name',
+        title: '车牌',
+        dataIndex: 'carNo',
+        key: 'carNo',
       },{
-        title: '大小',
-        dataIndex: 'size',
-        key: 'size',
+        title: '道闸',
+        dataIndex: 'gate',
+        key: 'gate',
+      },{
+        title: '进出',
+        dataIndex: 'action',
+        key: 'action', 
+        render:(text,record)=>(
+          <span>{record.action===1?'进':'出'}</span>
+        )
+      },{
+        title: '颜色',
+        dataIndex: 'outline',
+        key: 'outline',
       },{
         title: '时间',
-        dataIndex: 'BDateTime',
-        key: 'BDateTime',
-      },{
-        title: '车牌',
-        dataIndex: 'CardNum',
-        key: 'CardNum',
-      },{
-        title: '证件',
-        dataIndex: 'License',
-        key: 'License',
-      },{
-        title: '车型',
-        dataIndex: 'RecogResul',
-        key: 'RecogResul',
-    }]
+        dataIndex: 'gmtCreate',
+        key: 'gmtCreate', 
+    },]
     const areaInfo = this.props.area.areaInfo
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
@@ -456,7 +464,6 @@ class Home extends React.Component {
          </div>
            
         </Modal>
-
         <Modal
           title="历史图片" 
           visible={this.state.videoPicVisible}
@@ -468,23 +475,24 @@ class Home extends React.Component {
           onCancel={()=>this.setState({videoPicVisible:false})}
           >
           <div className="clearfix">
-            
-              <object
-                ref={(screen)=>this.videoPic=screen}
-                classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
-                codebase="./SetupOCX.exe#version=1.0.0.1"
-                width={1}
-                height={1}
-                align='center' 
-                style={{visibility:'hidden'}}
-                >
-                <a style={{display:'block',lineHeight:'400px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
-              </object>
             <div className='float-left'>
-              <Table columns={columns} dataSource={this.props.deivces.videoPicArr} scroll={{x:400,y:400}}/>
+              <Table 
+                columns={columns} 
+                onRowClick={this.picRowClick}
+                pagination={{
+                  pageSize:10,
+                  total: this.props.alarm.picHistory?this.props.alarm.picHistory.records:0,
+                  onChange: this.pageChange
+                }}
+                size='middle' 
+                dataSource={this.props.alarm.picHistory?this.props.alarm.picHistory.result:[]} 
+                 />
             </div>
             <div className="float-right"  style={{width:'30%'}}>
-            <VideoPlayBackByTime playSearch={this.playPicSeach}  />
+              <VideoPlayBackByTime playSearch={this.playPicSeach}  />
+              <div>
+                 <img style={{marginTop: '20px', width: '100%'}} src={this.state.selectPic || ''} alt=""/>
+              </div>
             </div>
          </div>
            

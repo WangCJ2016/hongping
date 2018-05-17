@@ -19,7 +19,6 @@ class HomeTable extends React.Component {
       top: window.innerHeight*0.6+'px'
     }
     this.moveIf = false 
-    this.onTabClick = this.onTabClick.bind(this)
     this.mouseDown = this.mouseDown.bind(this)
     this.mouseMove = this.mouseMove.bind(this)
     this.mouseUp = this.mouseUp.bind(this)
@@ -53,11 +52,7 @@ class HomeTable extends React.Component {
       }
     }
   }
-  onTabClick(e) {
-    if(e==='3') {
-      this.props.carPages({pageNo:1})
-    }
-  }
+  
   mouseDown(ev) {
     ev = ev || window.event;
     ev.preventDefault()
@@ -92,8 +87,8 @@ class HomeTable extends React.Component {
         <TabPane tab="车辆" key="2">
         <CarsTable 
           alarmHeight={this.props.alarm.alarmHeight}
-          carPages={this.props.alarm.carPages}
-          pageChange={this.props.carPages} 
+          carPages={this.props.alarm.carPages} 
+          carPagesfn={this.props.carPages}
         />
         </TabPane>
       </Tabs>

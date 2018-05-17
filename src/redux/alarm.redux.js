@@ -132,17 +132,23 @@ function carPagesSuccess(info) {
     payload: info
   }
 }
-export function carPages() {
+export function carPages(info) {
   return (dispatch,getState) => {
     const token = getState().user.account.token
     request.get(config.api.base + config.api.carPages,{
       token: token,
-      pageSize: 50
+      pageSize: 50,
+      ...info
     })
    .then(res=>{
-     if(res.success) {
-       const cars = res.result.map(car => ({...car,key:car.id}))
+     if(res.success&&res.result) {
+       if(info.deviceId) {
+        const cars = res.result.map(car => ({...car,key:car.id}))
+        dispatch(dataSuccess({picHistory: {...res,result:cars}}))
+       }else{
+        const cars = res.result.map(car => ({...car,key:car.id}))
         dispatch(carPagesSuccess({...res,result:cars}))
+       }
      }
    })
   }
