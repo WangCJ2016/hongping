@@ -14,7 +14,11 @@ class CarsTable extends React.Component {
     this.props.carPagesfn({pageSize: 10,pageNo:1})
   }
   pageChange(e) {
-    this.props.carPagesfn({pageSize:e})
+    this.props.carPagesfn({pageNo:e})
+  }
+  getDetialPic = (e) => {
+     this.props.getCarDetail({carId: e.target.dataset.id})
+     this.setState({ modalVisible: true})
   }
   render() {
     const columns = [{
@@ -49,12 +53,12 @@ class CarsTable extends React.Component {
           key: 'picture',
           render:(text,record)=>(
             <span>
-              <Button type='primary' onClick={()=>this.setState({pic:text, modalVisible: true})}>查看图片</Button>
+              <Button type='primary' data-id={record.id} onClick={this.getDetialPic}>查看图片</Button>
             </span>
           )
     }]
     const data = this.props.carPages
-    console.log(this.state.pic)
+    console.log(this.props.carPic)
     return (
       <div>
         <Table 
@@ -80,7 +84,7 @@ class CarsTable extends React.Component {
             footer={false}
             onCancel={()=>this.setState({modalVisible:false})}
             >
-            <img style={{width: '100%'}} src={this.state.pic || ''} alt=""/>
+            <img style={{width: '100%'}} src={this.props.carPic || ''} alt=""/>
           </Modal>
       </div>
     )

@@ -153,7 +153,21 @@ export function carPages(info) {
    })
   }
 }
-
+// getCarDetail
+export function getCarDetail(info) {
+  return (dispatch,getState) => {
+    const token = getState().user.account.token
+    request.get(config.api.base + config.api.getCarDetail,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     if(res.success) {
+       dispatch(dataSuccess({carPic: res.dataObject.picture}))
+     }
+   })
+  }
+}
 // 首页报警数量
 export function alarmCount() {
   return (dispatch,getState) => {

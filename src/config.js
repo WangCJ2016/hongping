@@ -83,6 +83,7 @@ export const config = {
     searchBroadcast: '/bhost_querySysBroadcastChannelsPage', //搜索广播
     searchGuard:'/chost_querySysCommPropertiesByKeyword', // 搜索门禁
     carPages: '/home_queryCarsPage', // 车辆信息
+    getCarDetail: '/home_getCarDetail', // 车辆图片
     guardCtrl:'/home_ctrlEntranceGuard',
     // 视频
     videoAreaDevices: '/home_queryAreaDevices', //视频／红外通道

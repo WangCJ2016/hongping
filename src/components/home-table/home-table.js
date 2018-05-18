@@ -1,7 +1,7 @@
 import React from 'react'
 import {Tabs} from 'antd'
 import {connect} from 'react-redux'
-import { carPages,alarmPages,alarmCount,dataSuccess } from '../../redux/alarm.redux'
+import { carPages,alarmPages,alarmCount,dataSuccess,getCarDetail } from '../../redux/alarm.redux'
 import './home-table.scss'
 import HomeTableList from '../home-table-list/hometablelist'
 import CarsTable from './cars-table'
@@ -10,7 +10,7 @@ const TabPane = Tabs.TabPane;
 
 @connect(
   state => ({alarm:state.alarm,user:state.user}),
-  {carPages,alarmPages,alarmCount,dataSuccess}
+  {carPages,alarmPages,alarmCount,dataSuccess,getCarDetail}
 )
 class HomeTable extends React.Component {
   constructor() {
@@ -89,6 +89,8 @@ class HomeTable extends React.Component {
           alarmHeight={this.props.alarm.alarmHeight}
           carPages={this.props.alarm.carPages} 
           carPagesfn={this.props.carPages}
+          getCarDetail={this.props.getCarDetail}
+          carPic={this.props.alarm.carPic}
         />
         </TabPane>
       </Tabs>
