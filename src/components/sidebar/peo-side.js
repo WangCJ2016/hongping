@@ -4,8 +4,7 @@ import className from 'classnames'
 import { withRouter } from 'react-router-dom'
 import { changeSidebar } from '../../redux/sidebar.redux'
 import { getAllpeo, peoTrail, trailDetail,searchPeo,peoTrailSuccess,dataSuccess,getUwbRegionMap,areaImg,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail } from '../../redux/peo.redux'
-import {areaInfo} from '../../redux/area.redux'
-import { querySysInstallPlaces } from '../../redux/setting.device.redux'
+
 import { locale } from '../../config'
 import { connect } from 'react-redux'
 import DepartmentCom from '../peoSiderCom/departmentCom'
@@ -19,7 +18,7 @@ const TabPane = Tabs.TabPane
 @connect(
   state=>({sidebar:state.sidebar, peo: state.peo}),
   {
-    changeSidebar,areaInfo,querySysInstallPlaces,getAllpeo,peoTrail,trailDetail,searchPeo,peoTrailSuccess,dataSuccess,getUwbRegionMap,areaImg,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail
+    changeSidebar,getAllpeo,peoTrail,trailDetail,searchPeo,peoTrailSuccess,dataSuccess,getUwbRegionMap,areaImg,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail
   }
 )
 class PeoSider extends React.Component {
@@ -65,22 +64,11 @@ class PeoSider extends React.Component {
             <a onClick={()=>{this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true});this.props.peoTrailSuccess({trails:[]})}}  style={{padding:'10px',position:'absolute',marginLeft:'20px',right:'20px',top:'10px'}} >
               <img src={require('../../assets/imgs/trail_icon.png')} alt=""/>
             </a>
-            <a onClick={(e)=>this.goLoc(peo.areaId,peo.peopleIdEx,e )}  style={{padding:'10px',position:'absolute',marginLeft:'20px',right:'60px',top:'10px'}} >
-              <img src={require('../../assets/imgs/loc_icon.png')} alt=""/>
-            </a>
+           
           </div>
     })
   }
-  goLoc(areaId,peopleIdEx,e) {
-    e.preventDefault()
-    e.stopPropagation()
-    if(this.props.location.pathname !== '/home') {
-      this.props.history.push('home')
-    } 
-    this.props.dataSuccess({goLocDeviceId: peopleIdEx})
-    this.props.areaInfo({id: areaId})
-    this.props.querySysInstallPlaces({areaId: areaId})
-  }
+
   trailRender() {
     const trails = this.props.peo.trails
     return trails.map((trail,index)=>{

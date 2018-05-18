@@ -11,7 +11,7 @@ class CarsTable extends React.Component {
     this.pageChange = this.pageChange.bind(this)
   }
   componentDidMount() {
-    this.props.carPagesfn({pageSize: 1})
+    this.props.carPagesfn({pageSize: 10,pageNo:1})
   }
   pageChange(e) {
     this.props.carPagesfn({pageSize:e})
@@ -28,27 +28,18 @@ class CarsTable extends React.Component {
           width:100,
           key: 'carNo', 
         },{
-          title: '进出',
-          dataIndex: 'action',
-          width:100,
-          key: 'action', 
-          render:(text,record)=>(
-            <span>{record.action===1?'进':'出'}</span>
-          )
-        },{
           title: '道闸',
           dataIndex: 'gate',
           width:100,
           key: 'gate', 
         },{
-          title: '颜色',
+          title: '外形描述',
           dataIndex: 'outline',
           width:100,
           key: 'outline', 
           render: (text,record)=>(
             <span>
               <span>{record.outline}</span>
-              <img src={record.picture} alt=""/>
             </span>
           )
         },{
@@ -58,12 +49,12 @@ class CarsTable extends React.Component {
           key: 'picture',
           render:(text,record)=>(
             <span>
-              <Button type='primary' onClick={()=>this.setState({pic: text, modalVisible: true})}>查看图片</Button>
+              <Button type='primary' onClick={()=>this.setState({pic:text, modalVisible: true})}>查看图片</Button>
             </span>
           )
     }]
     const data = this.props.carPages
-    console.log(data.result)
+    console.log(this.state.pic)
     return (
       <div>
         <Table 
@@ -89,7 +80,7 @@ class CarsTable extends React.Component {
             footer={false}
             onCancel={()=>this.setState({modalVisible:false})}
             >
-            <img style={{width: '100%'}} src={this.state.picture || ''} alt=""/>
+            <img style={{width: '100%'}} src={this.state.pic || ''} alt=""/>
           </Modal>
       </div>
     )

@@ -361,14 +361,7 @@ class Home extends React.Component {
         dataIndex: 'gate',
         key: 'gate',
       },{
-        title: '进出',
-        dataIndex: 'action',
-        key: 'action', 
-        render:(text,record)=>(
-          <span>{record.action===1?'进':'出'}</span>
-        )
-      },{
-        title: '颜色',
+        title: '外形描述',
         dataIndex: 'outline',
         key: 'outline',
       },{
@@ -377,6 +370,7 @@ class Home extends React.Component {
         key: 'gmtCreate', 
     },]
     const areaInfo = this.props.area.areaInfo
+    //console.log(areaInfo.picture)
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
         <HomeWarmPanel 
