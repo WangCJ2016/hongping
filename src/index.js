@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
+// import test from './middleware/test.middleware'
 
 import { Provider } from 'react-redux'
 import { HashRouter, Route, Switch} from 'react-router-dom'

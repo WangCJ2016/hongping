@@ -1,6 +1,5 @@
 function testMiddleware() {
   return ({ dispatch, getState }) => next => action => {
-    //console.log(next)
     return next(action);
   };
 }

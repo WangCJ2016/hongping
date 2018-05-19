@@ -25,6 +25,10 @@ const broadcastHoc = (WrappedCom) => {
       this.voiceBroadcastEnd = this.voiceBroadcastEnd.bind(this)
       this.broadcastFileEnd = this.broadcastFileEnd.bind(this)
     }
+    componentDidMount() {
+      if(this.play.CreateDevice)
+      this.play.CreateDevice()
+    }
     voiceBroadcast(IndexArr) {
       if(!Array.isArray(IndexArr)) return
       if(!this.state.voiceBroadcastStart){
@@ -71,7 +75,7 @@ const broadcastHoc = (WrappedCom) => {
         })
       }
     }
-    onOk() {
+    onOk= () => {
         const a = this.play.FileBroadcast(this.props.area.broadcastIp,this.state.selectIndexArr.join(','),this.state.selectedRowKeys.join(','))
         if(a) {
           message.success('开始播报文件语音')
