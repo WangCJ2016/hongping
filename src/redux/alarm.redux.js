@@ -64,7 +64,7 @@ export function alarmPages(info) {
     })
     .then(res => {
       if(res.success) {
-        dispatch(dataSuccess({alarmPageTotal:res.records}))
+        dispatch(dataSuccess({alarmPageTotal:res.records,alarmPageNo: info.pageNo}))
         dispatch(alarmPagesSuccess(res.result))
       }
     })
@@ -144,7 +144,7 @@ export function carPages(info) {
      if(res.success&&res.result) {
        if(info.deviceId) {
         const cars = res.result.map(car => ({...car,key:car.id}))
-        dispatch(dataSuccess({picHistory: {...res,result:cars}}))
+        dispatch(dataSuccess({picHistory: {...res,result:cars}, carPageNo: info.pageNo}))
        }else{
         const cars = res.result.map(car => ({...car,key:car.id}))
         dispatch(carPagesSuccess({...res,result:cars}))
@@ -163,7 +163,7 @@ export function getCarDetail(info) {
     })
    .then(res=>{
      if(res.success) {
-       dispatch(dataSuccess({carPic: res.dataObject.picture}))
+       dispatch(dataSuccess({carPic: 'data:image/jpeg;base64,'+res.dataObject.picture}))
      }
    })
   }

@@ -124,7 +124,6 @@ class Frame extends React.Component {
     ))
   }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
     if(nextProps.location.pathname !== '/home') clearInterval(this.props.installPlaceTimer)
   }
   confirm() {

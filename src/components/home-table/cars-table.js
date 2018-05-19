@@ -23,8 +23,8 @@ class CarsTable extends React.Component {
   render() {
     const columns = [{
           title: '时间',
-          dataIndex: 'gmtCreate',
-          key: 'gmtCreate', 
+          dataIndex: 'time',
+          key: 'time', 
           width:100,
         },{
           title: '车牌',
