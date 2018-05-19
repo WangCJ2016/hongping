@@ -370,7 +370,6 @@ class Home extends React.Component {
         key: 'gmtCreate', 
     },]
     const areaInfo = this.props.area.areaInfo
-    //console.log(areaInfo.picture)
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
         <HomeWarmPanel 
@@ -379,7 +378,7 @@ class Home extends React.Component {
         goParentArea={this.goParentArea} />
         {
           areaInfo.picture?  
-          <div className='area-Map' ref={(img)=>this.imgScoll=img} style={{height:window.innerHeight*0.6+'px'}}>
+          <div className='area-Map' ref={(img)=>this.imgScoll=img} style={{height:window.innerHeight - this.props.alarm.alarmHeight - 225 +'px'}}>
             <div style={{display:'inline-block',position:'relative',zIndex:0}}  >
             <img id='img' draggable='false' ref={(img)=>this.img=img}   src={areaInfo.picture}  alt="" />
             <Selection offsetLeft={this.props.sidebar.offsetLeft} offsetTop={this.imgScoll?this.imgScoll.scrollTop:0}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
