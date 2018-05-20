@@ -58,7 +58,6 @@ class CarsTable extends React.Component {
           )
     }]
     const data = this.props.carPages
-    console.log(this.props.carPic)
     return (
       <div>
         <Table 

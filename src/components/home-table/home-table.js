@@ -49,7 +49,7 @@ class HomeTable extends React.Component {
           this.props.alarmPages({pageNo:1,pageSize: 50})
           this.props.alarmCount()
         }
-        if(e.date === 'CAR' ) {
+        if(e.data === 'CAR' ) {
           this.props.carPages({pageNo: 1, pageSize: 10})
         }
       }

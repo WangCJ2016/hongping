@@ -17,11 +17,11 @@ import Selection from '../../components/react-drag-select/selection'
 import DragSelectModal from '../../components/home-modals/dragSelectModal'
 import { areaList } from '../../redux/area.redux'
 import { getAreaRealWidth } from '../../redux/peo.redux'
-import { carPages } from '../../redux/alarm.redux'
+import { carPages,getCarDetail } from '../../redux/alarm.redux'
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,user: state.user,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
-  {areaInfo,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList,carPages}
+  {areaInfo,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList,carPages,getCarDetail}
 )
 class Home extends React.Component {
   constructor() {
@@ -346,9 +346,7 @@ class Home extends React.Component {
     this.props.carPages({pageSize:e})
   }
   picRowClick = (record) => {
-    this.setState({
-      selectPic: 'data:image/jpeg;base64,' + record.picture
-    })
+    this.props.getCarDetail({carId: record.id})
   }
   render() {
     
@@ -366,10 +364,11 @@ class Home extends React.Component {
         key: 'outline',
       },{
         title: '时间',
-        dataIndex: 'gmtCreate',
-        key: 'gmtCreate', 
+        dataIndex: 'time',
+        key: 'time', 
     },]
     const areaInfo = this.props.area.areaInfo
+
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
         <HomeWarmPanel 
@@ -403,7 +402,7 @@ class Home extends React.Component {
           okText='确定'
           cancelText='取消' 
           footer={false}
-          onCancel={()=>{this.setState({videoVisible:false});this.play.XzVideo_RealPlayStop()}}
+          onCancel={()=>{this.setState({videoVisible:false});this.play.XzVideo_RealPlayStop(0)}}
           >
           <div className="clearfix">
             <div className="float-left" style={{width:'70%'}}>
@@ -434,7 +433,7 @@ class Home extends React.Component {
           okText='确定'
           cancelText='取消' 
           footer={false}
-          onCancel={()=>{this.setState({videoBackVisible:false});this.play.XzVideo_RealPlayStop()}}
+          onCancel={()=>{this.setState({videoBackVisible:false});this.playback.XzVideo_RealPlayStop(0)}}
           >
           <div className="clearfix">
             <div className="float-left" style={{width:'70%'}}>
@@ -484,7 +483,7 @@ class Home extends React.Component {
             <div className="float-right"  style={{width:'30%'}}>
               <VideoPlayBackByTime playSearch={this.playPicSeach}  />
               <div>
-                 <img style={{marginTop: '20px', width: '100%'}} src={this.state.selectPic || ''} alt=""/>
+                 <img style={{marginTop: '20px', width: '100%'}} src={this.props.alarm.carPic || ''} alt=""/>
               </div>
             </div>
          </div>
