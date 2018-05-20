@@ -460,14 +460,14 @@ class Home extends React.Component {
           title="历史图片" 
           visible={this.state.videoPicVisible}
           style={{ top: 200 }}
-          width='50%'
+          width='80%'
           okText='确定'
           cancelText='取消' 
           footer={false}
           onCancel={()=>this.setState({videoPicVisible:false})}
           >
           <div className="clearfix">
-            <div className='float-left' style={{width: '60%'}}>
+            <div className='float-left' style={{width: '48%'}}>
               <Table 
                 columns={columns} 
                 onRowClick={this.picRowClick}
@@ -480,7 +480,7 @@ class Home extends React.Component {
                 dataSource={this.props.alarm.picHistory?this.props.alarm.picHistory.result:[]} 
                  />
             </div>
-            <div className="float-right"  style={{width:'30%'}}>
+            <div className="float-right"  style={{width:'48%'}}>
               <VideoPlayBackByTime playSearch={this.playPicSeach}  />
               <div>
                  <img style={{marginTop: '20px', width: '100%'}} src={this.props.alarm.carPic || ''} alt=""/>

@@ -95,10 +95,14 @@ class BroadcastSider extends React.Component {
               <Button size='small' onClick={this.voiceBroadcast} type='primary'>语音播报</Button>
               <Button size='small' onClick={this.props.voiceBroadcastEnd} type='primary'>关闭播报</Button>
             </span>
-            <span>
-              <Button size='small' onClick={this.fileBroadcast} type='primary'>文件播报</Button>
-              <Button size='small' onClick={this.props.broadcastFileEnd} type='primary'>关闭播报</Button>
-            </span>
+            {
+              /* 
+              <span>
+                <Button size='small' onClick={this.fileBroadcast} type='primary'>文件播报</Button>
+                <Button size='small' onClick={this.props.broadcastFileEnd} type='primary'>关闭播报</Button>
+              </span>
+              */
+            }
           </div>:null
         }
         
