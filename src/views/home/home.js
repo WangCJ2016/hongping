@@ -318,7 +318,7 @@ class Home extends React.Component {
   }
   playPicSeach(startTime,endTime) {
     const device = this.props.deivces.devinfo
-    this.props.carPages({deviceId: device.id,startTime: startTime, endTime: endTime,pageSize:1,pageNo:10})
+    this.props.carPages({deviceId: device.id,startTime: startTime, endTime: endTime,pageSize:10,pageNo:1})
   }
   mouseUp(left,top,right,bottom) {
     let rectInDevice = []
@@ -347,7 +347,7 @@ class Home extends React.Component {
   }
   picRowClick = (record) => {
     this.setState({
-      selectPic: record.picture
+      selectPic: 'data:image/jpeg;base64,' + record.picture
     })
   }
   render() {
@@ -403,7 +403,7 @@ class Home extends React.Component {
           okText='确定'
           cancelText='取消' 
           footer={false}
-          onCancel={()=>this.setState({videoVisible:false})}
+          onCancel={()=>{this.setState({videoVisible:false});this.play.XzVideo_RealPlayStop()}}
           >
           <div className="clearfix">
             <div className="float-left" style={{width:'70%'}}>
@@ -434,7 +434,7 @@ class Home extends React.Component {
           okText='确定'
           cancelText='取消' 
           footer={false}
-          onCancel={()=>this.setState({videoBackVisible:false})}
+          onCancel={()=>{this.setState({videoBackVisible:false});this.play.XzVideo_RealPlayStop()}}
           >
           <div className="clearfix">
             <div className="float-left" style={{width:'70%'}}>
@@ -468,7 +468,7 @@ class Home extends React.Component {
           onCancel={()=>this.setState({videoPicVisible:false})}
           >
           <div className="clearfix">
-            <div className='float-left'>
+            <div className='float-left' style={{width: '60%'}}>
               <Table 
                 columns={columns} 
                 onRowClick={this.picRowClick}
@@ -477,7 +477,7 @@ class Home extends React.Component {
                   total: this.props.alarm.picHistory?this.props.alarm.picHistory.records:0,
                   onChange: this.pageChange
                 }}
-                size='middle' 
+                size='small' 
                 dataSource={this.props.alarm.picHistory?this.props.alarm.picHistory.result:[]} 
                  />
             </div>

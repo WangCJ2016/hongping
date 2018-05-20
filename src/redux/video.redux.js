@@ -4,7 +4,7 @@ const intialState = {
   saveVideoIf:false,
   hasSoundIf:true,
   backVideoIf:true,
-  vv:1,
+  vv:5,
   bright: 5,
   contrast:5,
   saturation:5,
