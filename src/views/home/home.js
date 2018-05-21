@@ -73,11 +73,11 @@ class Home extends React.Component {
       this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
     }
   }
-  componentWillUnMount(){
-    if(this.timer){
-      clearInterval(this.timer)
-    }
-  }
+  // componentWillUnMount(){
+  //   if(this.timer){
+  //     clearInterval(this.timer)
+  //   }
+  // }
   componentDidUpdate(nextProps,nextState) {
     if(this.props.area.areaInfo.picture&&(this.props.area.areaInfo.picture!==nextProps.area.areaInfo.picture)) {
       setTimeout(()=>{     
