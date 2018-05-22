@@ -168,11 +168,11 @@ class Trail extends React.Component {
         </div>
           {
             this.props.peo.picture&&this.props.peo.areaRealWidth?
-            <div className='peo-trail' style={{left:this.props.sidebar.homeLeftIf?'300px':'0'}} ref={(outDiv)=>this.outDiv=outDiv} >
+            <div className='peo-trail' style={{left:this.props.sidebar.homeLeftIf?'300px':'0'}}  >
               <canvas ref={(canvas)=>this.canvas=canvas} className='canvas' >
                 你的浏览器还不支持canvas
               </canvas>
-              <img id='img' src={this.props.peo.picture}  alt="" />
+              <img id='img' src={this.props.peo.picture} ref={(outDiv)=>this.outDiv=outDiv}  alt="" />
               {this.changeTrailRender(this.state.trail)}
               
             </div>

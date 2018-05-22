@@ -382,9 +382,9 @@ export function getDevInfo(info,type,play,index) {
            play.XzVideo_SetSelRTVContext(index)
         }
         if(connectMode === 0) {
-          play.XzVideo_RealPlay(1,user.account.name,'',0,"",1,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+          play.XzVideo_RealPlay(1,user.account.name,'',0,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
         } else {
-          play.XzVideo_RealPlay(1,user.account.name,device.host.servers[0].id,device.host.servers[0].port,"",1,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+          play.XzVideo_RealPlay(1,user.account.name,device.host.servers[0].innerIp,device.host.servers[0].port,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
         }
         
        }
