@@ -17,9 +17,7 @@ class Login extends React.Component {
         this.props.login({username: values.userName, password: values.password},()=>this.props.history.push('home'))
       }
     });
-   
   }
-
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
