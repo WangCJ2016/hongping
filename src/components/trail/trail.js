@@ -49,7 +49,7 @@ class Trail extends React.Component {
   }
 
   canvasRender({traildetail,locationX,locationY}) {
-    //if(this.props.peo.trailWeather) return
+    if(!this.props.peo.trailWeather) return
     const canvas = this.canvas
     canvas.width=this.outDiv.offsetWidth
     canvas.height=this.outDiv.offsetHeight
@@ -66,7 +66,7 @@ class Trail extends React.Component {
     context.strokeStyle = "red";
     //绘制
     context.stroke();
-    //this.props.dataSuccess({trailWeather:true})
+    this.props.dataSuccess({trailWeather:false})
     this.setState({
       trail: trails[0]
     })
