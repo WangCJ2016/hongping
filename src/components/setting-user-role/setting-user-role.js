@@ -159,6 +159,7 @@ class SettingUserRole1 extends React.Component {
           <TreeNode title="广播服务" key="16" />
         </TreeNode>
         <TreeNode title="历史分析" key="18"  />
+        <TreeNode title="文档管理" key="25"  />
         <TreeNode title="个人设置" key="19"  />
         <TreeNode title="系统设置" key="24">
           <TreeNode title="区域管理" key="20"  />

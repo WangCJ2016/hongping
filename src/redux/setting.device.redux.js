@@ -375,12 +375,18 @@ export function getDevInfo(info,type,play,index) {
      if(res.success) {
        const device = res.dataObject
        const model = device.host.model === 1?'HikHC-14':'DHNET-03'
+       const connectMode = device.host.connectMode
        dispatch(devinfoSuccess(res.dataObject))
        if(type==='play') {
         if(index!==undefined) {
            play.XzVideo_SetSelRTVContext(index)
         }
-        play.XzVideo_RealPlay(1,user.account.name,"",0,"",1,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+        if(connectMode === 0) {
+          play.XzVideo_RealPlay(1,user.account.name,'',0,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+        } else {
+          play.XzVideo_RealPlay(1,user.account.name,device.host.servers[0].innerIp,device.host.servers[0].port,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+        }
+        
        }
        if(type==='guard') {
         guardCtrl({token:token,vid:device.vid,deviceType:device.type,controlValue:1})(dispatch)

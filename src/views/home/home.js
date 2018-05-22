@@ -2,7 +2,7 @@ import React from 'react'
 import { Popover,Spin,Tag,Modal,Table,Switch,message } from 'antd'
 import { connect } from 'react-redux'
 import className from 'classnames'
-
+import { config } from '../../config'
 import HomeTable from '../../components/home-table/home-table'
 import { HomePerson, HomeCamera, HomeBroadcast,HomeGuard } from '../../components/home-popover/home-popover'
 import HomeWarmPanel from '../../components/home-warm-panel/home-warm-panel'
@@ -17,10 +17,11 @@ import Selection from '../../components/react-drag-select/selection'
 import DragSelectModal from '../../components/home-modals/dragSelectModal'
 import { areaList } from '../../redux/area.redux'
 import { getAreaRealWidth } from '../../redux/peo.redux'
+import { carPages,getCarDetail } from '../../redux/alarm.redux'
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,user: state.user,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
-  {areaInfo,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList}
+  {areaInfo,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList,carPages,getCarDetail}
 )
 class Home extends React.Component {
   constructor() {
@@ -72,11 +73,11 @@ class Home extends React.Component {
       this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
     }
   }
-  componentWillUnMount(){
-    if(this.timer){
-      clearInterval(this.timer)
-    }
-  }
+  // componentWillUnMount(){
+  //   if(this.timer){
+  //     clearInterval(this.timer)
+  //   }
+  // }
   componentDidUpdate(nextProps,nextState) {
     if(this.props.area.areaInfo.picture&&(this.props.area.areaInfo.picture!==nextProps.area.areaInfo.picture)) {
       setTimeout(()=>{     
@@ -272,7 +273,7 @@ class Home extends React.Component {
   daozhaCtrl(e) {
     const device = this.props.deivces.devinfo
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'   
-    this.play.XzVideo_RemoteControl_BarriergateEX(1,this.props.user.account.name,"",1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,+e,1,5)
+    this.play.XzVideo_RemoteControl_BarriergateEX(1,this.props.user.account.name,"",config.api.controlServerIp,config.api.controlServerPort,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,+e,1,5)
   }
   // 回放
   videoPlayBack(device) {
@@ -317,9 +318,7 @@ class Home extends React.Component {
   }
   playPicSeach(startTime,endTime) {
     const device = this.props.deivces.devinfo
-    const model = device.host.model === 1?'HikHC-14':'DHNET-03'
-    const a = this.videoPic.XzVideo_FindDevicePicture(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,startTime,endTime,'0xff',"","",0) 
-    this.props.videoPic(a)
+    this.props.carPages({deviceId: device.id,startTime: startTime, endTime: endTime,pageSize:10,pageNo:1})
   }
   mouseUp(left,top,right,bottom) {
     let rectInDevice = []
@@ -328,7 +327,9 @@ class Home extends React.Component {
     const ratio =  this.state.imgWidth / this.props.areaRealWidth
     devices.forEach(device => {
       if(device.type === 6) {
-        if(device.x*slider*ratio>left&&device.x*slider*ratio<right&&device.y*slider*ratio>top&&device.y*slider*ratio<bottom) {}
+        if(device.x*slider*ratio>left&&device.x*slider*ratio<right&&device.y*slider*ratio>top&&device.y*slider*ratio<bottom) {
+          rectInDevice.push(device)
+        }
       }else{
         if(device.x*slider>left&&device.x*slider<right&&device.y*slider>top&&device.y*slider<bottom) {
           rectInDevice.push(device)
@@ -341,34 +342,33 @@ class Home extends React.Component {
       dragSelectEnbled:false
     })
   }
- 
+  pageChange = (e) => {
+    this.props.carPages({pageSize:e})
+  }
+  picRowClick = (record) => {
+    this.props.getCarDetail({carId: record.id})
+  }
   render() {
+    
     const columns = [{
-        title: '名称',
-        dataIndex: 'name',
-        key: 'name',
+        title: '车牌',
+        dataIndex: 'carNo',
+        key: 'carNo',
       },{
-        title: '大小',
-        dataIndex: 'size',
-        key: 'size',
+        title: '道闸',
+        dataIndex: 'gate',
+        key: 'gate',
+      },{
+        title: '外形描述',
+        dataIndex: 'outline',
+        key: 'outline',
       },{
         title: '时间',
-        dataIndex: 'BDateTime',
-        key: 'BDateTime',
-      },{
-        title: '车牌',
-        dataIndex: 'CardNum',
-        key: 'CardNum',
-      },{
-        title: '证件',
-        dataIndex: 'License',
-        key: 'License',
-      },{
-        title: '车型',
-        dataIndex: 'RecogResul',
-        key: 'RecogResul',
-    }]
+        dataIndex: 'time',
+        key: 'time', 
+    },]
     const areaInfo = this.props.area.areaInfo
+
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
         <HomeWarmPanel 
@@ -377,7 +377,7 @@ class Home extends React.Component {
         goParentArea={this.goParentArea} />
         {
           areaInfo.picture?  
-          <div className='area-Map' ref={(img)=>this.imgScoll=img} style={{height:window.innerHeight*0.6+'px'}}>
+          <div className='area-Map' ref={(img)=>this.imgScoll=img} style={{height:window.innerHeight - this.props.alarm.alarmHeight - 225 +'px'}}>
             <div style={{display:'inline-block',position:'relative',zIndex:0}}  >
             <img id='img' draggable='false' ref={(img)=>this.img=img}   src={areaInfo.picture}  alt="" />
             <Selection offsetLeft={this.props.sidebar.offsetLeft} offsetTop={this.imgScoll?this.imgScoll.scrollTop:0}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
@@ -402,7 +402,7 @@ class Home extends React.Component {
           okText='确定'
           cancelText='取消' 
           footer={false}
-          onCancel={()=>this.setState({videoVisible:false})}
+          onCancel={()=>{this.setState({videoVisible:false});this.play.XzVideo_RealPlayStop(0)}}
           >
           <div className="clearfix">
             <div className="float-left" style={{width:'70%'}}>
@@ -433,7 +433,7 @@ class Home extends React.Component {
           okText='确定'
           cancelText='取消' 
           footer={false}
-          onCancel={()=>this.setState({videoBackVisible:false})}
+          onCancel={()=>{this.setState({videoBackVisible:false});this.playback.XzVideo_RealPlayStop(0)}}
           >
           <div className="clearfix">
             <div className="float-left" style={{width:'70%'}}>
@@ -456,35 +456,35 @@ class Home extends React.Component {
          </div>
            
         </Modal>
-
         <Modal
           title="历史图片" 
           visible={this.state.videoPicVisible}
           style={{ top: 200 }}
-          width='50%'
+          width='80%'
           okText='确定'
           cancelText='取消' 
           footer={false}
           onCancel={()=>this.setState({videoPicVisible:false})}
           >
           <div className="clearfix">
-            
-              <object
-                ref={(screen)=>this.videoPic=screen}
-                classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
-                codebase="./SetupOCX.exe#version=1.0.0.1"
-                width={1}
-                height={1}
-                align='center' 
-                style={{visibility:'hidden'}}
-                >
-                <a style={{display:'block',lineHeight:'400px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
-              </object>
-            <div className='float-left'>
-              <Table columns={columns} dataSource={this.props.deivces.videoPicArr} scroll={{x:400,y:400}}/>
+            <div className='float-left' style={{width: '48%'}}>
+              <Table 
+                columns={columns} 
+                onRowClick={this.picRowClick}
+                pagination={{
+                  pageSize:10,
+                  total: this.props.alarm.picHistory?this.props.alarm.picHistory.records:0,
+                  onChange: this.pageChange
+                }}
+                size='small' 
+                dataSource={this.props.alarm.picHistory?this.props.alarm.picHistory.result:[]} 
+                 />
             </div>
-            <div className="float-right"  style={{width:'30%'}}>
-            <VideoPlayBackByTime playSearch={this.playPicSeach}  />
+            <div className="float-right"  style={{width:'48%'}}>
+              <VideoPlayBackByTime playSearch={this.playPicSeach}  />
+              <div>
+                 <img style={{marginTop: '20px', width: '100%'}} src={this.props.alarm.carPic || ''} alt=""/>
+              </div>
             </div>
          </div>
            

@@ -68,7 +68,7 @@ const Document = Loadable({
 const { Header, Content, Sider } = Layout;
 
 @connect(
-  state=>({user:state.user,alarm:state.alarm,sidebar:state.sidebar}),
+  state=>({user:state.user,alarm:state.alarm,sidebar:state.sidebar,installPlaceTimer: state.area.installPlaceTimer}),
   {changeSidebar,alarmCount,dataSuccess}
 )
 
@@ -122,6 +122,9 @@ class Frame extends React.Component {
         <span className='navtop_title'>{item.title}</span>
       </NavLink>
     ))
+  }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.location.pathname !== '/home') clearInterval(this.props.installPlaceTimer)
   }
   confirm() {
     localStorage.removeItem('token')

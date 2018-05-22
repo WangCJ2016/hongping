@@ -4,6 +4,7 @@ import className from 'classnames'
 import { withRouter } from 'react-router-dom'
 import { changeSidebar } from '../../redux/sidebar.redux'
 import { getAllpeo, peoTrail, trailDetail,searchPeo,peoTrailSuccess,dataSuccess,getUwbRegionMap,areaImg,departmentList,trajectoryDetail,realtimeTrajectory,realtimeTrajectoryDetail } from '../../redux/peo.redux'
+
 import { locale } from '../../config'
 import { connect } from 'react-redux'
 import DepartmentCom from '../peoSiderCom/departmentCom'
@@ -59,26 +60,15 @@ class PeoSider extends React.Component {
      return <div className={styles} key={peo.peopleIdEx} >
             <div>{peo.peopleName}</div>
             <div>{peo.phone}</div>
-            <div>{peo.department.deptName}</div>
+            <div>{peo.department?peo.department.deptName:''}</div>
             <a onClick={()=>{this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true});this.props.peoTrailSuccess({trails:[]})}}  style={{padding:'10px',position:'absolute',marginLeft:'20px',right:'20px',top:'10px'}} >
               <img src={require('../../assets/imgs/trail_icon.png')} alt=""/>
             </a>
-            <a onClick={()=>this.goLoc()}  style={{padding:'10px',position:'absolute',marginLeft:'20px',right:'60px',top:'10px'}} >
-              <img src={require('../../assets/imgs/loc_icon.png')} alt=""/>
-            </a>
+           
           </div>
     })
   }
-  goLoc(areaId,peopleIdEx,e) {
-    e.preventDefault()
-    e.stopPropagation()
-    if(this.props.location.pathname !== '/home') {
-      this.props.history.push('home')
-    } 
-    this.props.dataSuccess({goLocDeviceId: peopleIdEx})
-    this.props.areaInfo({id: areaId})
-    this.props.querySysInstallPlaces({areaId: areaId})
-  }
+
   trailRender() {
     const trails = this.props.peo.trails
     return trails.map((trail,index)=>{
@@ -102,9 +92,9 @@ class PeoSider extends React.Component {
     this.props.trailDetail({peopleIdEx:this.state.peopleIdExSelect,regionId:trail.regionId,startTime:trail.startTime,endTime:trail.endTime})  
     this.props.dataSuccess({trailWeather: true})
     this.props.areaImg({id:trail.areaId})
-    this.props.getUwbRegionMap({name: encodeURI(this.props.peo.selectAreaName)})
+    this.props.getUwbRegionMap({name: encodeURI(trail.regionName)})
      //trail.areaId
-    this.props.history.push(`/trail?id=${trail.areaId}&name=${this.props.peo.selectAreaName}`)
+    this.props.history.push(`/trail?id=${trail.areaId}&name=${trail.regionName}`)
   }
   trailSubmit() {
       this.props.peoTrail({peopleIdEx:this.state.peopleIdExSelect,startTime:this.state.startTime,endTime:this.state.endTime})   

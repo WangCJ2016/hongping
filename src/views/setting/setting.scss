@@ -3,6 +3,7 @@
   
 }
 .setting-user {
+  overflow: auto;
   &-role{
    width: 30%;
    min-width: 300px;
@@ -69,12 +70,12 @@
   }
 }
 .setting-video{
-  .ant-table-wrapper td{text-align: center}
-  .video-action{
-      a{
-        margin: 0 10px;
-      }
-  }
+  // .ant-table-wrapper td{text-align: center}
+  // .video-action{
+  //     a{
+  //       margin: 0 10px;
+  //     }
+  // }
   .abosulte1{
     position: absolute;
     right: 0;

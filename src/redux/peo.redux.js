@@ -183,7 +183,7 @@ export function getUwbRegionMap(info) {
     request.get(config.api.base + config.api.getUwbRegionMap,{ token: token,...info})
     .then(res=>{
       if(res.success&&res.dataObject) {
-        dispatch(dataSuccess({areaRealWidth:res.dataObject.width}))
+        dispatch(dataSuccess({areaRealWidth:res.dataObject.width,locationX: res.dataObject.locationX, locationY: res.dataObject.locationY}))
       }
     })
   }

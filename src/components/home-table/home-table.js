@@ -1,7 +1,7 @@
 import React from 'react'
 import {Tabs} from 'antd'
 import {connect} from 'react-redux'
-import { carPages,alarmPages,alarmCount,dataSuccess } from '../../redux/alarm.redux'
+import { carPages,alarmPages,alarmCount,dataSuccess,getCarDetail } from '../../redux/alarm.redux'
 import './home-table.scss'
 import HomeTableList from '../home-table-list/hometablelist'
 import CarsTable from './cars-table'
@@ -10,7 +10,7 @@ const TabPane = Tabs.TabPane;
 
 @connect(
   state => ({alarm:state.alarm,user:state.user}),
-  {carPages,alarmPages,alarmCount,dataSuccess}
+  {carPages,alarmPages,alarmCount,dataSuccess,getCarDetail}
 )
 class HomeTable extends React.Component {
   constructor() {
@@ -19,7 +19,6 @@ class HomeTable extends React.Component {
       top: window.innerHeight*0.6+'px'
     }
     this.moveIf = false 
-    this.onTabClick = this.onTabClick.bind(this)
     this.mouseDown = this.mouseDown.bind(this)
     this.mouseMove = this.mouseMove.bind(this)
     this.mouseUp = this.mouseUp.bind(this)
@@ -46,18 +45,17 @@ class HomeTable extends React.Component {
         console.log(e)
       }
       this.webSocket.onmessage = (e)=>{
-        if(e.data==='ALARM') {
-          this.props.alarmPages({pageNo:1})
+        if(e.data==='ALARM' ) {
+          this.props.alarmPages({pageNo:1,pageSize: 50})
           this.props.alarmCount()
+        }
+        if(e.data === 'CAR' ) {
+          this.props.carPages({pageNo: 1, pageSize: 10})
         }
       }
     }
   }
-  onTabClick(e) {
-    if(e==='3') {
-      this.props.carPages({pageNo:1})
-    }
-  }
+  
   mouseDown(ev) {
     ev = ev || window.event;
     ev.preventDefault()
@@ -92,8 +90,10 @@ class HomeTable extends React.Component {
         <TabPane tab="车辆" key="2">
         <CarsTable 
           alarmHeight={this.props.alarm.alarmHeight}
-          carPages={this.props.alarm.carPages}
-          pageChange={this.props.carPages} 
+          carPages={this.props.alarm.carPages} 
+          carPagesfn={this.props.carPages}
+          getCarDetail={this.props.getCarDetail}
+          carPic={this.props.alarm.carPic}
         />
         </TabPane>
       </Tabs>

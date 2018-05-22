@@ -212,7 +212,10 @@ module.exports = {
                     {
                       loader: require.resolve('less-loader'), // compiles Less to CSS
                       options: {
-                        "modifyVars":{"@primary-color":"#006f6b"}
+                        "modifyVars":{
+                          "@primary-color":"#006f6b",
+                          "@icon-url": JSON.stringify('http://192.168.1.51:8080/iconfont/iconfont')
+                        }
                       }
                     }
                   ],

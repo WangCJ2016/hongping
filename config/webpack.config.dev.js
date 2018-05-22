@@ -147,7 +147,7 @@ module.exports = {
             options: {
               plugins: [
                   // ['import', [{ libraryName: "antd", style: 'css' }]],
-                   ['import', [{ libraryName: "antd", style: true }]]  // 加载 less 文件
+                   ['import', [{ libraryName: "antd",style: true }]]  // 加载 less 文件
               ],
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -195,7 +195,10 @@ module.exports = {
               {
                 loader: require.resolve('less-loader'), // compiles Less to CSS
                 options: {
-                  "modifyVars":{"@primary-color":"#006f6b"}
+                  "modifyVars":{
+                    "@primary-color":"#006f6b",
+                    //"@icon-url": JSON.stringify('http://localhost:3000/iconfont/iconfont')
+                  }
                 }
               }
             ],

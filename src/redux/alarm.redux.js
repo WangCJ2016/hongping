@@ -64,7 +64,7 @@ export function alarmPages(info) {
     })
     .then(res => {
       if(res.success) {
-        dispatch(dataSuccess({alarmPageTotal:res.records}))
+        dispatch(dataSuccess({alarmPageTotal:res.records,alarmPageNo: info.pageNo}))
         dispatch(alarmPagesSuccess(res.result))
       }
     })
@@ -132,22 +132,42 @@ function carPagesSuccess(info) {
     payload: info
   }
 }
-export function carPages() {
+export function carPages(info) {
   return (dispatch,getState) => {
     const token = getState().user.account.token
     request.get(config.api.base + config.api.carPages,{
       token: token,
-      pageSize: 50
+      pageSize: 50,
+      ...info
     })
    .then(res=>{
-     if(res.success) {
-       const cars = res.result.map(car => ({...car,key:car.id}))
+     if(res.success&&res.result) {
+       if(info.deviceId) {
+        const cars = res.result.map(car => ({...car,key:car.id}))
+        dispatch(dataSuccess({picHistory: {...res,result:cars}, carPageNo: info.pageNo}))
+       }else{
+        const cars = res.result.map(car => ({...car,key:car.id}))
         dispatch(carPagesSuccess({...res,result:cars}))
+       }
      }
    })
   }
 }
-
+// getCarDetail
+export function getCarDetail(info) {
+  return (dispatch,getState) => {
+    const token = getState().user.account.token
+    request.get(config.api.base + config.api.getCarDetail,{
+      token: token,
+      ...info
+    })
+   .then(res=>{
+     if(res.success) {
+       dispatch(dataSuccess({carPic: 'data:image/jpeg;base64,'+res.dataObject.picture}))
+     }
+   })
+  }
+}
 // 首页报警数量
 export function alarmCount() {
   return (dispatch,getState) => {

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Form, Icon, Input, Button } from 'antd';
 import { connect } from 'react-redux'
+
 import './login.scss'
 import { login,getMenu } from '../../redux/user.redux'
 const FormItem = Form.Item;
@@ -21,7 +22,7 @@ class Login extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <div className='login-page'>
+      <div className='login-page'>     
       <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">
           <h4 className='title'>五系统一中心平台</h4>
           <FormItem>

@@ -29,8 +29,8 @@ class VideoPlayBackByTime extends React.Component {
             locale={locale}
           />
         </div>
-        <div className='lable-item'>
-          <span style={{marginRight:'15px'}}>结束时间</span>
+        <div className='lable-item' >
+          <span style={{marginRight:'15px', marginTop: '20px'}}>结束时间</span>
           <DatePicker
             showTime
             format="YYYY-MM-DD HH:mm:ss"
