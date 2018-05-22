@@ -60,7 +60,7 @@ class PeoSider extends React.Component {
      return <div className={styles} key={peo.peopleIdEx} >
             <div>{peo.peopleName}</div>
             <div>{peo.phone}</div>
-            <div>{peo.department.deptName}</div>
+            <div>{peo.department?peo.department.deptName:''}</div>
             <a onClick={()=>{this.setState({peopleIdExSelect:peo.peopleIdEx,peoTrailPage:true});this.props.peoTrailSuccess({trails:[]})}}  style={{padding:'10px',position:'absolute',marginLeft:'20px',right:'20px',top:'10px'}} >
               <img src={require('../../assets/imgs/trail_icon.png')} alt=""/>
             </a>

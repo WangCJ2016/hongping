@@ -78,8 +78,8 @@ class UserCenter1 extends React.Component {
             </FormItem>
             <FormItem label="请输入旧密码">
               {getFieldDecorator('oldpsw',{
-                initialValue: this.props.user.account?this.props.user.account.password:''
-              })(<Input disabled type="text" />)}
+                rules: [{ required: true,message: '请输入旧密码'  }],
+              })(<Input type="text" />)}
             </FormItem>
             <FormItem label="请输入新密码">
               {getFieldDecorator('newpsw',{

@@ -24,9 +24,10 @@ class Trail extends React.Component {
     this.changeTrailRender = this.changeTrailRender.bind(this)
   }
   componentWillReceiveProps(nextProps) {
-    if(nextProps.peo.picture&&nextProps.peo.areaRealWidth ) {
+    console.log(nextProps.peo)
+    if(nextProps.peo.picture&&nextProps.peo.areaRealWidth&&nextProps.peo.traildetail) {
       setTimeout(()=>{
-        this.canvasRender()
+        this.canvasRender(nextProps.peo)
       })
     }
 
@@ -39,37 +40,40 @@ class Trail extends React.Component {
     this.props.getUwbRegionMap({name: encodeURI(decodeURI(name))})
   }
 
-  canvasRender() {
-    if(!this.props.peo.trailWeather) return
+  canvasRender({traildetail}) {
+    //if(this.props.peo.trailWeather) return
     const canvas = this.canvas
     canvas.width=this.outDiv.offsetWidth
     canvas.height=this.outDiv.offsetHeight
     const context = canvas.getContext("2d");
     context.clearRect(0,0,canvas.width,canvas.height)
-    const trails = this.props.peo.traildetail
-    const ratio = canvas.width/this.props.peo.areaRealWidth 
-    
+    const trails = traildetail
+    const ratio = canvas.width / this.props.peo.areaRealWidth 
+    const locationX = this.props.peo.locationX 
+    const locationY = this.props.peo.locationY 
     //设置对象起始点和终点
     trails.forEach(trail => {
-      context.lineTo(ratio * trail.locationX,ratio * trail.locationY);
+      context.lineTo(ratio * (trail.locationX - locationX), (ratio * trail.locationY - locationY));
     }) 
    //设置样式
     context.lineWidth = 4;
     context.strokeStyle = "red";
     //绘制
     context.stroke();
-    this.props.dataSuccess({trailWeather:false})
+    //this.props.dataSuccess({trailWeather:true})
     this.setState({
       trail: trails[0]
     })
   }
   changeTrailRender = (trail) => {
-    if(!this.canvas) return
+    if(!this.canvas || !trail) return
+    const locationX = this.props.peo.locationX 
+    const locationY = this.props.peo.locationY 
     const canvas = this.canvas
     const ratio = canvas.width / this.props.peo.areaRealWidth 
     return (
       <Tooltip  title={trail.reportTime}>
-        <div className='activeTrail' style={{left:ratio * trail.locationX-5,top:ratio * trail.locationY-20}}>
+        <div className='activeTrail' style={{left:(ratio * trail.locationX-5 - locationX),top:(ratio * trail.locationY-20-locationY)}}>
           <Icon type="user" style={{color:'red'}} />
         </div>
       </Tooltip>
@@ -78,6 +82,8 @@ class Trail extends React.Component {
   peoTipRender = () => {
     if(!this.canvas) return
     const canvas = this.canvas
+    const locationX = this.props.peo.locationX 
+    const locationY = this.props.peo.locationY 
     const ratio = canvas.width / this.props.peo.areaRealWidth 
     const trails = this.props.peo.traildetail
     const peoTipArr = []
@@ -86,7 +92,7 @@ class Trail extends React.Component {
       if(index%20===0) {
         peoTipArr.push(
           <Tooltip key={index} title={trail.reportTime}>
-            <div className="tipPeo" style={{left:ratio * trail.locationX-5,top:ratio * trail.locationY-5}}></div>
+            <div className="tipPeo" style={{left:(ratio * trail.locationX-5-locationX),top:(ratio * trail.locationY-5-locationY)}}></div>
           </Tooltip>
         )
       }
@@ -161,7 +167,7 @@ class Trail extends React.Component {
                 你的浏览器还不支持canvas
               </canvas>
               <img id='img' src={this.props.peo.picture}  alt="" />
-              {this.state.trail?this.changeTrailRender(this.state.trail):null}
+              {this.changeTrailRender(this.state.trail)}
               
             </div>
             :
