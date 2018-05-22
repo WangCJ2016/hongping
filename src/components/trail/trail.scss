@@ -1,8 +1,9 @@
 .peo-trail{
-  display:inline-block;
-  position:relative;
+  position: absolute;
   top:0;
+  right: 0;
   z-index:0;
+  overflow: auto;
   transition: left 0.2s
 }
 .canvas{

@@ -24,7 +24,14 @@ class Trail extends React.Component {
     this.changeTrailRender = this.changeTrailRender.bind(this)
   }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.peo)
+    if(nextProps.peo.picture!==this.props.peo.picture) {
+      this.end()
+      this.setState({
+        animation:true,
+        count:0,
+        time: 100
+      })
+    }
     if(nextProps.peo.picture&&nextProps.peo.areaRealWidth&&nextProps.peo.traildetail) {
       setTimeout(()=>{
         this.canvasRender(nextProps.peo)
@@ -33,6 +40,7 @@ class Trail extends React.Component {
 
   }
   componentDidMount() {
+    console.log(1)
     const queryArr = this.props.location.search.slice(1).split('&')
     const id = queryArr[0].split('=')[1]
     const name = (queryArr[1].split('=')[1])
@@ -40,7 +48,7 @@ class Trail extends React.Component {
     this.props.getUwbRegionMap({name: encodeURI(decodeURI(name))})
   }
 
-  canvasRender({traildetail}) {
+  canvasRender({traildetail,locationX,locationY}) {
     //if(this.props.peo.trailWeather) return
     const canvas = this.canvas
     canvas.width=this.outDiv.offsetWidth
@@ -49,11 +57,9 @@ class Trail extends React.Component {
     context.clearRect(0,0,canvas.width,canvas.height)
     const trails = traildetail
     const ratio = canvas.width / this.props.peo.areaRealWidth 
-    const locationX = this.props.peo.locationX 
-    const locationY = this.props.peo.locationY 
     //设置对象起始点和终点
     trails.forEach(trail => {
-      context.lineTo(ratio * (trail.locationX - locationX), (ratio * trail.locationY - locationY));
+      context.lineTo(ratio * (trail.locationX - locationX ), ratio * (trail.locationY - locationY ));
     }) 
    //设置样式
     context.lineWidth = 4;
@@ -73,7 +79,7 @@ class Trail extends React.Component {
     const ratio = canvas.width / this.props.peo.areaRealWidth 
     return (
       <Tooltip  title={trail.reportTime}>
-        <div className='activeTrail' style={{left:(ratio * trail.locationX-5 - locationX),top:(ratio * trail.locationY-20-locationY)}}>
+        <div className='activeTrail' style={{left:ratio * (trail.locationX-5 - locationX ),top:ratio * (trail.locationY-20- locationY)}}>
           <Icon type="user" style={{color:'red'}} />
         </div>
       </Tooltip>
@@ -92,7 +98,7 @@ class Trail extends React.Component {
       if(index%20===0) {
         peoTipArr.push(
           <Tooltip key={index} title={trail.reportTime}>
-            <div className="tipPeo" style={{left:(ratio * trail.locationX-5-locationX),top:(ratio * trail.locationY-5-locationY)}}></div>
+            <div className="tipPeo" style={{left:ratio * (trail.locationX-5-locationX),top:ratio * (trail.locationY-5-locationY)}}></div>
           </Tooltip>
         )
       }
