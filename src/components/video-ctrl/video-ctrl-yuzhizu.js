@@ -88,10 +88,10 @@ class VideoCtrlYuzhizu1 extends React.Component {
       {lists.map((list,index) => (
         <Panel header={list.title} key={list.id}>
           <div className='abosulte1' >
-            <Icon type='plus' onClick={()=> this.previewsGroupClick(list)}/>
-            <Icon type='edit' onClick={()=>{this.setState({selectPreview:list,editvisible:true});this.props.modalVisiable()}} />
+            <Icon type='plus' style={{cursor: 'pointer'}} onClick={()=> this.previewsGroupClick(list)}/>
+            <Icon type='edit' style={{cursor: 'pointer'}} onClick={()=>{this.setState({selectPreview:list,editvisible:true});this.props.modalVisiable()}} />
             <Popconfirm  title="确定删除?" onConfirm={this.confirm.bind(this)}   okText="确定" cancelText="取消">
-              <Icon onClick={()=>this.setState({selectPreview:list})} type='delete'/>
+              <Icon style={{cursor: 'pointer'}} onClick={()=>this.setState({selectPreview:list})} type='delete'/>
             </Popconfirm>
           </div>
           {list.previews.map(preview=>{
@@ -151,7 +151,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
         <div className='yuzhiwei'>
-            <div style={{ cursor: 'pointer'}} onClick={()=>{this.setState({createvisible:true});this.props.modalVisiable()}}>
+            <div style={{ cursor: 'pointer',marginLeft: '10px',fontSize: '16px'}} onClick={()=>{this.setState({createvisible:true});this.props.modalVisiable()}}>
               <Icon type='plus'/>添加预览组
             </div>
             {this.previewsGroupRender()}

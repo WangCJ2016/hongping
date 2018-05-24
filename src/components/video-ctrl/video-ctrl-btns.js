@@ -92,6 +92,7 @@ class VideoCtrlBtn1 extends React.Component {
                 <img src={require('../../assets/imgs/video_full.png')} onClick={this.props.fullscreen} alt=""/>
               </Tooltip>
               <div className="controls-btn" onClick={this.props.stopPlay}><Icon type="poweroff" />关闭通道</div>
+              <div className="controls-btn" onClick={this.props.stopAllPlay}><Icon type="poweroff" />关闭所有</div>
               <div  onClick={this.addModalVisible.bind(this)} className="controls-btn"><Icon type="plus" />添加预置位</div>
               <div style={{position:'relative',display:'inline-block'}}>
                 <div className="controls-btn" onClick={()=>this.setState({yuzhiweiVisible:!this.state.yuzhiweiVisible})}>调用预置位 {this.state.yuzhiweiVisible?<Icon type='down'/>:<Icon type='up'/>}

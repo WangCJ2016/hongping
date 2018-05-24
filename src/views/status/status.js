@@ -21,6 +21,11 @@ const columns = [{
     title: '状态',
     dataIndex: 'status',
     key: 'status',
+    render: (text) => (
+      <span style={{color: text==='失败'?'red':'#d8d8d8'}}>
+        {text}
+      </span>
+    )
   },{
     title: 'cpu利用率',
     dataIndex: 'CpuPercent',
@@ -42,6 +47,11 @@ const columns2 = [{
     title: '状态',
     dataIndex: 'status',
     key: 'status',
+    render: (text) => (
+      <span style={{color: text==='失败'?'red':'#d8d8d8'}}>
+        {text}
+      </span>
+    )
 }]
 const columns3 = [{
     title: '主机名称',
@@ -59,6 +69,11 @@ const columns3 = [{
   title: '状态',
   dataIndex: 'status',
   key: 'status',
+  render: (text) => (
+    <span style={{color: text==='失败'?'red':'#d8d8d8'}}>
+      {text}
+    </span>
+  )
 }]
 const columns4 = [{
     title: '名称',
@@ -85,6 +100,11 @@ const columns5 = [{
   title: '状态',
   dataIndex: 'status',
   key: 'status',
+  render: (text) => (
+      <span style={{color: text==='失败'?'red':'#d8d8d8'}}>
+        {text}
+      </span>
+    )
 }]
 const columns6 = [{
   title: '名称',
@@ -137,7 +157,10 @@ class Status extends React.Component {
             authMenu.indexOf('status-server')>-1?
             <TabPane tab="服务器" key="status-server">
               <Table 
-              loading={servers?false:true}
+                loading={servers?false:true}
+                pagination={{
+                  pageSize: 1000,
+                }}
                 columns={columns} 
                 dataSource={servers}></Table>
             </TabPane>:null
@@ -147,6 +170,7 @@ class Status extends React.Component {
             <TabPane tab="视频主机" key="status-host">
               <Table 
                   loading={videoHosts?false:true}
+                  pagination={{pageSize: 1000}}
                   columns={columns2} 
                   dataSource={videoHosts}></Table>
             </TabPane>:null
@@ -156,6 +180,7 @@ class Status extends React.Component {
             <TabPane tab="视频通道" key="status-channel">
               <Table
               loading={videoChannel?false:true}
+              pagination={{pageSize: 1000}}
               columns={columns3} 
               dataSource={videoChannel}></Table>
             </TabPane>:null
@@ -164,6 +189,7 @@ class Status extends React.Component {
             authMenu.indexOf('status-station')>-1? 
             <TabPane tab="人员基站" key="status-station">
               <Table
+              pagination={{pageSize: 1000}}
               loading={position?false:true}
               columns={columns4} 
               dataSource={position}></Table>
@@ -175,6 +201,7 @@ class Status extends React.Component {
             <TabPane tab="广播服务" key="status-broadcast">
             <Table
               loading={broadcastChannel?false:true}
+              pagination={{pageSize: 1000}}
               columns={columns5} 
               dataSource={broadcastChannel}></Table>
             </TabPane>:null
@@ -183,7 +210,8 @@ class Status extends React.Component {
           */}
           <TabPane tab="门禁" key="status-guard">
               <Table 
-              loading={guardList?false:true}
+                loading={guardList?false:true}
+                pagination={{pageSize: 1000}}
                 columns={columns6} 
                 rowKey={(record,index)=>index}
                 dataSource={guardList}></Table>

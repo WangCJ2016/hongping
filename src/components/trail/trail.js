@@ -37,10 +37,9 @@ class Trail extends React.Component {
         this.canvasRender(nextProps.peo)
       })
     }
-
   }
+  componentDidUpdate() {}
   componentDidMount() {
-    console.log(1)
     const queryArr = this.props.location.search.slice(1).split('&')
     const id = queryArr[0].split('=')[1]
     const name = (queryArr[1].split('=')[1])

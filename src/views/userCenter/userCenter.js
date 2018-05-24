@@ -24,9 +24,9 @@ class UserCenter1 extends React.Component {
   }
   componentDidMount() {
     this.setState({
-      videoPath:this.play.GetLocallPath(1),
-      picPath:this.play.GetLocallPath(2),
-      broadcastPath:this.broadcastPlay.GetLocallPath()
+      // videoPath:this.play.GetLocallPath(1),
+      // picPath:this.play.GetLocallPath(2),
+      // broadcastPath:this.broadcastPlay.GetLocallPath()
     })
   }
   confirm(rule, value, callback) {
@@ -51,9 +51,9 @@ class UserCenter1 extends React.Component {
           remark: encodeURI(account.remark),
           account:account.accountNo
         }
-        this.props.modifyAccount(data)
-        localStorage.removeItem('token')
-        window.location.replace("/login")
+         this.props.modifyAccount(data)
+         localStorage.removeItem('token')
+         this.props.history.push("login")
       }
     })
   }
@@ -74,7 +74,7 @@ class UserCenter1 extends React.Component {
             <FormItem label="名称">
               {getFieldDecorator('name',{
                 initialValue: this.props.user.account?this.props.user.account.name:''
-              })(<Input type="text" />)}
+              })(<Input disabled type="text" />)}
             </FormItem>
             <FormItem label="请输入旧密码">
               {getFieldDecorator('oldpsw',{

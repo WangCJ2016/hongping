@@ -109,3 +109,4 @@ export function getScreenLength(num) {
         return 16
     
 }
+

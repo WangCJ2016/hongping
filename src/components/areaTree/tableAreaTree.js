@@ -18,7 +18,7 @@ export default class TableAreaTree extends React.Component {
       this.onExpand = this.onExpand.bind(this)
     }
     componentDidMount(){
-        this.props.areaList()
+        this.props.areaList({roleId: localStorage.getItem('roleId')})
     }
  
     onExpand(expanded, record) {

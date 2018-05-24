@@ -32,6 +32,7 @@ export function login({username, password},cb) {
       if(res.success) {
         const resources = res.dataObject.resources
         localStorage.setItem('token', res.dataObject.account.token)
+        localStorage.setItem('roleId', res.dataObject.account.roleId)
         const data = res.dataObject.resources.module.map(item=>item.resourceUrl)
         dispatch(authSuccess({account:res.dataObject.account,resources:resources,authMenu:data}))
         getMenu(res.dataObject.account.token)(dispatch)
@@ -50,6 +51,7 @@ export function getInfo(token){
       if(res.success) {
         const resources = res.dataObject.resources
         localStorage.setItem('token', res.dataObject.account.token)
+        localStorage.setItem('roleId', res.dataObject.account.roleId)
         const data = res.dataObject.resources.module.map(item=>item.resourceUrl)
         dispatch(authSuccess({account:res.dataObject.account,resources:resources,authMenu:data}))
       }else {

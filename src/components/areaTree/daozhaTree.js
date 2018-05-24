@@ -19,7 +19,7 @@ export default class DaozhaTree extends React.Component {
       this.onChange = this.onChange.bind(this)
     }
     componentDidMount(){
-        this.props.areaList()
+        this.props.areaList({roleId: localStorage.getItem('roleId')})
     }
  
     onExpand(expanded, record) {

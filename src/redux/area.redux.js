@@ -34,7 +34,8 @@ const initalState = {
   areas_hongwaiDevices: [],
   areas_guardDevices: [],
   areas_daozhaDevices: [],
-  firstAreaId: ''
+  firstAreaId: '',
+  role_allArea: []
 }
 
 export function area(state=initalState, action) {
@@ -226,7 +227,7 @@ function leavlTopAreas(data) {
   }
 }
 export function areaList(info) {
-  return dispatch=>{
+  return (dispatch,getState)=>{
       const token = localStorage.getItem('token')
       request.get(config.api.base + config.api.areaLists,{token:token,pageNo:1,pageSize:1000, ...info})
       .then(res=>{
@@ -246,13 +247,27 @@ export function areaList(info) {
             parentId: '',
             level: area.level,
             children:[]}))
-          dispatch(firstAreaId(level1[0].id))
+          if(level1[0]) {
+            dispatch(firstAreaId(level1[0].id))
+          }
           dispatch(leavlTopAreas(level1))
           dispatch(areaListSuccess(fullTree(level1,arealist)))
           dispatch(allAreas(arealist))
         }
       })
   }
+}
+export function getAllAreaList() {
+  return (dispatch)=>{
+    const token = localStorage.getItem('token')
+    request.get(config.api.base + config.api.areaLists,{token:token,pageNo:1,pageSize:1000,})
+    .then(res=>{
+      if(res.success) {
+        const level1 = res.result.filter(area => area.level===0)
+        dispatch(dataSuccess({role_allArea: res.result,role_leaveltop:level1}))
+      }
+    })
+}
 }
 // 含有设备的视频区域树
 function addAreaDevice(data) {

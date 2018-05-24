@@ -1,7 +1,6 @@
 import React from 'react'
 import { Icon, Modal, Tabs, Tree, Table } from 'antd'
 import { connect } from 'react-redux'
-import {areaList} from '../../redux/area.redux'
 import { toTypeStr } from '../../utils'
 import { areaDevices1,allDevices,addDevices } from '../../redux/setting.device.redux'
 import AreaTree from '../areaTree/areaTree'
@@ -12,7 +11,7 @@ const TabPane = Tabs.TabPane;
 @connect(
   state=>({deivces:state.devices,area:state.area}),
   {
-   areaList,areaDevices1,allDevices,addDevices
+     areaDevices1,allDevices,addDevices
   }
 )
 class SettingVideoAreatoDevice extends React.Component {

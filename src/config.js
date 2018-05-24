@@ -17,6 +17,7 @@ export const config = {
     login: '/do_login', // 登录
    
     areaLists: '/area_queryAreasPage', //区域列表
+    getAllAreaList: '/queryAllAreasPage',
     juniorArea: '/area_queryAreas', // 获取下级区域
     createAreas: '/area_createAreas',  // 添加区域
     modifyArea: '/area_modifyAreas', // 修改／删除区域

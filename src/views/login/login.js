@@ -29,7 +29,7 @@ class Login extends React.Component {
             {getFieldDecorator('userName', {
               rules: [{ required: true, message: '请输入用户名！' }],
             })(
-              <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} maxLength='10' type='text' placeholder="请输入账号" />
+              <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} maxLength='20' type='text' placeholder="请输入账号" />
             )}
           </FormItem>
           <FormItem>

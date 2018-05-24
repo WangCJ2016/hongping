@@ -29,7 +29,7 @@ class SettingMap extends React.Component {
        this.props.selectAreaIdSuccess(areaId)
   }
   componentDidMount() {
-    this.props.areaList()
+    this.props.areaList({roleId: localStorage.getItem('roleId')})
   }
   // 设备渲染
   deviceRender() {

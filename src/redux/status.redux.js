@@ -4,7 +4,8 @@ import { alarmType } from '../utils'
 const intialState = {
   GetSoftServer:[],
   historyStatisticsChartList:[],
-  historyTotal:0
+  historyTotal:0,
+  servers:[]
 }
 
 const DATASUCCESS = '[status] datasuccess'

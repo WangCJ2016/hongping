@@ -8,22 +8,24 @@ import { role_queryAreas,
          createRole,
          role_roleInfo,
          authorityList,
-         accountList,dataSuccess } from '../../redux/role.redux'
-import {areaList} from '../../redux/area.redux'
+         accountList,
+         dataSuccess } from '../../redux/role.redux'
+import {getAllAreaList,areaList} from '../../redux/area.redux'
 const TabPane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
 const FormItem = Form.Item;
 
 @connect(
-  state=>({role:state.role,area:state.area,user:state.user}),
+  state=>({role:state.role,allArea:state.area.role_allArea,authAllAreas: state.area.allAreas,user:state.user}),
   {role_queryAreas, 
    rolesList, 
    modifyRole, 
    createRole, 
-   role_roleInfo,
-   areaList, 
+   role_roleInfo, 
    authorityList,
+   getAllAreaList,
    accountList,
+   areaList,
    dataSuccess}
 )
 class SettingUserRole1 extends React.Component {
@@ -42,14 +44,13 @@ class SettingUserRole1 extends React.Component {
   }
   componentDidMount() {
     this.props.rolesList()
-    if(this.props.area.areas.length===0) {
-      this.props.areaList()
-    }
+    this.props.getAllAreaList()
   }
   changeRole(index,id) {
     this.setState({selectRoleIndex:index},function() {
       this.props.accountList({roleId: id})
       this.props.role_roleInfo({id:id})
+      this.props.areaList({roleId: id})
     })
   }
   // 打开编辑modal
@@ -124,7 +125,7 @@ class SettingUserRole1 extends React.Component {
     })
   }
   setAuthoritySubmit(){
-    this.props.modifyRole({id: this.props.role.roles[this.state.selectRoleIndex].id,resourceIds:this.state.checkedKeys.join(',')})
+    this.props.modifyRole({id: this.props.role.roles[this.state.selectRoleIndex].id,resourceIds:this.state.checkedKeys.join(','),areaIds: this.state.areaCheckKeys.join(',')})
     this.setState({
       roleSetVisible: false,
     })
@@ -136,43 +137,96 @@ class SettingUserRole1 extends React.Component {
     defaultCheckedKeys=defaultCheckedKeys?defaultCheckedKeys:[]
     return  <Tabs tabPosition='left' defaultActiveKey="1" >
     <TabPane tab="功能" key="1">
-    <Tree
-        checkable
-        onCheck={this.onCheck}
-        defaultCheckedKeys={defaultCheckedKeys}
-      >
-        <TreeNode title="应急中心" key="4" />
-        <TreeNode title="视频监控" key="7" >
-          <TreeNode title="视频监控" key="5"  />
-          <TreeNode title="录像回放" key="6" />
-        </TreeNode>
-        <TreeNode title="巡更管理" key="11" >
-          <TreeNode title="巡更任务" key="8"  />
-          <TreeNode title="巡更上传" key="9" />
-          <TreeNode title="巡更历史" key="10" />
-        </TreeNode>
-        <TreeNode title="实时状态" key="17"  >
-          <TreeNode title="服务器" key="12"  />
-          <TreeNode title="视频主机" key="13" />
-          <TreeNode title="视频通道" key="14" />
-          <TreeNode title="人员基站" key="15" />
-          <TreeNode title="广播服务" key="16" />
-        </TreeNode>
-        <TreeNode title="历史分析" key="18"  />
-        <TreeNode title="文档管理" key="25"  />
-        <TreeNode title="个人设置" key="19"  />
-        <TreeNode title="系统设置" key="24">
-          <TreeNode title="区域管理" key="20"  />
-          <TreeNode title="用户&角色" key="21" />
-          <TreeNode title="设备配置" key="22" />
-          <TreeNode title="地图设置" key="23" />
-        </TreeNode>
-    </Tree>
+        <Tree
+            checkable
+            onCheck={this.onCheck}
+            defaultCheckedKeys={defaultCheckedKeys}
+          >
+            <TreeNode title="应急中心" key="4" />
+            <TreeNode title="视频监控" key="7" >
+              <TreeNode title="视频监控" key="5"  />
+              <TreeNode title="录像回放" key="6" />
+            </TreeNode>
+            <TreeNode title="巡更管理" key="11" >
+              <TreeNode title="巡更任务" key="8"  />
+              <TreeNode title="巡更上传" key="9" />
+              <TreeNode title="巡更历史" key="10" />
+            </TreeNode>
+            <TreeNode title="实时状态" key="17"  >
+              <TreeNode title="服务器" key="12"  />
+              <TreeNode title="视频主机" key="13" />
+              <TreeNode title="视频通道" key="14" />
+              <TreeNode title="人员基站" key="15" />
+              <TreeNode title="广播服务" key="16" />
+            </TreeNode>
+            <TreeNode title="历史分析" key="18"  />
+            <TreeNode title="文档管理" key="25"  />
+            <TreeNode title="个人设置" key="19"  />
+            <TreeNode title="系统设置" key="24">
+              <TreeNode title="区域管理" key="20"  />
+              <TreeNode title="用户&角色" key="21" />
+              <TreeNode title="设备配置" key="22" />
+              <TreeNode title="地图设置" key="23" />
+            </TreeNode>
+        </Tree>
+    </TabPane>
+    <TabPane tab="区域" key="2">
+        {this.areaTreeRender()}
     </TabPane>
   </Tabs>
   }
+  areaTreeRender = () => {
+    if(this.props.allArea.length === 0) return
+    const checkableIds = this.props.authAllAreas.map(area => area.id)
+    const areas = this.props.allArea.filter(area => area.level===0)
+    const arealist = this.props.allArea
+   return (
+    <Tree
+      checkable
+      defaultCheckedKeys={checkableIds}
+      onCheck={this.onCheckArea}
+      defaultExpandAll={true}
+      checkStrictly
+      >
+      { areas.map((level1,index) => {
+        return (
+          <TreeNode title={<span>
+            {level1.name}
+            </span>} key={level1.id}>
+            {toTree(level1.id,arealist)}
+          </TreeNode>
+        )
+      })}
+    </Tree>
+   )
+    function toTree(id, array) {
+      const childArr = childrenArr(id, array)
+      if(childArr.length > 0) {
+        return childArr.map((child,index) => (
+          <TreeNode key={child.id} title={<span>
+            {child.name}
+            </span>} >
+            {toTree(child.id, array)}
+          </TreeNode>
+        ))
+      }
+    }
+    function childrenArr(id, array) {
+      var newArry = []
+      for (var i in array) {
+          if (array[i].parentId === id)
+              newArry.push(array[i]);
+      }
+      return newArry;
+    }
+  }
+  onCheckArea = (checkedKeys) => {
+    this.setState({
+      areaCheckKeys: checkedKeys.checked
+    }) 
+  }
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator } = this.props.form
     return (
       <div className="setting-user-role float-left">
           <div className="title role">角色<div className='abosulte' onClick={()=>this.setState({createRoleVisible:true})}><Icon type='plus'/></div></div>

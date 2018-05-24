@@ -40,7 +40,7 @@ class SettingUserPeople1 extends React.Component {
       role_selected: this.state.selectIndex === index
     })
     return  (
-      <div className={style} style={{textAlign:'left',padding:'0 30px'}} key={people.id}>
+      <div className={style} style={{textAlign:'left',padding:'0 30px'}} onClick={()=>this.setState({selectIndex: index})} key={people.id}>
         {people.name}
         <div className='abosulte'>
           <a onClick={()=>this.setState({peopleEditVisible: true})}>
@@ -103,6 +103,7 @@ class SettingUserPeople1 extends React.Component {
     const roleInfo = this.props.role.roleInfo
     const selectedPeople = this.props.role.peopleList[this.state.selectIndex]
     const { getFieldDecorator } = this.props.form
+  
     return (
       <div className="setting-user-role float-right" style={{width:'65%'}}>
           <div className="title role">人员{this.props.role.roleInfo.id?<div className='abosulte' onClick={()=>this.setState({creatPeopleVisible:true})}><Icon type='plus'/></div>:null}</div>

@@ -28,7 +28,7 @@ export default class TableBroadcast extends React.Component {
      this.toTree = this.toTree.bind(this)
     }
     componentDidMount(){
-        this.props.areaList()
+        this.props.areaList({roleId: localStorage.getItem('roleId')})
     }
     onChange(index,e) {
       if(e.target.checked) {

@@ -110,7 +110,6 @@ export function uploadFile(info) {
       mode: 'cors',
       body : formData  
     })
-    .then(res=>res.json())
     .then(res=>{
       if(res.success){
          filesList({categoryId:info.categoryId})(dispatch)
