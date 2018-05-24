@@ -319,3 +319,21 @@ export function modifyAccount(info) {
       })
   }
 }
+
+export function modifyPassword(info,cb) {
+  return (dispatch,getState)=>{
+    
+    const token = localStorage.getItem('token')
+      request.get(config.api.base + config.api.modifyPassword,{
+        token:token,
+        ...info
+      })
+      .then(res=>{
+        if(res.success) {
+          cb?cb():null
+        }else{
+          message.error(res.msg)
+        }
+      })
+  }
+}

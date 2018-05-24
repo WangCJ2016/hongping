@@ -28,6 +28,7 @@ export const config = {
   
     getInfo: '/do_getAccountInfo',  // (获取角色)
     getMenu: '/role_queryResources', // 获取菜单
+    modifyPassword: '/account_modifyPassword',
     rolesList:'/role_queryRolePage', // 角色列表
     authorityList: '/role_queryResources', // 权限菜单
     modifyRole: '/role_modifyRole', // 修改角色名称

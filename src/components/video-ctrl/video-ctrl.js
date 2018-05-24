@@ -84,7 +84,7 @@ class VideoCtrl extends React.Component {
   stopPlay() {
    this.play.XzVideo_RealPlayStop(0)
   }
-  stopAllPlay() {
+  stopAllPlay= () => {
     this.play.XzVideo_RealPlayStopAll()
   }
   // 道闸控制

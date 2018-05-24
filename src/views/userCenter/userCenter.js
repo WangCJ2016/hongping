@@ -2,14 +2,14 @@ import React from 'react'
 import { Tabs,Form,Input,Button } from 'antd'
 import './userCenter.scss'
 import {connect} from 'react-redux'
-import {modifyAccount} from '../../redux/role.redux'
+import {modifyPassword} from '../../redux/role.redux'
 import {TitleCom,ContentCom}  from '../../components/userCenterCom/titleCom'
 const TabPane = Tabs.TabPane
 const FormItem = Form.Item
 
 @connect(
   state=>({user:state.user}),
-  {modifyAccount}
+  {modifyPassword}
 )
 class UserCenter1 extends React.Component {
   constructor() {
@@ -43,17 +43,12 @@ class UserCenter1 extends React.Component {
         const account = this.props.user.account
         const data = {
           id: account.id,
-          password: values.newpsw,
-          name: encodeURI(account.name),
-          telephone: account.telephone,
-          roleId: account.roleId,
-          department: encodeURI(account.department),
-          remark: encodeURI(account.remark),
-          account:account.accountNo
+          newPassword: values.newpsw,
+          oldPassword: values.oldpsw
         }
-         this.props.modifyAccount(data)
+         this.props.modifyPassword(data,()=>this.props.history.push("login"))
          localStorage.removeItem('token')
-         this.props.history.push("login")
+         
       }
     })
   }
