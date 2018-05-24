@@ -17,7 +17,7 @@ export default class AreaTree extends React.Component {
       selectKey: []
     }
     componentDidMount(){
-        this.props.areaList()
+        this.props.areaList({roleId: localStorage.getItem('roleId')})
     }
  
     select(e) {

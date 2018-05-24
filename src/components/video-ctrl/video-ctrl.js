@@ -84,6 +84,9 @@ class VideoCtrl extends React.Component {
   stopPlay() {
    this.play.XzVideo_RealPlayStop(0)
   }
+  stopAllPlay() {
+    this.play.XzVideo_RealPlayStopAll()
+  }
   // 道闸控制
   remoteCtrl(num) {
     const a=this.play.XzVideo_RemoteControl_Barriergate(num,1,9,0)
@@ -129,6 +132,7 @@ class VideoCtrl extends React.Component {
             realCapPicture={this.realCapPicture}
             saveRealData={this.saveRealData}
             stopPlay={this.stopPlay}
+            stopAllPlay={this.stopAllPlay}
             setScreen={this.setScreen} 
             videoProps={this.props.video}
             presets={this.props.video.presets}

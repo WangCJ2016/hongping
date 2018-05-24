@@ -18,7 +18,7 @@ class SettingVideo extends React.Component {
   state = {  }
   tabClick(e) {
     if(e === '5') {
-      this.props.areaList()
+      this.props.areaList({roleId: localStorage.getItem('roleId')})
       
     }
   }

@@ -106,6 +106,8 @@ class PeoSider extends React.Component {
     this.setState({endTime: dateString})
   }
   render() {
+    const reducer = (accumulator, currentValue) => accumulator + accumulator+(currentValue.personCount?currentValue.personCount:0)
+    const peoCountAll = this.props.peo.peoList.reduce(reducer,0)
     if(!this.props.sidebar.people_sidebar) {
       return null
     }
@@ -129,7 +131,7 @@ class PeoSider extends React.Component {
               onSearch={value => this.props.searchPeo({name:encodeURI(value)})} 
             />
           <Tabs defaultActiveKey="1" onChange={(e)=>this.setState({tab: e})}>
-            <TabPane tab="人员动态" key="1">
+            <TabPane tab={`人员动态(${peoCountAll})`} key="1">
                <PeoCom changeMenu={this.changeMenu} peoList={this.props.peo.peoList} ></PeoCom>
             </TabPane>
             <TabPane tab="部门" key="2">

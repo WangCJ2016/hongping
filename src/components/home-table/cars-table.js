@@ -37,16 +37,6 @@ class CarsTable extends React.Component {
           width:100,
           key: 'gate', 
         },{
-          title: '外形描述',
-          dataIndex: 'outline',
-          width:100,
-          key: 'outline', 
-          render: (text,record)=>(
-            <span>
-              <span>{record.outline}</span>
-            </span>
-          )
-        },{
           title: '查看图片', 
           dataIndex: 'picture',
           width:100,

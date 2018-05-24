@@ -3,6 +3,7 @@ import { Icon,Modal,Form,Input,Table,Popconfirm } from 'antd'
 import { connect } from 'react-redux'
 import { uploadFile,delFile } from '../../redux/document.redux'
 import FileSaver from 'file-saver'
+import base64 from 'base-64'
 
 const FormItem = Form.Item
 
@@ -39,9 +40,13 @@ class FilesList1 extends React.Component {
     this.props.delFile({id: id,categoryId:this.props.document.selectCategoryId,})
   }
   downloadFile(fileName, content){
-    var file = new Blob([content]);
-    FileSaver.saveAs(file,fileName);
- }
+    var arr = content.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    } 
+    FileSaver.saveAs(new Blob([u8arr], { type: mime }),fileName);
+  }
   render() {
     const columns = [{
       title: 'title',
@@ -61,7 +66,7 @@ class FilesList1 extends React.Component {
       width:'50%',
       render: (text, record) => (
         <span>
-            <a href={record.content}  onClick={()=>this.downloadFile(record.title,record.content)}><Icon type='download'></Icon>下载</a>
+            <a  onClick={()=>this.downloadFile(record.title,record.content)}><Icon type='download'></Icon>下载</a>
             <Popconfirm onConfirm={this.delHandle.bind(this,record.id)} title="确定删除？"  okText="确定" cancelText="取消">
               <a style={{marginLeft:'15px'}}><Icon type='delete'></Icon>删除</a>
             </Popconfirm>
@@ -89,6 +94,7 @@ class FilesList1 extends React.Component {
           rowKey={(record)=>record.id}
           dataSource={this.props.document.filesList}
           ></Table>
+          <img src={this.state.blob||""} alt=""/>
         <Modal
           title="添加文件" 
           visible={this.state.addVisible}
