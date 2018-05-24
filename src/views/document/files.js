@@ -3,7 +3,6 @@ import { Icon,Modal,Form,Input,Table,Popconfirm } from 'antd'
 import { connect } from 'react-redux'
 import { uploadFile,delFile } from '../../redux/document.redux'
 import FileSaver from 'file-saver'
-import base64 from 'base-64'
 
 const FormItem = Form.Item
 

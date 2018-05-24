@@ -224,6 +224,7 @@ export function accountList(info) {
         ...info
       })
       .then(res=>{
+        console.log(res)
         if(res.success) {
           const people = res.result.map(person => ({
             id: person.id,
@@ -234,6 +235,7 @@ export function accountList(info) {
             remark: person.remark?person.remark:'',
             telephone: person.telephone
           }))
+          console.log(people)
           dispatch(accountLisSuccess(people))
         }
       })
