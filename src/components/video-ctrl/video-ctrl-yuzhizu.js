@@ -55,6 +55,7 @@ class VideoCtrlYuzhizu1 extends React.Component {
       if(!err) {
         this.props.modifyPreviewGroup({id:this.state.selectPreview.id,title: encodeURI(values.editname),devType:1})
         this.setState({editvisible: false})
+        this.props.modalVisiable()
         this.props.form.resetFields();
       }
     })
