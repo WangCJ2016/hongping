@@ -15,7 +15,8 @@ class Trail extends React.Component {
     this.state = {
       animation:true,
       count:0,
-      time: 100
+      time: 100,
+      trailWeather: false
     }
     this.start = this.start.bind(this)
     this.end = this.end.bind(this)
@@ -32,41 +33,56 @@ class Trail extends React.Component {
         time: 100
       })
     }
+
     if(nextProps.peo.picture&&nextProps.peo.areaRealWidth&&nextProps.peo.traildetail) {
-      setTimeout(()=>{
-        this.canvasRender(nextProps.peo)
-      })
+     // console.log(nextProps.peo)
+     
+       this.canvasRender(nextProps.peo)
+      
     }
   }
-  componentDidUpdate() {}
-  componentDidMount() {
+  
+ async componentDidMount() {
     const queryArr = this.props.location.search.slice(1).split('&')
     const id = queryArr[0].split('=')[1]
     const name = (queryArr[1].split('=')[1])
-    this.props.areaImg({id:id})
-    this.props.getUwbRegionMap({name: encodeURI(decodeURI(name))})
+    await this.props.areaImg({id:id})
+    setTimeout(()=>{
+      this.props.getUwbRegionMap({name: encodeURI(decodeURI(name))})
+    },1000)
   }
 
-  canvasRender({traildetail,locationX,locationY}) {
-    if(!this.props.peo.trailWeather) return
+  canvasRender({traildetail,locationX,locationY,trailWeather,areaRealWidth}) {
+   if(traildetail.length === 0) return
+   if(!this.outDiv) return
+   console.log(areaRealWidth)
+   if(!trailWeather) return
+  // console.log(traildetail.length)
+   //if(traildetail.length === this.props.peo.traildetail.length) return
+   
+   // this.props.dataSuccess({trailWeather:true})
+    //this.setState({trailWeather: true})
     const canvas = this.canvas
     canvas.width=this.outDiv.offsetWidth
     canvas.height=this.outDiv.offsetHeight
     const context = canvas.getContext("2d");
-    context.clearRect(0,0,canvas.width,canvas.height)
+    context.clearRect(0,0,10001,10000)
     const trails = traildetail
-    const ratio = canvas.width / this.props.peo.areaRealWidth 
+    const ratio = canvas.width / areaRealWidth 
     //设置对象起始点和终点
     trails.forEach(trail => {
       context.lineTo(ratio * (trail.locationX - locationX ), ratio * (trail.locationY - locationY ));
     }) 
+    this.props.dataSuccess({trailWeather: false})
    //设置样式
     context.lineWidth = 4;
     context.strokeStyle = "red";
     //绘制
+  
     context.stroke();
-    this.props.dataSuccess({trailWeather:false})
+ 
     this.setState({
+     // trailWeather: false,
       trail: trails[0]
     })
   }
@@ -154,6 +170,7 @@ class Trail extends React.Component {
     context.clearRect(0,0,canvas.width,canvas.height)
   }
   render() {
+    
     return (
       <div>
         <div style={{position:'absolute',left:'50%',zIndex:1}}>
@@ -162,11 +179,11 @@ class Trail extends React.Component {
             <Button type='primary' onClick={this.end}>暂停</Button>
             <Button type='primary' onClick={this.faster}>快进</Button>
             <Button type='primary' onClick={this.back}>回放</Button>
-          
+            <Button type='primary' onClick={this.clear}>清除</Button>  
           </Button.Group>    
         </div>
           {
-            this.props.peo.picture&&this.props.peo.areaRealWidth?
+            this.props.peo.picture?
             <div className='peo-trail' style={{left:this.props.sidebar.homeLeftIf?'300px':'0'}}  >
               <canvas ref={(canvas)=>this.canvas=canvas} className='canvas' >
                 你的浏览器还不支持canvas

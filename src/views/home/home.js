@@ -273,7 +273,7 @@ class Home extends React.Component {
   daozhaCtrl(e) {
     const device = this.props.deivces.devinfo
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'   
-    this.play.XzVideo_RemoteControl_BarriergateEX(1,this.props.user.account.name,config.api.controlServerIp,config.api.controlServerPort,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,+e,1,5)
+    this.play.XzVideo_RemoteControl_BarriergateEX(1,this.props.user.account.name,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,+e,1,5)
   }
   // 回放
   videoPlayBack(device) {

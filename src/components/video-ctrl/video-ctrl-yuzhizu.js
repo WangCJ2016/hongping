@@ -62,7 +62,8 @@ class VideoCtrlYuzhizu1 extends React.Component {
   }
   editPreviewSubmit() {
     this.props.modifySysRemotePreview({devIds:this.state.options.map(option=>option.value).join(','),devType:1,groupId:this.state.selectPreview.id})
-        this.setState({editPreviewVisible: false})
+    this.props.modalVisiable()
+    this.setState({editPreviewVisible: false})
   }
   // 删除
   confirm() {
