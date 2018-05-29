@@ -42,6 +42,7 @@ class WatchTaskTime1 extends React.Component {
     }:{
       rules: [{ required: true,message: '请填写任务时间'}],
     }
+    console.log(1)
     return (
       <div style={{marginBottom:'30px'}}>
       <Form layout="inline">

@@ -197,3 +197,16 @@ export function getUndoPatrolPoints(info) {
     })
   }
 }
+
+export function carsTotalNums() {
+  return (dispatch) => {
+    const token = localStorage.getItem('token')
+    request.get( config.api.base + config.api.carsTotalNums, {token:token})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        dispatch(dataSuccess({carsTotalNum: res.dataObject}))
+      }
+    })
+  }
+}

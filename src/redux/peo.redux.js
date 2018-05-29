@@ -49,7 +49,8 @@ export function getAllpeo(token){
     request.get(config.api.base + config.api.getAllpeo,{ token: token})
     .then(res=>{
       if(res.success&&res.dataObject) {
-        dispatch(getAllpeoSuccess({peoList:res.dataObject}))
+        const count = res.dataObject.reduce((total,currentValue)=>total+currentValue.personCount,0)
+        dispatch(getAllpeoSuccess({peoList:res.dataObject,personCount: count}))
       }
     })
   }

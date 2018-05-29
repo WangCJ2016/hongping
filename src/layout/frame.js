@@ -6,7 +6,7 @@ import className from 'classnames'
 import { connect } from 'react-redux'
 
 import { changeSidebar,dataSuccess } from '../redux/sidebar.redux'
-import { alarmCount,carPages } from '../redux/alarm.redux'
+import { alarmCount,carsTotalNums } from '../redux/alarm.redux'
 import { getAllpeo } from '../redux/peo.redux'
 import Loadable from 'react-loadable';
 import './frame.scss'
@@ -69,8 +69,8 @@ const Document = Loadable({
 const { Header, Content, Sider } = Layout;
 
 @connect(
-  state=>({user:state.user,alarm:state.alarm,sidebar:state.sidebar,installPlaceTimer: state.area.installPlaceTimer}),
-  {changeSidebar,alarmCount,dataSuccess,getAllpeo,carPages}
+  state=>({user:state.user,alarm:state.alarm,sidebar:state.sidebar,installPlaceTimer: state.area.installPlaceTimer,peoCount: state.peo.personCount}),
+  {changeSidebar,alarmCount,dataSuccess,getAllpeo,carsTotalNums}
 )
 
 class Frame extends React.Component {
@@ -86,7 +86,7 @@ class Frame extends React.Component {
   componentDidMount() {
    this.props.alarmCount()
    this.props.getAllpeo()
-   this.props.carPages({pageSize: 1})
+   this.props.carsTotalNums()
   }
   navRender() {
     const navArray = [
@@ -143,7 +143,7 @@ class Frame extends React.Component {
     }
   }
   render() {
-    
+    console.log(this.props)
     return (
       <Layout className='mylayout'>
       {
@@ -164,11 +164,11 @@ class Frame extends React.Component {
           </div>
           <div style={{marginLeft:'5px'}}>
              <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px'}}>人员总数</div>
-             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.alarm.alarmUndo}</div>
+             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.peoCount}</div>
           </div>
           <div style={{marginLeft:'5px'}}>
-             <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px'}}>车辆总数</div>
-             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.alarm.carPages.records}</div>
+             <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px'}}>车辆进出数</div>
+             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.alarm.carsTotalNum}</div>
           </div>
         </div>
         

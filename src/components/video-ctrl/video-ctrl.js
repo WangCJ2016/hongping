@@ -33,14 +33,24 @@ class VideoCtrl extends React.Component {
     this.setState({
       play: this.play
     })
-    // this.play.attachEvent('OnPlayErrorOut',(a,b,c)=>{
-    //   message.error(c)
-    // })
+    this.play.attachEvent('OnPlayErrorOut',(a,b,c)=>{
+      message.error(c)
+    })
+    this.play.attachEvent('OnSelectedRealPlayContextEx',(a,b,c,d,e) => {
+      this.setState({
+        selectChanle: e
+      })
+    })
   }
   componentWillUnmount(){
-    // this.play.detachEvent('OnPlayErrorOut',(a,b,c)=>{
-    //   message.error(c)
-    // })
+    this.play.detachEvent('OnPlayErrorOut',(a,b,c)=>{
+      message.error(c)
+    })
+    this.play.detachEvent('OnSelectedRealPlayContextEx',(a,b,c,d,e) => {
+      this.setState({
+        selectChanle: e
+      })
+    })
   }
   // 选择屏幕
   setScreen(index) {
@@ -131,6 +141,7 @@ class VideoCtrl extends React.Component {
               </object>
           <VideoCtrlBtn
             play={this.state.play}
+            selectChanle={this.state.selectChanle}
             style={{marginTop:'30px'}} 
             modalVisiable={this.props.modalVisiable}
             fullscreen={this.fullscreen}

@@ -31,29 +31,28 @@ class VideoCtrlBtn1 extends React.Component {
     }
   }
   addModalVisible() {
-    if(this.props.presets.channelId) {
+    if(this.props.selectChanle) {
       this.setState({visible:true});this.props.modalVisiable()
     }else{
       message.error("请先选择通道")
     }
   }
   submit(){
-    console.log(this.props.presets)
-    // this.props.form.validateFields((errors, values)=>{
-    //   if(!errors) {
-    //     this.props.createRemotePresets({
-    //       presetName: encodeURI(values.name),
-    //       channelId:this.props.presets.channelId,
-    //       presetId: this.props.presets.presets.length + 1
-    //     })
-    //     this.props.play.XzVideo_PreSet(8,this.props.presets.presets.length + 1,0)
-    //     this.setState({
-    //       visible: false
-    //     })
-    //     this.props.modalVisiable()
-    //     this.props.form.resetFields();
-    //   }
-    // })
+    this.props.form.validateFields((errors, values)=>{
+      if(!errors) {
+        this.props.createRemotePresets({
+          presetName: encodeURI(values.name),
+          channelId:this.props.selectChanle,
+          presetId: this.props.presets.presets.length + 1
+        })
+        this.props.play.XzVideo_PreSet(8,this.props.presets.presets.length + 1,0)
+        this.setState({
+          visible: false
+        })
+        this.props.modalVisiable()
+        this.props.form.resetFields();
+      }
+    })
   }
   presetsRender() {
     const presets = this.props.presets.presets
@@ -64,6 +63,18 @@ class VideoCtrlBtn1 extends React.Component {
         </Popconfirm>
       </li>
     ))
+  }
+  getYuzhiwei=()=>{
+    if(this.state.yuzhiweiVisible) {
+      this.setState({yuzhiweiVisible:!this.state.yuzhiweiVisible})
+      return
+    }
+    if(this.props.selectChanle) {
+      this.setState({yuzhiweiVisible:!this.state.yuzhiweiVisible})
+    }else{
+      message.error("请先选择播放通道")
+    }
+    
   }
   render() {
    
@@ -96,7 +107,7 @@ class VideoCtrlBtn1 extends React.Component {
               <div className="controls-btn" onClick={this.props.stopAllPlay}><Icon type="poweroff" />关闭所有</div>
               <div  onClick={this.addModalVisible.bind(this)} className="controls-btn"><Icon type="plus" />添加预置位</div>
               <div style={{position:'relative',display:'inline-block'}}>
-                <div className="controls-btn" onClick={()=>this.setState({yuzhiweiVisible:!this.state.yuzhiweiVisible})}>调用预置位 {this.state.yuzhiweiVisible?<Icon type='down'/>:<Icon type='up'/>}
+                <div className="controls-btn" onClick={this.getYuzhiwei}>调用预置位 {this.state.yuzhiweiVisible?<Icon type='down'/>:<Icon type='up'/>}
                 </div>
                 {
                   this.state.yuzhiweiVisible?

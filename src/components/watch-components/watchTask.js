@@ -112,7 +112,11 @@ class WatchTask1 extends React.Component {
     this.props.TaskPoints({taskId:record.id})
     this.props.dataSuccess({selectTask:record})
   }
+  onChange(a,b){
+    console.log(a,b)
+  }
   render() {
+    console.log(1)
     const { getFieldDecorator } = this.props.form
     const columns = [{
           title:'任务名称',
@@ -161,6 +165,7 @@ class WatchTask1 extends React.Component {
    
     return (
       <div>
+        
          <WatchTaskTime></WatchTaskTime>
          <Row>
            <Col span={11}>
