@@ -33,9 +33,15 @@ class VideoCtrl extends React.Component {
     this.setState({
       play: this.play
     })
-   
+    this.play.attachEvent('OnPlayErrorOut',(a,b,c)=>{
+      message.error(c)
+    })
   }
-  
+  componentWillUnmount(){
+    this.play.detachEvent('OnPlayErrorOut',(a,b,c)=>{
+      message.error(c)
+    })
+  }
   // 选择屏幕
   setScreen(index) {
     this.play.XzVideo_SetRealPlayScreen(index);  

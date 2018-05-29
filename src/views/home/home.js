@@ -73,11 +73,11 @@ class Home extends React.Component {
       this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
     }
   }
-  // componentWillUnMount(){
-  //   if(this.timer){
-  //     clearInterval(this.timer)
-  //   }
-  // }
+  componentWillUnMount(){
+    // this.play.attachEvent('OnPlayErrorOut',(a,b,c)=>{
+    //   message.error(c)
+    // })
+  }
   componentDidUpdate(nextProps,nextState) {
     if(this.props.area.areaInfo.picture&&(this.props.area.areaInfo.picture!==nextProps.area.areaInfo.picture)) {
       setTimeout(()=>{     
@@ -253,12 +253,16 @@ class Home extends React.Component {
   }
   // 预览
   videoPlay(device){ 
+    
     this.setState({
       videoVisible:true,
       deviceType: device.type
     },()=>{
       setTimeout(()=>{
         this.props.getDevInfo({devId:device.devId,type:device.type},'play',this.play)
+        this.play.attachEvent('OnPlayErrorOut',(a,b,c)=>{
+          message.error(c)
+        })
         this.setState({
           aa:''
         })
@@ -399,7 +403,9 @@ class Home extends React.Component {
           okText='确定'
           cancelText='取消' 
           footer={false}
-          onCancel={()=>{this.setState({videoVisible:false});this.play.XzVideo_RealPlayStop(0)}}
+          onCancel={()=>{this.setState({videoVisible:false});this.play.XzVideo_RealPlayStop(0);this.play.detachEvent('OnPlayErrorOut',(a,b,c)=>{
+            message.error(c)
+          })}}
           >
           <div className="clearfix">
             <div className="float-left" style={{width:'70%'}}>

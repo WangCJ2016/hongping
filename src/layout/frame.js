@@ -87,9 +87,6 @@ class Frame extends React.Component {
    this.props.alarmCount()
    this.props.getAllpeo()
    this.props.carPages({pageSize: 1})
-  //  window.attachEvent('OnPlayErrorOut',(e)=>{
-  //    console.log(e)
-  //  })
   }
   navRender() {
     const navArray = [
