@@ -134,7 +134,7 @@ function carPagesSuccess(info) {
 }
 export function carPages(info) {
   return (dispatch,getState) => {
-    const token = getState().user.account.token
+    const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.carPages,{
       token: token,
       pageSize: 50,

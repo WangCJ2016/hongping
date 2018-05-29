@@ -6,7 +6,8 @@ import className from 'classnames'
 import { connect } from 'react-redux'
 
 import { changeSidebar,dataSuccess } from '../redux/sidebar.redux'
-import { alarmCount } from '../redux/alarm.redux'
+import { alarmCount,carPages } from '../redux/alarm.redux'
+import { getAllpeo } from '../redux/peo.redux'
 import Loadable from 'react-loadable';
 import './frame.scss'
 
@@ -69,7 +70,7 @@ const { Header, Content, Sider } = Layout;
 
 @connect(
   state=>({user:state.user,alarm:state.alarm,sidebar:state.sidebar,installPlaceTimer: state.area.installPlaceTimer}),
-  {changeSidebar,alarmCount,dataSuccess}
+  {changeSidebar,alarmCount,dataSuccess,getAllpeo,carPages}
 )
 
 class Frame extends React.Component {
@@ -84,6 +85,11 @@ class Frame extends React.Component {
 
   componentDidMount() {
    this.props.alarmCount()
+   this.props.getAllpeo()
+   this.props.carPages({pageSize: 1})
+  //  window.attachEvent('OnPlayErrorOut',(e)=>{
+  //    console.log(e)
+  //  })
   }
   navRender() {
     const navArray = [
@@ -113,7 +119,7 @@ class Frame extends React.Component {
       {class: 'watch',title: '巡更管理',link:'/watch'},
       {class: 'status',title: '实时状态',link:'/status'},
       {class: 'history',title: '历史分析',link:'/history'},
-      {class: "document",title: '文档管理',link:'/document'},
+      {class: "document",title: '安全管理',link:'/document'},
       {class: "userCenter",title: '个人设置',link:'/userCenter'},
       {class: 'setting',title: '系统配置',link:'/setting'}
   ].filter(nav=> this.props.user.authMenu.indexOf(nav.class)>-1)
@@ -140,6 +146,7 @@ class Frame extends React.Component {
     }
   }
   render() {
+    
     return (
       <Layout className='mylayout'>
       {
@@ -157,6 +164,14 @@ class Frame extends React.Component {
           <div style={{marginLeft:'5px'}}>
              <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px'}}>未处理总数</div>
              <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.alarm.alarmUndo}</div>
+          </div>
+          <div style={{marginLeft:'5px'}}>
+             <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px'}}>人员总数</div>
+             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.alarm.alarmUndo}</div>
+          </div>
+          <div style={{marginLeft:'5px'}}>
+             <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px'}}>车辆总数</div>
+             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.alarm.carPages.records}</div>
           </div>
         </div>
         
