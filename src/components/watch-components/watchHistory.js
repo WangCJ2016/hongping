@@ -6,6 +6,10 @@ import moment from 'moment'
 const FormItem = Form.Item
 
 const columns = [{
+  title:'名称',
+  dataIndex: 'name',
+  key:'name'
+},{
   title:'点位',
   dataIndex: 'point',
   key:'point'

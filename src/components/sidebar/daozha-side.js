@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {Icon,Input,Switch} from 'antd'
+import {Icon,Input,Switch,message} from 'antd'
 import DaozhaTree from '../areaTree/daozhaTree'
 import {changeSidebar} from '../../redux/sidebar.redux'
 import { searchHongwaiVideo } from '../../redux/video.sider.redux'
@@ -46,7 +46,8 @@ class DaozhaSider extends React.Component {
   }
   onChange(device,checked) {
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'   
-    this.play.XzVideo_RemoteControl_BarriergateEX(1,this.props.user.account.name,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,+checked,1,5)
+    const a = this.play.XzVideo_RemoteControl_BarriergateEX(1,this.props.user.account.name,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,+checked,1,5)
+    if(!a) message.error('道闸控制失败')
   }
   goLoc(devId,areaId) {
     this.props.dataSuccess({goLocDeviceId: devId})

@@ -37,7 +37,8 @@ class SettingUserRole1 extends React.Component {
       roleEditVisible: false,
       selectRoleIndex: -1,
       roleInfo:{},
-      checkedKeys:[]
+      checkedKeys:[],
+      areaCheckKeys: []
      }
     this.onCheck = this.onCheck.bind(this)
     this.tabRender = this.tabRender.bind(this)
@@ -117,7 +118,19 @@ class SettingUserRole1 extends React.Component {
       }
     }); 
   }
-
+  componentWillReceiveProps(nextProps) {
+    if(this.state.checkedKeys.length===0&&nextProps.role.roleInfo.roleResources) {
+      this.setState({
+        checkedKeys: nextProps.role.roleInfo.roleResources
+      })
+    }
+    if(this.state.areaCheckKeys.length === 0&&nextProps.authAllAreas) {
+      const checkableIds = nextProps.authAllAreas.map(area => area.id)
+      this.setState({
+        areaCheckKeys: checkableIds
+      })
+    }
+  }
   // 菜单权限设置
   onCheck(checkedKeys){
     this.setState({
@@ -226,6 +239,7 @@ class SettingUserRole1 extends React.Component {
     }) 
   }
   render() {
+    console.log(this.state)
     const { getFieldDecorator } = this.props.form
     return (
       <div className="setting-user-role float-left">
