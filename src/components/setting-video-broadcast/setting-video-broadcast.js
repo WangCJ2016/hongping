@@ -6,7 +6,7 @@ import { hostLists, sysServerslist, createHost, modifyHost,setSelect,channels } 
 import SettingVideoBroadcastChannelDetail from './setting-video-broadcastChannel'
 const FormItem = Form.Item
 const Option = Select.Option;
-const Ipreg = /^(([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5]).){3}([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5])/
+
 @connect(
   state => state.broadcastHost,
   {hostLists, sysServerslist,createHost,modifyHost,channels,setSelect}
@@ -119,7 +119,7 @@ class SettingVideoBroadcast1 extends React.Component {
                 </FormItem>
                 <FormItem label="IP(域名)">
                   {getFieldDecorator('ip',{
-                    rules: [{ required: true,message: '请填写主机IP(域名)'},{pattern:Ipreg,message: '请填写正确的ip'}],
+                    rules: [{ required: true,message: '请填写主机IP(域名)'}],
                   })(<Input type="text" />)}
                 </FormItem>
                 <FormItem label="端口">
@@ -173,7 +173,7 @@ class SettingVideoBroadcast1 extends React.Component {
                 </FormItem>
                 <FormItem label="IP(域名)">
                   {getFieldDecorator('editip',{
-                    rules: [{ required: true,message: '请填写主机IP(域名)'  },{pattern:Ipreg,message: '请填写正确的ip'}],
+                    rules: [{ required: true,message: '请填写主机IP(域名)'  }],
                     initialValue: selectHost?selectHost.ip:'',
                   })(<Input type="text" />)}
                 </FormItem>

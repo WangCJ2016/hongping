@@ -5,7 +5,7 @@ import { serverlist, modifyServer, createServer} from '../../redux/setting-serve
 
 const FormItem = Form.Item
 const Option = Select.Option;
-const Ipreg = /^(([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5]).){3}([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5])/
+
 @connect(
   state => state.settingServer,
   {serverlist,modifyServer,createServer}
@@ -119,13 +119,13 @@ class SettingVideoServer1 extends React.Component {
           </FormItem>
           <FormItem label="内网IP">
             {getFieldDecorator('innerIp',{
-              rules: [{ required: true,message: '请填写内网IP'},{pattern:Ipreg,message: '请填写正确的ip'}],
+              rules: [{ required: true,message: '请填写内网IP'}],
               initialValue: selectServer?selectServer.innerIp:''
             })(<Input type="number" />)}
           </FormItem>
           <FormItem label="外网IP">
             {getFieldDecorator('outerIp',{
-              rules: [{ required: true,message: '请填写外网IP'},{pattern:Ipreg,message: '请填写正确的ip'}],
+              rules: [{ required: true,message: '请填写外网IP'}],
               initialValue: selectServer?selectServer.outerIp:''
             })(<Input type="text" />)}
           </FormItem>
@@ -187,12 +187,12 @@ class SettingVideoServer1 extends React.Component {
           </FormItem>
           <FormItem label="内网IP">
             {getFieldDecorator('createInnerIp',{
-              rules: [{ required: true,message: '请填写内网IP'  },{pattern:Ipreg,message: '请填写正确的ip'}],
+              rules: [{ required: true,message: '请填写内网IP'  }],
             })(<Input type="text" />)}
           </FormItem>
           <FormItem label="外网IP">
             {getFieldDecorator('createOuterIp',{
-              rules: [{ required: true,message: '请填写外网IP'},{pattern:Ipreg,message: '请填写正确的ip'}],
+              rules: [{ required: true,message: '请填写外网IP'}],
             })(<Input type="text" />)}
           </FormItem>
           <FormItem label="端口">
