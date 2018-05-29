@@ -84,6 +84,10 @@ class Frame extends React.Component {
 
   componentDidMount() {
    this.props.alarmCount()
+   window.attachEvent('PlayErrorOut',(e)=>{
+    console.log(e)
+  })
+  //  console.log(window.attachEvent)
   }
   navRender() {
     const navArray = [

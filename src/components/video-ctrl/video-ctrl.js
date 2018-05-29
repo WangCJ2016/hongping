@@ -33,6 +33,7 @@ class VideoCtrl extends React.Component {
     this.setState({
       play: this.play
     })
+   
   }
   
   // 选择屏幕
