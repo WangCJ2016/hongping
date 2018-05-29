@@ -38,21 +38,22 @@ class VideoCtrlBtn1 extends React.Component {
     }
   }
   submit(){
-    this.props.form.validateFields((errors, values)=>{
-      if(!errors) {
-        this.props.createRemotePresets({
-          presetName: encodeURI(values.name),
-          channelId:this.props.presets.channelId,
-          presetId: this.props.presets.presets.length + 1
-        })
-        this.props.play.XzVideo_PreSet(8,this.props.presets.presets.length + 1,0)
-        this.setState({
-          visible: false
-        })
-        this.props.modalVisiable()
-        this.props.form.resetFields();
-      }
-    })
+    console.log(this.props.presets)
+    // this.props.form.validateFields((errors, values)=>{
+    //   if(!errors) {
+    //     this.props.createRemotePresets({
+    //       presetName: encodeURI(values.name),
+    //       channelId:this.props.presets.channelId,
+    //       presetId: this.props.presets.presets.length + 1
+    //     })
+    //     this.props.play.XzVideo_PreSet(8,this.props.presets.presets.length + 1,0)
+    //     this.setState({
+    //       visible: false
+    //     })
+    //     this.props.modalVisiable()
+    //     this.props.form.resetFields();
+    //   }
+    // })
   }
   presetsRender() {
     const presets = this.props.presets.presets

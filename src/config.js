@@ -126,6 +126,7 @@ export const config = {
     getTaskDefaultTime: '/patrol_getPatrolTaskTime',
     setTaskTime: '/patrol_setPatrolTaskTime',
     watchPointsUpload:'/patrol_createPatrolHistorys',
+    getUndoPatrolPoints:'/patrol_getUndoPatrolPoints',
     // 文档管理
     levelTopCategorys: '/category_queryCategorys',
     addCategorys:'/category_createCategorys',

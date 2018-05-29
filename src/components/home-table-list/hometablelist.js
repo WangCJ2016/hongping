@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table,Modal, Button, message,Row,Col } from 'antd';
 import {connect} from 'react-redux'
-import { alarmPages,modifyAlarm,getAlarmInfo } from '../../redux/alarm.redux'
+import { alarmPages,modifyAlarm,getAlarmInfo,getUndoPatrolPoints } from '../../redux/alarm.redux'
 import { areaInfo,dataSuccess } from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import './home-table-list.scss'
@@ -11,16 +11,24 @@ import broadcastHoc from '../broadcastHoc/broadcastHoc'
 
 @connect(
   state => ({alarm:state.alarm,user:state.user}),
-  {alarmPages,modifyAlarm,getAlarmInfo,areaInfo,querySysInstallPlaces,dataSuccess}
+  {alarmPages,modifyAlarm,getAlarmInfo,areaInfo,querySysInstallPlaces,dataSuccess,getUndoPatrolPoints}
 )
 @broadcastHoc
 class HomeTableList extends React.Component {
   state={
     visible: false,
-    suggest:''
+    suggest:'',
+    selectKeys: []
   }
   componentDidMount() {
     this.props.alarmPages({pageNo:1})
+  }
+  pointHandle(data) {
+    const name = data.event.split('：')[1].slice(0,-3)
+    this.props.getUndoPatrolPoints({title: name, date: data.time})
+    this.setState({
+      pointVisible: true
+    })
   }
   alarmlistRender() {
     const columns = [{
@@ -73,24 +81,42 @@ class HomeTableList extends React.Component {
         )
       },
       {
-        title: '操作',
+        title: (<Button size='small' type='primary' onClick={this.handleSelect}>一键处理</Button>),
         width:100,
         render:(text,record)=>{
-          return <Button onClick={this.alarmClick.bind(this,record)} type='primary'>处理</Button>
+          return <span>
+            <Button onClick={this.alarmClick.bind(this,record)} type='primary'>处理</Button>
+            {
+              record.type === 5?
+              <Button onClick={this.pointHandle.bind(this,record)} type='primary'>查看</Button>:null
+            }
+          </span> 
         }
     }]
     const list = this.props.alarm.alarmlist
+    const rowSelection = {
+      onChange: this.onSelectChange
+    }
     return <Table 
               pagination={{
                 pageSize:50,
                 onChange:(e)=>this.props.alarmPages({pageNo:e}),
                 total:this.props.alarm.alarmPageTotal,
               }}  
+              rowSelection={rowSelection}
               scroll={{ y:this.props.alarm.alarmHeight }}
               rowKey={(record)=>{return record.id}}
               columns={columns} 
               dataSource={list} 
               size='small' />
+  }
+  onSelectChange = (keys) => {
+    this.setState({
+      selectKeys: keys
+    })
+  }
+  handleSelect = () => {
+    this.props.modifyAlarm({id: this.state.selectKeys.join(','), suggest: 'f,f'}) 
   }
   alarmClick(alarm) {
     this.setState({
@@ -112,7 +138,24 @@ class HomeTableList extends React.Component {
     }
   }
   render() {
+    //unhandlePoints
     const alarmInfo = this.props.alarm.alarmInfo
+    const columns = [{
+      title: '名称',
+      dataIndex: 'name',
+      key:'name',
+    },
+    {
+      title: '点位',
+      dataIndex: 'point',
+      key:'point',
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+      key:'remark'
+    }
+    ]
     return (
       <div className="list">
         {this.alarmlistRender()}
@@ -147,6 +190,22 @@ class HomeTableList extends React.Component {
               </div>
             </div>
             </div>
+        </Modal>
+
+        <Modal
+          title="巡更点位" 
+          visible={this.state.pointVisible}
+          onOk={this.props.handlePointOk} 
+          onCancel={()=>this.setState({pointVisible: false})}
+          className='home-warm-modal'
+          footer={null} 
+         >
+         {
+          this.props.alarm.unhandlePoints?
+          <Table size='small' columns={columns} dataSource={this.props.alarm.unhandlePoints}  rowKey={(record)=>{return record.id}}></Table>:
+          null
+         }
+          
         </Modal>
       </div>
     )

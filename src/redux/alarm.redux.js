@@ -23,9 +23,10 @@ export function alarm(state=initialState,action) {
       return {...state,alarmlist: action.payload}
     }
     case ALARMMODIFY_SUCCESS: {
+      const ids = action.payload.split(',')
      const alarmlist = state.alarmlist.map(alarm => {
-        if(alarm.id === action.payload.id) {
-          return action.payload
+        if(ids.includes(alarm.id)) {
+          return {...alarm,status:1}
         }
           return alarm
        })
@@ -103,7 +104,7 @@ export function modifyAlarm(info) {
    .then(res=>{
      if(res.success) {
        message.success('已处理')
-       dispatch(modifyAlarmSuccess(res.dataObject))
+         dispatch(modifyAlarmSuccess(info.id))
      }else{
       message.error('处理失败')
      }
@@ -180,5 +181,19 @@ export function alarmCount() {
       dispatch(dataSuccess({alarmCount:res.dataObject.total,alarmUndo:res.dataObject.undo}))
      }
    })
+  }
+}
+
+
+export function getUndoPatrolPoints(info) {
+  return (dispatch) => {
+    const token = localStorage.getItem('token')
+    request.get( config.api.base + config.api.getUndoPatrolPoints, {token:token,...info})
+    .then(res=>{
+      console.log(res)
+      if(res.success) {
+        dispatch(dataSuccess({unhandlePoints: res.dataObject}))
+      }
+    })
   }
 }
