@@ -11,7 +11,7 @@ export const config = {
   },
   api: {
     ip:'192.168.1.51:8080',
-    base: 'http://192.168.0.141:8080/hp/manage', // http://192.168.0.149:8080/hp/manage
+    base: 'http://192.168.1.51:8080/hp/manage', // http://192.168.0.149:8080/hp/manage
     controlServerIp: '192.168.1.54',
     controlServerPort: 6000,
     login: '/do_login', // 登录
