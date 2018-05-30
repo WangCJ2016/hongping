@@ -365,7 +365,6 @@ function devinfoSuccess(info) {
 }
 export function getDevInfo(info,type,play,index) {
   return (dispatch,getState) => {
-    const user = getState().user
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getDevInfo,{
       token:token,
@@ -382,11 +381,10 @@ export function getDevInfo(info,type,play,index) {
            play.XzVideo_SetSelRTVContext(index)
         }
         if(connectMode === 0) {
-           const a = play.XzVideo_RealPlay(1,user.account.name,'',0,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
-           if(!a) message.error('播放失败')
-        } else {
-          const a = play.XzVideo_RealPlay(1,user.account.name,device.host.servers[0].innerIp,device.host.servers[0].port,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
-          if(!a) message.error('播放失败')
+            play.XzVideo_RealPlay(1,device.id,'',0,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+           
+          } else {
+            play.XzVideo_RealPlay(1,device.id,device.host.servers[0].innerIp,device.host.servers[0].port,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
         }
         
        }

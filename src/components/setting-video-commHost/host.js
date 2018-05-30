@@ -6,7 +6,7 @@ import Device from './device'
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
 const Option = Select.Option;
-const Ipreg = /^(([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5]).){3}([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5])/
+
 @connect(
   state => state.commHost,
   {hostLists, createHost, modifyHost, selectHost,deviceLists, createDevice}
@@ -142,7 +142,7 @@ class Hosts1 extends React.Component {
               </FormItem>
               <FormItem label="ip">
                 {getFieldDecorator('ip',{
-                  rules: [{ required: true,message: '请填写ip'},{pattern:Ipreg,message: '请填写正确的ip'}],
+                  rules: [{ required: true,message: '请填写ip'}],
                 })(<Input type="text" />)}
               </FormItem>
               <FormItem label="端口">
@@ -269,7 +269,7 @@ class Hosts1 extends React.Component {
                 </FormItem>
                 <FormItem label="ip">
                   {getFieldDecorator('editip',{
-                    rules: [{ required: true,message: '请填写ip'  },{pattern:Ipreg,message: '请填写正确的ip'}],
+                    rules: [{ required: true,message: '请填写ip'  }],
                     initialValue:selectHost?selectHost.ip:'',
                   })(<Input type="text" />)}
                 </FormItem>

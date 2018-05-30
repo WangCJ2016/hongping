@@ -73,7 +73,7 @@ class WatchTask1 extends React.Component {
       if(!err){
         const data = {
           name: encodeURI(values.addpointtitle),
-          point: values.addpointnum,
+          point: values.addpointnum+'',
           remark: encodeURI(values.addpointremark),
           taskId: this.props.watch.selectTask.id
         }
@@ -90,7 +90,7 @@ class WatchTask1 extends React.Component {
       if(!err) {
         const data = {
           name: encodeURI(values.editpointtitle),
-          point: values.editpointnum,
+          point: values.editpointnum+'',
           remark: encodeURI(values.editpointremark),
           taskId: this.props.watch.selectTask.id,
           id:this.state.selectPoint.id
@@ -112,7 +112,11 @@ class WatchTask1 extends React.Component {
     this.props.TaskPoints({taskId:record.id})
     this.props.dataSuccess({selectTask:record})
   }
+  onChange(a,b){
+    console.log(a,b)
+  }
   render() {
+    console.log(1)
     const { getFieldDecorator } = this.props.form
     const columns = [{
           title:'任务名称',
@@ -161,6 +165,7 @@ class WatchTask1 extends React.Component {
    
     return (
       <div>
+        
          <WatchTaskTime></WatchTaskTime>
          <Row>
            <Col span={11}>
@@ -268,7 +273,7 @@ class WatchTask1 extends React.Component {
               {getFieldDecorator('addpointnum',{
                 rules: [{ required: true,message: '请填写点位值'}], 
               })(
-                <Input type="number" />
+                <Input type="text" />
               )}
             </FormItem>
             <FormItem label="备注">
@@ -300,7 +305,7 @@ class WatchTask1 extends React.Component {
                 rules: [{ required: true,message: '请填写点位值'}], 
                 initialValue: this.state.selectPoint.point
               })(
-                <Input type="number" />
+                <Input type="text" />
               )}
             </FormItem>
             <FormItem label="备注">

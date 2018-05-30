@@ -6,7 +6,7 @@ import { hostLists, sysServerslist, createHost, modifyHost,setSelect,channels } 
 import SettingVideoChannelDetail from '../setting-video-channelDetail/setting-video-channelDetail'
 const FormItem = Form.Item
 const Option = Select.Option;
-const Ipreg = /^(([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5]).){3}([3-9]d?|[01]d{0,2}|2d?|2[0-4]d|25[0-5])/
+
 @connect(
   state => state.remoteHost,
   {hostLists, sysServerslist,createHost,modifyHost,channels,setSelect}
@@ -165,7 +165,7 @@ class SettingRemoteHosts1 extends React.Component {
                 </FormItem>
                 <FormItem label="IP(域名)">
                   {getFieldDecorator('url',{
-                    rules: [{ required: true,message: '请填写主机IP(域名)'},{pattern:Ipreg,message: '请填写正确的ip'}],
+                    rules: [{ required: true,message: '请填写主机IP(域名)'}],
                   })(<Input type="text" />)}
                 </FormItem>
                 <FormItem label="端口">
@@ -269,7 +269,7 @@ class SettingRemoteHosts1 extends React.Component {
                 </FormItem>
                 <FormItem label="IP(域名)">
                   {getFieldDecorator('editurl',{
-                    rules: [{ required: true,message: '请填写主机IP(域名)'},{pattern:Ipreg,message: '请填写正确的ip'}],
+                    rules: [{ required: true,message: '请填写主机IP(域名)'}],
                     initialValue: selectHost?selectHost.url:'',
                   })(<Input type="text" />)}
                 </FormItem>
