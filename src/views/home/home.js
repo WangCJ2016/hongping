@@ -73,11 +73,7 @@ class Home extends React.Component {
       this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
     }
   }
-  componentWillUnMount(){
-    // this.play.attachEvent('OnPlayErrorOut',(a,b,c)=>{
-    //   message.error(c)
-    // })
-  }
+  
   componentDidUpdate(nextProps,nextState) {
     if(this.props.area.areaInfo.picture&&(this.props.area.areaInfo.picture!==nextProps.area.areaInfo.picture)) {
       setTimeout(()=>{     
@@ -260,9 +256,6 @@ class Home extends React.Component {
     },()=>{
       setTimeout(()=>{
         this.props.getDevInfo({devId:device.devId,type:device.type},'play',this.play)
-        this.play.attachEvent('OnPlayErrorOut',(a,b,c)=>{
-          message.error(c)
-        })
         this.setState({
           aa:''
         })
@@ -403,13 +396,12 @@ class Home extends React.Component {
           okText='确定'
           cancelText='取消' 
           footer={false}
-          onCancel={()=>{this.setState({videoVisible:false});this.play.XzVideo_RealPlayStop(0);this.play.detachEvent('OnPlayErrorOut',(a,b,c)=>{
-            message.error(c)
-          })}}
+          onCancel={()=>{this.setState({videoVisible:false});this.play.XzVideo_RealPlayStop(0)}}
           >
           <div className="clearfix">
             <div className="float-left" style={{width:'70%'}}>
               <object
+                id='homeplay'
                 ref={(screen)=>this.play=screen}
                 classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
                 codebase="./SetupOCX.exe#version=1.0.0.1"

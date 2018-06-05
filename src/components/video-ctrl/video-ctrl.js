@@ -33,33 +33,10 @@ class VideoCtrl extends React.Component {
     this.setState({
       play: this.play
     })
-    const script = document.createElement('script')
-    script.setAttribute('language','javascript')
-    script.setAttribute('for','vedioPlay')
-    script.setAttribute('event','OnSelectedRealPlayContextEx()')
-    script.innerHTML='this.call()'
-    document.body.appendChild(script)
-    // this.play.attachEvent('OnPlayErrorOut',(a,b,c)=>{
-    //   message.error(c)
-    // })
-    // this.play.attachEvent('OnSelectedRealPlayContextEx',(a,b,c,d,e) => {
-    //   this.setState({
-    //     selectChanle: e?e:0
-    //   })
-    // })
   }
-  componentWillUnmount(){
-    // this.play.detachEvent('OnPlayErrorOut',(a,b,c)=>{
-    //   message.error(c)
-    // })
-    // this.play.detachEvent('OnSelectedRealPlayContextEx',(a,b,c,d,e) => {
-    //   this.setState({
-    //     selectChanle: e
-    //   })
-    // })
-  }
+
   call=()=>{
-    alert(1)
+    alert(2)
   }
   // 选择屏幕
   setScreen(index) {
@@ -151,7 +128,7 @@ class VideoCtrl extends React.Component {
               </object>
           <VideoCtrlBtn
             play={this.state.play}
-            selectChanle={this.state.selectChanle}
+           
             style={{marginTop:'30px'}} 
             modalVisiable={this.props.modalVisiable}
             fullscreen={this.fullscreen}

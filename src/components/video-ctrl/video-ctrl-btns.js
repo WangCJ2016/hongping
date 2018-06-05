@@ -31,7 +31,7 @@ class VideoCtrlBtn1 extends React.Component {
     }
   }
   addModalVisible() {
-    if(this.props.selectChanle) {
+    if(localStorage.getItem('seletChannelId')) {
       this.setState({visible:true});this.props.modalVisiable()
     }else{
       message.error("请先选择通道")
@@ -65,11 +65,12 @@ class VideoCtrlBtn1 extends React.Component {
     ))
   }
   getYuzhiwei=()=>{
+
     if(this.state.yuzhiweiVisible) {
       this.setState({yuzhiweiVisible:!this.state.yuzhiweiVisible})
       return
     }
-    if(this.props.selectChanle) {
+    if(localStorage.getItem('seletChannelId')) {
       this.setState({yuzhiweiVisible:!this.state.yuzhiweiVisible})
     }else{
       message.error("请先选择播放通道")
