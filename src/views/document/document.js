@@ -14,7 +14,7 @@ class Document extends React.Component {
           <Col span={10}>
             <Category></Category>
           </Col>
-          <Col span={4}></Col>
+          <Col span={3}></Col>
           <Col span={10}>
             <FilesList></FilesList>
           </Col>

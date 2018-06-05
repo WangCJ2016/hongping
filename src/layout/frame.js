@@ -86,7 +86,7 @@ class Frame extends React.Component {
   componentDidMount() {
    this.props.alarmCount()
    this.props.getAllpeo()
-   this.props.carsTotalNums()
+  //  this.props.carsTotalNums()
   }
   navRender() {
     const navArray = [
@@ -143,7 +143,6 @@ class Frame extends React.Component {
     }
   }
   render() {
-    console.log(this.props)
     return (
       <Layout className='mylayout'>
       {
@@ -166,10 +165,7 @@ class Frame extends React.Component {
              <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px'}}>人员总数</div>
              <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.peoCount}</div>
           </div>
-          <div style={{marginLeft:'5px'}}>
-             <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px'}}>车辆进出数</div>
-             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.alarm.carsTotalNum}</div>
-          </div>
+          
         </div>
         
         <div className='float-right top-nav-link'>

@@ -239,7 +239,6 @@ class SettingUserRole1 extends React.Component {
     }) 
   }
   render() {
-    console.log(this.state)
     const { getFieldDecorator } = this.props.form
     return (
       <div className="setting-user-role float-left">

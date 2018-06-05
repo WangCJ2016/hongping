@@ -33,24 +33,33 @@ class VideoCtrl extends React.Component {
     this.setState({
       play: this.play
     })
-    this.play.attachEvent('OnPlayErrorOut',(a,b,c)=>{
-      message.error(c)
-    })
-    this.play.attachEvent('OnSelectedRealPlayContextEx',(a,b,c,d,e) => {
-      this.setState({
-        selectChanle: e
-      })
-    })
+    const script = document.createElement('script')
+    script.setAttribute('language','javascript')
+    script.setAttribute('for','vedioPlay')
+    script.setAttribute('event','OnSelectedRealPlayContextEx()')
+    script.innerHTML='this.call()'
+    document.body.appendChild(script)
+    // this.play.attachEvent('OnPlayErrorOut',(a,b,c)=>{
+    //   message.error(c)
+    // })
+    // this.play.attachEvent('OnSelectedRealPlayContextEx',(a,b,c,d,e) => {
+    //   this.setState({
+    //     selectChanle: e?e:0
+    //   })
+    // })
   }
   componentWillUnmount(){
-    this.play.detachEvent('OnPlayErrorOut',(a,b,c)=>{
-      message.error(c)
-    })
-    this.play.detachEvent('OnSelectedRealPlayContextEx',(a,b,c,d,e) => {
-      this.setState({
-        selectChanle: e
-      })
-    })
+    // this.play.detachEvent('OnPlayErrorOut',(a,b,c)=>{
+    //   message.error(c)
+    // })
+    // this.play.detachEvent('OnSelectedRealPlayContextEx',(a,b,c,d,e) => {
+    //   this.setState({
+    //     selectChanle: e
+    //   })
+    // })
+  }
+  call=()=>{
+    alert(1)
   }
   // 选择屏幕
   setScreen(index) {
@@ -133,6 +142,7 @@ class VideoCtrl extends React.Component {
        <div className='float-left' style={{width:'70%',height:'660px'}}>
               <object
               ref={(screen)=>this.play=screen}
+              id='vedioPlay'
               classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
               codebase="./SetupOCX.exe#version=1.0.0.1"
               style={{width:'100%',height:'100%',visibility:this.props.video.modalVisiable?'hidden':'visible'}}

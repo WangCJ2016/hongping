@@ -116,7 +116,7 @@ class HomeTableList extends React.Component {
     })
   }
   handleSelect = () => {
-    this.props.modifyAlarm({id: this.state.selectKeys.join(','), suggest: 'f,f'}) 
+    this.props.modifyAlarm({id: this.state.selectKeys.join(','), suggest: ''}) 
   }
   alarmClick(alarm) {
     this.setState({
@@ -138,7 +138,6 @@ class HomeTableList extends React.Component {
     }
   }
   render() {
-    //unhandlePoints
     const alarmInfo = this.props.alarm.alarmInfo
     const columns = [{
       title: '名称',

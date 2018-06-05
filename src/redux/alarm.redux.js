@@ -30,7 +30,7 @@ export function alarm(state=initialState,action) {
         }
           return alarm
        })
-       return {...state,alarmlist: alarmlist,alarmUndo:state.alarmUndo-1}
+       return {...state,alarmlist: alarmlist,alarmUndo:state.alarmUndo-ids.length}
     }
    
     case CARPAGES_SUCCESS: {
