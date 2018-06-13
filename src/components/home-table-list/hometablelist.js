@@ -17,6 +17,7 @@ import broadcastHoc from '../broadcastHoc/broadcastHoc'
 class HomeTableList extends React.Component {
   state={
     visible: false,
+    playVisible: false,
     suggest:'',
     selectKeys: []
   }
@@ -29,6 +30,24 @@ class HomeTableList extends React.Component {
     this.setState({
       pointVisible: true
     })
+  }
+  playBack = (record) => {
+    this.setState({
+      playVisible: true
+    })
+    // this.play.XzVideo_RecordPlayByTime(
+    //   1,
+    //   device.host.vid,
+    //   device.host.url,
+    //   device.host.port,
+    //   device.host.username,
+    //   device.host.psw,
+    //   model,
+    //   device.index,
+    //   record.startime,
+    //   record.endtime,
+    //   0)
+    //this.play.XzVideo_PreSet(39,preset.presetId,0)}
   }
   alarmlistRender() {
     const columns = [{
@@ -81,6 +100,15 @@ class HomeTableList extends React.Component {
         )
       },
       {
+        title: '视频回放',
+        dataIndex: 'back',
+        width:100,
+        key:'back',
+        render:(text,record)=>(
+          <Button type='primary' onClick={()=>this.playBack(record)}>视频回放</Button>
+        )
+      },
+      {
         title: (<Button size='small' type='primary' onClick={this.handleSelect}>一键处理</Button>),
         width:100,
         render:(text,record)=>{
@@ -91,7 +119,8 @@ class HomeTableList extends React.Component {
               <Button onClick={this.pointHandle.bind(this,record)} type='primary'>查看</Button>:null
             }
           </span> 
-        }
+        },
+        
     }]
     const list = this.props.alarm.alarmlist
     const rowSelection = {
@@ -203,6 +232,29 @@ class HomeTableList extends React.Component {
           this.props.alarm.unhandlePoints?
           <Table size='small' columns={columns} dataSource={this.props.alarm.unhandlePoints}  rowKey={(record)=>{return record.id}}></Table>:
           null
+         }
+          
+        </Modal>
+
+        <Modal
+          title="视频回放" 
+          visible={this.state.playVisible}
+          onOk={()=>this.setState({playVisible: false})} 
+          onCancel={()=>this.setState({playVisible: false})}
+          className='home-warm-modal'
+          footer={null} 
+         >
+         {
+          <object 
+                ref={(screen)=>this.play=screen}
+                classID="clsid:A6871295-266E-4867-BE66-244E87E3C05E"
+                codebase="./SetupOCX.exe#version=1.0.0.1"
+                width={600}
+                height={800}
+                className='playScreen'
+                >
+                <a style={{display:'block',lineHeight:'560px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
+              </object>
          }
           
         </Modal>
