@@ -99,7 +99,8 @@ export const config = {
     remotePreviewGroupList: '/preview_querySrPreviewGroups', // 预览列表
     modifyPreviewGroup: '/preview_modifySrPreviewGroup', //修改／删除预览组
     modifySysRemotePreview: '/preview_modifySysRemotePreview', // 添加／修改预览
-    getDevInfo: '/home_getDeviceInfo', // 根据DevID获取设备信息
+    getDevInfo: '/home_getDeviceInfo', // 根据DevID获取设备信息,
+    getSysRemotePreset:'/rhost_getSysRemotePreset', // 根据报警名称获取预置位
 
     // 人员动态
     getAllpeo: '/slv_queryPersonnelDynamics', // 全部人员动态

@@ -85,7 +85,10 @@ class HomeTable extends React.Component {
        src={require('../../assets/imgs/pull-up.png')} alt=""/></div>
       <Tabs defaultActiveKey="1" onTabClick={this.onTabClick}>
         <TabPane tab="报警" key="1">
-        <HomeTableList videoPlay={this.props.videoPlay} openDoor={this.props.openDoor} />
+        <HomeTableList 
+          videoPlay={this.props.videoPlay} 
+          videoPlayBack={this.props.videoPlayBack}
+          openDoor={this.props.openDoor} />
         </TabPane>
         <TabPane tab="车辆" key="2">
         <CarsTable 

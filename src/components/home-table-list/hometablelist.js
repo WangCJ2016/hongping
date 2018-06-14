@@ -32,22 +32,12 @@ class HomeTableList extends React.Component {
     })
   }
   playBack = (record) => {
-    this.setState({
-      playVisible: true
-    })
-    // this.play.XzVideo_RecordPlayByTime(
-    //   1,
-    //   device.host.vid,
-    //   device.host.url,
-    //   device.host.port,
-    //   device.host.username,
-    //   device.host.psw,
-    //   model,
-    //   device.index,
-    //   record.startime,
-    //   record.endtime,
-    //   0)
+    this.props.videoPlayBack(record)
     //this.play.XzVideo_PreSet(39,preset.presetId,0)}
+  }
+  playReal = (record) => {
+    console.log(record)
+    this.props.videoPlay(record,record.device)
   }
   alarmlistRender() {
     const columns = [{
@@ -100,12 +90,21 @@ class HomeTableList extends React.Component {
         )
       },
       {
-        title: '视频回放',
+        title: '回放',
         dataIndex: 'back',
         width:100,
         key:'back',
         render:(text,record)=>(
-          <Button type='primary' onClick={()=>this.playBack(record)}>视频回放</Button>
+          <Button type='primary' onClick={()=>this.playBack(record)}>回放</Button>
+        )
+      },
+      {
+        title: '联动',
+        dataIndex: 'liandong',
+        width:100,
+        key:'liandong',
+        render:(text,record)=>(
+          <Button type='primary' onClick={()=>this.playReal(record)}>联动</Button>
         )
       },
       {

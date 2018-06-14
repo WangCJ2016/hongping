@@ -248,13 +248,14 @@ class Home extends React.Component {
     }
   }
   // 预览
-  videoPlay(device){ 
-    
+  videoPlay(device, name){ 
+    console.log(device, name)
     this.setState({
       videoVisible:true,
       deviceType: device.type
     },()=>{
       setTimeout(()=>{
+        name?this.props.getDevInfo({devId:device.deviceId,type:device.type},'play',this.play,undefined,name):
         this.props.getDevInfo({devId:device.devId,type:device.type},'play',this.play)
         this.setState({
           aa:''
@@ -386,7 +387,7 @@ class Home extends React.Component {
         }
        
        
-        <HomeTable videoPlay={this.videoPlay} openDoor={this.openDoor} />
+        <HomeTable videoPlay={this.videoPlay} videoPlayBack={this.videoPlayBack} openDoor={this.openDoor} />
       
         <Modal
           title="视频预览" 
