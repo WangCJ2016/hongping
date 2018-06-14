@@ -376,7 +376,6 @@ export function getDevInfo(info,type,play,index,name) {
        const model = device.host.model === 1?'HikHC-14':'DHNET-03'
        const connectMode = device.host.connectMode
        dispatch(devinfoSuccess(res.dataObject))
-       console.log(name)
        if(type==='play') {
         if(index!==undefined) {
            play.XzVideo_SetSelRTVContext(index)

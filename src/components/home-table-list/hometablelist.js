@@ -36,7 +36,6 @@ class HomeTableList extends React.Component {
     //this.play.XzVideo_PreSet(39,preset.presetId,0)}
   }
   playReal = (record) => {
-    console.log(record)
     this.props.videoPlay(record,record.device)
   }
   alarmlistRender() {
@@ -99,12 +98,12 @@ class HomeTableList extends React.Component {
         )
       },
       {
-        title: '联动',
+        title: '实时',
         dataIndex: 'liandong',
         width:100,
         key:'liandong',
         render:(text,record)=>(
-          <Button type='primary' onClick={()=>this.playReal(record)}>联动</Button>
+          <Button type='primary' onClick={()=>this.playReal(record)}>实时</Button>
         )
       },
       {
