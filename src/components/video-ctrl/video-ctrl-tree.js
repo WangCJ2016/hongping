@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {videoAreaDevices,remotePresets,getDevInfo} from '../../redux/video.redux'
+import {videoAreaDevices,getDevInfo} from '../../redux/video.redux'
 import TableAreaTree from '../areaTree/tableAreaTree'
 import { config} from '../../config'
 
@@ -8,7 +8,7 @@ import { config} from '../../config'
 @connect(
   state=>({video:state.video,user:state.user}),
   {
-    videoAreaDevices,remotePresets,getDevInfo
+    videoAreaDevices,getDevInfo
    }
 )
 class VideoCtrlTree extends React.Component {
@@ -23,7 +23,6 @@ class VideoCtrlTree extends React.Component {
     this.setState({
       activeId: device.id
     })
-    this.props.remotePresets({channelId: device.id})
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
     const connectMode = device.host.connectMode
     if(connectMode === 0) {

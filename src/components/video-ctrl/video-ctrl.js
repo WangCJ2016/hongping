@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tabs, message } from 'antd'
 import { connect } from 'react-redux'
-import {changeSaveVideoIf, changeSoundIf, playCtrlChange, paramsChange,modifyRemotePresets,createRemotePresets,modalVisiable} from '../../redux/video.redux'
+import {changeSaveVideoIf, changeSoundIf,remotePresets, playCtrlChange, paramsChange,modifyRemotePresets,createRemotePresets,modalVisiable} from '../../redux/video.redux'
 import VideoCtrlTree from './video-ctrl-tree'
 import VideoCtrlYuntai from './video-ctrl-yuntai'
 import VideoCtrlYuzhizu from './video-ctrl-yuzhizu'
@@ -13,7 +13,7 @@ const TabPane = Tabs.TabPane;
 @connect(
     state=>({video: state.video}),
     {
-        changeSaveVideoIf,changeSoundIf,playCtrlChange,paramsChange,modifyRemotePresets,createRemotePresets,modalVisiable
+        changeSaveVideoIf,changeSoundIf,remotePresets,playCtrlChange,paramsChange,modifyRemotePresets,createRemotePresets,modalVisiable
      }
 )
 class VideoCtrl extends React.Component {
@@ -128,7 +128,7 @@ class VideoCtrl extends React.Component {
               </object>
           <VideoCtrlBtn
             play={this.state.play}
-           
+            remotePresets={this.props.remotePresets}
             style={{marginTop:'30px'}} 
             modalVisiable={this.props.modalVisiable}
             fullscreen={this.fullscreen}
