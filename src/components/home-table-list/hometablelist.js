@@ -36,7 +36,11 @@ class HomeTableList extends React.Component {
     //this.play.XzVideo_PreSet(39,preset.presetId,0)}
   }
   playReal = (record) => {
-    this.props.videoPlay(record,record.device)
+    if(record.type === 3) {
+      this.props.videoPlay(record)
+    }else {
+      this.props.videoPlay(record,record.device)
+    }
   }
   alarmlistRender() {
     const columns = [{

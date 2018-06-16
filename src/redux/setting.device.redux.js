@@ -406,8 +406,10 @@ function getSysRemotePreset(name,play) {
       name: name
     })
     .then(res => {
-     if(res.success) {
+     if(res.success&&res.dataObject.length>0) {
         play.XzVideo_PreSet(39,res.dataObject[0].presetId,0)
+     }else {
+       message.error('没有关联预置位')
      }
     })
 }

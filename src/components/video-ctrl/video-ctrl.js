@@ -33,6 +33,24 @@ class VideoCtrl extends React.Component {
     this.setState({
       play: this.play
     })
+
+    this.timer = setInterval(()=>{      
+      if(localStorage.getItem('isseletChannelId')) {
+       
+         localStorage.setItem('isseletChannelId','')
+
+         if(localStorage.getItem('seletChannelId'))
+         {            
+             this.props.remotePresets({channelId: localStorage.getItem('seletChannelId')})
+         }
+      }
+    },1000)
+  }
+
+  componentWillUnmount(){
+    if(this.timer){
+      clearInterval(this.timer)
+    }
   }
 
   call=()=>{

@@ -249,7 +249,6 @@ class Home extends React.Component {
   }
   // 预览
   videoPlay(device, name){ 
-    console.log(device, name)
     this.setState({
       videoVisible:true,
       deviceType: device.type

@@ -71,7 +71,7 @@ class VideoCtrlBtn1 extends React.Component {
       return
     }
     if(localStorage.getItem('seletChannelId')) {
-      this.props.remotePresets({channelId: localStorage.getItem('seletChannelId')})
+   //   this.props.remotePresets({channelId: localStorage.getItem('seletChannelId')})
       this.setState({yuzhiweiVisible:!this.state.yuzhiweiVisible})
     }else{
       message.error("请先选择播放通道")
