@@ -363,7 +363,7 @@ function devinfoSuccess(info) {
     payload: data
   }
 }
-export function getDevInfo(info,type,play,index,name) {
+export function getDevInfo(info,type,play,index) {
   return (dispatch,getState) => {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.getDevInfo,{
@@ -391,15 +391,15 @@ export function getDevInfo(info,type,play,index,name) {
        if(type==='guard') {
         guardCtrl({token:token,vid:device.vid,deviceType:device.type,controlValue:1})(dispatch)
        }
-       if(name) {
-        getSysRemotePreset(encodeURI(name),play)
-       }
+      //  if(name) {
+      //   getSysRemotePreset(encodeURI(name),play)
+      //  }
      }
     })
   }
 }
 
-function getSysRemotePreset(name,play) { 
+export function getSysRemotePreset(name,play) { 
     const token = localStorage.getItem('token')
    request.get(config.api.base + config.api.getSysRemotePreset,{
       token:token,
@@ -407,6 +407,16 @@ function getSysRemotePreset(name,play) {
     })
     .then(res => {
      if(res.success&&res.dataObject.length>0) {
+      const device = res.dataObject[0]
+      const model = device.host.model === 1?'HikHC-14':'DHNET-03'
+      const connectMode = device.host.connectMode
+      dispatch(devinfoSuccess(res.dataObject))
+       if(connectMode === 0) {
+          play.XzVideo_RealPlay(1,device.id,'',0,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+          
+         } else {
+           play.XzVideo_RealPlay(1,device.id,device.host.servers[0].innerIp,device.host.servers[0].port,config.api.controlServerIp,config.api.controlServerPort,device.host.vid,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,0);
+       }
         play.XzVideo_PreSet(39,res.dataObject[0].presetId,0)
      }else {
        message.error('没有关联预置位')

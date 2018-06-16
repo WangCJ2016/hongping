@@ -8,7 +8,7 @@ import { HomePerson, HomeCamera, HomeBroadcast,HomeGuard } from '../../component
 import HomeWarmPanel from '../../components/home-warm-panel/home-warm-panel'
 import './home.scss'
 import {areaInfo,selectAreaIdSuccess,getAreaInfo,dataSuccess} from '../../redux/area.redux'
-import { querySysInstallPlaces,getDevInfo,videoPic,guardCtrl } from '../../redux/setting.device.redux'
+import { querySysInstallPlaces,getDevInfo,videoPic,guardCtrl,getSysRemotePreset } from '../../redux/setting.device.redux'
 import {videoProgress} from '../../redux/video.redux'
 import VideoCtrlYuntai from '../../components/video-ctrl/video-ctrl-yuntai'
 import VideoPlayBackByTime from '../../components/video-playback/video-playback-bytime'
@@ -21,7 +21,7 @@ import { carPages,getCarDetail } from '../../redux/alarm.redux'
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,user: state.user,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
-  {areaInfo,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList,carPages,getCarDetail}
+  {areaInfo,getSysRemotePreset,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList,carPages,getCarDetail}
 )
 class Home extends React.Component {
   constructor() {
@@ -254,7 +254,7 @@ class Home extends React.Component {
       deviceType: device.type
     },()=>{
       setTimeout(()=>{
-        name?this.props.getDevInfo({devId:device.deviceId,type:device.type},'play',this.play,undefined,name):
+        name?this.props.getSysRemotePreset(name,this.play):
         this.props.getDevInfo({devId:device.devId,type:device.type},'play',this.play)
         this.setState({
           aa:''
