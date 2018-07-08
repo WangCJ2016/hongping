@@ -1,5 +1,5 @@
 import React from 'react'
-import { Popover,Spin,Tag,Modal,Table,Switch,message } from 'antd'
+import { Popover,Spin,Tag,Modal,Table,Switch,message,Tooltip } from 'antd'
 import { connect } from 'react-redux'
 import className from 'classnames'
 import { config } from '../../config'
@@ -57,17 +57,18 @@ class Home extends React.Component {
       })
     }
   }
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {   
     if(nextProps.area.firstAreaId&&this.props.area.firstAreaId!==nextProps.area.firstAreaId) {
 
       this.props.selectAreaIdSuccess(nextProps.area.firstAreaId)
       this.props.areaInfo({id:nextProps.area.firstAreaId})
       this.props.getAreaInfo({id: nextProps.area.firstAreaId})
       this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
-      const timer = setInterval(()=>{
-        this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
-      },5000)
-      this.props.dataSuccess({installPlaceTimer: timer})
+      //xie
+      // const timer = setInterval(()=>{
+      //   this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
+      // },5000)
+      // this.props.dataSuccess({installPlaceTimer: timer})
     }
     if(this.props.area.areaImgSlider!==nextProps.area.areaImgSlider) {
       this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
@@ -144,6 +145,10 @@ class Home extends React.Component {
     this.setState({
       modalvisible: false,
     });
+  }
+  // 全屏
+  fullscreen = () => {
+    this.play.XzVideo_FullScreen(1)
   }
   mapDeviceRender() {
    // if(this.state.imgWidth && this.props.areaRealWidth) {
@@ -253,9 +258,20 @@ class Home extends React.Component {
       videoVisible:true,
       deviceType: device.type
     },()=>{
-      setTimeout(()=>{
-        name?this.props.getSysRemotePreset(name,this.play):
-        this.props.getDevInfo({devId:device.devId,type:device.type},'play',this.play)
+      setTimeout(()=>{             
+        if(name)
+        {
+          if(device.type === 3) //移动帧测
+          {
+            this.props.getDevInfo({devId:device.deviceId,type:device.type},'play',this.play,undefined,name)
+          }else
+          {
+            this.props.getSysRemotePreset(name,'play',this.play)
+          }
+        }else
+        {
+          this.props.getDevInfo({devId:device.devId,type:device.type},'play',this.play)
+        }
         this.setState({
           aa:''
         })
@@ -274,12 +290,24 @@ class Home extends React.Component {
     if(!a) message.error('道闸控制失败')
   }
   // 回放
-  videoPlayBack(device) {
+  videoPlayBack(device, name) {
     this.setState({
       videoBackVisible:true
     },()=>{
       setTimeout(()=>{
-        this.props.getDevInfo({devId:device.devId,type:device.type},'playback',this.play)
+        if(name)
+        {
+          if(device.type === 3) //移动帧测
+          {
+            this.props.getDevInfo({devId:device.deviceId,type:device.type},'playback',this.play)
+          }else
+          {
+            this.props.getSysRemotePreset(name,'playback',this.play)
+          }
+        }else
+        {
+          this.props.getDevInfo({devId:device.devId,type:device.type},'playback',this.play)
+        }
         this.setState({
           aa:''
         })
@@ -314,8 +342,11 @@ class Home extends React.Component {
       },1000)
     }*/
   }
-  playPicSeach(startTime,endTime) {
+  playPicSeach(startTime,endTime) {//xie
     const device = this.props.deivces.devinfo
+    this.props.deivces.devinfo.startTime=startTime
+    this.props.deivces.devinfo.endTime=endTime
+
     this.props.carPages({deviceId: device.id,startTime: startTime, endTime: endTime,pageSize:10,pageNo:1})
   }
   mouseUp(left,top,right,bottom) {
@@ -340,8 +371,10 @@ class Home extends React.Component {
       dragSelectEnbled:false
     })
   }
-  pageChange = (e) => {
-    this.props.carPages({pageSize:e})
+  pageChange = (e) => {    
+    const device = this.props.deivces.devinfo
+    this.props.carPages({pageNo:e,pageSize:10, deviceId: device.id,startTime: device.startTime,
+    endTime: device.endTime})//xie7-4{pageNo: 1, pageSize: 10}
   }
   picRowClick = (record) => {
     this.props.getCarDetail({carId: record.id})
@@ -411,6 +444,9 @@ class Home extends React.Component {
                 >
                 <a style={{display:'block',lineHeight:'400px',textAlign:'center',textDecoration:'underline'}} href="http://192.168.1.51:8080/SetupOCX.exe" download='控件'>请点击此处下载插件,安装时请关闭浏览器</a>
               </object>
+              <Tooltip title="全屏">
+                <img src={require('../../assets/imgs/video_full.png')} onClick={this.fullscreen} alt=""/>
+              </Tooltip>
             </div>
             <div className="float-right"  style={{width:'30%'}}>
               {this.state.deviceType===3?<div style={{textAlign:'center'}}>开关:<Switch onChange={this.daozhaCtrl} /></div>:null}

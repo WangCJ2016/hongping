@@ -40,6 +40,7 @@ class HongwaiSider extends React.Component {
     })
   }
   goLoc(device) {
+    
     this.props.dataSuccess({goLocDeviceId: device.installPlace.devId})
     if(this.props.location.pathname !== '/home') {
       this.props.history.push('home')

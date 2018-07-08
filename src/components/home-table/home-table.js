@@ -73,6 +73,9 @@ class HomeTable extends React.Component {
   mouseMove(ev) {
     if(this.moveIf) {
       ev = ev || window.event;
+      if(ev.pageY > window.innerHeight - 70) {
+        return
+      }
       this.setState({top:ev.pageY-70+'px'})
     }
   }

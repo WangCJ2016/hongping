@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.SysRemoteHostsDao" >
+  <resultMap id="SysRemoteHosts" type="com.hp.manage.domain.SysRemoteHostsDO" >
+    <id column="vid" property="vid" />
+    <id column="id" property="id" />
+    <result column="name" property="name" />
+    <result column="type" property="type" />
+    <result column="connect_mode" property="connectMode" />
+    <result column="url" property="url" />
+    <result column="port" property="port" />
+    <result column="productor" property="productor" />
+    <result column="model" property="model" />
+    <result column="username" property="username" />
+    <result column="psw" property="psw" />
+    <result column="channels" property="channels" />
+    <result column="status" property="status" />
+    <result column="media_server1_id" property="mediaServer1Id" />
+    <result column="media_server2_id" property="mediaServer2Id" />
+    <result column="media_server3_id" property="mediaServer3Id" />
+    <result column="remark" property="remark" />
+    <result column="icon" property="icon" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+ 
+  <select id="selectSysRemoteHostsById" resultMap="SysRemoteHosts" parameterType="java.lang.String" >
+    SELECT * FROM sys_remote_hosts WHERE id = #{id}
+  </select>
+
+  <insert id="insertSysRemoteHosts" parameterType="com.hp.manage.domain.SysRemoteHostsDO" useGeneratedKeys="true" keyProperty="vid">
+    INSERT INTO sys_remote_hosts 
+    (id, name, type, connect_mode, url, port, productor, model, username, psw, channels, status, media_server1_id, 
+     media_server2_id, media_server3_id, remark, icon ,is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{name}, #{type}, #{connectMode}, #{url}, #{port}, #{productor}, #{model}, #{username}, #{psw}, #{channels}, 1, #{mediaServer1Id},
+     #{mediaServer2Id}, #{mediaServer3Id}, #{remark}, #{icon}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+  
+  <update id="updateSysRemoteHosts" parameterType="com.hp.manage.domain.SysRemoteHostsDO" >
+    UPDATE sys_remote_hosts
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="connectMode != null" >
+        connect_mode = #{connectMode},
+      </if>
+      <if test="url != null" >
+        url = #{url},
+      </if>
+      <if test="port != null" >
+        port = #{port},
+      </if>
+      <if test="productor != null" >
+        productor = #{productor},
+      </if>
+      <if test="model != null" >
+        model = #{model},
+      </if>
+      <if test="username != null" >
+        username = #{username},
+      </if>
+      <if test="psw != null" >
+        psw = #{psw},
+      </if>
+      <if test="channels != null" >
+        channels = #{channels},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="mediaServer1Id != null" >
+        media_server1_id = #{mediaServer1Id},
+      </if>
+      <if test="mediaServer2Id != null" >
+        media_server2_id = #{mediaServer2Id},
+      </if>
+      <if test="mediaServer3Id != null" >
+        media_server3_id = #{mediaServer3Id},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+      gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectSysRemoteHostsList" parameterType="com.hp.manage.bo.QuerySysRemoteHostsBO" resultMap="SysRemoteHosts">
+    SELECT * FROM sys_remote_hosts WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="name != null" >
+      AND name = #{name}
+    </if>
+  </select>
+    
+  <select id="selectSysRemoteHostsCount" parameterType="com.hp.manage.bo.QuerySysRemoteHostsBO" resultType="int">
+    SELECT count(1) FROM sys_remote_hosts WHERE is_delete = 0
+    <if test="name != null" >
+      AND name LIKE CONCAT('%',#{name},'%')
+    </if>
+  </select>
+    
+  <select id="selectSysRemoteHostsPage" parameterType="com.hp.manage.bo.QuerySysRemoteHostsBO" resultMap="SysRemoteHosts">
+    SELECT * FROM sys_remote_hosts WHERE is_delete = 0 
+    <if test="name != null" >
+      AND name LIKE CONCAT('%',#{name},'%')
+    </if>
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

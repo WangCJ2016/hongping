@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="com.hp.manage.web.action.user" namespace="/manage" extends="default">
+		<default-interceptor-ref name="baseStack" />
+		<action name="do_*" method="{1}" class="userLoginAction" />
+		<action name="role_*" method="{1}" class="roleResourceAction" />
+		<action name="account_*" method="{1}" class="accountAction" />
+		<action name="area_*" method="{1}" class="areasAction" />
+		<action name="server_*" method="{1}" class="sysServersAction" />
+		<action name="rhost_*" method="{1}" class="sysRemoteHostsAction" />
+		<action name="chost_*" method="{1}" class="sysCommHostsAction" />
+		<action name="bhost_*" method="{1}" class="sysBroadcastHostsAction" />
+		<action name="device_*" method="{1}" class="sysDeviceAreaAction" />
+		<action name="install_*" method="{1}" class="sysInstallPlaceAction" />
+		<action name="home_*" method="{1}" class="homePageAction" />
+		<action name="patrol_*" method="{1}" class="patrolTasksAction" />
+		<action name="preview_*" method="{1}" class="sysRemotePreviewAction" />
+		<action name="category_*" method="{1}" class="categorysAction" />
+		
+		<action name="slv_*" method="{1}" class="sLVAction" />
+	</package>
+</struts>

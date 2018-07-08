@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hp.manage.dao.ResourceDao">
+	<resultMap id="ResourceResult" type="com.hp.manage.domain.ResourceDO">
+		<id property="id" column="id" />
+		<result property="resourceName" column="resource_name" />
+		<result property="resourceUrl" column="resource_url" />
+		<result property="parentId" column="parent_id" />
+		<result property="sequence" column="sequence" />
+		<result property="level" column="level" />
+
+		<result property="isDelete" column="is_delete" />
+		<result property="gmtCreate" column="gmt_create" />
+	</resultMap>
+	
+	<insert id="insertResource" parameterType="com.hp.manage.domain.ResourceDO">
+		INSERT INTO resource
+		(id, resource_name,resource_url,parent_id,sequence,level,is_delete,gmt_create)
+		VALUES
+		(#{id}, #{resourceName},#{resourceUrl},#{parentId},#{sequence},#{level},0,NOW())
+	</insert>
+	
+	<update id="updateResource" parameterType="com.hp.manage.domain.ResourceDO">
+		UPDATE resource SET 
+		<if test="modifyUserId != null">
+			modify_user_id = #{modifyUserId},
+		</if>
+		gmt_modify = NOW()
+		WHERE id = #{id}
+	</update>
+
+	<select id="selectResourceById" parameterType="java.lang.String" resultMap="ResourceResult">
+        SELECT * FROM resource WHERE id = #{id} and is_delete = 0
+    </select>
+	
+	<select id="selectResourceList" parameterType="com.hp.manage.bo.QueryResourceBO" resultMap="ResourceResult">
+        SELECT * FROM resource 
+        WHERE is_delete = 0
+		<if test="resourceName != null and '' != resourceName">
+			AND resource_name LIKE CONCAT('%','${resourceName}','%')
+		</if>
+		<if test="level != null">
+			AND level = #{level}
+		</if>
+		<if test="parentId != null">
+			AND parent_id = #{parentId}
+		</if>
+		<if test="id != null">
+			AND id = #{id}
+		</if>
+    </select>
+    
+    <select id="selectResourceCount" parameterType="com.hp.manage.bo.QueryResourceBO" resultType="int">
+        SELECT count(1) FROM resource 
+        WHERE is_delete = 0
+		<if test="resourceName != null and '' != resourceName">
+			AND resource_name LIKE CONCAT('%','${resourceName}','%')
+		</if>
+    </select>
+    
+    <select id="selectResourcePage" parameterType="com.hp.manage.bo.QueryResourceBO" resultMap="ResourceResult">
+        SELECT * FROM resource 
+        WHERE is_delete = 0
+		<if test="resourceName != null and '' != resourceName">
+			AND resource_name LIKE CONCAT('%','${resourceName}','%')
+		</if>
+	    ORDER BY id DESC
+        LIMIT #{pageIndex}, #{pageSize}
+    </select>
+</mapper>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getWatchTasks,addTask,editTask,TaskPoints,addPoint,dataSuccess,editPoint } from '../../redux/watch.redux'
+import { getWatchTasks,addTask,editTask,TaskPoints,addPoint,dataSuccess,editPoint,copyTaskToDay } from '../../redux/watch.redux'
 import { Table,Button,Icon,Modal,Form,Input,Select,Popconfirm,Row,Col } from 'antd'
 import WatchTaskTime from '../../components/watch-components/watchTaskTime'
 const FormItem = Form.Item;
@@ -9,7 +9,7 @@ const Option = Select.Option
 @connect(
   state=>({watch: state.watch}),
   {
-    getWatchTasks,addTask,editTask,TaskPoints,addPoint,dataSuccess,editPoint
+    getWatchTasks,addTask,editTask,TaskPoints,addPoint,dataSuccess,editPoint,copyTaskToDay
   }
 )
 class WatchTask1 extends React.Component {
@@ -19,6 +19,7 @@ class WatchTask1 extends React.Component {
       newTaskVisible: false,
       editTaskVisible: false,
       addPointVisible: false,
+      copyTaskVisible: false,
       selectTask:{
         title:'',
         day:''
@@ -112,11 +113,20 @@ class WatchTask1 extends React.Component {
     this.props.TaskPoints({taskId:record.id})
     this.props.dataSuccess({selectTask:record})
   }
-  onChange(a,b){
-    console.log(a,b)
+  copyTask = () => {
+    this.props.form.validateFields(['copy-day'],(err, values)=>{
+      if(!err) {
+        const data = {
+          taskId: this.state.selectTask.id,
+          day: values['copy-day']
+        }
+        this.props.copyTaskToDay(data)
+        this.setState({copyTaskVisible: false})
+        this.props.form.resetFields();
+      }
+    })
   }
   render() {
-    console.log(1)
     const { getFieldDecorator } = this.props.form
     const columns = [{
           title:'任务名称',
@@ -137,6 +147,14 @@ class WatchTask1 extends React.Component {
               <Popconfirm title="确定要删除任务吗?" onConfirm={()=>this.props.editTask({id:record.id,isDelete:1})} onCancel={()=>{}}  okText="确认" cancelText="取消">
                 <a style={{marginLeft:'15px'}}><Icon type='delete'></Icon>删除</a>
               </Popconfirm>
+              <a style={{'marginLeft':'15px'}} onClick={()=>
+              this.setState({
+                copyTaskVisible: true,
+                selectTask: record
+              })}>
+                <Icon type="copy" />
+                复制
+              </a>
             </span>
           )
     }]
@@ -162,7 +180,7 @@ class WatchTask1 extends React.Component {
           </span>
         )
     }]
-   
+    console.log(this.state.selectTask)
     return (
       <div>
         
@@ -199,7 +217,7 @@ class WatchTask1 extends React.Component {
                 <FormItem label="任务名称">
                   {getFieldDecorator('title',{
                     rules: [{ required: true,message: '请填写任务名称'}], 
-                  })(<Input type="text" />)}
+                  })(<Input type="text"  />)}
                 </FormItem>
                 <FormItem label="星期">
                   {getFieldDecorator('day',{
@@ -317,6 +335,40 @@ class WatchTask1 extends React.Component {
             </FormItem>
           </Form> 
         </Modal>
+
+
+        <Modal
+            title='复制任务'
+            visible={this.state.copyTaskVisible}
+            okText='确定'
+            cancelText='取消'
+            onCancel={()=>{this.setState({copyTaskVisible:false});this.props.form.resetFields();}}
+            onOk={this.copyTask}
+            >
+              <Form layout='inline'>
+                <FormItem label="任务名称">
+                  {getFieldDecorator('copy-title',{
+                    rules: [{ required: true,message: '请填写任务名称'}], 
+                    initialValue: this.state.selectTask.title
+                  })(<Input type="text" disabled/>)}
+                </FormItem>
+                <FormItem label="星期">
+                  {getFieldDecorator('copy-day',{
+                    rules: [{ required: true,message: '请填写星期几'}], 
+                  })(
+                    <Select>
+                        <Option value='1'>星期一</Option>
+                        <Option value='2'>星期二</Option>
+                        <Option value='3'>星期三</Option>
+                        <Option value='4'>星期四</Option>
+                        <Option value='5'>星期五</Option>
+                        <Option value='6'>星期六</Option>
+                        <Option value='7'>星期日</Option>
+                      </Select>
+                  )}
+                </FormItem>
+              </Form> 
+         </Modal>
       </div>
     )
   }

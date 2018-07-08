@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.slv.dao.PeopleDao" >
+  <resultMap id="People" type="com.hp.manage.slv.domain.PeopleDO" >
+    <result column="People_id" property="peopleId" />
+    <result column="People_name" property="peopleName" />
+    <result column="Gender" property="gender" />
+    <result column="Picture" property="picture" />
+    <result column="Dept_id" property="deptId" />
+    <result column="Worktype_id" property="worktypeId" />
+    <result column="Rank_id" property="rankId" />
+    <result column="Birthday" property="birthday" />
+    <result column="Enroll_time" property="enrollTime" />
+     <result column="Address" property="address" />
+    <result column="Phone" property="phone" />
+    <result column="ID_number" property="iDNumber" />
+    <result column="Blood_type" property="bloodType" />
+    <result column="Allergy" property="allergy" />
+    <result column="Linkman_name" property="linkmanName" />
+    <result column="Linkman_dept" property="linkmanDept" />
+    <result column="Linkman_phone" property="linkmanPhone" />
+    <result column="People_id_ex" property="peopleIdEx" />
+    <result column="People_info" property="peopleInfo" />
+  </resultMap>
+  
+  <select id="selectPeopleById" resultMap="People" parameterType="java.lang.String" >
+    SELECT * FROM People WHERE People_id_ex = #{peopleIdEx}
+  </select>
+  
+  <select id="selectPeopleList" parameterType="com.hp.manage.slv.bo.QueryPeopleBO" resultMap="People">
+    SELECT * FROM People WHERE 1 = 1
+    <if test="peopleIdEx != null">
+	  AND People_id_ex = #{peopleIdEx}
+	</if>
+	<if test="peopleName != null">
+	  AND People_name LIKE '%'+ #{peopleName} +'%'  
+	</if>
+	<if test="linkmanName != null">
+	  AND Linkman_name LIKE '%'+ #{linkmanName} +'%'  
+	</if>
+	<if test="deptId != null">
+	  AND Dept_id = #{deptId}
+	</if>
+  </select>
+</mapper>

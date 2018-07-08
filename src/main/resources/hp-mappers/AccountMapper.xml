@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.AccountDao" >
+  <resultMap id="AccountResult" type="com.hp.manage.domain.AccountDO" >
+    <id column="id" property="id" />
+    <result column="parent_id" property="parentId" />
+    <result column="name" property="name" />
+    <result column="telephone" property="telephone" />
+    <result column="account_no" property="accountNo" />
+    <result column="password" property="password" />
+    <result column="status" property="status" />
+    <result column="token" property="token" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="modify_user_id" property="modifyUserId" />
+    <result column="type" property="type" />
+    <result column="role_id" property="roleId" />
+    <result column="department" property="department" />
+    <result column="remark" property="remark" />
+  </resultMap>
+  
+  <select id="selectAccountById" resultMap="AccountResult" parameterType="java.lang.String" >
+    SELECT * FROM account WHERE id = #{id}
+  </select>
+
+  <insert id="insertAccount" parameterType="com.hp.manage.domain.AccountDO">
+    INSERT INTO account 
+    (id, parent_id, name, telephone, account_no, password, status, type, role_id, token, department, remark, is_delete, gmt_create, create_user_id, gmt_modify, modify_user_id)
+    VALUES 
+    (#{id}, #{parentId}, #{name}, #{telephone}, #{accountNo}, #{password}, #{status}, #{type}, #{roleId}, #{token}, #{department}, #{remark}, 0, NOW(), #{createUserId},  #{gmtModify}, #{modifyUserId})
+  </insert>
+
+  <update id="updateAccount" parameterType="com.hp.manage.domain.AccountDO" >
+    UPDATE account
+    <set >
+      <if test="parentId != null" >
+        parent_id = #{parentId},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone},
+      </if>
+      <if test="accountNo != null" >
+        account_no = #{accountNo},
+      </if>
+      <if test="password != null" >
+        password = #{password},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId},
+      </if>
+      <if test="token != null" >
+        token = #{token},
+      </if>
+      <if test="department != null" >
+        department = #{department},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+      gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <select id="selectAccountList" parameterType="com.hp.manage.bo.QueryAccountBO" resultMap="AccountResult">
+    SELECT * FROM account WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="telephone != null" >
+      AND telephone = #{telephone}
+    </if>
+    <if test="accountNo != null" >
+      AND account_no = #{accountNo}
+    </if>
+    <if test="password != null" >
+      AND password = #{password}
+    </if>
+    <if test="token != null" >
+      AND token = #{token}
+    </if>
+  </select>
+    
+  <select id="selectAccountCount" parameterType="com.hp.manage.bo.QueryAccountBO" resultType="int">
+    SELECT count(1) FROM account WHERE id IN (${ids}) AND is_delete = 0
+    <if test="type != null">
+	  AND type = #{type}
+	</if>
+	<if test="accountNo != null" >
+      AND account_no LIKE CONCAT ('%',#{accountNo},'%')
+    </if>
+    <if test="status != null" >
+      AND status = #{status}
+    </if>
+    <if test="telephone != null" >
+      AND telephone = #{telephone}
+    </if>
+    <if test="roleId != null" >
+      AND role_id = #{roleId}
+    </if>
+  </select>
+    
+  <select id="selectAccountPage" parameterType="com.hp.manage.bo.QueryAccountBO" resultMap="AccountResult">
+    SELECT * FROM account WHERE id IN (${ids}) AND is_delete = 0 
+    <if test="type != null">
+     AND type = #{type}
+ 	</if>
+    <if test="accountNo != null" >
+      AND account_no LIKE CONCAT ('%',#{accountNo},'%')
+    </if>
+    <if test="status != null" >
+      AND status = #{status}
+    </if>
+    <if test="telephone != null" >
+      AND telephone = #{telephone}
+    </if>
+    <if test="roleId != null" >
+      AND role_id = #{roleId}
+    </if>
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+  
+   <select id="selectAccountCountx" parameterType="com.hp.manage.bo.QueryAccountBO" resultType="int">
+    SELECT count(1) FROM account WHERE is_delete = 0
+    <if test="roleId != null" >
+      AND role_id = #{roleId}
+    </if>
+  </select>
+    
+  <select id="selectAccountPagex" parameterType="com.hp.manage.bo.QueryAccountBO" resultMap="AccountResult">
+    SELECT * FROM account WHERE is_delete = 0 
+    <if test="roleId != null" >
+      AND role_id = #{roleId}
+    </if>
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+  
+  <select id="selectAllChildAccountIds" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT getAllChildsAccounts(#{id}) ids
+  </select>
+</mapper>

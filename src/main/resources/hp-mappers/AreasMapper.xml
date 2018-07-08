@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.AreasDao" >
+  <resultMap id="AreasResult" type="com.hp.manage.domain.AreasDO" >
+    <id column="vid" property="vid" />
+    <id column="id" property="id" />
+    <result column="name" property="name" />
+    <result column="parent_id" property="parentId" />
+    <result column="level" property="level" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+  
+  <select id="selectAreasById" resultMap="AreasResult" parameterType="java.lang.String" >
+    SELECT * FROM areas WHERE id = #{id}
+  </select>
+
+  <insert id="insertAreas" parameterType="com.hp.manage.domain.AreasDO" useGeneratedKeys="true" keyProperty="vid">
+    INSERT INTO areas 
+    (id, name, parent_id, level, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{name}, #{parentId}, #{level}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+
+  <update id="updateAreas" parameterType="com.hp.manage.domain.AreasDO" >
+    UPDATE areas
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId},
+      </if>
+      <if test="level != null" >
+        level = #{level},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+      gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <select id="selectAreasList" parameterType="com.hp.manage.bo.QueryAreasBO" resultMap="AreasResult">
+    SELECT * FROM areas WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="name != null" >
+      AND name = #{name}
+    </if>
+    <if test="level != null" >
+      AND level = #{level}
+    </if>
+    <if test="parentId != null" >
+      AND parent_id = #{parentId}
+    </if>
+  </select>
+    
+  <select id="selectAreasCount" parameterType="com.hp.manage.bo.QueryAreasBO" resultType="int">
+    SELECT count(1) FROM areas WHERE is_delete = 0
+    <if test="name != null" >
+      AND name LIKE CONCAT('%',#{name},'%')
+    </if>
+  </select>
+    
+  <select id="selectAreasPage" parameterType="com.hp.manage.bo.QueryAreasBO" resultMap="AreasResult">
+    SELECT * FROM areas WHERE is_delete = 0 
+    <if test="name != null" >
+      AND name LIKE CONCAT('%',#{name},'%')
+    </if>
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

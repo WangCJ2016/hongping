@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.slv.dao.RegionDao" >
+  <resultMap id="Region" type="com.hp.manage.slv.domain.RegionDO" >
+    <id column="Region_id" property="regionId" />
+    <result column="Region_name" property="regionName" />
+    <result column="Region_type" property="regionType" />
+    <result column="People_max" property="peopleMax" />
+    <result column="Linger_max" property="lingerMax" />
+    <result column="Status" property="status" />
+    <result column="Display_x" property="displayX" />
+    <result column="Display_y" property="displayY" />
+    <result column="Display_type" property="displayType" />
+    <result column="Region_info" property="regionInfo" />
+  </resultMap>
+  
+  <select id="selectRegionById" resultMap="Region" parameterType="java.lang.Integer" >
+    SELECT * FROM Region WHERE Region_id = #{regionId}
+  </select>
+  
+  <select id="selectRegionList" parameterType="com.hp.manage.slv.bo.QueryRegionBO" resultMap="Region">
+    SELECT * FROM Region WHERE 1 = 1
+    <if test="regionId != null">
+	  AND Region_id = #{regionId}
+	</if>
+	<if test="regionName != null">
+	  AND Region_name = #{regionName}
+	</if>
+  </select>
+</mapper>

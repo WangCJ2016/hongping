@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.SysSetDao" >
+  <resultMap id="SysSet" type="com.hp.manage.domain.SysSetDO" >
+    <id column="id" property="id" />
+    <result column="title" property="title" />
+    <result column="url" property="url" />
+    <result column="port" property="port" />
+    <result column="username" property="username" />
+    <result column="psw" property="psw" />
+    <result column="type" property="type" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+
+  <select id="selectSysSetById" resultMap="SysSet" parameterType="java.lang.String" >
+    SELECT * FROM sys_set WHERE id = #{id}
+  </select>
+
+  <insert id="insertSysSet" parameterType="com.hp.manage.domain.SysSetDO" >
+    INSERT INTO sys_set 
+    (id, title, url, port, username, psw, type, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{title}, #{url}, #{port}, #{username}, #{psw}, #{type}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+  
+  <update id="updateSysSet" parameterType="com.hp.manage.domain.SysSetDO" >
+    UPDATE sys_set
+    <set >
+      <if test="title != null" >
+        title = #{title},
+      </if>
+      <if test="url != null" >
+        url = #{url},
+      </if>
+      <if test="port != null" >
+        port = #{port},
+      </if>
+      <if test="username != null" >
+        username = #{username},
+      </if>
+      <if test="psw != null" >
+        psw = #{psw},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+      gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectSysSetList" parameterType="com.hp.manage.bo.QuerySysSetBO" resultMap="SysSet">
+    SELECT * FROM sys_set WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+  </select>
+    
+  <select id="selectSysSetCount" parameterType="com.hp.manage.bo.QuerySysSetBO" resultType="int">
+    SELECT count(1) FROM sys_set WHERE is_delete = 0
+  </select>
+    
+  <select id="selectSysSetPage" parameterType="com.hp.manage.bo.QuerySysSetBO" resultMap="SysSet">
+    SELECT * FROM sys_set WHERE is_delete = 0 
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

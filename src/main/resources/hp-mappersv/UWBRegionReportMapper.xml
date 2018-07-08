@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.slv.dao.UWBRegionReportDao" >
+  <resultMap id="UWBRegionReport" type="com.hp.manage.slv.domain.UWBRegionReportDO" >
+    <result column="People_id_ex" property="peopleIdEx" />
+    <result column="Region_id" property="regionId" />
+    <result column="First_Report_time" property="firstReportTime" />
+    <result column="Last_Report_time" property="lastReportTime" />
+    <result column="RegionReport_Desc" property="regionReportDesc" />
+  </resultMap>
+
+  <select id="selectUWBRegionReportList" parameterType="com.hp.manage.slv.bo.QueryUWBRegionReportBO" resultMap="UWBRegionReport">
+    SELECT * FROM UWBRegionReport WHERE 1 = 1
+    <if test="peopleIdEx != null">
+	  AND People_id_ex = #{peopleIdEx}
+	</if>
+  </select>
+</mapper>

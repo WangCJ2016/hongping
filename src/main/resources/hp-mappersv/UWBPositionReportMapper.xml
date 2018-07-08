@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.slv.dao.UWBPositionReportDao" >
+  <resultMap id="UWBPositionReport" type="com.hp.manage.slv.domain.UWBPositionReportDO" >
+    <result column="People_id_ex" property="peopleIdEx" />
+    <result column="Region_id" property="regionId" />
+    <result column="Location_x" property="locationX" />
+    <result column="Location_y" property="locationY" />
+    <result column="Location_z" property="locationZ" />
+    <result column="Report_time" property="reportTime" />
+    <result column="Rail_in" property="railIn" />
+    <result column="UWB_Desc" property="uWBDesc" />
+    <result column="min_time" property="minTime" />
+    <result column="max_time" property="maxTime" />
+  </resultMap>
+  
+  <select id="selectUWBPositionReportList" parameterType="com.hp.manage.slv.bo.QueryUWBPositionReportBO" resultMap="UWBPositionReport">
+    SELECT * FROM UWBPositionReport WHERE 1 = 1
+    <if test="peopleIdEx != null">
+	  AND People_id_ex = #{peopleIdEx}
+	</if>
+	<if test="regionId != null">
+	  AND Region_id = #{regionId}
+	</if>
+	<if test="startTime != null and endTime != null">
+	  AND Report_time BETWEEN #{startTime} AND #{endTime}
+	</if>
+  </select>
+  
+  <select id="selectUWBHisPositionsGpByRegion" parameterType="com.hp.manage.slv.bo.QueryUWBPositionReportBO" resultMap="UWBPositionReport">
+     SELECT Region_id, MIN(Report_time) min_time, MAX(Report_time) max_time FROM UWBPositionReport WHERE People_id_ex = #{peopleIdEx}
+     <if test="startTime != null and endTime != null">
+       AND Report_time BETWEEN #{startTime} AND #{endTime}
+     </if>
+     GROUP BY Region_id
+  </select>
+</mapper>

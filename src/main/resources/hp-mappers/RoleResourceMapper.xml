@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hp.manage.dao.RoleResourceDao">
+	<resultMap id="RoleResourceResult" type="com.hp.manage.domain.RoleResourceDO">
+		<id property="id" column="id" />
+		<result property="roleId" column="role_id" />
+		<result property="resourceId" column="resource_id" />
+		<result property="gmtCreate" column="gmt_create" />
+		<result property="createUserId" column="create_user_id" />
+		<result property="gmtModify" column="gmt_modify" />
+		<result property="modifyUserId" column="modify_user_id" />
+		<result property="resourceType" column="resource_type" />
+	</resultMap>
+	
+	<insert id="insertRoleResource" parameterType="com.hp.manage.domain.RoleResourceDO">
+	  INSERT INTO role_resource
+	  (id, role_id, resource_id, resource_type, gmt_create, create_user_id)
+	  VALUES
+	  (#{id}, #{roleId}, #{resourceId}, #{resourceType}, NOW(), #{createUserId})
+	</insert>
+	
+	<delete id="deleteRoleResource" parameterType="java.lang.String">
+	   DELETE FROM role_resource WHERE role_id = #{roleId}
+	</delete>
+	
+	<update id="updateRoleResource" parameterType="com.hp.manage.domain.RoleResourceDO">
+		UPDATE role_resource SET 
+		<if test="roleId != null">
+			role_id = #{roleId},
+		</if>
+		<if test="resourceId != null">
+			resource_id = #{resourceId},
+		</if>
+		<if test="modifyUserId != null">
+			modify_user_id = #{modifyUserId},
+		</if>
+		gmt_modify = NOW()
+		WHERE 1 = 1
+		<if test="id != null">
+			AND id = #{id}
+		</if>
+		<if test="roleId != null">
+			AND role_id = #{roleId}
+		</if>
+	</update>
+
+	<select id="selectRoleResourceById" parameterType="java.lang.String" resultMap="RoleResourceResult">
+        SELECT * FROM role_resource WHERE id = #{id} and is_delete = 0
+    </select>
+	
+	<select id="selectRoleResourceList" parameterType="com.hp.manage.bo.QueryRoleResourceBO" resultMap="RoleResourceResult">
+        SELECT * FROM role_resource 
+        WHERE 1 = 1
+		<if test="roleId != null">
+			AND role_id = #{roleId}
+		</if>
+		<if test="id != null">
+			AND id = #{id}
+		</if>
+		<if test="resourceId != null">
+			AND resource_id = #{resourceId}
+		</if>
+    </select>
+    
+</mapper>

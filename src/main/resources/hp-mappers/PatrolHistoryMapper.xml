@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.PatrolHistoryDao" >
+  <resultMap id="PatrolHistory" type="com.hp.manage.domain.PatrolHistoryDO" >
+    <result column="id" property="id" />
+    <result column="time" property="time" />
+    <result column="point" property="point" />
+  </resultMap>
+  
+  <select id="selectPatrolHistoryById" resultMap="PatrolHistory" parameterType="java.lang.String" >
+    SELECT * FROM patrol_history WHERE id = #{id}
+  </select>
+ 
+  <insert id="insertPatrolHistory" parameterType="com.hp.manage.domain.PatrolHistoryDO" >
+    INSERT INTO patrol_history 
+    (id, time, point)
+    VALUES
+    (#{id}, #{time}, #{point})
+  </insert>
+  
+  <insert id="batchInsertPatrolHistory" parameterType="java.util.List">
+	INSERT INTO patrol_history 
+    (id, time, point)
+    VALUES 
+	<foreach collection="list" item="history" index="index" separator=",">
+	 (#{history.id}, #{history.time}, #{history.point})
+	</foreach>
+  </insert> 
+  
+  <update id="updatePatrolHistory" parameterType="com.hp.manage.domain.PatrolHistoryDO" >
+    UPDATE patrol_history
+    <set >
+      <if test="time != null" >
+        time = #{time},
+      </if>
+      <if test="point != null" >
+        point = #{point},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectPatrolHistoryList" parameterType="com.hp.manage.bo.QueryPatrolHistoryBO" resultMap="PatrolHistory">
+    SELECT * FROM patrol_history WHERE 1 = 1
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="timeStr != null">
+	  AND DATE_FORMAT(time,'%Y-%m-%d') = #{timeStr}
+	</if>
+  </select>
+    
+  <select id="selectPatrolHistoryCount" parameterType="com.hp.manage.bo.QueryPatrolHistoryBO" resultType="int">
+    SELECT count(1) FROM patrol_history WHERE 1 = 1
+    <if test="startTime != null and endTime == null" >
+	  <![CDATA[AND DATE_FORMAT(time,'%Y-%m-%d') = #{startTime}]]> 
+	</if>
+	<if test="startTime != null and endTime != null" >
+	  <![CDATA[AND DATE_FORMAT(time,'%Y-%m-%d') >= #{startTime} AND DATE_FORMAT(time,'%Y-%m-%d') <= #{endTime}]]> 
+	</if>
+  </select>
+    
+  <select id="selectPatrolHistoryPage" parameterType="com.hp.manage.bo.QueryPatrolHistoryBO" resultMap="PatrolHistory">
+    SELECT * FROM patrol_history WHERE 1 = 1
+    <if test="startTime != null and endTime == null" >
+	  <![CDATA[AND DATE_FORMAT(time,'%Y-%m-%d') = #{startTime}]]> 
+	</if>
+	<if test="startTime != null and endTime != null" >
+	  <![CDATA[AND DATE_FORMAT(time,'%Y-%m-%d') >= #{startTime} AND DATE_FORMAT(time,'%Y-%m-%d') <= #{endTime}]]> 
+	</if>
+    ORDER BY time DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

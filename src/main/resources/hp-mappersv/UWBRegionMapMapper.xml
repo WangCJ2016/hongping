@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.slv.dao.UWBRegionMapDao" >
+  <resultMap id="UWBRegionMap" type="com.hp.manage.slv.domain.UWBRegionMapDO" >
+    <id column="ID" property="id" />
+    <result column="Map_name" property="mapName" />
+    <result column="Location_x" property="locationX" />
+    <result column="Location_y" property="locationY" />
+    <result column="Width" property="width" />
+    <result column="Height" property="height" />
+    <result column="Region_id" property="regionId" />
+    <result column="Picture" property="picture" />
+  </resultMap>
+
+  <select id="selectUWBRegionMapById" resultMap="UWBRegionMap" parameterType="java.lang.Integer" >
+    SELECT * FROM UWBRegionMap WHERE ID = #{id}
+  </select>
+  
+  <select id="selectUWBRegionMapList" parameterType="com.hp.manage.slv.bo.QueryUWBRegionMapBO" resultMap="UWBRegionMap">
+    SELECT * FROM UWBRegionMap WHERE 1 = 1
+    <if test="id != null">
+	  AND ID = #{id}
+	</if>
+	<if test="regionId != null">
+	  AND Region_id = #{regionId}
+	</if>
+  </select>
+</mapper>

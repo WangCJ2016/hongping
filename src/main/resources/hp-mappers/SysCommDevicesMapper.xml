@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.SysCommDevicesDao" >
+  <resultMap id="SysCommDevices" type="com.hp.manage.domain.SysCommDevicesDO" >
+    <id column="vid" property="vid" />
+    <id column="id" property="id" />
+    <result column="name" property="name" />
+    <result column="area_code" property="areaCode" />
+    <result column="host_id" property="hostId" />
+    <result column="status" property="status" />
+    <result column="icon" property="icon" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+
+  <select id="selectSysCommDevicesById" resultMap="SysCommDevices" parameterType="java.lang.String" >
+    SELECT * FROM sys_comm_devices WHERE id = #{id}
+  </select>
+
+  <insert id="insertSysCommDevices" parameterType="com.hp.manage.domain.SysCommDevicesDO" useGeneratedKeys="true" keyProperty="vid">
+    INSERT INTO sys_comm_devices 
+    (id, name, area_code, host_id, status, icon, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{name}, #{areaCode}, #{hostId}, #{status}, #{icon}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+  
+  <update id="updateSysCommDevices" parameterType="com.hp.manage.domain.SysCommDevicesDO" >
+    UPDATE sys_comm_devices
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="areaCode != null" >
+        area_code = #{areaCode},
+      </if>
+      <if test="hostId != null" >
+        host_id = #{hostId},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+      gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectSysCommDevicesList" parameterType="com.hp.manage.bo.QuerySysCommDevicesBO" resultMap="SysCommDevices">
+    SELECT * FROM sys_comm_devices WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="name != null" >
+      AND name = #{name}
+    </if>
+    <if test="areaCode != null" >
+      AND area_code = #{areaCode}
+    </if>
+    <if test="hostId != null" >
+      AND host_id = #{hostId}
+    </if>
+  </select>
+    
+  <select id="selectSysCommDevicesCount" parameterType="com.hp.manage.bo.QuerySysCommDevicesBO" resultType="int">
+    SELECT count(1) FROM sys_comm_devices WHERE is_delete = 0
+  </select>
+    
+  <select id="selectSysCommDevicesPage" parameterType="com.hp.manage.bo.QuerySysCommDevicesBO" resultMap="SysCommDevices">
+    SELECT * FROM sys_comm_devices WHERE is_delete = 0 
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.slv.dao.AlarmReportDao" >
+  <resultMap id="AlarmReport" type="com.hp.manage.slv.domain.AlarmReportDO" >
+    <id column="Alarm_id" property="alarmId" />
+    <result column="Alarm_type" property="alarmType" />
+    <result column="Alarm_param1" property="alarmParam1" />
+    <result column="Alarm_param2" property="alarmParam2" />
+    <result column="First_report_time" property="firstReportTime" />
+    <result column="Last_report_time" property="lastReportTime" />
+    <result column="Login_name" property="loginName" />
+    <result column="Process_time" property="processTime" />
+    <result column="Process_status" property="processStatus" />
+  </resultMap>
+  
+  <select id="selectAlarmReportById" resultMap="AlarmReport" parameterType="java.lang.Integer" >
+    SELECT * FROM AlarmReport WHERE Alarm_id = #{alarmId}
+  </select>
+  
+  <select id="selectAlarmReportList" parameterType="com.hp.manage.slv.bo.QueryAlarmReportBO" resultMap="AlarmReport">
+    SELECT * FROM AlarmReport WHERE 1 = 1
+    <if test="alarmId != null">
+	  AND Alarm_id = #{alarmId}
+	</if>
+  </select>
+</mapper>

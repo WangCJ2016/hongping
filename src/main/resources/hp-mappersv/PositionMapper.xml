@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.slv.dao.PositionDao" >
+  <resultMap id="Position" type="com.hp.manage.slv.domain.PositionDO" >
+    <id column="Position_id" property="positionId" />
+    <result column="Position_x" property="positionX" />
+    <result column="Position_y" property="positionY" />
+    <result column="Position_z" property="positionZ" />
+    <result column="Position_sin" property="positionSin" />
+    <result column="Position_cos" property="positionCos" />
+    <result column="Position_vcos" property="positionVcos" />
+    <result column="Position_desc" property="positionDesc" />
+    <result column="Position_sin2" property="positionSin2" />
+    <result column="Position_cos2" property="positionCos2" />
+    <result column="Position_vcos2" property="positionVcos2" />
+    <result column="Position_id_ex" property="positionIdEx" />
+    <result column="Status" property="status" />
+    <result column="Region_id" property="regionId" />
+  </resultMap>
+  
+  <select id="selectPositionById" resultMap="Position" parameterType="java.lang.Integer" >
+    SELECT * FROM Position WHERE Position_id = #{positionId}
+  </select>
+  
+  <select id="selectPositionList" parameterType="com.hp.manage.slv.bo.QueryPositionBO" resultMap="Position">
+    SELECT * FROM Position WHERE 1 = 1
+    <if test="positionId != null">
+	  AND Position_id = #{positionId}
+	</if>
+  </select>
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.CarsDao" >
+  <resultMap id="CarsResult" type="com.hp.manage.domain.CarsDO" >
+    <id column="id" property="id" />
+    <result column="car_no" property="carNo" />
+    <result column="gate" property="gate" />
+    <result column="outline" property="outline" />
+    <result column="action" property="action" />
+    <result column="time" property="time" />
+    <result column="picture" property="picture" />
+    <result column="device_id" property="deviceId" />
+    <result column="device_type" property="deviceType" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+  </resultMap>
+  
+  <select id="selectCarsById" resultMap="CarsResult" parameterType="java.lang.String" >
+    SELECT * FROM cars WHERE id = #{id}
+  </select>
+  
+  <insert id="insertCars" parameterType="com.hp.manage.domain.CarsDO" >
+    INSERT INTO cars 
+    (id, car_no, gate, outline, action, time, picture, device_id, device_type, is_delete, gmt_create)
+    VALUES 
+    (#{id}, #{carNo}, #{gate}, #{outline}, #{action}, #{time}, #{picture}, #{deviceId}, #{deviceType}, 0, NOW())
+  </insert>
+  
+  <delete id="deleteCars" parameterType="java.lang.String">
+ 	DELETE FROM cars WHERE DATE_FORMAT(gmt_create,'%Y-%m') = #{dateStr}
+  </delete>
+  
+  <update id="updateCars" parameterType="com.hp.manage.domain.CarsDO" >
+    UPDATE cars
+    <set >
+      <if test="carNo != null" >
+        car_no = #{carNo},
+      </if>
+      <if test="gate != null" >
+        gate = #{gate},
+      </if>
+      <if test="outline != null" >
+        outline = #{outline},
+      </if>
+      <if test="action != null" >
+        action = #{action},
+      </if>
+      <if test="time != null" >
+        time = #{time},
+      </if>
+      <if test="picture != null" >
+        picture = #{picture},
+      </if>
+      <if test="deviceId != null" >
+        device_id = #{deviceId},
+      </if>
+      <if test="deviceType != null" >
+        device_type = #{deviceType},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectCarsList" parameterType="com.hp.manage.bo.QueryCarsBO" resultMap="CarsResult">
+    SELECT * FROM cars WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+  </select>
+    
+  <select id="selectCarsCount" parameterType="com.hp.manage.bo.QueryCarsBO" resultType="int">
+    SELECT count(1) FROM cars WHERE is_delete = 0
+    <if test="carNo != null" >
+      AND car_no LIKE CONCAT ('%',#{carNo},'%')
+    </if>
+    <if test="deviceId != null" >
+      AND device_id = #{deviceId}
+    </if>
+    <if test="startTime != null and endTime != null" >
+	  <![CDATA[AND DATE_FORMAT(time,'%Y-%m-%d %H:%i:%s') >= #{startTime} AND DATE_FORMAT(time,'%Y-%m-%d %H:%i:%s') <= #{endTime}]]> 
+	</if>
+  </select>
+    
+  <select id="selectCarsPage" parameterType="com.hp.manage.bo.QueryCarsBO" resultMap="CarsResult">
+    SELECT id, car_no, gate, outline, action, time, device_id, device_type FROM cars WHERE is_delete = 0 
+    <if test="carNo != null" >
+      AND car_no LIKE CONCAT ('%',#{carNo},'%')
+    </if>
+    <if test="deviceId != null" >
+      AND device_id = #{deviceId}
+    </if>
+    <if test="startTime != null and endTime != null" >
+	  <![CDATA[AND DATE_FORMAT(time,'%Y-%m-%d %H:%i:%s') >= #{startTime} AND DATE_FORMAT(time,'%Y-%m-%d %H:%i:%s') <= #{endTime}]]> 
+	</if>
+    ORDER BY gmt_create DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

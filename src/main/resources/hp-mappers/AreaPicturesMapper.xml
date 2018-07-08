@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.AreaPicturesDao" >
+  <resultMap id="AreaPictures" type="com.hp.manage.domain.AreaPicturesDO" >
+    <id column="id" property="id" />
+    <result column="area_id" property="areaId" />
+    <result column="picture" property="picture" />
+    <result column="picturex" property="picturex" />
+  </resultMap>
+  
+  <select id="selectAreaPicturesById" resultMap="AreaPictures" parameterType="java.lang.String" >
+    SELECT *  FROM area_pictures WHERE id = #{id}
+  </select>
+  
+  <delete id="deleteByAreaId" parameterType="java.lang.String" >
+    DELETE FROM area_pictures WHERE area_id = #{areaId}
+  </delete>
+  
+  <insert id="insertAreaPictures" parameterType="com.hp.manage.domain.AreaPicturesDO" >
+    INSERT INTO area_pictures 
+    (id, area_id, picture, picturex)
+    VALUES 
+    (#{id}, #{areaId}, #{picture}, #{picturex})
+  </insert>
+  
+  <update id="updateAreaPictures" parameterType="com.hp.manage.domain.AreaPicturesDO" >
+    UPDATE area_pictures
+    <set >
+      <if test="areaId != null" >
+        area_id = #{areaId},
+      </if>
+      <if test="picture != null" >
+        picture = #{picture},
+      </if>
+      <if test="picturex != null" >
+        picturex = #{picturex},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectAreaPicturesList" parameterType="com.hp.manage.bo.QueryAreaPicturesBO" resultMap="AreaPictures">
+    SELECT * FROM area_pictures WHERE 1=1 
+    <if test="areaId != null" >
+      AND area_id = #{areaId}
+    </if>
+  </select>
+</mapper>

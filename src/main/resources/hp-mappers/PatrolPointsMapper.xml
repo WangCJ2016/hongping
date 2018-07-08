@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.PatrolPointsDao" >
+  <resultMap id="PatrolPointsResult" type="com.hp.manage.domain.PatrolPointsDO" >
+    <id column="id" property="id" />
+    <result column="task_id" property="taskId" />
+    <result column="area_id" property="areaId" />
+    <result column="name" property="name" />
+    <result column="point" property="point" />
+    <result column="remark" property="remark" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+
+  <select id="selectPatrolPointsById" resultMap="PatrolPointsResult" parameterType="java.lang.String" >
+    SELECT * FROM patrol_points WHERE id = #{id}
+  </select>
+
+  <insert id="insertPatrolPoints" parameterType="com.hp.manage.domain.PatrolPointsDO" >
+    INSERT INTO patrol_points 
+    (id, task_id, area_id, name, point, remark, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{taskId}, #{areaId}, #{name}, #{point}, #{remark}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+  
+  <update id="updatePatrolPoints" parameterType="com.hp.manage.domain.PatrolPointsDO" >
+    UPDATE patrol_points
+    <set >
+      <if test="taskId != null">
+	    task_id = #{taskId},
+	  </if>
+      <if test="areaId != null" >
+        area_id = #{areaId},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="point != null" >
+        point = #{point},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+        gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectPatrolPointsList" parameterType="com.hp.manage.bo.QueryPatrolPointsBO" resultMap="PatrolPointsResult">
+    SELECT * FROM patrol_points WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="taskId != null">
+	  AND task_id = #{taskId}
+	</if>
+  </select>
+    
+  <select id="selectPatrolPointsCount" parameterType="com.hp.manage.bo.QueryPatrolPointsBO" resultType="int">
+    SELECT count(1) FROM patrol_points WHERE is_delete = 0
+  </select>
+    
+  <select id="selectPatrolPointsPage" parameterType="com.hp.manage.bo.QueryPatrolPointsBO" resultMap="PatrolPointsResult">
+    SELECT * FROM patrol_points WHERE is_delete = 0 
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+
+</mapper>

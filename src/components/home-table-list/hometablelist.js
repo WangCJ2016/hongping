@@ -32,16 +32,11 @@ class HomeTableList extends React.Component {
     })
   }
   playBack = (record) => {
-    this.props.videoPlayBack(record)
-    //this.play.XzVideo_PreSet(39,preset.presetId,0)}
+    this.props.videoPlayBack(record,record.device)   
   }
-  playReal = (record) => {
-    if(record.type === 3) {
-      this.props.videoPlay(record)
-    }else {
+  playReal = (record) => {    
       this.props.videoPlay(record,record.device)
-    }
-  }
+   }
   alarmlistRender() {
     const columns = [{
         title: '状态',

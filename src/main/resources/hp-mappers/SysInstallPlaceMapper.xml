@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.SysInstallPlaceDao" >
+  <resultMap id="SysInstallPlace" type="com.hp.manage.domain.SysInstallPlaceDO" >
+    <id column="id" property="id" />
+    <result column="area_id" property="areaId" />
+    <result column="dev_id" property="devId" />
+    <result column="type" property="type" />
+    <result column="x" property="x" />
+    <result column="y" property="y" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+
+  <select id="selectSysInstallPlaceById" resultMap="SysInstallPlace" parameterType="java.lang.String" >
+    SELECT * FROM sys_install_place WHERE id = #{id}
+  </select>
+  
+  <delete id="deleteSysInstallPlacex" parameterType="java.lang.String" >
+    DELETE FROM sys_install_place WHERE area_id = #{areaId}
+  </delete>
+
+  <insert id="insertSysInstallPlace" parameterType="com.hp.manage.domain.SysInstallPlaceDO" >
+    INSERT INTO sys_install_place 
+    (id, area_id, dev_id, type, x, y, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES
+    (#{id}, #{areaId}, #{devId}, #{type}, #{x}, #{y}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+  
+  
+  <insert id="batchInsertSysIntPlace" parameterType="java.util.List">
+	INSERT INTO sys_install_place 
+    (id, area_id, dev_id, type, x, y, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+	<foreach collection="list" item="place" index="index" separator=",">
+	(#{place.id}, #{place.areaId}, #{place.devId}, #{place.type}, #{place.x}, #{place.y}, 0, NOW(), #{place.gmtModify}, #{place.createUserId}, #{place.modifyUserId})
+	</foreach>
+  </insert> 
+  
+  <update id="batchUpdateSysIntPlace"  parameterType="java.util.List">  
+    <foreach collection="list" item="place" index="index" open="" close="" separator=";">
+       UPDATE sys_install_place
+       <set >
+         <if test="place.x != null" >
+          x = #{place.x},
+         </if>
+         <if test="place.y != null" >
+          y = #{place.y},
+         </if>
+         <if test="place.isDelete != null" >
+          is_delete = #{place.isDelete},
+         </if>
+         <if test="place.modifyUserId != null" >
+          modify_user_id = #{place.modifyUserId},
+         </if>
+      gmt_modify = NOW()
+      </set>
+      WHERE id = #{place.id}
+    </foreach>      
+  </update>
+  
+  <update id="updateSysInstallPlace" parameterType="com.hp.manage.domain.SysInstallPlaceDO" >
+    UPDATE sys_install_place
+    <set >
+      <if test="areaId != null" >
+        area_id = #{areaId},
+      </if>
+      <if test="devId != null" >
+        dev_id = #{devId},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="x != null" >
+        x = #{x},
+      </if>
+      <if test="y != null" >
+        y = #{y},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+      gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectSysInstallPlaceList" parameterType="com.hp.manage.bo.QuerySysInstallPlaceBO" resultMap="SysInstallPlace">
+    SELECT * FROM sys_install_place WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="areaId != null" >
+      AND area_id = #{areaId}
+    </if>
+    <if test="devId != null" >
+      AND dev_id = #{devId}
+    </if>
+    <if test="type != null" >
+      AND type = #{type}
+    </if>
+  </select>
+    
+  <select id="selectSysInstallPlaceCount" parameterType="com.hp.manage.bo.QuerySysInstallPlaceBO" resultType="int">
+    SELECT count(1) FROM sys_install_place WHERE is_delete = 0
+  </select>
+    
+  <select id="selectSysInstallPlacePage" parameterType="com.hp.manage.bo.QuerySysInstallPlaceBO" resultMap="SysInstallPlace">
+    SELECT * FROM sys_install_place WHERE is_delete = 0 
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+  
+  <delete id="deleteSysInstallPlace" parameterType="java.util.Map">
+    DELETE FROM sys_install_place WHERE 1 = 1
+    <if test="areaId != null" >
+      AND area_id = #{areaId}
+    </if>
+    <if test="devIds != null" >
+      AND dev_id IN (${devIds})
+    </if>
+  </delete>
+</mapper>

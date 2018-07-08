@@ -1,7 +1,8 @@
 import React from 'react'
-import { Input,Col,DatePicker,Select,Form,Row,Button,Table,Tabs } from 'antd'
+import { Input,Col,DatePicker,Select,Form,Row,Button,Table,Tabs,Modal } from 'antd'
 import { connect } from 'react-redux'
 import { historyFstatistics } from '../../redux/status.redux'
+import { getUndoPatrolPoints } from '../../redux/alarm.redux'
 import HistoryGraph  from './historyGraph'
 import moment from 'moment'
 const Option = Select.Option
@@ -9,60 +10,17 @@ const FormItem = Form.Item
 const TabPane = Tabs.TabPane
 
 
-const columns = [{
-    title: '等级',
-    dataIndex: 'degree',
-    key: 'degree',
-    render:(text,record)=>{
-      if(text===0) {
-        return <span>正常</span>
-      }
-      if(text===1) {
-        return <span>非紧急</span>
-      }
-      if(text===2) {
-        return <span>紧急</span>
-      }
-    }
-  },{
-    title: '地点',
-    dataIndex: 'place',
-    key: 'place',
-  },{
-    title: '时间',
-    dataIndex: 'time',
-    key: 'time',
-  },{
-    title: '设备',
-    dataIndex: 'device',
-    key: 'device',
-  },{
-    title: '设备类型',
-    dataIndex: 'deviceType',
-    key: 'deviceType',
-  },{
-    title: '报警类型',
-    dataIndex: 'type',
-    key: 'type',
-  },
-  {
-    title: '处理意见',
-    dataIndex: 'suggest',
-    key: 'suggest',
-  },{
-    title: '处理人',
-    dataIndex: 'dealPerson',
-    key: 'dealPerson',
-  }]
 
 @connect(
-  state => ({status: state.status}),
+  state => ({status: state.status,alarm:state.alarm}),
   {
-    historyFstatistics
+    historyFstatistics, getUndoPatrolPoints
   }
 )
 class History1 extends React.Component {
-  
+  state = {
+    pointVisible: false
+  } 
   handleSearch(pageNo,e) {
     this.props.form.validateFields((err, values) => {
       if(e) {
@@ -88,9 +46,88 @@ class History1 extends React.Component {
     });
   }
   pageChange = (e)=>{
+    debugger
     this.handleSearch(e)
   }
+  pointHandle = (data) => {
+    const name = data.event.split('：')[1].slice(0,-3)
+    this.props.getUndoPatrolPoints({title: name, date: data.time})
+    this.setState({
+      pointVisible: true
+    })
+  }
   render() {
+    const columns = [{
+      title: '等级',
+      dataIndex: 'degree',
+      key: 'degree',
+      render:(text,record)=>{
+        if(text===0) {
+          return <span>正常</span>
+        }
+        if(text===1) {
+          return <span>非紧急</span>
+        }
+        if(text===2) {
+          return <span>紧急</span>
+        }
+      }
+    },{
+      title: '地点',
+      dataIndex: 'place',
+      key: 'place',
+    },{
+      title: '时间',
+      dataIndex: 'time',
+      key: 'time',
+    },{
+      title: '设备',
+      dataIndex: 'device',
+      key: 'device',
+    },{
+      title: '设备类型',
+      dataIndex: 'deviceType',
+      key: 'deviceType',
+    },{
+      title: '报警类型',
+      dataIndex: 'type',
+      key: 'type',
+    },
+    {
+      title: '处理意见',
+      dataIndex: 'suggest',
+      key: 'suggest',
+    },{
+      title: '处理人',
+      dataIndex: 'dealPerson',
+      key: 'dealPerson',
+   },{
+     title: '操作',
+     dataIndex: 'action',
+     key: 'action',
+     render: (text, record) => (
+       <span>
+         <Button type='primary' onClick={this.pointHandle.bind(this, record)}>查看</Button>
+       </span>
+     )
+   }]
+   const columns1 = [{
+    title: '名称',
+    dataIndex: 'name',
+    key:'name',
+  },
+  {
+    title: '点位',
+    dataIndex: 'point',
+    key:'point',
+  },
+  {
+    title: '备注',
+    dataIndex: 'remark',
+    key:'remark'
+  }
+  ]
+    console.log(this.props.alarm.unhandlePoints)
     const { getFieldDecorator } = this.props.form
     const formItemLayout = {
       labelCol: { span: 5 },
@@ -173,6 +210,22 @@ class History1 extends React.Component {
             <HistoryGraph></HistoryGraph>
           </TabPane>
         </Tabs>
+        
+        <Modal
+          title="巡更点位" 
+          visible={this.state.pointVisible}
+          onOk={this.props.handlePointOk} 
+          onCancel={()=>this.setState({pointVisible: false})}
+          className='home-warm-modal'
+          footer={null} 
+         >
+         {
+          this.props.alarm.unhandlePoints?
+          <Table size='small' columns={columns1} dataSource={this.props.alarm.unhandlePoints}  rowKey={(record)=>{return record.id}}></Table>:
+          null
+         }
+          
+        </Modal>
       </div>  
     )
   }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.SysRemotePreviewDao" >
+  <resultMap id="SysRemotePreview" type="com.hp.manage.domain.SysRemotePreviewDO" >
+    <id column="id" property="id" />
+    <result column="title" property="title" />
+    <result column="parent_id" property="parentId" />
+    <result column="dev_id" property="devId" />
+    <result column="dev_type" property="devType" />
+    <result column="gmt_create" property="gmtCreate" />
+  </resultMap>
+  
+  <select id="selectSysRemotePreviewById" resultMap="SysRemotePreview" parameterType="java.lang.String" >
+    SELECT * FROM sys_remote_preview WHERE id = #{id}
+  </select>
+  
+  <delete id="deleteSysRemotePreview" parameterType="com.hp.manage.domain.SysRemotePreviewDO" >
+    DELETE FROM sys_remote_preview WHERE dev_type = #{devType} AND parent_id = #{parentId}
+  </delete>
+  
+  <delete id="deleteSrPreviewGroup" parameterType="java.lang.String" >
+    DELETE FROM sys_remote_preview WHERE id = #{id}
+  </delete>
+  
+  <insert id="insertSysRemotePreview" parameterType="com.hp.manage.domain.SysRemotePreviewDO" >
+    INSERT INTO sys_remote_preview 
+    (id, title, parent_id, dev_id, dev_type, gmt_create)
+    VALUES 
+    (#{id}, #{title}, #{parentId}, #{devId}, #{devType}, NOW())
+  </insert>
+  
+  <insert id="batchInsertSrPreview" parameterType="java.util.List">
+	INSERT INTO sys_remote_preview 
+    (id, title, parent_id, dev_id, dev_type, gmt_create)
+    VALUES 
+	<foreach collection="list" item="preview" index="index" separator=",">
+	(#{preview.id}, #{preview.title}, #{preview.parentId}, #{preview.devId}, #{preview.devType}, NOW())
+	</foreach>
+  </insert> 
+
+  <update id="updateSysRemotePreview" parameterType="com.hp.manage.domain.SysRemotePreviewDO" >
+    UPDATE sys_remote_preview
+    <set >
+      <if test="title != null" >
+        title = #{title},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId},
+      </if>
+      <if test="devId != null" >
+        dev_id = #{devId},
+      </if>
+      <if test="devType != null" >
+        dev_type = #{devType},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectSysRemotePreviewList" parameterType="com.hp.manage.bo.QuerySysRemotePreviewBO" resultMap="SysRemotePreview">
+    SELECT * FROM sys_remote_preview WHERE 1 = 1
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="parentId != null">
+	  AND parent_id = #{parentId}
+	</if>
+	<if test="devType != null">
+	  AND dev_type = #{devType}
+	</if>
+  </select>
+    
+  <select id="selectSysRemotePreviewCount" parameterType="com.hp.manage.bo.QuerySysRemotePreviewBO" resultType="int">
+    SELECT count(1) FROM sys_remote_preview WHERE 1 = 1
+    <if test="devType != null">
+	  AND dev_type = #{devType}
+	</if>
+  </select>
+    
+  <select id="selectSysRemotePreviewPage" parameterType="com.hp.manage.bo.QuerySysRemotePreviewBO" resultMap="SysRemotePreview">
+    SELECT * FROM sys_remote_preview WHERE 1 = 1
+    <if test="devType != null">
+	  AND dev_type = #{devType}
+	</if>
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

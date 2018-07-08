@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hp-mapperx.AreaPicturesMapper" >
+  <resultMap id="BaseResultMap" type="com.mybatis.model.AreaPictures" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.mybatis.model.AreaPicturesWithBLOBs" extends="BaseResultMap" >
+    <result column="picture" property="picture" jdbcType="LONGVARCHAR" />
+    <result column="picturex" property="picturex" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, area_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    picture, picturex
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from area_pictures
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from area_pictures
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mybatis.model.AreaPicturesWithBLOBs" >
+    insert into area_pictures (id, area_id, picture, 
+      picturex)
+    values (#{id,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR}, #{picture,jdbcType=LONGVARCHAR}, 
+      #{picturex,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mybatis.model.AreaPicturesWithBLOBs" >
+    insert into area_pictures
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="picture != null" >
+        picture,
+      </if>
+      <if test="picturex != null" >
+        picturex,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        #{picture,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="picturex != null" >
+        #{picturex,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mybatis.model.AreaPicturesWithBLOBs" >
+    update area_pictures
+    <set >
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        picture = #{picture,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="picturex != null" >
+        picturex = #{picturex,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mybatis.model.AreaPicturesWithBLOBs" >
+    update area_pictures
+    set area_id = #{areaId,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=LONGVARCHAR},
+      picturex = #{picturex,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mybatis.model.AreaPictures" >
+    update area_pictures
+    set area_id = #{areaId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

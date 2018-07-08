@@ -54,6 +54,10 @@ class DaozhaSider extends React.Component {
     this.props.areaInfo({id:areaId})
     this.props.querySysInstallPlaces({areaId:areaId})
   }
+  goArea = (areaId) => {
+    this.props.areaInfo({id:areaId})
+    this.props.querySysInstallPlaces({areaId:areaId})
+  }
   render() {
     if(!this.props.sidebar.daozha_sidebar) {
       return null
@@ -72,6 +76,7 @@ class DaozhaSider extends React.Component {
               <DaozhaTree 
                 switchChange={this.onChange} 
                 goLoc={this.goLoc}
+                goArea={this.goArea}
                 select={this.select} 
                 defaultExpandAllRows={true}/>
             </div>

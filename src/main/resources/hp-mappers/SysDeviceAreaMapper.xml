@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.SysDeviceAreaDao" >
+  <resultMap id="SysDeviceArea" type="com.hp.manage.domain.SysDeviceAreaDO" >
+    <id column="id" property="id" />
+    <result column="area_id" property="areaId" />
+    <result column="dev_id" property="devId" />
+    <result column="type" property="type" />
+    <result column="status" property="status" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+
+  <select id="selectSysDeviceAreaById" resultMap="SysDeviceArea" parameterType="java.lang.String" >
+    SELECT * FROM sys_device_area WHERE id = #{id}
+  </select>
+
+  <insert id="insertSysDeviceArea" parameterType="com.hp.manage.domain.SysDeviceAreaDO" >
+    INSERT INTO sys_device_area 
+    (id, area_id, dev_id, type, status, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{areaId}, #{devId}, #{type}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+  
+  <update id="updateSysDeviceArea" parameterType="com.hp.manage.domain.SysDeviceAreaDO" >
+    UPDATE sys_device_area
+    <set >
+      <if test="areaId != null" >
+        area_id = #{areaId},
+      </if>
+      <if test="devId != null" >
+        dev_id = #{devId},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+      gmt_modify = NOW()
+    </set>
+     WHERE id = #{id}
+  </update>
+  
+  <update id="batchUpdateSysDeviceArea"  parameterType="java.util.List">  
+    <foreach collection="list" item="area" index="index" open="" close="" separator=";">
+       UPDATE sys_device_area
+       <set >
+         <if test="area.status != null" >
+          status = #{area.status},
+         </if>
+         <if test="area.modifyUserId != null" >
+          modify_user_id = #{area.modifyUserId},
+         </if>
+      gmt_modify = NOW()
+      </set>
+      WHERE 1 = 1
+      <if test="area.areaId != null" >
+       AND area_id = #{area.areaId} 
+      </if>
+      <if test="area.devId != null" >
+       AND dev_id = #{area.devId}
+      </if>
+    </foreach>      
+  </update>
+  
+  <select id="selectSysDeviceAreaList" parameterType="com.hp.manage.bo.QuerySysDeviceAreaBO" resultMap="SysDeviceArea">
+    SELECT * FROM sys_device_area WHERE 1 = 1
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="areaId != null and searchType == 0" >
+      AND area_id = #{areaId}
+    </if>
+    <if test="areaId != null and searchType == 1" >
+      AND area_id != #{areaId}
+    </if>
+    <if test="status != null" >
+      AND status = #{status}
+    </if>
+    <if test="type != null" >
+      AND type = #{type}
+    </if>
+    <if test="devId != null" >
+      AND dev_id = #{devId}
+    </if>
+  </select>
+    
+  <select id="selectSysDeviceAreaCount" parameterType="com.hp.manage.bo.QuerySysDeviceAreaBO" resultType="int">
+    SELECT count(1) FROM sys_device_area WHERE 1 = 1
+  </select>
+    
+  <select id="selectSysDeviceAreaPage" parameterType="com.hp.manage.bo.QuerySysDeviceAreaBO" resultMap="SysDeviceArea">
+    SELECT * FROM sys_device_area WHERE 1 = 1
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+  
+  <delete id="deleteSysDeviceArea" parameterType="java.util.Map">
+    DELETE FROM sys_device_area WHERE 1 = 1
+    <if test="areaId != null" >
+      AND area_id = #{areaId}
+    </if>
+    <if test="devIds != null" >
+      AND dev_id IN (${devIds})
+    </if>
+  </delete>
+</mapper>

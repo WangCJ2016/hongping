@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hp.manage.dao.PatrolTaskPointDao">
+  <resultMap id="PatrolTaskPoint" type="com.hp.manage.domain.PatrolTaskPointDO">
+    <id column="id" property="id" />
+    <result column="task_id" property="taskId" />
+    <result column="point_id" property="pointId" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+
+  <select id="selectPatrolTaskPointById" parameterType="java.lang.String" resultMap="PatrolTaskPoint">
+    SELECT * FROM patrol_task_point WHERE id = #{id}
+  </select>
+
+  <insert id="insertPatrolTaskPoint" parameterType="com.hp.manage.domain.PatrolTaskPointDO">
+    INSERT INTO patrol_task_point 
+    (id, task_id, point_id, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{taskId}, #{pointId}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+  
+  <update id="updatePatrolTaskPoint" parameterType="com.hp.manage.domain.PatrolTaskPointDO">
+    UPDATE patrol_task_point
+    <set>
+      <if test="taskId != null">
+        task_id = #{taskId},
+      </if>
+      <if test="pointId != null">
+        point_id = #{pointId},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null">
+        modify_user_id = #{modifyUserId},
+      </if>
+      gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <select id="selectPatrolTaskPointList" parameterType="com.hp.manage.bo.QueryPatrolTaskPointBO" resultMap="PatrolTaskPoint">
+    SELECT * FROM patrol_task_point WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+  </select>
+    
+  <select id="selectPatrolTaskPointCount" parameterType="com.hp.manage.bo.QueryPatrolTaskPointBO" resultType="int">
+    SELECT count(1) FROM patrol_task_point WHERE is_delete = 0
+  </select>
+    
+  <select id="selectPatrolTaskPointPage" parameterType="com.hp.manage.bo.QueryPatrolTaskPointBO" resultMap="PatrolTaskPoint">
+    SELECT * FROM patrol_task_point WHERE is_delete = 0 
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

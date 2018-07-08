@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.multipart.maxSize" value="20480000" />
+	<constant name="struts.action.extension" value=","></constant>
+	<constant name="struts.action.excludePattern" value="/ws/.*,ws://.*"></constant>
+
+	<package name="default" namespace="/user" extends="struts-default">
+		<interceptors>
+			<!-- 基本访问的拦截器 -->
+			<interceptor-stack name="baseStack">
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+	</package>
+
+	<include file="struts-config/*.xml" />
+</struts>

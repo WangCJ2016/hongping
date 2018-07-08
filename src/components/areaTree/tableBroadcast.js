@@ -49,11 +49,20 @@ export default class TableBroadcast extends React.Component {
     onExpand(expandedKeys, e) {
       if(e.expanded) {
         this.props.broadcastAreaDevices({areaId:e.node.props.eventKey,type:4})
+        this.goArea(e.node.props.eventKey)
       }
     }
     onCheck(checkedKeys) {
       const keys = checkedKeys.filter(key => key.length<5)
       this.props.treeSelectIndex(keys)
+    }
+    // 展开获取跳转区域
+    goArea = (areaId) => {
+      if(this.props.location.pathname !== '/home') {
+        this.props.history.push('home')
+      } 
+      this.props.areaInfo({id: areaId})
+      this.props.querySysInstallPlaces({areaId: areaId}) 
     }
     goLoc(device) {
       this.props.dataSuccess({goLocDeviceId: device.id})

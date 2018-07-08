@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.slv.dao.RankDao" >
+  <resultMap id="Rank" type="com.hp.manage.slv.domain.RankDO" >
+    <result column="Rank_id" property="rankId" />
+    <result column="Rank_type" property="rankType" />
+    <result column="Rank_name" property="rankName" />
+    <result column="Rank_id_ex" property="rankIdEx" />
+  </resultMap>
+  
+  <select id="selectRankById" resultMap="Rank" parameterType="java.lang.Integer" >
+    SELECT * FROM Rank WHERE Rank_id = #{RankId}
+  </select>
+  
+  <select id="selectRankList" parameterType="com.hp.manage.slv.bo.QueryRankBO" resultMap="Rank">
+    SELECT * FROM Rank WHERE 1 = 1
+    <if test="RankId != null">
+	  AND Rank_id = #{RankId}
+	</if>
+  </select>
+</mapper>

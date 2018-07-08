@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hp.manage.dao.RoleDao">
+	<resultMap id="RoleResult" type="com.hp.manage.domain.RoleDO">
+		<id property="id" column="id" />
+		<result property="roleName" column="role_name" />
+		<result property="status" column="status" />
+
+		<result property="isDelete" column="is_delete" />
+		<result property="gmtCreate" column="gmt_create" />
+		<result property="createUserId" column="create_user_id" />
+		<result property="gmtModify" column="gmt_modify" />
+		<result property="modifyUserId" column="modify_user_id" />
+	</resultMap>
+	
+	<insert id="insertRole" parameterType="com.hp.manage.domain.RoleDO">
+		INSERT INTO role
+		(id, role_name, status, is_delete, gmt_create, create_user_id)
+		VALUES
+		(#{id}, #{roleName}, #{status}, 0, NOW(), #{createUserId})
+	</insert>
+	
+	<update id="updateRole" parameterType="com.hp.manage.domain.RoleDO">
+		UPDATE role SET 
+		<if test="roleName != null and '' != roleName">
+		    role_name = #{roleName},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="modifyUserId != null">
+			modify_user_id = #{modifyUserId},
+		</if>
+		<if test="isDelete != null">
+			is_delete = #{isDelete},
+		</if>
+		gmt_modify = NOW()
+		WHERE id = #{id}
+	</update>
+
+	<select id="selectRoleById" parameterType="java.lang.String" resultMap="RoleResult">
+        SELECT * FROM role WHERE id = #{id} and is_delete = 0
+    </select>
+	
+	<select id="selectRoleList" parameterType="com.hp.manage.bo.QueryRoleBO" resultMap="RoleResult">
+        SELECT * FROM role 
+        WHERE is_delete = 0
+		<if test="roleName != null and '' != roleName">
+			AND role_name LIKE CONCAT('%','${roleName}','%')
+		</if>
+		<if test="id != null">
+			AND id = #{id}
+		</if>
+		<if test="createUserId != null">
+			AND create_user_id = #{createUserId}
+		</if>
+    </select>
+    
+    <select id="selectRoleCount" parameterType="com.hp.manage.bo.QueryRoleBO" resultType="int">
+        SELECT count(1) FROM role 
+        WHERE is_delete = 0
+		<if test="roleName != null and '' != roleName">
+			AND role_name LIKE CONCAT('%','${roleName}','%')
+		</if>
+		<if test="createUserId != null">
+			AND create_user_id = #{createUserId}
+		</if>
+    </select>
+    
+     <select id="selectRolePage" parameterType="com.hp.manage.bo.QueryRoleBO" resultMap="RoleResult">
+        SELECT * FROM role 
+        WHERE is_delete = 0
+		<if test="roleName != null and '' != roleName">
+			AND role_name LIKE CONCAT('%','${roleName}','%')
+		</if>
+		<if test="createUserId != null">
+			AND create_user_id = #{createUserId}
+		</if>
+	    ORDER BY id DESC
+        LIMIT #{pageIndex}, #{pageSize}
+    </select>
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.SysCommHostsDao" >
+  <resultMap id="SysCommHosts" type="com.hp.manage.domain.SysCommHostsDO" >
+    <id column="vid" property="vid"  />
+    <id column="id" property="id"  />
+    <result column="name" property="name"  />
+    <result column="dev_type" property="devType" />
+    <result column="type" property="type"  />
+    <result column="protocol" property="protocol"  />
+    <result column="ip" property="ip"  />
+    <result column="port" property="port"  />
+    <result column="com_index" property="comIndex" />
+    <result column="baudrate" property="baudrate"  />
+    <result column="databit" property="databit"  />
+    <result column="parity" property="parity" />
+    <result column="stopbit" property="stopbit"  />
+    <result column="status" property="status" />
+    <result column="icon" property="icon" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId"  />
+    <result column="modify_user_id" property="modifyUserId"  />
+  </resultMap>
+
+  <select id="selectSysCommHostsById" resultMap="SysCommHosts" parameterType="java.lang.String" >
+    SELECT * FROM sys_comm_hosts WHERE id = #{id}
+  </select>
+  
+  <insert id="insertSysCommHosts" parameterType="com.hp.manage.domain.SysCommHostsDO" useGeneratedKeys="true" keyProperty="vid">
+    INSERT INTO sys_comm_hosts 
+    (id, name, dev_type, type, protocol, ip, port, com_index, baudrate, databit, parity, stopbit, 
+     status, icon, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{name}, #{devType}, #{type}, #{protocol}, #{ip}, #{port}, #{comIndex}, #{baudrate}, #{databit}, #{parity}, #{stopbit}, 
+     #{status}, #{icon}, 0, now(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+  
+  <update id="updateSysCommHosts" parameterType="com.hp.manage.domain.SysCommHostsDO" >
+    UPDATE sys_comm_hosts
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="devType != null" >
+        dev_type = #{devType},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="protocol != null" >
+        protocol = #{protocol},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip},
+      </if>
+      <if test="port != null" >
+        port = #{port},
+      </if>
+      <if test="comIndex != null" >
+        com_index = #{comIndex},
+      </if>
+      <if test="baudrate != null" >
+        baudrate = #{baudrate},
+      </if>
+      <if test="databit != null" >
+        databit = #{databit},
+      </if>
+      <if test="parity != null" >
+        parity = #{parity},
+      </if>
+      <if test="stopbit != null" >
+        stopbit = #{stopbit},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+       gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectSysCommHostsList" parameterType="com.hp.manage.bo.QuerySysCommHostsBO" resultMap="SysCommHosts">
+    SELECT * FROM sys_comm_hosts WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="name != null" >
+      AND name = #{name}
+    </if>
+    <if test="ip != null" >
+      AND ip = #{ip}
+    </if>
+    <if test="devType != null" >
+      AND dev_type = #{devType}
+    </if>
+  </select>
+    
+  <select id="selectSysCommHostsCount" parameterType="com.hp.manage.bo.QuerySysCommHostsBO" resultType="int">
+    SELECT count(1) FROM sys_comm_hosts WHERE is_delete = 0
+    <if test="name != null" >
+      AND name LIKE CONCAT ('%',#{name},'%')
+    </if>
+    <if test="ip != null" >
+      AND ip LIKE CONCAT ('%',#{ip},'%')
+    </if>
+    <if test="devType != null" >
+      AND dev_type = #{devType}
+    </if>
+  </select>
+    
+  <select id="selectSysCommHostsPage" parameterType="com.hp.manage.bo.QuerySysCommHostsBO" resultMap="SysCommHosts">
+    SELECT * FROM sys_comm_hosts WHERE is_delete = 0 
+    <if test="name != null" >
+      AND name LIKE CONCAT ('%',#{name},'%')
+    </if>
+    <if test="ip != null" >
+      AND ip LIKE CONCAT ('%',#{ip},'%')
+    </if>
+    <if test="devType != null" >
+      AND dev_type = #{devType}
+    </if>
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

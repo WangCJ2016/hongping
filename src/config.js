@@ -10,9 +10,15 @@ export const config = {
     }
   },
   api: {
-    ip:'192.168.1.51:8080',
-    base: 'http://192.168.0.141:8080/hp/manage', // http://192.168.0.149:8080/hp/manage
-    controlServerIp: '192.168.1.54',
+    // ip:'192.168.1.51:8080',
+    // base: 'http://192.168.1.51:8080/hp/manage', // http://192.168.0.149:8080/hp/manage
+    // controlServerIp: '192.168.1.54',
+    // controlServerPort: 6000,
+
+
+    ip:'192.168.0.103:8080',
+    base: 'http://192.168.0.100:8080/hp/manage', // http://192.168.0.149:8080/hp/manage
+    controlServerIp: '192.168.0.103',
     controlServerPort: 6000,
     login: '/do_login', // 登录
    
@@ -129,6 +135,7 @@ export const config = {
     setTaskTime: '/patrol_setPatrolTaskTime',
     watchPointsUpload:'/patrol_createPatrolHistorys',
     getUndoPatrolPoints:'/patrol_getUndoPatrolPoints',
+    copyTaskToDay: '/patrol_copyPatrolPoints',
     // 文档管理
     levelTopCategorys: '/category_queryCategorys',
     addCategorys:'/category_createCategorys',

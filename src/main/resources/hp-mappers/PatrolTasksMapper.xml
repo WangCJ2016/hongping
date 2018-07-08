@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.PatrolTasksDao" >
+  <resultMap id="PatrolTasks" type="com.hp.manage.domain.PatrolTasksDO" >
+    <id column="id" property="id" />
+    <result column="title" property="title" />
+    <result column="time_type" property="timeType" />
+    <result column="day" property="day" />
+    <result column="month" property="month" />
+    <result column="quarterly" property="quarterly" />
+    <result column="date" property="date" />
+    <result column="account_id" property="accountId" />
+    <result column="is_temporary" property="isTemporary" />
+    <result column="area_id" property="areaId" />
+    <result column="end_time" property="endTime" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+
+  <select id="selectPatrolTasksById" resultMap="PatrolTasks" parameterType="java.lang.String" >
+    SELECT * FROM patrol_tasks WHERE id = #{id}
+  </select>
+
+  <insert id="insertPatrolTasks" parameterType="com.hp.manage.domain.PatrolTasksDO" >
+    INSERT INTO patrol_tasks 
+    (id, title, time_type, day, month, quarterly, date, account_id, is_temporary, area_id, end_time, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{title}, #{timeType}, #{day}, #{month}, #{quarterly}, #{date}, #{accountId}, 1, #{areaId}, #{endTime}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+  
+  <update id="updatePatrolTasks" parameterType="com.hp.manage.domain.PatrolTasksDO" >
+    UPDATE patrol_tasks
+    <set >
+      <if test="title != null" >
+        title = #{title},
+      </if>
+      <if test="timeType != null" >
+        time_type = #{timeType},
+      </if>
+      <if test="day != null" >
+        day = #{day},
+      </if>
+      <if test="month != null" >
+        month = #{month},
+      </if>
+      <if test="quarterly != null" >
+        quarterly = #{quarterly},
+      </if>
+      <if test="date != null" >
+        date = #{date},
+      </if>
+      <if test="accountId != null" >
+        account_id = #{accountId},
+      </if>
+      <if test="isTemporary != null" >
+        is_temporary = #{isTemporary},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+        gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <update id="updatePatrolTasksTime" parameterType="com.hp.manage.domain.PatrolTasksDO" >
+    UPDATE patrol_tasks
+    <set >
+      <if test="endTime != null" >
+        end_time = #{endTime},
+      </if>
+        gmt_modify = NOW()
+    </set>
+  </update>
+  
+  <select id="selectPatrolTasksList" parameterType="com.hp.manage.bo.QueryPatrolTasksBO" resultMap="PatrolTasks">
+    SELECT * FROM patrol_tasks WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="title != null" >
+      AND title = #{title}
+    </if>
+    <if test="day != null" >
+      AND day = #{day}
+    </if>
+  </select>
+    
+  <select id="selectPatrolTasksCount" parameterType="com.hp.manage.bo.QueryPatrolTasksBO" resultType="int">
+    SELECT count(1) FROM patrol_tasks WHERE is_delete = 0
+  </select>
+    
+  <select id="selectPatrolTasksPage" parameterType="com.hp.manage.bo.QueryPatrolTasksBO" resultMap="PatrolTasks">
+    SELECT * FROM patrol_tasks WHERE is_delete = 0 
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

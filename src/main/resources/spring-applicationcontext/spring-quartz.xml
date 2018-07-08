@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans default-autowire="byName">
+    <bean id="alarmTask" class="com.hp.commons.utils.AlarmsReportTask" />
+	<bean id="alarmsReportJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="alarmTask" />
+		</property>
+		<property name="targetMethod">
+			<value>alarmsReport</value>
+		</property>
+	</bean>
+
+	<bean id="alarmsReportTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="alarmsReportJob" />
+		</property>
+		<property name="cronExpression">
+			<value>*/50 * * * * ?</value>
+		</property>
+	</bean>
+	
+    <bean id="carsTask" class="com.hp.commons.utils.ClearCarsTask" />
+	<bean id="carsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="carsTask" />
+		</property>
+		<property name="targetMethod">
+			<value>clearCars</value>
+		</property>
+	</bean>
+
+	<bean id="carsTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="carsJob" />
+		</property>
+		<property name="cronExpression">
+			<value>0 55 23 L * ?</value>  
+		</property>
+	</bean>
+	
+	<bean name="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="alarmsReportTrigger" />
+				<ref bean="carsTrigger" />
+			</list>
+		</property>
+		<property name="schedulerName">
+			<value>first</value>
+		</property>
+	</bean> 
+</beans>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.RoleAreaDao" >
+  <resultMap id="RoleArea" type="com.hp.manage.domain.RoleAreaDO" >
+    <id column="id" property="id" />
+    <result column="role_id" property="roleId" />
+    <result column="area_id" property="areaId" />
+    <result column="level" property="level" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+
+  <select id="selectRoleAreaById" resultMap="RoleArea" parameterType="java.lang.String" >
+    SELECT * FROM role_area WHERE id = #{id}
+  </select>
+  
+  <delete id="deleteRoleArea" parameterType="java.lang.String">
+	DELETE FROM role_area WHERE role_id = #{roleId}
+  </delete>
+
+  <insert id="insertRoleArea" parameterType="com.hp.manage.domain.RoleAreaDO" >
+    INSERT INTO role_area 
+    (id, role_id, area_id, level, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{roleId}, #{areaId}, #{level}, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+
+  <update id="updateRoleArea" parameterType="com.hp.manage.domain.RoleAreaDO" >
+    UPDATE role_area
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId},
+      </if>
+      <if test="level != null" >
+        level = #{level},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+        gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectRoleAreaList" parameterType="com.hp.manage.bo.QueryRoleAreaBO" resultMap="RoleArea">
+    SELECT * FROM role_area WHERE 1 = 1
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="roleId != null" >
+      AND role_id = #{roleId}
+    </if>
+  </select>
+    
+  <select id="selectRoleAreaCount" parameterType="com.hp.manage.bo.QueryRoleAreaBO" resultType="int">
+    SELECT count(1) FROM role_area WHERE 1 = 1
+  </select>
+    
+  <select id="selectRoleAreaPage" parameterType="com.hp.manage.bo.QueryRoleAreaBO" resultMap="RoleArea">
+    SELECT * FROM role_area WHERE 1 = 1 
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+
+</mapper>

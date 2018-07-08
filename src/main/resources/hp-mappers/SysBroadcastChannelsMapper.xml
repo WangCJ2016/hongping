@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.SysBroadcastChannelsDao" >
+  <resultMap id="SysBroadcastChannels" type="com.hp.manage.domain.SysBroadcastChannelsDO" >
+    <id column="id" property="id" />
+    <result column="host_id" property="hostId" />
+    <result column="name" property="name" />
+    <result column="type" property="type" />
+    <result column="remark" property="remark" />
+    <result column="indexz" property="index" />
+    <result column="icon" property="icon" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+
+  <select id="selectSysBroadcastChannelsById" resultMap="SysBroadcastChannels" parameterType="java.lang.String" >
+    SELECT * FROM sys_broadcast_channels WHERE id = #{id}
+  </select>
+
+  <insert id="insertSysBroadcastChannels" parameterType="com.hp.manage.domain.SysBroadcastChannelsDO" >
+    INSERT INTO sys_broadcast_channels 
+    (id, host_id, name, type, remark, indexz, icon, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{hostId}, #{name}, #{type}, #{remark}, #{index}, #{icon}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+ 
+  <update id="updateSysBroadcastChannels" parameterType="com.hp.manage.domain.SysBroadcastChannelsDO" >
+    UPDATE sys_broadcast_channels
+    <set >
+      <if test="hostId != null" >
+        host_id = #{hostId},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="index != null" >
+        indexz = #{index},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+        gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectSysBroadcastChannelsList" parameterType="com.hp.manage.bo.QuerySysBroadcastChannelsBO" resultMap="SysBroadcastChannels">
+    SELECT * FROM sys_broadcast_channels WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="hostId != null" >
+      AND host_id = #{hostId}
+    </if>
+    <if test="name != null" >
+      AND name = #{name}
+    </if>
+  </select>
+    
+  <select id="selectSysBroadcastChannelsCount" parameterType="com.hp.manage.bo.QuerySysBroadcastChannelsBO" resultType="int">
+    SELECT count(1) FROM sys_broadcast_channels WHERE is_delete = 0
+    <if test="name != null" >
+      AND name LIKE CONCAT ('%',#{name},'%')
+    </if>
+  </select>
+    
+  <select id="selectSysBroadcastChannelsPage" parameterType="com.hp.manage.bo.QuerySysBroadcastChannelsBO" resultMap="SysBroadcastChannels">
+    SELECT * FROM sys_broadcast_channels WHERE is_delete = 0 
+    <if test="name != null" >
+      AND name LIKE CONCAT ('%',#{name},'%')
+    </if>
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+
+</mapper>

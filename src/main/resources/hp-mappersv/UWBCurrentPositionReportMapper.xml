@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.slv.dao.UWBCurrentPositionReportDao" >
+  <resultMap id="UWBCurrentPositionReport" type="com.hp.manage.slv.domain.UWBCurrentPositionReportDO" >
+    <result column="People_id_ex" property="peopleIdEx" />
+    <result column="Region_id" property="regionId" />
+    <result column="Location_x" property="locationX" />
+    <result column="Location_y" property="locationY" />
+    <result column="Location_z" property="locationZ" />
+    <result column="Report_time" property="reportTime" />
+    <result column="Rail_in" property="railIn" />
+    <result column="UWB_Desc" property="uWBDesc" />
+    <result column="min_time" property="minTime" />
+    <result column="max_time" property="maxTime" />
+  </resultMap>
+  
+  <select id="selectUWBCurrentPositionReportList" parameterType="com.hp.manage.slv.bo.QueryUWBCurrentPositionReportBO" resultMap="UWBCurrentPositionReport">
+    SELECT * FROM UWBCurrentPositionReport WHERE 1 = 1
+    <if test="peopleIdEx != null">
+	  AND People_id_ex = #{peopleIdEx}
+	</if>
+	<if test="regionId != null">
+	  AND Region_id = #{regionId}
+	</if>
+	<if test="startTime != null and endTime != null">
+	  AND Report_time BETWEEN #{startTime} AND #{endTime}
+	</if>
+	<if test="startTime == null and endTime == null">
+	  ORDER BY Report_time DESC
+	</if>
+  </select>
+  
+  <select id="selectUWBCurrentPositionReportListx" parameterType="com.hp.manage.slv.bo.QueryUWBCurrentPositionReportBO" resultMap="UWBCurrentPositionReport">
+    SELECT * FROM UWBCurrentPositionReport A WHERE Report_time = (SELECT MAX(Report_time) FROM UWBCurrentPositionReport B WHERE A.People_id_ex = B.People_id_ex) 
+    AND Report_time > DATEADD(SECOND,-20,GETDATE())
+    <if test="regionId != null">
+	  AND Region_id = #{regionId}
+	</if>
+  </select>
+  
+  <select id="selectUWBHisPositionsGpByRegion" parameterType="com.hp.manage.slv.bo.QueryUWBCurrentPositionReportBO" resultMap="UWBCurrentPositionReport">
+     SELECT Region_id, MIN(Report_time) min_time, MAX(Report_time) max_time FROM UWBCurrentPositionReport WHERE People_id_ex = #{peopleIdEx}
+     <if test="startTime != null and endTime != null">
+       AND Report_time BETWEEN #{startTime} AND #{endTime}
+     </if>
+     GROUP BY Region_id
+  </select>
+</mapper>

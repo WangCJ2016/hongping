@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.SysRemotePresetDao" >
+  <resultMap id="SysRemotePreset" type="com.hp.manage.domain.SysRemotePresetDO" >
+    <id column="id" property="id" />
+    <result column="preset_id" property="presetId" />
+    <result column="preset_name" property="presetName" />
+    <result column="channel_id" property="channelId" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+
+  <select id="selectSysRemotePresetById" resultMap="SysRemotePreset" parameterType="java.lang.String" >
+    SELECT * FROM sys_remote_preset WHERE id = #{id}
+  </select>
+
+  <insert id="insertSysRemotePreset" parameterType="com.hp.manage.domain.SysRemotePresetDO" >
+    INSERT INTO sys_remote_preset 
+    (id, preset_id, preset_name, channel_id, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{presetId}, #{presetName}, #{channelId}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+  
+  <update id="updateSysRemotePreset" parameterType="com.hp.manage.domain.SysRemotePresetDO" >
+    UPDATE sys_remote_preset
+    <set >
+      <if test="presetId != null" >
+        preset_id = #{presetId},
+      </if>
+      <if test="presetName != null" >
+        preset_name = #{presetName},
+      </if>
+      <if test="channelId != null" >
+        channel_id = #{channelId},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+      gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectSysRemotePresetList" parameterType="com.hp.manage.bo.QuerySysRemotePresetBO" resultMap="SysRemotePreset">
+    SELECT * FROM sys_remote_preset WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="presetName != null" >
+      AND preset_name = #{presetName}
+    </if>
+    <if test="channelId != null" >
+      AND channel_id = #{channelId}
+    </if>
+  </select>
+    
+  <select id="selectSysRemotePresetCount" parameterType="com.hp.manage.bo.QuerySysRemotePresetBO" resultType="int">
+    SELECT count(1) FROM sys_remote_preset WHERE is_delete = 0
+  </select>
+    
+  <select id="selectSysRemotePresetPage" parameterType="com.hp.manage.bo.QuerySysRemotePresetBO" resultMap="SysRemotePreset">
+    SELECT * FROM sys_remote_preset WHERE is_delete = 0 
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

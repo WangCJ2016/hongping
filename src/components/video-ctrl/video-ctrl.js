@@ -7,6 +7,7 @@ import VideoCtrlYuntai from './video-ctrl-yuntai'
 import VideoCtrlYuzhizu from './video-ctrl-yuzhizu'
 import VideoCtrlParam from './video-ctrl-params'
 import VideoCtrlBtn from './video-ctrl-btns'
+import VideoCirclePlay from './video-circle-paly'
 const TabPane = Tabs.TabPane;
 
 
@@ -168,8 +169,10 @@ class VideoCtrl extends React.Component {
            <VideoCtrlTree play={this.state.play} />
           </TabPane>
           <TabPane tab="预览组" key="2">
-         
             <VideoCtrlYuzhizu play={this.state.play} />
+          </TabPane>
+          <TabPane tab='导航组' key='3'>
+            <VideoCirclePlay play={this.state.play}></VideoCirclePlay>
           </TabPane>
         </Tabs>
         <Tabs defaultActiveKey="1" type="card">

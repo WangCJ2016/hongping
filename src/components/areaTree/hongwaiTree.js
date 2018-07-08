@@ -26,12 +26,20 @@ export default class HongwaiTree extends React.Component {
     onExpand(expanded, record) {
       if(expanded) {
         this.props.hongwaiAreaDevices({areaId:record.id,type:2})
+        this.goArea(record.id)
       }
     }
     onRowClick(record,index) {
       if(record.type&&this.props.deviceSelect) {
         this.props.deviceSelect(record)
       }
+    }
+    goArea = (areaId) => {
+      if(this.props.location.pathname !== '/home') {
+        this.props.history.push('home')
+      } 
+      this.props.areaInfo({id: areaId})
+      this.props.querySysInstallPlaces({areaId: areaId})
     }
     goLoc(device) {
       this.props.dataSuccess({goLocDeviceId: device.id})

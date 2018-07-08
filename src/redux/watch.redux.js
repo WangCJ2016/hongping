@@ -235,4 +235,19 @@ export function watchPointsUpload(info) {
   }
 }
 
-
+export function copyTaskToDay(info) {
+  return (dispatch, getState) => {
+    const accountId = getState().user.account.id
+    const token = localStorage.getItem('token')
+    request.get( config.api.base + config.api.copyTaskToDay, {token:token,accountId: accountId,...info})
+    .then(res=>{
+      
+      if(res.success) {
+        message.info('复制成功')
+        getWatchTasks()(dispatch)
+      }else{
+        message.error(res.msg)
+      }
+    })
+  } 
+}

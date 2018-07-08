@@ -14,6 +14,7 @@ const Panel = Collapse.Panel
     areaInfo,querySysInstallPlaces,dataSuccess
   }
 )
+//@AreaRouteHoc
 class PeoCom extends React.Component {
   constructor() {
     super()
@@ -21,20 +22,22 @@ class PeoCom extends React.Component {
       peopleIdExSelect: ''
     }
   }
-  goLoc(areaId,peopleIdEx,e) {
+  goLoc = (areaId,peopleIdEx,e) => {
     e.preventDefault()
     e.stopPropagation()
     if(this.props.location.pathname !== '/home') {
       this.props.history.push('home')
     } 
-    this.props.dataSuccess({goLocDeviceId: peopleIdEx})
+    if(peopleIdEx) {
+      this.props.dataSuccess({goLocDeviceId: peopleIdEx})
+    }
     this.props.areaInfo({id: areaId})
     this.props.querySysInstallPlaces({areaId: areaId})
   }
   peoRender() {
     const peolist = this.props.peoList
     return peolist.map((area,index) => (
-      <Panel header={area.regionName+'('+(area.personCount?area.personCount:0)+')'} key={index}>
+      <Panel header={<span onClick={this.goLoc.bind(this,area.areaId,'')}>{area.regionName+'('+(area.personCount?area.personCount:0)+')'}</span>} key={index}>
         {area.postions?area.postions.map(peo=>{
           const styles = className({
             'peo-item': true,
@@ -56,6 +59,7 @@ class PeoCom extends React.Component {
     ))
   }
   render() {
+    console.log(this.props)
     return (
       <Collapse bordered={false} className='collapse'>
       {this.peoRender()}

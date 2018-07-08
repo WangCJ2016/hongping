@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.slv.dao.WorkTypeDao" >
+  <resultMap id="WorkType" type="com.hp.manage.slv.domain.WorkTypeDO" >
+    <result column="Worktype_id" property="worktypeId" />
+    <result column="Worktype_type" property="worktypeType" />
+    <result column="Worktype_name" property="worktypeName" />
+    <result column="Worktype_id_ex" property="worktypeIdEx" />
+  </resultMap>
+
+  <select id="selectWorkTypeById" resultMap="WorkType" parameterType="java.lang.Integer" >
+    SELECT * FROM WorkType WHERE Worktype_id = #{worktypeId}
+  </select>
+  
+  <select id="selectWorkTypeList" parameterType="com.hp.manage.slv.bo.QueryWorkTypeBO" resultMap="WorkType">
+    SELECT * FROM WorkType WHERE 1 = 1
+    <if test="worktypeId != null">
+	  AND Worktype_id = #{worktypeId}
+	</if>
+  </select>
+</mapper>

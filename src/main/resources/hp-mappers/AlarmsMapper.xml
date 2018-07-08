@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.AlarmsDao" >
+  <resultMap id="AlarmsResult" type="com.hp.manage.domain.AlarmsDO" >
+    <id column="id" property="id" />
+    <result column="event" property="event" />
+    <result column="degree" property="degree" />
+    <result column="place" property="place" />
+    <result column="status" property="status" />
+    <result column="time" property="time" />
+    <result column="device" property="device" />
+    <result column="device_id" property="deviceId" />
+    <result column="device_type" property="deviceType" />
+    <result column="type" property="type" />
+    <result column="deal_person" property="dealPerson" />
+    <result column="suggest" property="suggest" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="slv_area_id" property="slvAreaId" />
+    <result column="slv_person_id" property="slvPersonId" />
+  </resultMap>
+  
+  <select id="selectAlarmsById" resultMap="AlarmsResult" parameterType="java.lang.String" >
+    SELECT * FROM alarms  WHERE id = #{id}
+  </select>
+  
+  <insert id="insertAlarms" parameterType="com.hp.manage.domain.AlarmsDO" >
+    INSERT INTO alarms 
+    (id, event, degree, place, status, time, device, device_id, device_type, type, deal_person, suggest, gmt_create, gmt_modify, slv_area_id, slv_person_id)
+    VALUES 
+    (#{id}, #{event}, #{degree}, #{place}, 0, #{time}, #{device}, #{deviceId}, #{deviceType}, #{type}, #{dealPerson}, #{suggest}, NOW(), #{gmtModify}, #{slvAreaId}, #{slvPersonId})
+  </insert>
+  
+  <update id="updateAlarms" parameterType="com.hp.manage.domain.AlarmsDO" >
+    UPDATE alarms
+    <set >
+      <if test="event != null" >
+        event = #{event},
+      </if>
+      <if test="degree != null" >
+        degree = #{degree},
+      </if>
+      <if test="place != null" >
+        place = #{place},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="time != null" >
+        time = #{time},
+      </if>
+      <if test="device != null" >
+        device = #{device},
+      </if>
+      <if test="deviceId != null" >
+        device_id = #{deviceId},
+      </if>
+      <if test="deviceType != null" >
+        device_type = #{deviceType},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="dealPerson != null" >
+        deal_person = #{dealPerson},
+      </if>
+      <if test="suggest != null" >
+        suggest = #{suggest},
+      </if>
+      gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectAlarmsList" parameterType="com.hp.manage.bo.QueryAlarmsBO" resultMap="AlarmsResult">
+    SELECT * FROM alarms WHERE 1 = 1
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="place != null" >
+      AND place = #{place}
+    </if>
+    <if test="slvPersonId != null" >
+      AND slv_person_id = #{slvPersonId}
+    </if>
+    <if test="slvAreaId != null" >
+      AND slv_area_id = #{slvAreaId}
+    </if>
+    <if test="dateStr != null and searchType == null">
+	 <![CDATA[AND DATE_FORMAT(time,'%Y-%m-%d %H:%i') = #{dateStr}]]> 
+	</if>
+  </select>
+    
+  <select id="selectAlarmsCount" parameterType="com.hp.manage.bo.QueryAlarmsBO" resultType="int">
+    SELECT count(1) FROM alarms WHERE 1 = 1
+    <if test="dateStr != null and searchType == null">
+	 <![CDATA[AND DATE_FORMAT(gmt_create,'%Y-%m-%d') = #{dateStr}]]> 
+	</if>
+	<if test="dateStr != null and searchType == 'alarms'">
+	 <![CDATA[ AND DATE_FORMAT(gmt_create,'%Y-%m-%d') < #{dateStr}]]> 
+	</if>
+	<if test="type != null" >
+      AND type = #{type}
+    </if>
+    <if test="place != null" >
+      AND place LIKE CONCAT('%', #{place} ,'%')
+    </if>
+    <if test="dateStr != null and searchType == 'statistics' and dateStrx == null" >
+	  <![CDATA[AND DATE_FORMAT(gmt_create,'%Y-%m-%d %H:%i:%s') = #{dateStr}]]> 
+	</if>
+	<if test="dateStr != null and searchType == 'statistics' and dateStrx != null" >
+	  <![CDATA[AND DATE_FORMAT(gmt_create,'%Y-%m-%d %H:%i:%s') >= #{dateStr} AND DATE_FORMAT(gmt_create,'%Y-%m-%d %H:%i:%s') <= #{dateStrx}]]> 
+	</if>
+	<if test="status != null" >
+      AND status = #{status}
+    </if>
+  </select>
+    
+  <select id="selectAlarmsPage" parameterType="com.hp.manage.bo.QueryAlarmsBO" resultMap="AlarmsResult">
+    SELECT * FROM alarms WHERE 1 = 1
+    <if test="dateStr != null and searchType == null">
+	 <![CDATA[AND DATE_FORMAT(gmt_create,'%Y-%m-%d') = #{dateStr}]]> 
+	</if>
+	<if test="dateStr != null and searchType == 'alarms'">
+	 <![CDATA[ AND DATE_FORMAT(gmt_create,'%Y-%m-%d') < #{dateStr}]]> 
+	</if>
+	<if test="type != null" >
+      AND type = #{type}
+    </if>
+    <if test="place != null" >
+      AND place LIKE CONCAT('%', #{place} ,'%')
+    </if>
+    <if test="dateStr != null and searchType == 'statistics' and dateStrx == null" >
+	  <![CDATA[AND DATE_FORMAT(gmt_create,'%Y-%m-%d %H:%i:%s') = #{dateStr}]]> 
+	</if>
+	<if test="dateStr != null and searchType == 'statistics' and dateStrx != null" >
+	  <![CDATA[AND DATE_FORMAT(gmt_create,'%Y-%m-%d %H:%i:%s') >= #{dateStr} AND DATE_FORMAT(gmt_create,'%Y-%m-%d %H:%i:%s') <= #{dateStrx}]]> 
+	</if>
+    ORDER BY status ASC, gmt_create DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+  
+   <resultMap id="AlarmResultx" type="com.hp.manage.domain.AlarmsDOX">
+	<constructor>
+		<arg column="date" javaType="String"/>
+		<arg column="count" javaType="String"/>
+	</constructor>
+  </resultMap>
+  
+  <select id="selectAlarmsChart" parameterType="com.hp.manage.bo.QueryAlarmsBO" resultMap="AlarmResultx">
+    <if test="dateStr != null and searchType == 'chartM'">
+	    SELECT DATE_FORMAT(gmt_create,'%Y-%m-%d') AS date, COUNT(1) AS count FROM alarms WHERE DATE_FORMAT(gmt_create,'%Y-%m') = #{dateStr} 
+	    <if test="type != null" >
+      		AND type = #{type}
+    	</if>
+	    GROUP BY DATE_FORMAT(gmt_create,'%Y-%m-%d') ORDER BY DATE_FORMAT(gmt_create,'%Y-%m-%d') ASC
+    </if>
+    <if test="dateStr != null and searchType == 'chartY'">
+	    SELECT DATE_FORMAT(gmt_create,'%Y-%m') AS date, COUNT(1) AS count FROM alarms WHERE DATE_FORMAT(gmt_create,'%Y') = #{dateStr}
+	    <if test="type != null" >
+      		AND type = #{type}
+    	</if>
+	    GROUP BY DATE_FORMAT(gmt_create,'%Y-%m') ORDER BY DATE_FORMAT(gmt_create,'%Y-%m') ASC
+    </if>
+  </select>
+</mapper>

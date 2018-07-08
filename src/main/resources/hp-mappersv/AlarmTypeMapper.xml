@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.slv.dao.AlarmTypeDao" >
+  <resultMap id="AlarmType" type="com.hp.manage.slv.domain.AlarmTypeDO" >
+    <result column="Alarm_type" property="alarmType" />
+    <result column="Alarm_name" property="alarmName" />
+    <result column="Param1_name" property="param1Name" />
+    <result column="Param2_name" property="param2Name" />
+    <result column="Alarm_level" property="alarmLevel" />
+    <result column="Alarm_attrib" property="alarmAttrib" />
+    <result column="Valid_seconds" property="validSeconds" />
+    <result column="Auto_recovery_seconds" property="autRecoverySeconds" />
+  </resultMap>
+  
+  <select id="selectAlarmTypeById" resultMap="AlarmType" parameterType="java.lang.Integer" >
+    SELECT * FROM AlarmType WHERE Alarm_type = #{alarmType}
+  </select>
+  
+  <select id="selectAlarmTypeList" parameterType="com.hp.manage.slv.bo.QueryAlarmTypeBO" resultMap="AlarmType">
+    SELECT * FROM AlarmType WHERE 1 = 1
+    <if test="alarmType != null">
+	  AND Alarm_type = #{alarmType}
+	</if>
+	<if test="alarmName != null">
+	  AND Alarm_name = #{alarmName}
+	</if>
+  </select>
+</mapper>

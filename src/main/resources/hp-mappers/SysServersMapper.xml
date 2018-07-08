@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.SysServersDao" >
+  <resultMap id="SysServers" type="com.hp.manage.domain.SysServersDO" >
+    <id column="vid" property="vid" />
+    <id column="id" property="id" />
+    <result column="name" property="name" />
+    <result column="inner_ip" property="innerIp" />
+    <result column="outer_ip" property="outerIp" />
+    <result column="port" property="port" />
+    <result column="max_conn" property="maxConn" />
+    <result column="type" property="type" />
+    <result column="timeout" property="timeout" />
+    <result column="remark" property="remark" />
+    <result column="status" property="status" />
+    <result column="icon" property="icon" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+    <result column="create_user_id" property="createUserId" />
+    <result column="modify_user_id" property="modifyUserId" />
+  </resultMap>
+
+  <select id="selectSysServersById" resultMap="SysServers" parameterType="java.lang.String" >
+    SELECT * FROM sys_servers WHERE id = #{id}
+  </select>
+
+  <insert id="insertSysServers" parameterType="com.hp.manage.domain.SysServersDO" useGeneratedKeys="true" keyProperty="vid">
+    INSERT INTO sys_servers 
+    (id, name, inner_ip, outer_ip, port, max_conn, type, timeout, remark, status, icon, is_delete, gmt_create, gmt_modify, create_user_id, modify_user_id)
+    VALUES 
+    (#{id}, #{name}, #{innerIp}, #{outerIp}, #{port}, #{maxConn}, #{type}, #{timeout}, #{remark}, #{status}, #{icon}, 0, NOW(), #{gmtModify}, #{createUserId}, #{modifyUserId})
+  </insert>
+  
+  <update id="updateSysServers" parameterType="com.hp.manage.domain.SysServersDO" >
+    UPDATE sys_servers
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="innerIp != null" >
+        inner_ip = #{innerIp},
+      </if>
+      <if test="outerIp != null" >
+        outer_ip = #{outerIp},
+      </if>
+      <if test="port != null" >
+        port = #{port},
+      </if>
+      <if test="maxConn != null" >
+        max_conn = #{maxConn},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="timeout != null" >
+        timeout = #{timeout},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId},
+      </if>
+       gmt_modify = NOW()
+    </set>
+    WHERE id = #{id}
+  </update>
+  
+  <select id="selectSysServersList" parameterType="com.hp.manage.bo.QuerySysServersBO" resultMap="SysServers">
+    SELECT * FROM sys_servers WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="name != null" >
+      AND name = #{name}
+    </if>
+    <if test="innerIp != null" >
+      AND inner_ip = #{innerIp}
+    </if>
+    <if test="outerIp != null" >
+      AND outer_ip = #{outerIp}
+    </if>
+    <if test="type != null" >
+      AND type = #{type}
+    </if>
+    <if test="port != null" >
+      AND port = #{port}
+    </if>
+  </select>
+    
+  <select id="selectSysServersCount" parameterType="com.hp.manage.bo.QuerySysServersBO" resultType="int">
+    SELECT count(1) FROM sys_servers WHERE is_delete = 0
+    <if test="name != null" >
+      AND name LIKE CONCAT ('%',#{name},'%')
+    </if>
+    <if test="innerIp != null" >
+      AND inner_ip LIKE CONCAT ('%',#{innerIp},'%')
+    </if>
+    <if test="outerIp != null" >
+      AND outer_ip LIKE CONCAT ('%',#{outerIp},'%')
+    </if>
+    <if test="type != null" >
+      AND type = #{type}
+    </if>
+  </select>
+    
+  <select id="selectSysServersPage" parameterType="com.hp.manage.bo.QuerySysServersBO" resultMap="SysServers">
+    SELECT * FROM sys_servers WHERE is_delete = 0 
+    <if test="name != null" >
+      AND name LIKE CONCAT ('%',#{name},'%')
+    </if>
+    <if test="innerIp != null" >
+      AND inner_ip LIKE CONCAT ('%',#{innerIp},'%')
+    </if>
+    <if test="outerIp != null" >
+      AND outer_ip LIKE CONCAT ('%',#{outerIp},'%')
+    </if>
+    <if test="type != null" >
+      AND type = #{type}
+    </if>
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>

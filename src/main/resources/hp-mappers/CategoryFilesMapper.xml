@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.manage.dao.CategoryFilesDao" >
+  <resultMap id="CategoryFiles" type="com.hp.manage.domain.CategoryFilesDO" >
+    <id column="id" property="id" />
+    <result column="title" property="title" />
+    <result column="category_id" property="categoryId" />
+    <result column="is_delete" property="isDelete" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modify" property="gmtModify" />
+  </resultMap>
+
+  <select id="selectCategoryFilesById" resultMap="CategoryFiles" parameterType="java.lang.String" >
+    SELECT * FROM category_files WHERE id = #{id}
+  </select>
+
+  <insert id="insertCategoryFiles" parameterType="com.hp.manage.domain.CategoryFilesDO" >
+    INSERT INTO category_files 
+    (id, title, category_id, is_delete, gmt_create, gmt_modify, content)
+    VALUES
+    (#{id}, #{title}, #{categoryId}, 0, NOW(), #{gmtModify}, #{content})
+  </insert>
+ 
+  <update id="updateCategoryFiles" parameterType="com.hp.manage.domain.CategoryFilesDO" >
+    UPDATE category_files
+    <set >
+      <if test="title != null" >
+        title = #{title},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate},
+      </if>
+      <if test="gmtModify != null" >
+        gmt_modify = #{gmtModify},
+      </if>
+      <if test="content != null" >
+        content = #{content},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <select id="selectCategoryFilesList" parameterType="com.hp.manage.bo.QueryCategoryFilesBO" resultMap="CategoryFiles">
+    SELECT * FROM category_files WHERE is_delete = 0
+    <if test="id != null">
+	  AND id = #{id}
+	</if>
+	<if test="categoryId != null" >
+      AND category_id = #{categoryId}
+    </if>
+  </select>
+    
+  <select id="selectCategoryFilesCount" parameterType="com.hp.manage.bo.QueryCategoryFilesBO" resultType="int">
+    SELECT count(1) FROM CategoryFiles WHERE is_delete = 0
+  </select>
+    
+  <select id="selectCategoryFilesPage" parameterType="com.hp.manage.bo.QueryCategoryFilesBO" resultMap="CategoryFiles">
+    SELECT * FROM CategoryFiles WHERE is_delete = 0 
+    ORDER BY id DESC LIMIT #{pageIndex}, #{pageSize}
+  </select>
+</mapper>
