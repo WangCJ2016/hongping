@@ -6,8 +6,7 @@ import className from 'classnames'
 import { connect } from 'react-redux'
 
 import { changeSidebar,dataSuccess } from '../redux/sidebar.redux'
-import { alarmCount,carsTotalNums } from '../redux/alarm.redux'
-import { getAllpeo } from '../redux/peo.redux'
+
 import Loadable from 'react-loadable';
 import './frame.scss'
 
@@ -70,7 +69,7 @@ const { Header, Content, Sider } = Layout;
 
 @connect(
   state=>({user:state.user,alarm:state.alarm,sidebar:state.sidebar,installPlaceTimer: state.area.installPlaceTimer,peoCount: state.peo.personCount}),
-  {changeSidebar,alarmCount,dataSuccess,getAllpeo,carsTotalNums}
+  {changeSidebar,dataSuccess,}
 )
 
 class Frame extends React.Component {
@@ -83,11 +82,7 @@ class Frame extends React.Component {
     }
   }
 
-  componentDidMount() {
-   this.props.alarmCount()
-   this.props.getAllpeo()
-  //  this.props.carsTotalNums()
-  }
+ 
   navRender() {
     const navArray = [
       {class: 'area_sidebar',title: '区域'},
@@ -152,22 +147,8 @@ class Frame extends React.Component {
       <Header className="header">
         <img className='logo' src={require('../assets/imgs/logo.png')} alt=""/>
         <span className='header_title'>五系统一中心平台</span>
-        <div  className='flex'>
-          <div>
-             <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px',textAlign:'center'}}>报警总数</div>
-             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.alarm.alarmCount}</div>
-          </div>
-          <div style={{marginLeft:'5px'}}>
-             <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px'}}>未处理总数</div>
-             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.alarm.alarmUndo}</div>
-          </div>
-          <div style={{marginLeft:'5px'}}>
-             <div style={{lineHeight:'25px',backgroundColor:'#23837d',padding:'0 10px'}}>人员总数</div>
-             <div style={{lineHeight:'25px', backgroundColor:'#005451',padding:'0 10px',textAlign:'center',color:'#fff'}}>{this.props.peoCount}</div>
-          </div>
-          
-        </div>
-        
+
+        <div className="flex"></div>
         <div className='float-right top-nav-link'>
             {this.topNavRender()}
         </div>

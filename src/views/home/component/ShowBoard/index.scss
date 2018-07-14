@@ -1,0 +1,14 @@
+.board-wrap {
+    height: 33.33%;
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px dashed #000;
+    color: #006f6b;
+    padding: 10px;
+    .title {
+        text-indent: 10px;
+    }
+    .content {
+        border: 1px solid #d8d8d8;
+    }
+}

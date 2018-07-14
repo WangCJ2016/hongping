@@ -6,6 +6,7 @@ import {changeSidebar} from '../../redux/sidebar.redux'
 import { searchGuard } from '../../redux/video.sider.redux'
 import {guardCtrl,querySysInstallPlaces } from '../../redux/setting.device.redux'
 import {areaInfo,dataSuccess} from '../../redux/area.redux'
+import AreaRouteHoc from '../../hoc/AreaRouteHoc'
 
 import className from 'classnames'
 const Search = Input.Search
@@ -14,6 +15,7 @@ const Search = Input.Search
   state=>({sidebar:state.sidebar,videSider: state.videSider}),
   {changeSidebar,searchGuard,guardCtrl,querySysInstallPlaces,areaInfo,dataSuccess}
 )
+@AreaRouteHoc
 class GuardSider extends React.Component {
   constructor() {
     super()
@@ -51,8 +53,7 @@ class GuardSider extends React.Component {
   }
   goLoc(areaId,id) {
     this.props.dataSuccess({goLocDeviceId: id})
-    this.props.areaInfo({id:areaId})
-    this.props.querySysInstallPlaces({areaId:areaId})
+    this.props.areaRoute({areaId: areaId})
   }
   render() {
     if(!this.props.sidebar.guard_sidebar) {

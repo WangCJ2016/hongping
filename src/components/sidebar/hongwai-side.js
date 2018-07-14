@@ -8,8 +8,10 @@ import className from 'classnames'
 import { withRouter } from 'react-router-dom'
 import { areaInfo,dataSuccess } from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
+import AreaRouteHoc from '../../hoc/AreaRouteHoc'
 const Search = Input.Search
 
+@AreaRouteHoc
 @withRouter
 @connect(
   state=>({sidebar:state.sidebar,videSider: state.videSider}),
@@ -45,8 +47,7 @@ class HongwaiSider extends React.Component {
     if(this.props.location.pathname !== '/home') {
       this.props.history.push('home')
     } 
-    this.props.areaInfo({id:device.installPlace.areaId})
-    this.props.querySysInstallPlaces({areaId:device.installPlace.areaId})
+    this.props.areaRoute({areaId: device.installPlace.areaId})
   }
   render() {
     if(!this.props.sidebar.hongwia_sidebar) {

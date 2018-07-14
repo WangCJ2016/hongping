@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter} from 'react-router-dom'
 import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,hongwaiAreaDevices,dataSuccess} from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
-
+import AreaRouteHoc from '../../hoc/AreaRouteHoc'
 
 
 @connect(
@@ -13,6 +13,7 @@ import { querySysInstallPlaces } from '../../redux/setting.device.redux'
       areaList, uploadImg,areaInfo,selectAreaIdSuccess,hongwaiAreaDevices,querySysInstallPlaces,dataSuccess
      }
 )
+@AreaRouteHoc
 @withRouter
 export default class HongwaiTree extends React.Component {
     constructor() {
@@ -38,16 +39,14 @@ export default class HongwaiTree extends React.Component {
       if(this.props.location.pathname !== '/home') {
         this.props.history.push('home')
       } 
-      this.props.areaInfo({id: areaId})
-      this.props.querySysInstallPlaces({areaId: areaId})
+      this.props.areaRoute({areaId: areaId})
     }
     goLoc(device) {
       this.props.dataSuccess({goLocDeviceId: device.id})
       if(this.props.location.pathname !== '/home') {
         this.props.history.push('home')
       } 
-      this.props.areaInfo({id:device.parentId})
-      this.props.querySysInstallPlaces({areaId:device.parentId})
+      this.props.areaRoute({areaId: device.parentId})
     }
     render() {
         const columns = [{

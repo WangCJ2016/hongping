@@ -190,7 +190,18 @@ export function getUwbRegionMap(info) {
   }
 }
 
-
+// 首页列表人员更新
+export function areaPeoReport() {
+  return dispatch => {
+    const token = localStorage.getItem('token')
+    request.get(config.api.base + config.api.areaPeoReport,{ token: token})
+    .then(res=>{
+      console.log(res)
+      if(res.success&&res.dataObject) {
+      }
+    })
+  } 
+}
 // selector
 
 export const getAreaRealWidth = state => state.peo.areaRealWidth

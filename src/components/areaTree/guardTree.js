@@ -3,6 +3,7 @@ import { Table,Button } from 'antd';
 import { connect } from 'react-redux'
 import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,guardAreaDevices,dataSuccess} from '../../redux/area.redux'
 import { querySysInstallPlaces,guardCtrl } from '../../redux/setting.device.redux'
+import AreaRouteHoc from '../../hoc/AreaRouteHoc'
 
 @connect(
     state=>({video:state.video,area:state.area}),
@@ -10,6 +11,7 @@ import { querySysInstallPlaces,guardCtrl } from '../../redux/setting.device.redu
       areaList, uploadImg,areaInfo,selectAreaIdSuccess,guardAreaDevices,querySysInstallPlaces,guardCtrl,dataSuccess
      }
 )
+@AreaRouteHoc
 export default class GuardTree extends React.Component {
     constructor() {
       super()
@@ -33,13 +35,11 @@ export default class GuardTree extends React.Component {
       if(this.props.location.pathname !== '/home') {
         this.props.history.push('home')
       } 
-      this.props.areaInfo({id: areaId})
-      this.props.querySysInstallPlaces({areaId: areaId})
+      this.props.areaRoute({areaId: areaId})
     }
     goLoc(device) {
       this.props.dataSuccess({goLocDeviceId: device.id})
-      this.props.areaInfo({id:device.parentId})
-      this.props.querySysInstallPlaces({areaId:device.parentId})
+      this.props.areaRoute({areaId: device.parentId})
     }
     openDoor(device) {
       const token = localStorage.getItem('token')

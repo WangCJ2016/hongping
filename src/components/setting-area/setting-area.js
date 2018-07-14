@@ -24,17 +24,23 @@ class SettingArea1 extends React.Component {
   }
   // 添加
   createSubmit() {
-    const name = this.props.form.getFieldValue('createName')
-    this.props.createArea({...this.state.createInfo,name: encodeURI(name)})
-    this.setState({createVisible:false})
-    this.props.form.resetFields()
+    this.props.form.validateFields(['createName'], (err, values)=>{
+      if(err) return
+      const name = this.props.form.getFieldValue('createName')
+      this.props.createArea({...this.state.createInfo,name: encodeURI(name)})
+      this.setState({createVisible:false})
+      this.props.form.resetFields()
+    })
   }
   // 编辑
-  editSubmit() {
-    const name = this.props.form.getFieldValue('editName')
-    this.props.modifyArea({...this.state.selectArea,name: encodeURI(name)})
-    this.setState({editVisible:false})
-    this.props.form.resetFields()
+  editSubmit = () => {
+    this.props.form.validateFields(['editName'], (err, values)=>{
+      if(err) return
+      const name = this.props.form.getFieldValue('editName')
+      this.props.modifyArea({...this.state.selectArea,name: encodeURI(name)})
+      this.setState({editVisible:false})
+      this.props.form.resetFields() 
+    })
   }
   // 删除
   delete(area) {
@@ -94,6 +100,7 @@ class SettingArea1 extends React.Component {
           <Form>
           <FormItem>
             {getFieldDecorator('editName', {
+              rules: [{ required: true, message: '请输入名字' }],
               initialValue: this.state.selectArea?this.state.selectArea.name:''
             })(
               <Input  placeholder='请填写区域名称'/>
@@ -112,7 +119,7 @@ class SettingArea1 extends React.Component {
           ><Form>
           <FormItem>
             {getFieldDecorator('createName', {
-              
+              rules: [{ required: true, message: '请输入名字' }], 
             })(
               <Input  placeholder='请填写区域名称'/>
             )}

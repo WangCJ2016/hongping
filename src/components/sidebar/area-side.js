@@ -6,7 +6,8 @@ import {areaInfo,selectAreaIdSuccess,getAreaInfo,dataSuccess} from '../../redux/
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import AreaTree from '../areaTree/areaTree'
 import { withRouter } from 'react-router-dom'
-
+import AreaRouteHoc from '../../hoc/AreaRouteHoc'
+@AreaRouteHoc
 @withRouter
 @connect(
   state=>({sidebar:state.sidebar,area:state.area}),
@@ -21,21 +22,9 @@ class AreaSideBar extends React.Component {
     if(this.props.location.pathname !== '/home') {
       this.props.history.push('home')
     } 
-    this.props.selectAreaIdSuccess(areaId)
-    this.props.areaInfo({id:areaId})
-    this.props.querySysInstallPlaces({areaId: areaId})
-    clearInterval(this.props.area.installPlaceTimer)
-    clearInterval(this.timer)
-    this.timer = setInterval(()=>{
-      this.props.querySysInstallPlaces({areaId: areaId})
-    },2000)
-    this.props.getAreaInfo({id: areaId})
+    this.props.areaRoute({areaId: areaId})
   }
-  componentWillUnmount() {
-    if(this.timer)  {
-      clearInterval(this.timer) 
-    }
-  }
+ 
   render() {
     if(!this.props.sidebar.area_sidebar) {
       return null

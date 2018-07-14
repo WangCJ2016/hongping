@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import {areaList, uploadImg,areaInfo,selectAreaIdSuccess,videoAreaDevices,dataSuccess} from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
+import AreaRouteHoc from '../../hoc/AreaRouteHoc'
 
 @connect(
     state=>({video:state.video,area:state.area}),
@@ -11,6 +12,7 @@ import { querySysInstallPlaces } from '../../redux/setting.device.redux'
       areaList, uploadImg,areaInfo,selectAreaIdSuccess,videoAreaDevices,querySysInstallPlaces,dataSuccess
      }
 )
+@AreaRouteHoc
 @withRouter
 export default class TableAreaTree extends React.Component {
     constructor() {
@@ -35,19 +37,17 @@ export default class TableAreaTree extends React.Component {
       }
     }
     goArea = (areaId) => {
-      // if(this.props.location.pathname !== '/home') {
-      //   this.props.history.push('home')
-      // } 
-      this.props.areaInfo({id: areaId})
-      this.props.querySysInstallPlaces({areaId: areaId})
+      if(this.props.location.pathname !== '/home') {
+        this.props.history.push('home')
+      } 
+      this.props.areaRoute({areaId: areaId})
     }
     goLoc(device) {
       this.props.dataSuccess({goLocDeviceId: device.id})
       if(this.props.location.pathname !== '/home') {
         this.props.history.push('home')
       } 
-      this.props.areaInfo({id:device.parentId})
-      this.props.querySysInstallPlaces({areaId:device.parentId})
+      this.props.areaRoute({areaId: device.parentId})
     }
     render() {
         const columns = [{

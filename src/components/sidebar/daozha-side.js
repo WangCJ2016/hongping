@@ -8,6 +8,7 @@ import {areaInfo,dataSuccess} from '../../redux/area.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import className from 'classnames'
 import { config } from '../../config'
+import AreaRouteHoc from '../../hoc/AreaRouteHoc'
 
 const Search = Input.Search
 
@@ -16,6 +17,7 @@ const Search = Input.Search
   state=>({sidebar:state.sidebar,videSider: state.videSider,user:state.user}),
   {changeSidebar,searchHongwaiVideo,querySysInstallPlaces,areaInfo,dataSuccess}
 )
+@AreaRouteHoc
 class DaozhaSider extends React.Component {
   constructor() {
     super()
@@ -51,12 +53,10 @@ class DaozhaSider extends React.Component {
   }
   goLoc(devId,areaId) {
     this.props.dataSuccess({goLocDeviceId: devId})
-    this.props.areaInfo({id:areaId})
-    this.props.querySysInstallPlaces({areaId:areaId})
+    this.props.areaRoute({areaId: areaId})
   }
   goArea = (areaId) => {
-    this.props.areaInfo({id:areaId})
-    this.props.querySysInstallPlaces({areaId:areaId})
+    this.props.areaRoute({areaId: areaId})
   }
   render() {
     if(!this.props.sidebar.daozha_sidebar) {

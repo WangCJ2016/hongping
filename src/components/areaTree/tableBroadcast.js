@@ -7,6 +7,7 @@ import { selectBroIndex } from '../../redux/broadcast.redux'
 import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import { unquie } from '../../utils'
 import './tree.scss'
+import AreaRouteHoc from '../../hoc/AreaRouteHoc'
 
 const TreeNode = Tree.TreeNode;
 
@@ -16,6 +17,7 @@ const TreeNode = Tree.TreeNode;
       broadcastAreaDevices,areaList,selectBroIndex,areaInfo,querySysInstallPlaces,dataSuccess
      }
 )
+@AreaRouteHoc
 @withRouter
 export default class TableBroadcast extends React.Component {
     constructor() {
@@ -61,16 +63,14 @@ export default class TableBroadcast extends React.Component {
       if(this.props.location.pathname !== '/home') {
         this.props.history.push('home')
       } 
-      this.props.areaInfo({id: areaId})
-      this.props.querySysInstallPlaces({areaId: areaId}) 
+      this.props.areaRoute({areaId: areaId})
     }
     goLoc(device) {
       this.props.dataSuccess({goLocDeviceId: device.id})
       if(this.props.location.pathname !== '/home') {
         this.props.history.push('home')
       } 
-      this.props.areaInfo({id:device.parentId})
-      this.props.querySysInstallPlaces({areaId:device.parentId})
+      this.props.areaRoute({areaId: device.parentId})
     }
     treeRender() {
       const data = this.props.area.areas_broDevices

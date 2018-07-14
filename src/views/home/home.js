@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import className from 'classnames'
 import { config } from '../../config'
 import HomeTable from '../../components/home-table/home-table'
-import { HomePerson, HomeCamera, HomeBroadcast,HomeGuard } from '../../components/home-popover/home-popover'
+import { HomePerson, HomeCamera, HomeBroadcast,HomeGuard, HomeArea } from '../../components/home-popover/home-popover'
 import HomeWarmPanel from '../../components/home-warm-panel/home-warm-panel'
 import './home.scss'
-import {areaInfo,selectAreaIdSuccess,getAreaInfo,dataSuccess} from '../../redux/area.redux'
+import {areaInfo,selectAreaIdSuccess,getAreaInfo,dataSuccess,areaImgSlider} from '../../redux/area.redux'
 import { querySysInstallPlaces,getDevInfo,videoPic,guardCtrl,getSysRemotePreset } from '../../redux/setting.device.redux'
 import {videoProgress} from '../../redux/video.redux'
 import VideoCtrlYuntai from '../../components/video-ctrl/video-ctrl-yuntai'
@@ -16,13 +16,17 @@ import VideoCtrlBtns from '../../components/video-playback/video-ctrlbtn'
 import Selection from '../../components/react-drag-select/selection'
 import DragSelectModal from '../../components/home-modals/dragSelectModal'
 import { areaList } from '../../redux/area.redux'
-import { getAreaRealWidth } from '../../redux/peo.redux'
-import { carPages,getCarDetail } from '../../redux/alarm.redux'
+import { getAreaRealWidth, getAllpeo, areaPeoReport } from '../../redux/peo.redux'
+import { carPages,getCarDetail,alarmCount,carsTotalNums } from '../../redux/alarm.redux'
+import AreaRouteHoc from '../../hoc/AreaRouteHoc'
+import { WarnBoard, CarBoard, PeoBoard} from './component/ShowBoard'
+
 
 @connect(
   state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,user: state.user,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
-  {areaInfo,getSysRemotePreset,querySysInstallPlaces,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList,carPages,getCarDetail}
+  {areaInfo,getSysRemotePreset,querySysInstallPlaces,areaPeoReport,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList,carPages,getCarDetail,areaImgSlider,alarmCount,carsTotalNums,getAllpeo}
 )
+@AreaRouteHoc
 class Home extends React.Component {
   constructor() {
     super()
@@ -36,6 +40,7 @@ class Home extends React.Component {
       rectInDevice:[],
       checked: [],
       expanded: [],
+      listenWheel: false
     }
     this.goNextArea = this.goNextArea.bind(this)
     this.videoPlay = this.videoPlay.bind(this)
@@ -56,6 +61,13 @@ class Home extends React.Component {
         imgWidth: this.img.width
       })
     }
+    this.props.alarmCount()
+    this.props.getAllpeo()
+    this.props.areaPeoReport()
+    // console.log(this.imgScoll)
+    // this.imgScoll.addEventListener('mousewheel', (e) => {
+    //   console.log(e.wheelDelta)
+    // })
   }
   componentWillReceiveProps(nextProps) {   
     if(nextProps.area.firstAreaId&&this.props.area.firstAreaId!==nextProps.area.firstAreaId) {
@@ -64,11 +76,6 @@ class Home extends React.Component {
       this.props.areaInfo({id:nextProps.area.firstAreaId})
       this.props.getAreaInfo({id: nextProps.area.firstAreaId})
       this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
-      //xie
-      // const timer = setInterval(()=>{
-      //   this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
-      // },5000)
-      // this.props.dataSuccess({installPlaceTimer: timer})
     }
     if(this.props.area.areaImgSlider!==nextProps.area.areaImgSlider) {
       this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
@@ -91,8 +98,30 @@ class Home extends React.Component {
     if(this.img&&this.props.area.areaImgSlider!==nextProps.area.areaImgSlider) {
       this.img.style.width = this.props.area.areaImgSlider * this.state.imgWidth+'px'
     }
+    if(!this.state.listenWheel&&this.imgScoll) {
+      this.imgScoll.addEventListener('mousewheel', (e) => {
+        const type = e.wheelDelta > 0 ? 'plus' : 'mius'
+        const areaImgSlider = this.props.area.areaImgSlider
+        if(type==='plus') {
+          if(areaImgSlider<2) {
+            this.props.areaImgSlider(areaImgSlider+0.1)
+            }
+        }
+
+        if(type==='mius') {
+          if(areaImgSlider>0.5) {
+            this.props.areaImgSlider(areaImgSlider-0.1)
+          }
+        }
+      })
+      this.setState({
+        listenWheel: true
+      })
+    }
   }
-  
+  componentWillUnmount() {
+    this.imgScoll.removeEventListener('mousewheel')
+  } 
   goLocImgRender(id) {
     const width = window.innerWidth - (this.props.sidebar.homeLeftIf?360:60)
     const height = window.innerHeight - 70 - this.props.alarm.warmTableTop
@@ -225,11 +254,13 @@ class Home extends React.Component {
        }
        if(device.type === 10) {
         return (
-          <div className={styles} key={device.id+index} onClick={()=>this.goNextArea(device)} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
-            <Tag >
-            <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
-            {device.name||device.devName}</Tag>
-          </div> 
+          <Popover content={<HomeArea device = {device} goNextArea={this.goNextArea} />} key={device.id+index}>
+            <div className={styles}  onClick={()=>this.goNextArea(device)} style={{position:'absolute',left:device.x*slider+'px',top:device.y*slider+'px'}} >
+              <Tag >
+              <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
+              {device.name||device.devName}</Tag>
+            </div> 
+          </Popover>
         ) 
        }
        return null
@@ -238,10 +269,8 @@ class Home extends React.Component {
   }
 
   // 下级区域
-  goNextArea(device) {
-    this.props.areaInfo({id:device.devId})
-    this.props.querySysInstallPlaces({areaId:device.devId})
-    this.props.getAreaInfo({id: device.devId})
+  goNextArea = (device) => {
+    this.props.areaRoute({areaId: device.devId})
   }
   // 上级区域
   goParentArea() {
@@ -332,15 +361,6 @@ class Home extends React.Component {
     const model = device.host.model === 1?'HikHC-14':'DHNET-03'
     this.playback.XzVideo_RecordPlayControl(2,0)
     this.playback.XzVideo_RecordPlayByTime(1,1,device.host.url,device.host.port,device.host.username,device.host.psw,model,device.index,startTime,endTime,0)
-   /* if(a) {
-      this.timer=setInterval(()=>{
-        const a = this.playback.XzVideo_GetRecordPlayPosEx(0)
-        if(a===100){
-          clearInterval(this.timer)
-        }
-        this.props.videoProgress(a)
-      },1000)
-    }*/
   }
   playPicSeach(startTime,endTime) {//xie
     const device = this.props.deivces.devinfo
@@ -380,7 +400,7 @@ class Home extends React.Component {
     this.props.getCarDetail({carId: record.id})
   }
   render() {
-    
+    console.log(this.props.alarm.alarmlist, this.props.alarm.carPages)
     const columns = [{
         title: '车牌',
         dataIndex: 'carNo',
@@ -398,29 +418,33 @@ class Home extends React.Component {
 
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
-        <HomeWarmPanel 
-        right={this.props.sidebar.offsetLeft}
-        dragSelect={()=>{this.setState({dragSelectEnbled:true});message.info('请开始框选')}}
-        goParentArea={this.goParentArea} />
-        {
-          areaInfo.picture?  
-          <div className='area-Map' ref={(img)=>this.imgScoll=img} style={{height:window.innerHeight - this.props.alarm.alarmHeight - 225 +'px'}}>
-            <div style={{display:'inline-block',position:'relative',zIndex:0}}  >
-            <img id='img' draggable='false' ref={(img)=>this.img=img}   src={areaInfo.picture}  alt="" />
-            <Selection offsetLeft={this.props.sidebar.offsetLeft} offsetTop={this.imgScoll?this.imgScoll.scrollTop:0}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
-            {this.props.area.load?null:this.mapDeviceRender()}
-            </Selection>
-            </div>
-          </div>
-          :
-          <div style={{width: '100%',height:'100%',textAlign:'center'}}>
-           <Spin size="large" style={{marginTop: '200px'}} />
-          </div>        
-        }
-       
-       
-        <HomeTable videoPlay={this.videoPlay} videoPlayBack={this.videoPlayBack} openDoor={this.openDoor} />
-      
+        <div className="home-left">
+            <HomeWarmPanel 
+              right={this.props.sidebar.offsetLeft}
+              dragSelect={()=>{this.setState({dragSelectEnbled:true});message.info('请开始框选')}}
+              goParentArea={this.goParentArea} />
+              {
+                areaInfo.picture?  
+                <div className='area-Map' ref={(img)=>this.imgScoll=img} style={{height:window.innerHeight - this.props.alarm.alarmHeight - 225 +'px'}}>
+                  <div style={{display:'inline-block',position:'relative',zIndex:0}}  >
+                  <img id='img' draggable='false' ref={(img)=>this.img=img}   src={areaInfo.picture}  alt="" />
+                  <Selection offsetLeft={this.props.sidebar.offsetLeft} offsetTop={this.imgScoll?this.imgScoll.scrollTop:0}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
+                  {this.props.area.load?null:this.mapDeviceRender()}
+                  </Selection>
+                  </div>
+                </div>
+                :
+                <div style={{width: '100%',height:'100%',textAlign:'center'}}>
+                <Spin size="large" style={{marginTop: '200px'}} />
+                </div>        
+              }
+            <HomeTable videoPlay={this.videoPlay} videoPlayBack={this.videoPlayBack} openDoor={this.openDoor} />
+        </div>
+        <div className="home-right">
+          <WarnBoard total={this.props.alarm.alarmCount} undo={this.props.alarm.alarmUndo} data={this.props.alarm.alarmlist}></WarnBoard> 
+          <PeoBoard total={this.props.peoCount} data={this.props.alarm.carPages.result}></PeoBoard>
+          <CarBoard></CarBoard>
+        </div>
         <Modal
           title="视频预览" 
           visible={this.state.videoVisible}
