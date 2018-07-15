@@ -23,7 +23,15 @@ import { WarnBoard, CarBoard, PeoBoard} from './component/ShowBoard'
 
 
 @connect(
-  state=>({deivces:state.devices,area:state.area,sidebar:state.sidebar,user: state.user,alarm: state.alarm, areaRealWidth: getAreaRealWidth(state)}),
+  state=>({
+    deivces:state.devices,
+    area:state.area,
+    sidebar:state.sidebar,
+    user: state.user,
+    alarm: state.alarm, 
+    areaRealWidth: getAreaRealWidth(state),
+    peo: state.peo
+  }),
   {areaInfo,getSysRemotePreset,querySysInstallPlaces,areaPeoReport,dataSuccess,selectAreaIdSuccess,getDevInfo,videoProgress,videoPic,getAreaInfo,guardCtrl,areaList,carPages,getCarDetail,areaImgSlider,alarmCount,carsTotalNums,getAllpeo}
 )
 @AreaRouteHoc
@@ -400,7 +408,6 @@ class Home extends React.Component {
     this.props.getCarDetail({carId: record.id})
   }
   render() {
-    console.log(this.props.alarm.alarmlist, this.props.alarm.carPages)
     const columns = [{
         title: '车牌',
         dataIndex: 'carNo',
@@ -442,8 +449,8 @@ class Home extends React.Component {
         </div>
         <div className="home-right">
           <WarnBoard total={this.props.alarm.alarmCount} undo={this.props.alarm.alarmUndo} data={this.props.alarm.alarmlist}></WarnBoard> 
-          <PeoBoard total={this.props.peoCount} data={this.props.alarm.carPages.result}></PeoBoard>
-          <CarBoard></CarBoard>
+          <PeoBoard  data={this.props.peo.areaPeoReport}></PeoBoard> 
+          <CarBoard  data={this.props.alarm.carPages.result} ></CarBoard>
         </div>
         <Modal
           title="视频预览" 

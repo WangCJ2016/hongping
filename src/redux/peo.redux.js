@@ -7,7 +7,8 @@ const initialState = {
   searchPeoList:[],
   picture:'',
   departmentList:[],
-  trailWeather: false
+  trailWeather: false,
+  areaPeoReport: []
 }
 const GETALLPEO = '[peo] GETALLPEO'
 const GETTRAIL = '[peo] GETTRAIL'
@@ -196,8 +197,8 @@ export function areaPeoReport() {
     const token = localStorage.getItem('token')
     request.get(config.api.base + config.api.areaPeoReport,{ token: token})
     .then(res=>{
-      console.log(res)
       if(res.success&&res.dataObject) {
+        dispatch(dataSuccess({areaPeoReport: res.dataObject}))
       }
     })
   } 
@@ -205,3 +206,4 @@ export function areaPeoReport() {
 // selector
 
 export const getAreaRealWidth = state => state.peo.areaRealWidth
+export const getAreaPeoReport = state => state.peo.areaPeoReport
