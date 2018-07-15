@@ -128,7 +128,7 @@ class Home extends React.Component {
     }
   }
   componentWillUnmount() {
-    this.imgScoll.removeEventListener('mousewheel')
+    this.imgScoll.removeEventListener('mousewheel', () =>{})
   } 
   goLocImgRender(id) {
     const width = window.innerWidth - (this.props.sidebar.homeLeftIf?360:60)
