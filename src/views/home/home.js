@@ -71,12 +71,14 @@ class Home extends React.Component {
     }
     this.props.alarmCount()
     this.props.getAllpeo()
-    this.props.areaPeoReport()
     this.props.carsTotalNums()
     // console.log(this.imgScoll)
     // this.imgScoll.addEventListener('mousewheel', (e) => {
     //   console.log(e.wheelDelta)
     // })
+    this.peoInterval = setInterval(() => {
+      this.props.areaPeoReport()
+    }, 5000)
   }
   componentWillReceiveProps(nextProps) {   
     if(nextProps.area.firstAreaId&&this.props.area.firstAreaId!==nextProps.area.firstAreaId) {
@@ -130,6 +132,7 @@ class Home extends React.Component {
   }
   componentWillUnmount() {
     if(this.imgScoll) this.imgScoll.removeEventListener('mousewheel', () =>{})
+    if(this.peoInterval) clearInterval(this.peoInterval) 
   } 
   goLocImgRender(id) {
     const width = window.innerWidth - (this.props.sidebar.homeLeftIf?360:60)

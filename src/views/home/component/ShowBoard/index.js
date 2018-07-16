@@ -19,7 +19,9 @@ export function WarnBoard(props) {
             title: '时间',
             width:100,
             dataIndex: 'time',
-            key:'time'
+            render: (text) => (
+              <span>{text.split(' ')[1]}</span>
+            )
           },
           {
             title: '部门',
@@ -84,7 +86,7 @@ export function PeoBoard(props) {
             width: 100,
             render: (record) => (
                 <span>{
-                    record.lastReportTime ? record.lastReportTime : record.firstReportTime 
+                    record.lastReportTime ? record.lastReportTime.split(' ')[1] : record.firstReportTime.split(' ')[1]
                 }</span> 
             )
           }
@@ -113,30 +115,25 @@ export function PeoBoard(props) {
 
 export function CarBoard({data=[], carsTotalNum}) {
     const columns = [
-        {
-            title: '类型',
-            dataIndex: 'type',
-            width:100,
-            key:'type',
-            render:(text,record)=>{
-              return <span>{alarmType(record.type)}</span>
-            }
-          },
-          {
-            title: '时间',
-            width:100,
-            dataIndex: 'time',
-            key:'time'
-          },
-          {
-            title: '等级',
-            dataIndex: 'degree',
-            width:100,
-            key:'degree',
-            render:(text,record)=>{
-              return <span>{alarmDegree(record.degree).degree}</span>
-            }
-          }
+      {
+        title: '车牌',
+        dataIndex: 'carNo',
+        width:100,
+        key: 'carNo', 
+      },
+      {
+        title: '时间',
+        dataIndex: 'time',
+        key: 'time', 
+        render: (text) => (
+          <span>{text.split(' ')[1]}</span>
+        )
+      },{
+        title: '道闸',
+        dataIndex: 'gate',
+        width:100,
+        key: 'gate', 
+      },
     ]
     const data1 = data.slice(0, 5)
     

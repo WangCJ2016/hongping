@@ -9,7 +9,8 @@ const FormItem = Form.Item;
 
 const CreateIdForm = Form.create()(props => {
     const { form, setTime, startHandle } = props;
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+      e.preventDefault()
       form.validateFields((err, fieldsValue) => {
         if (err) return;
        // form.resetFields();
