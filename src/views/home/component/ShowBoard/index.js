@@ -22,6 +22,12 @@ export function WarnBoard(props) {
             key:'time'
           },
           {
+            title: '部门',
+            width:100,
+            dataIndex: 'department',
+            key:'department'
+          },
+          {
             title: '等级',
             dataIndex: 'degree',
             width:100,
@@ -86,8 +92,9 @@ export function PeoBoard(props) {
         const data = props.data.slice(0, 5) 
     return (
         <div className='board-wrap'>
-          <p className='title'>报警总数: &nbsp;&nbsp;{props.total}&nbsp;&nbsp;条</p>
-          <p className='title'>报警总数: &nbsp;&nbsp;25&nbsp;&nbsp;条</p>
+          <p className='title'>当前进洞人数: &nbsp;&nbsp;{props.inCount}&nbsp;&nbsp;</p>
+          <p className='title'>当前出洞人数: &nbsp;&nbsp;{props.outCount}&nbsp;&nbsp;</p>
+          <p className='title'>当前洞内人数: &nbsp;&nbsp;{props.inCount - props.outCount}&nbsp;&nbsp;</p>
           <div className="content">
           <Table 
             showHeader={false}
@@ -104,7 +111,7 @@ export function PeoBoard(props) {
 }
  
 
-export function CarBoard({data=[]}) {
+export function CarBoard({data=[], carsTotalNum}) {
     const columns = [
         {
             title: '类型',
@@ -135,9 +142,9 @@ export function CarBoard({data=[]}) {
     
     return (
         <div className='board-wrap'>
-          <p className='title'>当前进洞车数: &nbsp;&nbsp;25&nbsp;&nbsp;条</p>
-          <p className='title'>当前出洞车数: &nbsp;&nbsp;25&nbsp;&nbsp;条</p>
-          <p className='title'>  洞内总车数: &nbsp;&nbsp;25&nbsp;&nbsp;条</p>
+          <p className='title'>当前进洞车数: &nbsp;&nbsp;{carsTotalNum.inCount}&nbsp;&nbsp;</p>
+          <p className='title'>当前出洞车数: &nbsp;&nbsp;{carsTotalNum.outCount}&nbsp;&nbsp;</p>
+          <p className='title'>  洞内总车数: &nbsp;&nbsp;{carsTotalNum.inCount - carsTotalNum.outCount}&nbsp;&nbsp;</p>
           <div className="content">
           <Table 
             showHeader={false}

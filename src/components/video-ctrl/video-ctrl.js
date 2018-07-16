@@ -171,7 +171,7 @@ class VideoCtrl extends React.Component {
           <TabPane tab="预览组" key="2">
             <VideoCtrlYuzhizu play={this.state.play} />
           </TabPane>
-          <TabPane tab='导航组' key='3'>
+          <TabPane tab='轮巡' key='3'>
             <VideoCirclePlay play={this.state.play}></VideoCirclePlay>
           </TabPane>
         </Tabs>

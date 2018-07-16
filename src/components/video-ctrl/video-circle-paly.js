@@ -8,11 +8,11 @@ import { getScreenLength } from '../../utils'
 const FormItem = Form.Item;
 
 const CreateIdForm = Form.create()(props => {
-    const { form, setTime } = props;
+    const { form, setTime, startHandle } = props;
     const handleSubmit = () => {
       form.validateFields((err, fieldsValue) => {
         if (err) return;
-        form.resetFields();
+       // form.resetFields();
          setTime(fieldsValue.time);
       });
     };
@@ -51,9 +51,13 @@ class VideoCirclePlay extends React.Component {
         }
         this.count = 0
         this.collapseChange = this.collapseChange.bind(this)
+        this.selectedIds = []
     }
     componentDidMount() {
         this.props.remotePreviewGroupList({devType:1})
+    }
+    componentWillMount() {
+
     }
     setTime = (time) => {
         this.setState({
@@ -72,18 +76,18 @@ class VideoCirclePlay extends React.Component {
     }
     onSelectChange = (selectedIds) => {
         this.selectedIds = selectedIds
-        this.timer = setInterval(()=>{
-            if(this.count + 1 <= this.selectedIds.length) {
-                this.collapseChange(selectedIds[this.count])
-                this.count++
-            }else{
-                this.count = 0
-            }
-        }, this.state.intervalTime)
+        // this.timer = setInterval(()=>{
+        //     if(this.count + 1 <= this.selectedIds.length) {
+        //         this.collapseChange(selectedIds[this.count])
+        //         this.count++
+        //     }else{
+        //         this.count = 0
+        //     }
+        // }, this.state.intervalTime)
     }
+
     async collapseChange (id) {
         const group =  this.props.video.previewGroup.filter(group => group.id===id)
-        console.log(id, this.props.video.previewGroup)
         if(group[0].previews) {
           const length = group[0].previews.length
           const screenLength = getScreenLength(length)
@@ -94,7 +98,6 @@ class VideoCirclePlay extends React.Component {
         }
       }
     render() {
-        console.log(this.state.intervalTime)
         const columns = [
             {
                 title: 'title',

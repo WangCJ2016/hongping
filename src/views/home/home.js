@@ -72,6 +72,7 @@ class Home extends React.Component {
     this.props.alarmCount()
     this.props.getAllpeo()
     this.props.areaPeoReport()
+    this.props.carsTotalNums()
     // console.log(this.imgScoll)
     // this.imgScoll.addEventListener('mousewheel', (e) => {
     //   console.log(e.wheelDelta)
@@ -128,7 +129,7 @@ class Home extends React.Component {
     }
   }
   componentWillUnmount() {
-    this.imgScoll.removeEventListener('mousewheel', () =>{})
+    if(this.imgScoll) this.imgScoll.removeEventListener('mousewheel', () =>{})
   } 
   goLocImgRender(id) {
     const width = window.innerWidth - (this.props.sidebar.homeLeftIf?360:60)
@@ -449,8 +450,8 @@ class Home extends React.Component {
         </div>
         <div className="home-right">
           <WarnBoard total={this.props.alarm.alarmCount} undo={this.props.alarm.alarmUndo} data={this.props.alarm.alarmlist}></WarnBoard> 
-          <PeoBoard  data={this.props.peo.areaPeoReport}></PeoBoard> 
-          <CarBoard  data={this.props.alarm.carPages.result} ></CarBoard>
+          <PeoBoard  data={this.props.peo.areaPeoReport} inCount={this.props.peo.inCount} outCount={this.props.peo.outCount}></PeoBoard> 
+          <CarBoard  data={this.props.alarm.carPages.result} carsTotalNum={this.props.alarm.carsTotalNum}></CarBoard>
         </div>
         <Modal
           title="视频预览" 

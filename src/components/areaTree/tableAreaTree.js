@@ -28,13 +28,16 @@ export default class TableAreaTree extends React.Component {
         this.props.videoAreaDevices({areaId:record.id,type:1})
         this.props.videoAreaDevices({areaId:record.id,type:2})
         this.props.videoAreaDevices({areaId:record.id,type:3})
-        this.goArea(record.id)
+        //this.goArea(record.id)
       }
     }
     onRowClick(record,index) {
       if(record.type&&this.props.deviceSelect) {
         this.props.deviceSelect(record)
       }
+      
+      if(record.level !== undefined)
+      this.goArea(record.id)
     }
     goArea = (areaId) => {
       if(this.props.location.pathname !== '/home') {

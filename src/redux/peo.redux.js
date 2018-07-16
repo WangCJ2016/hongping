@@ -8,7 +8,9 @@ const initialState = {
   picture:'',
   departmentList:[],
   trailWeather: false,
-  areaPeoReport: []
+  areaPeoReport: [],
+  inCount: 0,
+  outCount: 0
 }
 const GETALLPEO = '[peo] GETALLPEO'
 const GETTRAIL = '[peo] GETTRAIL'
@@ -198,7 +200,7 @@ export function areaPeoReport() {
     request.get(config.api.base + config.api.areaPeoReport,{ token: token})
     .then(res=>{
       if(res.success&&res.dataObject) {
-        dispatch(dataSuccess({areaPeoReport: res.dataObject}))
+        dispatch(dataSuccess({areaPeoReport: res.dataObject.reports, inCount:res.dataObject.inCount, outCount:res.dataObject.outCount}))
       }
     })
   } 
@@ -206,4 +208,3 @@ export function areaPeoReport() {
 // selector
 
 export const getAreaRealWidth = state => state.peo.areaRealWidth
-export const getAreaPeoReport = state => state.peo.areaPeoReport

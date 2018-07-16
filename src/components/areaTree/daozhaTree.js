@@ -25,13 +25,15 @@ export default class DaozhaTree extends React.Component {
     onExpand(expanded, record) {
       if(expanded) {
         this.props.daozhaAreaDevices({areaId:record.id,type:3})
-        this.props.goArea(record.id)
+       // this.props.goArea(record.id)
       }
     }
     onRowClick(record,index) {
       if(record.type&&this.props.deviceSelect) {
         this.props.deviceSelect(record)
       }
+      if(record.level !== undefined)
+      this.props.goArea(record.id)
     }
     onChange(device,checked) {
       this.props.switchChange(device,checked)

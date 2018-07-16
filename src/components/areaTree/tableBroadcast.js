@@ -51,12 +51,16 @@ export default class TableBroadcast extends React.Component {
     onExpand(expandedKeys, e) {
       if(e.expanded) {
         this.props.broadcastAreaDevices({areaId:e.node.props.eventKey,type:4})
-        this.goArea(e.node.props.eventKey)
+       // this.goArea(e.node.props.eventKey)
       }
     }
     onCheck(checkedKeys) {
       const keys = checkedKeys.filter(key => key.length<5)
       this.props.treeSelectIndex(keys)
+    }
+    onSelect= (data) => {
+      if(data.level !== undefined)
+      this.goArea(data.id)
     }
     // 展开获取跳转区域
     goArea = (areaId) => {
@@ -80,10 +84,11 @@ export default class TableBroadcast extends React.Component {
         multiple={true}
         onExpand={this.onExpand}
         onCheck={this.onCheck.bind(this)}
+        //onSelect={this.onSelect}
         >
            {
             data.map(treenode=>(
-              <TreeNode title={<span>
+              <TreeNode title={<span  onClick={this.onSelect.bind(this, treenode)}>
                 <img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
                 {treenode.name}
                 </span>} key={treenode.id}>
@@ -97,7 +102,7 @@ export default class TableBroadcast extends React.Component {
     toTree(treenode) {
       if(treenode&&treenode.length>0) {
         return treenode.map(Tchildren => (
-          <TreeNode title={<span>
+          <TreeNode title={<span onClick={this.onSelect.bind(this, Tchildren)}>
             {!Tchildren.type?<img className='type-icon' src={require('../../assets/imgs/area-icon.png')} alt=""/>
             :<img className='type-icon' src={require('../../assets/imgs/broadcast-icon.png')} alt=""/>}
             {Tchildren.name}

@@ -261,7 +261,7 @@ export function querySysInstallPlaces(info) {
       ...info
     })
     .then(res=>{
-      if(res.success) {
+      if(res.success&&res.dataObject) {
          if(res.dataObject.devices) {
          
           dispatch(querySysInstallPlacesSuccess(res.dataObject.devices))

@@ -6,7 +6,11 @@ const initialState = {
   alarmlist: [],
   alarmInfo: {},
   carPages:{},
-  warmTableTop: 370
+  warmTableTop: 370,
+  carsTotalNum: {
+    inCount: 0,
+    outCount: 0
+  }
 }
 
 const DATASUCCESS = '[alarm] DATASUCCESS'
