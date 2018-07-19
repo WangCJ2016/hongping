@@ -109,12 +109,13 @@ class VideoCirclePlay extends React.Component {
             onChange: this.onSelectChange,
           };
         const lists =  this.props.video.previewGroup
+        console.log(lists)
         return (
             <div className='video-areaTree'>
               <CreateIdForm 
                 setTime = {this.setTime}
               ></CreateIdForm>
-              <Table rowSelection={rowSelection} columns={columns} dataSource={lists} rowKey={record=>record.id}/>
+              <Table showHeader={false} rowSelection={rowSelection} columns={columns} dataSource={lists} rowKey={record=>record.id}/>
             </div>
         );
     }

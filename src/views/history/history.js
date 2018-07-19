@@ -107,7 +107,7 @@ class History1 extends React.Component {
      key: 'action',
      render: (text, record) => (
        <span>
-         <Button type='primary' disabled={record.type=='5'} onClick={this.pointHandle.bind(this, record)}>查看</Button>
+         <Button type='primary' disabled={record.type!='5'} onClick={this.pointHandle.bind(this, record)}>查看</Button>
        </span>
      )
    }]

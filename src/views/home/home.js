@@ -288,9 +288,10 @@ class Home extends React.Component {
   goParentArea() {
     const parentId =  this.props.area.areaParentId
     if(parentId) {
-      this.props.areaInfo({id:parentId})
-      this.props.querySysInstallPlaces({areaId:parentId})
-      this.props.getAreaInfo({id: parentId})
+      // this.props.areaInfo({id:parentId})
+      // this.props.querySysInstallPlaces({areaId:parentId})
+      // this.props.getAreaInfo({id: parentId})
+      this.props.areaRoute({areaId:parentId})
     }
   }
   // 预览

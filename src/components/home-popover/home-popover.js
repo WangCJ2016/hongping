@@ -58,6 +58,6 @@ export class HomeBroadcast extends React.Component {
 
 export function HomeArea({device, goNextArea}) {
   return (
-    <img style={{width: '200px'}} onClick={()=>goNextArea(device)} src={require(`../../assets/thumbnail/${device.name||device.devName||'主图'}.jpg`)}/>
+    <img style={{width: '200px'}} onClick={()=>goNextArea(device)} src={require(`../../assets/thumbnail/${device.name||device.devName||'营地'}.png`)}/>
   )
 }

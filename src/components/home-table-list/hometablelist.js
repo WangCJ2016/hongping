@@ -7,12 +7,14 @@ import { querySysInstallPlaces } from '../../redux/setting.device.redux'
 import './home-table-list.scss'
 import { alarmDegree, alarmType } from '../../utils'
 import broadcastHoc from '../broadcastHoc/broadcastHoc'
+import AreaRouteHoc from '../../hoc/AreaRouteHoc'
 
 
 @connect(
   state => ({alarm:state.alarm,user:state.user}),
   {alarmPages,modifyAlarm,getAlarmInfo,areaInfo,querySysInstallPlaces,dataSuccess,getUndoPatrolPoints}
 )
+@AreaRouteHoc
 @broadcastHoc
 class HomeTableList extends React.Component {
   state={
@@ -155,13 +157,17 @@ class HomeTableList extends React.Component {
   }
   goLoc(record) {
     const alarmInfo = record
-    if(alarmInfo.install) {
-      this.props.dataSuccess({goLocDeviceId: alarmInfo.install.devId})
-      this.props.areaInfo({id:alarmInfo.install.areaId})
-      this.props.querySysInstallPlaces({areaId:alarmInfo.install.areaId})
-    }else{
-      message.error('设备没有绑定区域')
-    }
+    if(alarmInfo.type === 4) {
+      this.props.areaRoute({areaId: alarmInfo.slvAreaId}) 
+    }else {
+      if(alarmInfo.install) {
+        this.props.dataSuccess({goLocDeviceId: alarmInfo.install ? alarmInfo.install.devId : alarmInfo.deviceId})
+        this.props.areaRoute({areaId: alarmInfo.install.areaId})
+      } 
+      else{
+        message.error('设备没有绑定区域')
+      }
+   }
   }
   render() {
     const alarmInfo = this.props.alarm.alarmInfo

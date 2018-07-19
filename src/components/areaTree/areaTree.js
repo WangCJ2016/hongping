@@ -21,7 +21,6 @@ export default class AreaTree extends React.Component {
     }
  
     select(e) {
-      
       if(e.length>0) {
         this.setState({selectKey: e})
         this.props.select({areaId:e[0],type:1})
