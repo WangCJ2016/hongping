@@ -1,8 +1,11 @@
 import React from 'react'
 import './home-popover.scss'
 import { Icon, Button } from 'antd'
+//import pinyin from 'pinyin'
+//import pinyin from 'tiny-pinyin'
 import broadcastHoc from '../broadcastHoc/broadcastHoc'
 const ButtonGroup = Button.Group;
+
 
 export function HomePerson(peo) {
   return (
@@ -57,7 +60,34 @@ export class HomeBroadcast extends React.Component {
 }
 
 export function HomeArea({device, goNextArea}) {
+  const address = device.devName||'营地'
+  const imgRender = (address) => {
+    if(address === '营地') {
+      return <img style={{width: '200px'}} onClick={()=>goNextArea(device)} src={require(`../../assets/thumbnail/yingdi.png`)}/>
+    }
+    if(address === '上库') {
+      return <img style={{width: '200px'}} onClick={()=>goNextArea(device)} src={require(`../../assets/thumbnail/shangku.png`)}/> 
+    }
+    if(address === '设备库') {
+      return <img style={{width: '200px'}} onClick={()=>goNextArea(device)} src={require(`../../assets/thumbnail/shebeiku.png`)}/> 
+    }
+    if(address === '生产楼') {
+      return <img style={{width: '200px'}} onClick={()=>goNextArea(device)} src={require(`../../assets/thumbnail/shengchanlou.png`)}/> 
+    }
+    if(address === '下库') {
+      return <img style={{width: '200px'}} onClick={()=>goNextArea(device)} src={require(`../../assets/thumbnail/xiaku.png`)}/> 
+    }
+    if(address === '开关站') {
+      return <img style={{width: '200px'}} onClick={()=>goNextArea(device)} src={require(`../../assets/thumbnail/kaiguanzhan.png`)}/> 
+    }
+    return <img style={{width: '200px'}} onClick={()=>goNextArea(device)} src={require(`../../assets/thumbnail/yingdi.png`)}/> 
+
+  } 
   return (
-    <img style={{width: '200px'}} onClick={()=>goNextArea(device)} src={require(`../../assets/thumbnail/${device.name||device.devName||'营地'}.png`)}/>
+   // <img style={{width: '200px'}} onClick={()=>goNextArea(device)} src={require(`../../assets/imgs/${device.name||device.devName||'营地'}.png`)}/>
+    <div>
+      {imgRender(address)}
+    </div>
   )
 }
+

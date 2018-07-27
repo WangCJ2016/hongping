@@ -430,7 +430,7 @@ class Home extends React.Component {
 
     return (
       <div className='home-page setting-map' style={{left:this.props.sidebar.homeLeftIf?'300px':'0px'}}>
-        <div className="home-left">
+        <div className="home-left" style={{width: window.innerWidth * .75 - 60 + 'px'}}>
             <HomeWarmPanel 
               right={this.props.sidebar.offsetLeft}
               dragSelect={()=>{this.setState({dragSelectEnbled:true});message.info('请开始框选')}}
@@ -452,7 +452,7 @@ class Home extends React.Component {
               }
             <HomeTable videoPlay={this.videoPlay} videoPlayBack={this.videoPlayBack} openDoor={this.openDoor} />
         </div>
-        <div className="home-right">
+        <div className="home-right" style={{width: window.innerWidth * 0.25 + 'px'}}>
           <WarnBoard total={this.props.alarm.alarmCount} undo={this.props.alarm.alarmUndo} data={this.props.alarm.alarmlist}></WarnBoard> 
           <PeoBoard  data={this.props.peo.areaPeoReport} inCount={this.props.peo.inCount} outCount={this.props.peo.outCount}></PeoBoard> 
           <CarBoard  data={this.props.alarm.carPages.result} carsTotalNum={this.props.alarm.carsTotalNum}></CarBoard>

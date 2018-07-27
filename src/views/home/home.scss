@@ -10,13 +10,12 @@
   transition: left 0.2s;
   .home-left {
     float: left;
-    width: 75%;
     position: relative;
   }
   .home-right {
-    float: right;
-    width: 25%;
-    height: 100%;
+    position: absolute; 
+    right: 0;
+    top: 0
   }
   .icon-wrapper {
     position: fixed;

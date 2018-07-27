@@ -144,6 +144,7 @@ export function carPages(info) {
     request.get(config.api.base + config.api.carPages,{
       token: token,
       pageSize: 50,
+      gate: 'jtd',
       ...info
     })
    .then(res=>{
@@ -195,7 +196,6 @@ export function getUndoPatrolPoints(info) {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.getUndoPatrolPoints, {token:token,...info})
     .then(res=>{
-      console.log(res)
       if(res.success) {
         dispatch(dataSuccess({unhandlePoints: res.dataObject}))
       }
@@ -208,7 +208,6 @@ export function carsTotalNums() {
     const token = localStorage.getItem('token')
     request.get( config.api.base + config.api.carsTotalNums, {token:token})
     .then(res=>{
-      console.log(res)
       if(res.success) {
         dispatch(dataSuccess({carsTotalNum: res.dataObject}))
       }

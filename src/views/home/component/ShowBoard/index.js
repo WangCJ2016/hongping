@@ -42,7 +42,7 @@ export function WarnBoard(props) {
     const data = props.data.slice(0, 5)
     
     return (
-        <div className='board-wrap'>
+        <div className='board-wrap' style={{height: window.innerHeight * 0.333 - 70 + 'px'}}>
           <p className='title'>报警总数: &nbsp;&nbsp;{props.total}&nbsp;&nbsp;条</p>
           <p className='title'>报警总数: &nbsp;&nbsp;{props.undo}&nbsp;&nbsp;条</p>
           <div className="content">
@@ -93,7 +93,7 @@ export function PeoBoard(props) {
         ]
         const data = props.data.slice(0, 5) 
     return (
-        <div className='board-wrap'>
+        <div className='board-wrap' style={{height: window.innerHeight * 0.333 + 'px'}}>
           <p className='title'>当前进洞人数: &nbsp;&nbsp;{props.inCount}&nbsp;&nbsp;</p>
           <p className='title'>当前出洞人数: &nbsp;&nbsp;{props.outCount}&nbsp;&nbsp;</p>
           <p className='title'>当前洞内人数: &nbsp;&nbsp;{props.inCount - props.outCount}&nbsp;&nbsp;</p>
@@ -138,7 +138,7 @@ export function CarBoard({data=[], carsTotalNum}) {
     const data1 = data.slice(0, 5)
     
     return (
-        <div className='board-wrap'>
+        <div className='board-wrap' style={{height: window.innerHeight * 0.333 + 'px'}}>
           <p className='title'>当前进洞车数: &nbsp;&nbsp;{carsTotalNum.inCount}&nbsp;&nbsp;</p>
           <p className='title'>当前出洞车数: &nbsp;&nbsp;{carsTotalNum.outCount}&nbsp;&nbsp;</p>
           <p className='title'>  洞内总车数: &nbsp;&nbsp;{carsTotalNum.inCount - carsTotalNum.outCount}&nbsp;&nbsp;</p>
