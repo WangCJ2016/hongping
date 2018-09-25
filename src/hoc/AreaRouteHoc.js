@@ -14,17 +14,18 @@ const AreaRouteHoc = (WrapCom) => {
             this.props.selectAreaIdSuccess(areaId)
             this.props.areaInfo({id:areaId})
              this.props.querySysInstallPlaces({areaId: areaId})
-            // if(this.props.area.installPlaceTimer) 
-            // clearInterval(this.props.area.installPlaceTimer)
+            if(this.props.area.installPlaceTimer) 
+            clearInterval(this.props.area.installPlaceTimer)
            
-            // const timer = setInterval(()=>{
-            //   this.props.querySysInstallPlaces({areaId: areaId})
-            // },2000)
-           // this.props.dataSuccess({installPlaceTimer:timer})
+            const timer = setInterval(()=>{
+               this.props.querySysInstallPlaces({areaId: areaId})
+            },2000)
+           this.props.dataSuccess({installPlaceTimer:timer})
             this.props.getAreaInfo({id: areaId})
         }
         componentWillUnmount() {
             if(this.timer)  {
+                clearInterval(this.timer)
             }
           }
         render() {

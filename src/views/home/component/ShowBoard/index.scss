@@ -4,10 +4,14 @@
     border: 1px dashed #006f6b;
     color: #006f6b;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
     .title {
         text-indent: 10px;
     }
     .content {
+        flex:1;
         border: 1px solid #d8d8d8;
+        overflow: auto;
     }
 }

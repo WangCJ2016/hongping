@@ -520,7 +520,7 @@ function upload() {
   }
 }
 export function uploadImg(info) {
-  return (dispatch,getState)=>{
+  return (dispsatch,getState)=>{
     const token = localStorage.getItem('token')
     dispatch(upload())
     const user = getState().user

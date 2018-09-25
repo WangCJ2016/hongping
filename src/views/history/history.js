@@ -46,7 +46,6 @@ class History1 extends React.Component {
     });
   }
   pageChange = (e)=>{
-    debugger
     this.handleSearch(e)
   }
   pointHandle = (data) => {
@@ -57,6 +56,8 @@ class History1 extends React.Component {
     })
   }
   render() {
+    const { type } = this.props
+    console.log(type)
     const columns = [{
       title: '等级',
       dataIndex: 'degree',
@@ -107,7 +108,7 @@ class History1 extends React.Component {
      key: 'action',
      render: (text, record) => (
        <span>
-         <Button type='primary' disabled={record.type!='5'} onClick={this.pointHandle.bind(this, record)}>查看</Button>
+         <Button type='primary' disabled={record.type!==5} onClick={this.pointHandle.bind(this, record)}>查看</Button>
        </span>
      )
    }]
@@ -127,7 +128,6 @@ class History1 extends React.Component {
     key:'remark'
   }
   ]
-    console.log(this.props.alarm.unhandlePoints)
     const { getFieldDecorator } = this.props.form
     const formItemLayout = {
       labelCol: { span: 5 },
@@ -173,9 +173,10 @@ class History1 extends React.Component {
                <Col span={5} >
                 <FormItem {...formItemLayout} label={'类型'}>
                   {getFieldDecorator('type',{
-                    initialValue:"0"
+                    initialValue: type === 5 ? '5' : '0',
+                    disabled: true
                   })(
-                    <Select  >
+                    <Select disabled={type === 5 ? true : false}>
                       <Option value="0">全部</Option>
                       <Option value="1">消防报警</Option>
                       <Option value="2">红外报警</Option>

@@ -2,6 +2,7 @@ import React from 'react'
 import { Popover,Spin,Tag,Modal,Table,Switch,message,Tooltip } from 'antd'
 import { connect } from 'react-redux'
 import className from 'classnames'
+import Draggable from 'react-draggable';
 import { config } from '../../config'
 import HomeTable from '../../components/home-table/home-table'
 import { HomePerson, HomeCamera, HomeBroadcast,HomeGuard, HomeArea } from '../../components/home-popover/home-popover'
@@ -82,11 +83,8 @@ class Home extends React.Component {
   }
   componentWillReceiveProps(nextProps) {   
     if(nextProps.area.firstAreaId&&this.props.area.firstAreaId!==nextProps.area.firstAreaId) {
-
-      this.props.selectAreaIdSuccess(nextProps.area.firstAreaId)
-      this.props.areaInfo({id:nextProps.area.firstAreaId})
-      this.props.getAreaInfo({id: nextProps.area.firstAreaId})
-      this.props.querySysInstallPlaces({areaId: nextProps.area.firstAreaId})
+      
+      this.props.areaRoute({areaId: nextProps.area.firstAreaId})
     }
     if(this.props.area.areaImgSlider!==nextProps.area.areaImgSlider) {
       this.img.width = this.state.imgWidth * nextProps.area.areaImgSlider
@@ -438,12 +436,14 @@ class Home extends React.Component {
               {
                 areaInfo.picture?  
                 <div className='area-Map' ref={(img)=>this.imgScoll=img} style={{height:window.innerHeight - this.props.alarm.alarmHeight - 225 +'px'}}>
+                <Draggable>
                   <div style={{display:'inline-block',position:'relative',zIndex:0}}  >
-                  <img id='img' draggable='false' ref={(img)=>this.img=img}   src={areaInfo.picture}  alt="" />
-                  <Selection offsetLeft={this.props.sidebar.offsetLeft} offsetTop={this.imgScoll?this.imgScoll.scrollTop:0}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
-                  {this.props.area.load?null:this.mapDeviceRender()}
-                  </Selection>
+                    <img id='img' draggable='false' ref={(img)=>this.img=img}   src={areaInfo.picture}  alt="" />
+                    <Selection offsetLeft={this.props.sidebar.offsetLeft} offsetTop={this.imgScoll?this.imgScoll.scrollTop:0}  dragSelectEnbled={this.state.dragSelectEnbled} mouseUp={this.mouseUp.bind(this)}>
+                    {this.props.area.load?null:this.mapDeviceRender()}
+                    </Selection>
                   </div>
+                </Draggable>
                 </div>
                 :
                 <div style={{width: '100%',height:'100%',textAlign:'center'}}>

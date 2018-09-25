@@ -256,11 +256,13 @@ function querySysInstallPlacesSuccess(data) {
 export function querySysInstallPlaces(info) {  
   return (dispatch)=>{
     const token = localStorage.getItem('token')
+    console.log(config.api.base + config.api.querySysInstallPlaces)
     request.get(config.api.base + config.api.querySysInstallPlaces,{
       token:token,
       ...info
     })
     .then(res=>{
+      console.log(res)
       if(res.success&&res.dataObject) {
          if(res.dataObject.devices) {
          
@@ -270,6 +272,7 @@ export function querySysInstallPlaces(info) {
          }
       }
     })
+    .catch(err => console.log(err))
 }
 }
 // 

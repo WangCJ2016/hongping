@@ -39,7 +39,7 @@ export function WarnBoard(props) {
             }
           }
     ]
-    const data = props.data.slice(0, 5)
+    //const data = props.data.slice(0, 5)
     
     return (
         <div className='board-wrap' style={{height: window.innerHeight * 0.333 - 70 + 'px'}}>
@@ -69,29 +69,31 @@ export function PeoBoard(props) {
             key:'person'
           },
           {
-            title: '方式',
-            width:100,
-            render: (text, record) => {
-                return record.lastReportTime ? '出洞' : '进洞'
-            }
-          },
-          {
             title: '区域',
             dataIndex: 'region',
             width:100,
             key:'region'
           },
           {
-            title: '时间',
+            title: '进入时间',
             width: 100,
             render: (record) => (
                 <span>{
-                    record.lastReportTime ? record.lastReportTime.split(' ')[1] : record.firstReportTime.split(' ')[1]
+                    record.firstReportTime.split(' ')[1]
+                }</span> 
+            )
+          },
+          {
+            title: '离开时间',
+            width: 100,
+            render: (record) => (
+                <span>{
+                    record.lastReportTime.split(' ')[1]
                 }</span> 
             )
           }
         ]
-        const data = props.data.slice(0, 5) 
+        //const data = props.data.slice(0, 5) 
     return (
         <div className='board-wrap' style={{height: window.innerHeight * 0.333 + 'px'}}>
           <p className='title'>当前进洞人数: &nbsp;&nbsp;{props.inCount}&nbsp;&nbsp;</p>
@@ -135,7 +137,7 @@ export function CarBoard({data=[], carsTotalNum}) {
         key: 'gate', 
       },
     ]
-    const data1 = data.slice(0, 5)
+    //const data1 = data.slice(0, 5)
     
     return (
         <div className='board-wrap' style={{height: window.innerHeight * 0.333 + 'px'}}>
@@ -150,7 +152,7 @@ export function CarBoard({data=[], carsTotalNum}) {
             size='small'
             rowKey={record=>record.id}
             columns={columns}
-            dataSource={data1}
+            dataSource={data}
           />
           </div>
         </div>
